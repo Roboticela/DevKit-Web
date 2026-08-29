@@ -20,8 +20,12 @@ import { cn } from '@/lib/cn'
 import { EASE, FOCUS_RING } from '@/lib/styles'
 import { Button } from './Button'
 import { CodeBlock } from './CodeBlock'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsInlineCode, DocsSnippet, DocsUsage } from './DocsCard'
+import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
 import { Modal } from './Modal'
+import { Body } from './Text'
 
 const PAGE_SIZE = 96
 const CATALOG = catalog as Record<string, string[]>
@@ -157,17 +161,50 @@ export function IconsDocs() {
 
   return (
     <article>
-      <header id="overview" className="scroll-mt-20">
-        <p className="m-0 text-xs text-text-tertiary">Components / Foundations / Icons</p>
-        <h1 className="mt-2 mb-0 text-[32px] font-semibold tracking-[-0.015em] leading-[1.07] text-text-primary max-[734px]:text-[28px]">
-          Icons
-        </h1>
-        <p className="mt-2 mb-0 max-w-[692px] text-base font-normal text-text-secondary">
-          {ALL_ICONS.length.toLocaleString()} local icons. Search by name or meaning, then click one to open its preview and code.
-        </p>
-      </header>
+      <DocsHeader
+        crumb="Components / Foundations / Icons"
+        title="Icons"
+        description={`${ALL_ICONS.length.toLocaleString()} local icons you can search by name or meaning. Use these glyphs in buttons, fields, and empty states.`}
+      />
 
-      <section className="mt-8">
+      <section id="usage" className="mt-10 scroll-mt-20">
+        <DocsSectionTitle>Usage</DocsSectionTitle>
+        <DocsUsage>
+          <DocsProse>
+            <Body>
+              Import from <DocsInlineCode>@/icons</DocsInlineCode>. Kit and Lucide icons are named{' '}
+              <DocsInlineCode>Dk…</DocsInlineCode>. Size 18 sits in buttons and fields; 24 in empty
+              states. Decorative icons next to visible text should be hidden from assistive tech.
+            </Body>
+          </DocsProse>
+          <DocsPrinciples
+            items={[
+              { title: 'Meaning first', body: 'Search tags, not just filenames. Pick the glyph that matches the action.' },
+              { title: 'One stroke', body: 'Use strokeWidth 1.75 and absoluteStrokeWidth in product chrome so icons match.' },
+              { title: 'Named when alone', body: 'An icon without a visible label needs an accessible name on the control around it.' },
+            ]}
+          />
+          <DocsDoDont
+            doItems={[
+              'Wrap a lone glyph in Icon Button and pass label.',
+              'Keep icons currentColor so they follow text and theme.',
+              'Use the same size in a row of actions.',
+            ]}
+            dontItems={[
+              'Do not mix two icon packs in one toolbar.',
+              'Do not use an icon as the only error signal.',
+              'Do not scale below 16px for a primary action.',
+            ]}
+          />
+          <DocsSnippet>
+            {selected
+              ? usageSnippet(selected.pack, selected.name)
+              : `import { DkRoboticelaBrandLogo, DkTaskCompleteCheckmark, DkGithubOctocatBrandLogo } from '@/icons'\n\n<DkRoboticelaBrandLogo size={24} />\n<DkTaskCompleteCheckmark size={16} />\n<DkGithubOctocatBrandLogo size={18} />`}
+          </DocsSnippet>
+        </DocsUsage>
+      </section>
+
+      <section id="library" className="mt-10 scroll-mt-20">
         <label className="relative block">
           <DkMagnifyingGlassFind
             size={15}
@@ -266,18 +303,18 @@ export function IconsDocs() {
         )}
       </section>
 
-      <section id="usage" className="mt-12 scroll-mt-20">
-        <h2 className="m-0 mb-3 text-xl font-semibold tracking-[-0.01em] text-text-primary">Usage</h2>
-        <pre className="m-0 overflow-x-auto rounded-xl bg-bg-secondary p-4 font-mono text-[13px] leading-[1.6] text-text-primary">
-          <code>
-            {selected
-              ? usageSnippet(selected.pack, selected.name)
-              : `import { DkRoboticelaBrandLogo, DkTaskCompleteCheckmark, DkGithubOctocatBrandLogo } from '@/icons'\n\n<DkRoboticelaBrandLogo size={24} />\n<DkTaskCompleteCheckmark size={16} />\n<DkGithubOctocatBrandLogo size={18} />`}
-          </code>
-        </pre>
-        <p className="mt-3 mb-0 text-[13px] text-text-tertiary">
-          Click an icon to open its preview, actions, and copyable code. Tags describe meaning — click one to find similar icons.
-        </p>
+      <section id="accessibility" className="mt-12 scroll-mt-20">
+        <DocsSectionTitle>Accessibility</DocsSectionTitle>
+        <A11ySection
+          intro="An icon is a picture. The control around it has to speak."
+          items={[
+            'If the icon is decorative beside a visible label, pass aria-hidden on the glyph.',
+            'If the icon is the only content, Icon Button (or a named link) supplies the accessible name.',
+            'Do not encode state only in a glyph swap — keep a text name that matches the action.',
+            'Keep contrast: icons inherit currentColor from text-primary or text-on-brand.',
+            'Motion in loaders is CSS. Respect prefers-reduced-motion; the kit already does on spinners.',
+          ]}
+        />
       </section>
 
       <DocsPager className="mt-12" {...adjacentDocs(DOCS_ITEMS, 'icons')} />

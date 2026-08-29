@@ -85,7 +85,9 @@ export function SelectOption({
   selected = false,
   unavailable = false,
   leading,
+  leadingFit = 'icon',
   name,
+  description,
   meta,
   check,
   onClick,
@@ -95,7 +97,9 @@ export function SelectOption({
   selected?: boolean
   unavailable?: boolean
   leading?: ReactNode
+  leadingFit?: 'icon' | 'flag'
   name: ReactNode
+  description?: ReactNode
   meta?: ReactNode
   check?: ReactNode
   onClick?: () => void
@@ -110,7 +114,8 @@ export function SelectOption({
       aria-disabled={unavailable || disabled}
       disabled={disabled || unavailable}
       className={cn(
-        'flex min-h-11 w-full cursor-pointer items-center gap-3 rounded-[10px] border-0 bg-transparent px-2.5 text-left font-sans text-[15px] text-text-primary',
+        'flex w-full cursor-pointer items-center gap-3 rounded-[10px] border-0 bg-transparent px-2.5 text-left font-sans text-[15px] text-text-primary',
+        description ? 'min-h-[52px] py-2' : 'min-h-11',
         'transition-colors duration-150 ease-[cubic-bezier(0.28,0.11,0.32,1)]',
         'hover:bg-bg-hover focus-visible:bg-bg-hover focus-visible:outline-none',
         (unavailable || disabled) &&
@@ -121,22 +126,34 @@ export function SelectOption({
       onClick={onClick}
     >
       {leading ? (
-        <span className="inline-flex h-[18px] w-6 shrink-0 items-center justify-center overflow-hidden rounded-[3px] text-text-tertiary">
+        <span
+          className={cn(
+            'inline-flex shrink-0 items-center justify-center text-text-tertiary',
+            leadingFit === 'flag' && 'h-[18px] w-6 overflow-hidden rounded-[3px]',
+          )}
+        >
           {leading}
         </span>
       ) : null}
-      <span className="flex min-w-0 flex-1 items-baseline justify-between gap-3">
-        <span
-          className={cn(
-            'min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal',
-            selected && 'font-medium',
-          )}
-        >
-          {name}
+      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span className="flex min-w-0 items-baseline justify-between gap-3">
+          <span
+            className={cn(
+              'min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal',
+              selected && 'font-medium',
+            )}
+          >
+            {name}
+          </span>
+          {meta ? (
+            <span className="shrink-0 text-xs font-medium tracking-[0.02em] text-text-tertiary">
+              {meta}
+            </span>
+          ) : null}
         </span>
-        {meta ? (
-          <span className="shrink-0 text-xs font-medium tracking-[0.02em] text-text-tertiary">
-            {meta}
+        {description ? (
+          <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-normal text-text-tertiary">
+            {description}
           </span>
         ) : null}
       </span>

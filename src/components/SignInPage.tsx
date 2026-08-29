@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
-  DkPadlockSecureClosed,
   DkEnvelopeMessageMail
 } from '@/icons'
 import { brand } from '@/lib/devkit'
@@ -15,7 +14,7 @@ import { Button } from './Button'
 import { Divider } from './Divider'
 import { GitHubButton } from './GitHubButton'
 import { GoogleButton } from './GoogleButton'
-import { PasswordReveal } from './PasswordReveal'
+import { PasswordField } from './PasswordField'
 import { TextField } from './TextField'
 
 export function SignInPage({
@@ -28,13 +27,8 @@ export function SignInPage({
   const invalid = state === 'error'
   const loading = state === 'loading'
   const locked = state === 'locked'
-  const [visible, setVisible] = useState(false)
   const [value, setValue] = useState(email)
   const [password, setPassword] = useState('password')
-
-  useEffect(() => {
-    setVisible(false)
-  }, [state])
 
   const disabled = loading || locked
 
@@ -59,9 +53,7 @@ export function SignInPage({
             invalid={invalid}
             disabled={disabled}
           />
-          <TextField
-            icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
-            type={visible ? 'text' : 'password'}
+          <PasswordField
             name="password"
             placeholder="Password"
             autoComplete="current-password"
@@ -69,9 +61,6 @@ export function SignInPage({
             onChange={(event) => setPassword(event.target.value)}
             invalid={invalid}
             disabled={disabled}
-            trailing={
-              <PasswordReveal visible={visible} onToggle={() => setVisible((open) => !open)} />
-            }
           />
         </div>
         <div className="mt-3 flex justify-end">

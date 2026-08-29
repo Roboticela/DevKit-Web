@@ -13,9 +13,13 @@ import { EASE, FOCUS_RING } from '@/lib/styles'
 import { Button } from './Button'
 import { CodeBlock } from './CodeBlock'
 import { CountryFlag } from './CountryFlag'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsInlineCode, DocsSnippet, DocsUsage } from './DocsCard'
+import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
 import { Modal } from './Modal'
 import { PropsTable, type PropRow } from './PropsTable'
+import { Body } from './Text'
 
 const PAGE_SIZE = 96
 const SIZES = [16, 24, 32, 40] as const
@@ -128,18 +132,46 @@ export function FlagsDocs() {
 
   return (
     <article>
-      <header id="overview" className="scroll-mt-20">
-        <p className="m-0 text-xs text-text-tertiary">Components / Foundations / Country Flag</p>
-        <h1 className="mt-2 mb-0 text-[32px] font-semibold tracking-[-0.015em] leading-[1.07] text-text-primary max-[734px]:text-[28px]">
-          Country Flag
-        </h1>
-        <p className="mt-2 mb-0 max-w-[692px] text-base font-normal text-text-secondary">
-          {FLAGS.length.toLocaleString()} flags. Search by country, ISO code, or dialing code, then click one to
-          preview and copy.
-        </p>
-      </header>
+      <DocsHeader
+        crumb="Components / Foundations / Country Flag"
+        title="Country Flag"
+        description={`${FLAGS.length.toLocaleString()} flag images, one for every ISO country code. Search by name, code, or dialing code.`}
+      />
 
-      <section className="mt-8">
+      <section id="usage" className="mt-10 scroll-mt-20">
+        <DocsSectionTitle>Usage</DocsSectionTitle>
+        <DocsUsage>
+          <DocsProse>
+            <Body>
+              Pass an ISO 3166-1 alpha-2 code. Pair the flag with the country name in selects and lists. Pass{' '}
+              <DocsInlineCode>alt</DocsInlineCode> with the country name only when the flag is not next to
+              that text.
+            </Body>
+          </DocsProse>
+          <DocsPrinciples
+            items={[
+              { title: 'With a name', body: 'In Country Select the name is visible. The flag can stay decorative.' },
+              { title: 'Alone', body: 'If the flag is the only indicator, alt must be the country name.' },
+              { title: 'Not a language', body: 'A flag is a country. Do not use it as the only label for a locale.' },
+            ]}
+          />
+          <DocsDoDont
+            doItems={[
+              'Use Country Select when the user is choosing a country.',
+              'Keep a consistent size in a list — 18 or 24 in rows, 32 in previews.',
+              'Leave alt empty when the country name is already in the same control.',
+            ]}
+            dontItems={[
+              'Do not use a flag to mean a language (UK flag for English, and so on).',
+              'Do not stretch the 4:3 ratio.',
+              'Do not rely on the flag as the only selected state in a menu.',
+            ]}
+          />
+          <DocsSnippet>{selected ? usageSnippet(selected.iso) : usageSnippet('US')}</DocsSnippet>
+        </DocsUsage>
+      </section>
+
+      <section id="library" className="mt-10 scroll-mt-20">
         <label className="relative block">
           <DkMagnifyingGlassFind
             size={15}
@@ -223,19 +255,22 @@ export function FlagsDocs() {
         )}
       </section>
 
-      <section id="usage" className="mt-12 scroll-mt-20">
-        <h2 className="m-0 mb-3 text-xl font-semibold tracking-[-0.01em] text-text-primary">Usage</h2>
-        <pre className="m-0 overflow-x-auto rounded-xl bg-bg-secondary p-4 font-mono text-[13px] leading-[1.6] text-text-primary">
-          <code>{selected ? usageSnippet(selected.iso) : usageSnippet('US')}</code>
-        </pre>
-        <p className="mt-3 mb-0 text-[13px] text-text-tertiary">
-          Click a flag to open its preview, actions, and copyable code.
-        </p>
+      <section id="props" className="mt-12 scroll-mt-20">
+        <DocsSectionTitle>Props</DocsSectionTitle>
+        <PropsTable rows={PROPS} />
       </section>
 
-      <section id="props" className="mt-12 scroll-mt-20">
-        <h2 className="m-0 mb-3 text-xl font-semibold tracking-[-0.01em] text-text-primary">Props</h2>
-        <PropsTable rows={PROPS} />
+      <section id="accessibility" className="mt-12 scroll-mt-20">
+        <DocsSectionTitle>Accessibility</DocsSectionTitle>
+        <A11ySection
+          intro="A flag image without a name is silent. A flag with a duplicate name is noisy. Pick one."
+          items={[
+            'When the country name is visible beside the flag, pass alt="" so the image is skipped.',
+            'When the flag stands alone, alt is the country name — not the ISO code.',
+            'Do not use a flag as the only way to tell languages apart.',
+            'Search field is a labeled input. Keep the placeholder as a hint, not the only name.',
+          ]}
+        />
       </section>
 
       <DocsPager className="mt-12" {...adjacentDocs(DOCS_ITEMS, 'country-flag')} />

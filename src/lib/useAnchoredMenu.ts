@@ -14,11 +14,18 @@ type PlaceOptions = {
   from?: 'trigger' | 'root'
   minWidth?: number
   maxWidth?: number
+  matchWidth?: boolean
   estimatedHeight?: number
 }
 
 export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}) {
-  const { from = 'trigger', minWidth = 280, maxWidth = 360, estimatedHeight = 360 } = options
+  const {
+    from = 'trigger',
+    minWidth = 280,
+    maxWidth = 360,
+    matchWidth = false,
+    estimatedHeight = 360,
+  } = options
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [menuStyle, setMenuStyle] = useState<CSSProperties>({})
@@ -44,16 +51,25 @@ export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}
       const spaceAbove = rect.top - gap
       const shouldOpenUp = spaceBelow < estimatedHeight && spaceAbove > spaceBelow
       const baseWidth = from === 'root' && fieldRect ? fieldRect.width : rect.width
-      const width = Math.min(maxWidth, Math.max(baseWidth, minWidth))
+      const width = matchWidth ? baseWidth : Math.min(maxWidth, Math.max(baseWidth, minWidth))
       const leftAnchor = from === 'root' && fieldRect ? fieldRect.left : rect.left
-      const left = Math.min(Math.max(12, leftAnchor), window.innerWidth - width - 12)
+      const left = matchWidth
+        ? leftAnchor
+        : Math.min(Math.max(12, leftAnchor), window.innerWidth - width - 12)
+
+      const box: CSSProperties = {
+        position: 'fixed',
+        left,
+        width,
+        boxSizing: 'border-box',
+        minWidth: matchWidth ? width : undefined,
+        maxWidth: matchWidth ? width : undefined,
+      }
 
       if (shouldOpenUp) {
         setOpenUp(true)
         setMenuStyle({
-          position: 'fixed',
-          left,
-          width,
+          ...box,
           bottom: window.innerHeight - rect.top + gap,
           top: 'auto',
           maxHeight: Math.min(360, Math.max(220, spaceAbove - 8)),
@@ -61,9 +77,7 @@ export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}
       } else {
         setOpenUp(false)
         setMenuStyle({
-          position: 'fixed',
-          left,
-          width,
+          ...box,
           top: rect.bottom + gap,
           bottom: 'auto',
           maxHeight: Math.min(360, Math.max(220, spaceBelow - 8)),
@@ -79,7 +93,7 @@ export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}
       window.removeEventListener('scroll', place, true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, estimatedHeight, from, maxWidth, minWidth, ...deps])
+  }, [open, estimatedHeight, from, matchWidth, maxWidth, minWidth, ...deps])
 
   useEffect(() => {
     if (!open) return

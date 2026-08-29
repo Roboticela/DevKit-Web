@@ -6,7 +6,7 @@ import {
   DkNotificationBellAlert,
   DkChevronCaretRight,
   DkPaymentCreditCard,
-  DkFingerprintBiometricScan,
+  DkFingerprintBiometricScanPattern,
   DkMessageInboxTray,
   DkRoundKeyAccess,
   DkPadlockSecureClosed,
@@ -15,7 +15,17 @@ import {
   DkDevicesDesktopAndMobile,
   DkSecurityShieldProtect,
   DkHandheldMobilePhone,
-  DkPersonUserProfile
+  DkPersonUserProfile,
+  DkMagnifyingGlassFind,
+  DkGlobeWorldEarth,
+  DkLayoutGrid,
+  DkRowsThree,
+  DkAppDashboardLayoutTiles,
+  DkRefreshClockwiseRotate,
+  DkTextAlignStart,
+  DkTextAlignCenter,
+  DkTextAlignEnd,
+  DkPencilWriteEdit
 } from '@/icons'
 import { AVAILABLE_COUNTRY_ISOS } from '@/lib/languages'
 import { Alert } from './Alert'
@@ -33,6 +43,7 @@ import { CountrySelect } from './CountrySelect'
 import { DashboardPreview } from './DashboardPreview'
 import { DatePicker, type DateRange } from './DatePicker'
 import { Divider } from './Divider'
+import { Dropdown, type DropdownOption } from './Dropdown'
 import { EmptyState } from './EmptyState'
 import { FieldRow, FormField } from './FieldLabel'
 import { GitHubButton } from './GitHubButton'
@@ -49,6 +60,7 @@ import {
   XButton,
 } from './ProviderButtons'
 import { RoboticelaButton } from './RoboticelaButton'
+import { IconButton } from './IconButton'
 import { IconTab } from './IconTab'
 import { KeyValueRow } from './KeyValueRow'
 import { LanguageSelect } from './LanguageSelect'
@@ -57,13 +69,14 @@ import { LoadingScreen } from './LoadingScreen'
 import { NavSearch } from './NavSearch'
 import { OtpBoxes } from './OtpBoxes'
 import { Pagination } from './Pagination'
-import { PasswordReveal } from './PasswordReveal'
+import { PasswordField } from './PasswordField'
 import { PhoneInput } from './PhoneInput'
 import { ProfileButton } from './ProfileButton'
 import { Progress } from './Progress'
 import { Radio } from './Radio'
 import { RecoveryCodesList, RecoveryInput } from './RecoveryInput'
 import { SearchSelect } from './SearchSelect'
+import { SegmentedControl, SegmentedToolbar } from './SegmentedControl'
 import { CheckItem, ScoreRing } from './ScoreRing'
 import { SettingsList, SettingsRow } from './SettingsRow'
 import { SidebarNavItem } from './DashboardSidebar'
@@ -72,6 +85,7 @@ import { SiteFooter } from './SiteFooter'
 import { SiteNav } from './SiteNav'
 import { Skeleton } from './Skeleton'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
+import { Textarea } from './Textarea'
 import { TextField } from './TextField'
 import { AuthLegal, ErrorText, StatusText, TextLink } from './TextLink'
 import { ThemeIconToggle } from './ThemeIconToggle'
@@ -79,6 +93,29 @@ import { ThemeToggle } from './ThemeToggle'
 import { Body, Caption, Eyebrow, Heading, Subhead } from './Text'
 import { TotpManualKey } from './TotpManualKey'
 import { VerificationMethodCard } from './VerificationMethodCard'
+
+const SELECT_GLYPH = { size: 18, strokeWidth: 1.6, absoluteStrokeWidth: true } as const
+
+const PLANS: DropdownOption[] = [
+  {
+    value: 'starter',
+    label: 'Starter',
+    description: 'One workspace',
+    icon: <DkLayoutGrid {...SELECT_GLYPH} />,
+  },
+  {
+    value: 'team',
+    label: 'Team',
+    description: 'Up to ten people',
+    icon: <DkRowsThree {...SELECT_GLYPH} />,
+  },
+  {
+    value: 'studio',
+    label: 'Studio',
+    description: 'Unlimited seats',
+    icon: <DkAppDashboardLayoutTiles {...SELECT_GLYPH} />,
+  },
+]
 
 const CITIES = [
   { value: 'khi', label: 'Karachi', meta: 'PK' },
@@ -157,6 +194,57 @@ function SwitchPreview() {
   )
 }
 
+function SegmentedPreview() {
+  const [range, setRange] = useState<'day' | 'week' | 'month'>('week')
+  const [align, setAlign] = useState<'start' | 'center' | 'end'>('center')
+  const glyph = { size: 18, strokeWidth: 1.75, absoluteStrokeWidth: true } as const
+
+  return (
+    <div className="flex flex-col gap-4">
+      <SegmentedControl
+        value={range}
+        onChange={setRange}
+        fullWidth
+        options={[
+          { value: 'day', label: 'Day' },
+          { value: 'week', label: 'Week' },
+          { value: 'month', label: 'Month' },
+        ]}
+      />
+      <SegmentedControl
+        mode="grouped"
+        value={range}
+        onChange={setRange}
+        fullWidth
+        options={[
+          { value: 'day', label: 'Day' },
+          { value: 'week', label: 'Week' },
+          { value: 'month', label: 'Month' },
+        ]}
+      />
+      <SegmentedToolbar>
+        <SegmentedControl
+          content="icon"
+          value={align}
+          onChange={setAlign}
+          options={[
+            { value: 'start', label: 'Align left', icon: <DkTextAlignStart {...glyph} /> },
+            { value: 'center', label: 'Align center', icon: <DkTextAlignCenter {...glyph} /> },
+            { value: 'end', label: 'Align right', icon: <DkTextAlignEnd {...glyph} /> },
+          ]}
+        />
+        <IconButton
+          label="Refresh"
+          onAction={() => new Promise((resolve) => window.setTimeout(resolve, 900))}
+        >
+          <DkRefreshClockwiseRotate {...glyph} />
+        </IconButton>
+        <Button fullWidth={false}>Save</Button>
+      </SegmentedToolbar>
+    </div>
+  )
+}
+
 function DemoCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
     <div className={`rounded-[16px] bg-bg-secondary p-8 max-[734px]:p-4 ${className}`}>
@@ -188,8 +276,9 @@ function Section({
 export function ComponentGallery() {
   const [email, setEmail] = useState('alex@roboticela.com')
   const [password, setPassword] = useState('password')
-  const [showPassword, setShowPassword] = useState(false)
   const [city, setCity] = useState('khi')
+  const [plan, setPlan] = useState('team')
+  const [size, setSize] = useState('md')
   const [country, setCountry] = useState<string | null>('PK')
   const [language, setLanguage] = useState<string | null>('en-US')
   const [phone, setPhone] = useState('+14155552671')
@@ -291,7 +380,7 @@ export function ComponentGallery() {
           </div>
         </Section>
 
-        <Section id="buttons" title="Buttons" intro="Pill controls at 44px. Primary, secondary, provider, action, ghost, and danger — rest, hover, loading, and disabled.">
+        <Section id="buttons" title="Buttons" intro="Pill controls at 44px. Primary, secondary, provider, action, ghost, and danger — rest, hover, loading, and disabled. Segmented controls sit beside icon buttons and buttons.">
           <div className="grid gap-4 min-[735px]:grid-cols-2">
             <DemoCard>
               <StateLabel>Primary</StateLabel>
@@ -377,10 +466,14 @@ export function ComponentGallery() {
                 </div>
               </div>
             </DemoCard>
+            <DemoCard className="min-[735px]:col-span-2">
+              <StateLabel>Segmented</StateLabel>
+              <SegmentedPreview />
+            </DemoCard>
           </div>
         </Section>
 
-        <Section id="fields" title="Fields" intro="Auth fields at 17px with 12px corners. Icon, password reveal, focus ring, error, and disabled.">
+        <Section id="fields" title="Fields" intro="Icon fields at 17px with 12px corners. Outline, subtle, ghost, underline, and pill — filled, focus, invalid, and disabled.">
           <div className="grid gap-4 min-[735px]:grid-cols-2">
             <DemoCard>
               <StateLabel>Default / filled</StateLabel>
@@ -397,18 +490,10 @@ export function ComponentGallery() {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
-                <TextField
-                  icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
-                  type={showPassword ? 'text' : 'password'}
+                <PasswordField
                   placeholder="Password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  trailing={
-                    <PasswordReveal
-                      visible={showPassword}
-                      onToggle={() => setShowPassword((current) => !current)}
-                    />
-                  }
                 />
               </div>
             </DemoCard>
@@ -425,12 +510,7 @@ export function ComponentGallery() {
                   defaultValue="not-an-email"
                   invalid
                 />
-                <TextField
-                  icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
-                  placeholder="Password"
-                  disabled
-                  defaultValue="••••••••"
-                />
+                <PasswordField placeholder="Password" disabled defaultValue="password" />
                 <ErrorText className="mt-0">Incorrect email or password.</ErrorText>
                 <StatusText className="mt-0">Check your inbox for a code.</StatusText>
                 <TextLink href="#forgot" className="self-end text-sm">
@@ -438,11 +518,215 @@ export function ComponentGallery() {
                 </TextLink>
               </div>
             </DemoCard>
+            <DemoCard>
+              <StateLabel>Variants</StateLabel>
+              <div className="flex flex-col gap-4">
+                <TextField
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Outline"
+                />
+                <TextField
+                  variant="subtle"
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Subtle"
+                />
+                <TextField
+                  variant="ghost"
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Ghost"
+                />
+                <TextField
+                  variant="underline"
+                  icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Underline"
+                />
+                <TextField
+                  variant="pill"
+                  icon={<DkMagnifyingGlassFind size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Search"
+                />
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Valid, focus, sizes</StateLabel>
+              <div className="flex flex-col gap-4">
+                <TextField
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Email"
+                  defaultValue="alex@roboticela.com"
+                  valid
+                />
+                <TextField
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Email"
+                  defaultValue="alex@roboticela.com"
+                  preview="focus"
+                />
+                <TextField
+                  size="sm"
+                  icon={<DkEnvelopeMessageMail size={16} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Small"
+                />
+                <TextField
+                  size="lg"
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Large"
+                />
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Password field</StateLabel>
+              <div className="flex flex-col gap-4">
+                <PasswordField placeholder="Outline" defaultValue="password" />
+                <PasswordField variant="subtle" placeholder="Subtle" defaultValue="password" />
+                <PasswordField variant="pill" reveal="pill" placeholder="Pill" defaultValue="password" />
+                <PasswordField variant="underline" reveal="outline" defaultValue="123" invalid />
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Textarea</StateLabel>
+              <div className="flex flex-col gap-4">
+                <Textarea
+                  icon={<DkPencilWriteEdit size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Outline note"
+                  rows={3}
+                />
+                <Textarea
+                  variant="subtle"
+                  icon={<DkPencilWriteEdit size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Subtle note"
+                  rows={3}
+                />
+                <Textarea
+                  variant="well"
+                  icon={<DkPencilWriteEdit size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Well, like Notes"
+                  defaultValue="Keep the Monday launch short."
+                />
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Composer, ghost, invalid</StateLabel>
+              <div className="flex flex-col gap-4">
+                <Textarea
+                  variant="composer"
+                  icon={<DkMessageInboxTray size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Write a note for your team"
+                  hint="Visible to your workspace"
+                  maxLength={120}
+                  defaultValue="Ship the auth kit on Monday."
+                />
+                <Textarea
+                  variant="ghost"
+                  icon={<DkPencilWriteEdit size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Ghost"
+                  rows={3}
+                />
+                <Textarea
+                  variant="underline"
+                  icon={<DkPencilWriteEdit size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  placeholder="Too short"
+                  defaultValue="Hi"
+                  invalid
+                  rows={3}
+                />
+              </div>
+            </DemoCard>
           </div>
         </Section>
 
-        <Section id="selects" title="Selects" intro="Searchable menus with the same trigger, search field, option, and empty states. Country and language share that menu.">
+        <Section id="selects" title="Selects" intro="The field and the popup share one width. Outline, subtle, ghost, underline, and pill. Options can carry an icon, a description, and a search field.">
           <div className="grid gap-4 min-[735px]:grid-cols-2">
+            <DemoCard>
+              <StateLabel>Chrome</StateLabel>
+              <div className="flex flex-col gap-4">
+                <Dropdown
+                  variant="outline"
+                  value={size}
+                  onChange={setSize}
+                  icon={<DkGlobeWorldEarth {...SELECT_GLYPH} />}
+                  options={[
+                    { value: 'sm', label: 'Small' },
+                    { value: 'md', label: 'Medium' },
+                    { value: 'lg', label: 'Large' },
+                  ]}
+                />
+                <Dropdown
+                  variant="subtle"
+                  value={size}
+                  onChange={setSize}
+                  icon={<DkGlobeWorldEarth {...SELECT_GLYPH} />}
+                  options={[
+                    { value: 'sm', label: 'Small' },
+                    { value: 'md', label: 'Medium' },
+                    { value: 'lg', label: 'Large' },
+                  ]}
+                />
+                <Dropdown
+                  variant="ghost"
+                  value={size}
+                  onChange={setSize}
+                  icon={<DkGlobeWorldEarth {...SELECT_GLYPH} />}
+                  options={[
+                    { value: 'sm', label: 'Small' },
+                    { value: 'md', label: 'Medium' },
+                    { value: 'lg', label: 'Large' },
+                  ]}
+                />
+                <Dropdown
+                  variant="underline"
+                  value={size}
+                  onChange={setSize}
+                  options={[
+                    { value: 'sm', label: 'Small' },
+                    { value: 'md', label: 'Medium' },
+                    { value: 'lg', label: 'Large' },
+                  ]}
+                />
+                <Dropdown
+                  variant="pill"
+                  value={size}
+                  onChange={setSize}
+                  options={[
+                    { value: 'sm', label: 'Small' },
+                    { value: 'md', label: 'Medium' },
+                    { value: 'lg', label: 'Large' },
+                  ]}
+                />
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Icons and search</StateLabel>
+              <div className="flex flex-col gap-4">
+                <Dropdown
+                  value={plan}
+                  onChange={setPlan}
+                  options={PLANS}
+                  placeholder="Plan"
+                />
+                <Dropdown
+                  variant="subtle"
+                  searchable
+                  searchPlaceholder="Search plans"
+                  value={plan}
+                  onChange={setPlan}
+                  options={PLANS}
+                  placeholder="Plan"
+                />
+                <Dropdown
+                  value=""
+                  onChange={() => undefined}
+                  placeholder="Choose a plan"
+                  options={PLANS}
+                />
+                <Dropdown
+                  value="team"
+                  onChange={() => undefined}
+                  options={PLANS}
+                  disabled
+                />
+              </div>
+            </DemoCard>
             <DemoCard>
               <StateLabel>Search select</StateLabel>
               <div className="flex flex-col gap-4">
@@ -452,6 +736,7 @@ export function ComponentGallery() {
                   onChange={setCity}
                   options={CITIES}
                   placeholder="Select a city"
+                  icon={<DkMagnifyingGlassFind {...SELECT_GLYPH} />}
                 />
                 <SearchSelect
                   label="City"
@@ -564,7 +849,7 @@ export function ComponentGallery() {
                   onClick={() => setMethod('email')}
                 />
                 <VerificationMethodCard
-                  icon={<DkFingerprintBiometricScan size={28} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkFingerprintBiometricScanPattern size={28} strokeWidth={1.6} absoluteStrokeWidth />}
                   title="Passkey"
                   subtitle="Use Face ID, Touch ID, or a security key"
                   selected={method === 'passkey'}
@@ -697,14 +982,24 @@ export function ComponentGallery() {
             <DemoCard>
               <StateLabel>Field label and hint</StateLabel>
               <FormField label="Username" hint="Available" hintTone="ok">
-                <TextField defaultValue="alex" />
+                <TextField
+                  icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  defaultValue="alex"
+                />
               </FormField>
               <FieldRow className="mt-4">
                 <FormField label="City" optional>
-                  <TextField placeholder="Karachi" />
+                  <TextField
+                    icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                    placeholder="Karachi"
+                  />
                 </FormField>
                 <FormField label="Postal" hint="Required" hintTone="error">
-                  <TextField invalid placeholder="00000" />
+                  <TextField
+                    icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                    invalid
+                    placeholder="00000"
+                  />
                 </FormField>
               </FieldRow>
             </DemoCard>
@@ -733,6 +1028,24 @@ export function ComponentGallery() {
                   }
                 />
               </ListGroup>
+            </DemoCard>
+
+            <DemoCard>
+              <StateLabel>Confirm action</StateLabel>
+              <div className="flex flex-wrap items-center gap-3">
+                <ConfirmAction onConfirm={() => undefined} />
+                <ConfirmAction variant="ghost" onConfirm={() => undefined} />
+                <ConfirmAction variant="subtle" onConfirm={() => undefined} />
+                <ConfirmAction variant="outline" onConfirm={() => undefined} />
+                <ConfirmAction variant="solid" onConfirm={() => undefined} />
+                <ConfirmAction
+                  variant="solid"
+                  tone="brand"
+                  label="Send"
+                  confirmLabel="Send now?"
+                  onConfirm={() => undefined}
+                />
+              </div>
             </DemoCard>
 
             <DemoCard>
@@ -991,15 +1304,7 @@ export function ComponentGallery() {
                       placeholder="Email"
                       defaultValue="alex@roboticela.com"
                     />
-                    <TextField
-                      icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
-                      type="password"
-                      placeholder="Password"
-                      defaultValue="password"
-                      trailing={
-                        <PasswordReveal visible={false} onToggle={() => undefined} />
-                      }
-                    />
+                    <PasswordField placeholder="Password" defaultValue="password" />
                   </div>
                   <Button className="mt-6" type="submit">
                     Continue

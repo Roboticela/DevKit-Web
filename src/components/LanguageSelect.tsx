@@ -52,7 +52,7 @@ export function LanguageSelect({
     searchRef,
     listId,
     close,
-  } = useAnchoredMenu([], { minWidth: 320, maxWidth: 420 })
+  } = useAnchoredMenu([], { matchWidth: true })
   const languages = useMemo(() => sortedLanguagesForSearch(query), [query])
   const selectedLabel = value ? languageDisplayName(value) : null
   const enabledSet = useMemo(
@@ -66,10 +66,9 @@ export function LanguageSelect({
       <SelectTrigger
         ref={triggerRef}
         open={open}
-        className={compact ? 'h-9 gap-2 rounded-[10px] px-3 text-[13px]' : undefined}
+        size={compact ? 'sm' : 'md'}
         leading={<DkTranslateLanguagesWorld size={compact ? 16 : 18} strokeWidth={1.75} absoluteStrokeWidth />}
         placeholder={!selectedLabel}
-        chevronSize={compact ? 14 : 16}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}

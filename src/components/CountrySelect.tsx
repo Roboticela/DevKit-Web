@@ -55,7 +55,7 @@ export function CountrySelect({
     searchRef,
     listId,
     close,
-  } = useAnchoredMenu([], { minWidth: 320, maxWidth: 420 })
+  } = useAnchoredMenu([], { matchWidth: true })
   const selected = value ? (COUNTRIES.find((country) => country.iso === value) ?? null) : null
   const countries = useMemo(() => sortedCountriesForSearch(query), [query])
   const enabledSet = useMemo(
@@ -69,7 +69,7 @@ export function CountrySelect({
       <SelectTrigger
         ref={triggerRef}
         open={open}
-        className={compact ? 'h-9 gap-2 rounded-[10px] px-3 text-[13px]' : undefined}
+        size={compact ? 'sm' : 'md'}
         leading={
           selected ? (
             <CountryFlag iso={selected.iso} size={compact ? 16 : 18} />
@@ -78,7 +78,6 @@ export function CountrySelect({
           )
         }
         placeholder={!selected}
-        chevronSize={compact ? 14 : 16}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
@@ -138,6 +137,7 @@ export function CountrySelect({
                         selected={isSelected}
                         unavailable={!available}
                         leading={<CountryFlag iso={item.iso} size={20} />}
+                        leadingFit="flag"
                         name={item.name}
                         meta={available ? item.iso : 'Coming soon'}
                         check={

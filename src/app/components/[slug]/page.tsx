@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import { ButtonDocs } from '@/components/ButtonDocs'
+import { DocsPrimitivesDocs } from '@/components/DocsPrimitivesDocs'
 import { FlagsDocs } from '@/components/FlagsDocs'
 import { FoundationDocs } from '@/components/FoundationDocs'
 import { IconsDocs } from '@/components/IconsDocs'
@@ -10,6 +11,7 @@ import {
   COMPONENT_ALIASES,
   DOCS_ITEMS,
   DOCS_NAV,
+  DOCS_PRIMITIVE_IDS,
   findDocContext,
   FOUNDATION_IDS,
 } from '@/lib/docs-catalog'
@@ -52,6 +54,7 @@ export default async function ComponentDocPage({
   if (raw === 'icons') return <IconsDocs />
   if (raw === 'country-flag') return <FlagsDocs />
   if (FOUNDATION_IDS.has(raw)) return <FoundationDocs slug={raw} />
+  if (DOCS_PRIMITIVE_IDS.has(raw)) return <DocsPrimitivesDocs slug={raw} />
 
   return <KitComponentDocs slug={raw} />
 }

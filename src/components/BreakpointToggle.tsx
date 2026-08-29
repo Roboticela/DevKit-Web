@@ -5,8 +5,7 @@ import {
   DkHandheldMobilePhone,
   DkHandheldTabletDevice
 } from '@/icons'
-import { cn } from '@/lib/cn'
-import { IconButton } from './IconButton'
+import { SegmentedControl } from './SegmentedControl'
 
 export type PreviewBreakpoint = 'desktop' | 'tablet' | 'mobile'
 
@@ -16,15 +15,7 @@ export const PREVIEW_WIDTH: Record<PreviewBreakpoint, number> = {
   mobile: 375,
 }
 
-const OPTIONS: Array<{
-  id: PreviewBreakpoint
-  label: string
-  icon: typeof DkDesktopComputerDisplayScreen
-}> = [
-  { id: 'desktop', label: 'Desktop', icon: DkDesktopComputerDisplayScreen },
-  { id: 'tablet', label: 'Tablet', icon: DkHandheldTabletDevice },
-  { id: 'mobile', label: 'Mobile', icon: DkHandheldMobilePhone },
-]
+const GLYPH = { size: 16, strokeWidth: 1.75, absoluteStrokeWidth: true } as const
 
 export function BreakpointToggle({
   value,
@@ -36,30 +27,31 @@ export function BreakpointToggle({
   className?: string
 }) {
   return (
-    <div
-      role="radiogroup"
+    <SegmentedControl
       aria-label="Preview breakpoint"
-      className={cn('flex items-center justify-center gap-2', className)}
-    >
-      {OPTIONS.map((option) => {
-        const selected = option.id === value
-        const Icon = option.icon
-        return (
-          <IconButton
-            key={option.id}
-            label={`${option.label} ${PREVIEW_WIDTH[option.id]}px`}
-            title={`${option.label} (${PREVIEW_WIDTH[option.id]}px)`}
-            size="sm"
-            variant={selected ? 'primary' : 'ghost'}
-            role="radio"
-            aria-checked={selected}
-            className={selected ? undefined : 'text-text-tertiary'}
-            onClick={() => onChange(option.id)}
-          >
-            <Icon size={16} strokeWidth={1.75} absoluteStrokeWidth />
-          </IconButton>
-        )
-      })}
-    </div>
+      content="icon"
+      size="sm"
+      variant="subtle"
+      className={className}
+      value={value}
+      onChange={onChange}
+      options={[
+        {
+          value: 'desktop',
+          label: `Desktop ${PREVIEW_WIDTH.desktop}px`,
+          icon: <DkDesktopComputerDisplayScreen {...GLYPH} />,
+        },
+        {
+          value: 'tablet',
+          label: `Tablet ${PREVIEW_WIDTH.tablet}px`,
+          icon: <DkHandheldTabletDevice {...GLYPH} />,
+        },
+        {
+          value: 'mobile',
+          label: `Mobile ${PREVIEW_WIDTH.mobile}px`,
+          icon: <DkHandheldMobilePhone {...GLYPH} />,
+        },
+      ]}
+    />
   )
 }

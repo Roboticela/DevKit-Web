@@ -8,12 +8,14 @@ import {
 import { cn } from '@/lib/cn'
 import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
 import { SelectEmpty, SelectList, SelectMenu, SelectOption, SelectSearch } from './SelectMenu'
-import { SelectTrigger } from './SelectTrigger'
+import { SelectTrigger, type SelectTriggerSize, type SelectTriggerVariant } from './SelectTrigger'
 
 export type SearchSelectOption = {
   value: string
   label: string
   meta?: string
+  icon?: ReactNode
+  description?: string
 }
 
 type SearchSelectProps = {
@@ -30,6 +32,10 @@ type SearchSelectProps = {
   clearLabel?: string
   emptyMessage?: string
   icon?: ReactNode
+  variant?: SelectTriggerVariant
+  size?: SelectTriggerSize
+  invalid?: boolean
+  valid?: boolean
 }
 
 export function SearchSelect({
@@ -46,6 +52,10 @@ export function SearchSelect({
   clearLabel = 'Not set',
   emptyMessage = 'No results found',
   icon,
+  variant = 'outline',
+  size = 'md',
+  invalid = false,
+  valid = false,
 }: SearchSelectProps) {
   const {
     open,
@@ -60,7 +70,7 @@ export function SearchSelect({
     searchRef,
     listId,
     close,
-  } = useAnchoredMenu([options.length], { minWidth: 280, maxWidth: 360 })
+  } = useAnchoredMenu([options.length], { matchWidth: true })
 
   const filtered = useMemo(() => {
     if (getOptions) return getOptions(query)
@@ -70,22 +80,22 @@ export function SearchSelect({
       (option) =>
         option.label.toLowerCase().includes(q) ||
         option.value.toLowerCase().includes(q) ||
-        option.meta?.toLowerCase().includes(q),
+        option.meta?.toLowerCase().includes(q) ||
+        option.description?.toLowerCase().includes(q),
     )
   }, [getOptions, query, options])
 
-  const selectedLabel = useMemo(() => {
+  const selected = useMemo(() => {
     if (!value) return null
-    const fromFiltered = filtered.find((option) => option.value === value)
-    if (fromFiltered) return fromFiltered.label
-    const fromOptions = options.find((option) => option.value === value)
-    if (fromOptions) return fromOptions.label
-    if (getOptions) {
-      const match = getOptions(value).find((option) => option.value === value)
-      if (match) return match.label
-    }
-    return value
+    return (
+      filtered.find((option) => option.value === value) ??
+      options.find((option) => option.value === value) ??
+      (getOptions ? getOptions(value).find((option) => option.value === value) : undefined) ??
+      null
+    )
   }, [filtered, getOptions, options, value])
+
+  const selectedLabel = selected?.label ?? (value || null)
 
   return (
     <div
@@ -95,8 +105,12 @@ export function SearchSelect({
       <SelectTrigger
         ref={triggerRef}
         open={open}
-        leading={icon}
+        variant={variant}
+        size={size}
+        leading={selected?.icon ?? icon}
         placeholder={!selectedLabel}
+        invalid={invalid}
+        valid={valid}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
@@ -152,6 +166,8 @@ export function SearchSelect({
                       <SelectOption
                         key={`${option.value}-${option.meta ?? ''}`}
                         selected={isSelected}
+                        leading={option.icon}
+                        description={option.description}
                         name={
                           <span className={isSelected ? 'text-brand-primary' : undefined}>
                             {option.label}

@@ -2,11 +2,13 @@
 
 /* eslint-disable react-hooks/set-state-in-effect */
 
+import { useServerInsertedHTML } from 'next/navigation'
 import {
   createContext,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
@@ -14,6 +16,8 @@ import {
 export type Theme = 'light' | 'dark'
 
 const THEME_STORAGE_KEY = 'theme'
+
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);document.documentElement.classList.toggle('dark',t==='dark');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`
 
 function readStoredTheme(): Theme {
   if (typeof document === 'undefined') return 'light'
@@ -49,6 +53,18 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light')
   const [mounted, setMounted] = useState(false)
+  const inserted = useRef(false)
+
+  useServerInsertedHTML(() => {
+    if (inserted.current) return null
+    inserted.current = true
+    return (
+      <script
+        id="theme-init"
+        dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
+      />
+    )
+  })
 
   useEffect(() => {
     setThemeState(readStoredTheme())

@@ -33,7 +33,8 @@ const TREE: CompositionNode[] = [
         children: [
           { label: 'Logo' },
           { label: 'Headline + Subhead' },
-          { label: 'Text Field × 2', href: '/components/text-field', note: '(Email, Password)' },
+          { label: 'Text Field', href: '/components/text-field', note: '(Email)' },
+          { label: 'Password Field', href: '/components/password-field' },
           { label: 'Password Reveal', href: '/components/password-reveal' },
           { label: 'Inline Link', note: '(Forgot password?)' },
           { label: 'Button', href: '/components/button', note: '(Primary, full width)' },
@@ -92,8 +93,9 @@ import { Divider } from '@/components/Divider'
 import { GitHubButton } from '@/components/GitHubButton'
 import { GoogleButton } from '@/components/GoogleButton'
 import { AppleButton } from '@/components/ProviderButtons'
-import { PasswordReveal } from '@/components/PasswordReveal'
+import { PasswordField } from '@/components/PasswordField'
 import { TextField } from '@/components/TextField'
+import { DkEnvelopeMessageMail } from '@/icons'
 
 export default function SignInPage({
   onSubmit,
@@ -112,13 +114,13 @@ export default function SignInPage({
         }}
       >
         <div className="flex flex-col gap-4">
-          <TextField name="email" type="email" placeholder="Email address" />
           <TextField
-            name="password"
-            type="password"
-            placeholder="Password"
-            trailing={<PasswordReveal />}
+            icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+            name="email"
+            type="email"
+            placeholder="Email address"
           />
+          <PasswordField name="password" placeholder="Password" />
         </div>
         <TextLink href="/forgot-password" className="mt-3 self-end text-sm">
           Forgot password?
@@ -145,6 +147,7 @@ export default function SignInPage({
 
 const BUILT_WITH = [
   { label: 'Text Field', href: '/components/text-field' },
+  { label: 'Password Field', href: '/components/password-field' },
   { label: 'Button', href: '/components/button' },
   { label: 'Divider', href: '/components/divider' },
   { label: 'Social Login Button', href: '/components/social-login' },

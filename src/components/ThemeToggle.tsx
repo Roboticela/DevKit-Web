@@ -11,6 +11,9 @@ import { Caption } from './Text'
 
 export type ThemeToggleVariant = 'default' | 'compact' | 'labels' | 'icons' | 'switch'
 
+const MOTION =
+  'duration-200 ease-[cubic-bezier(0.28,0.11,0.32,1)] motion-reduce:duration-0 motion-reduce:transition-none'
+
 export function ThemeToggle({
   variant = 'default',
   compact = false,
@@ -104,6 +107,9 @@ function ThemeSwitch({
   disabled: boolean
   onToggle: () => void
 }) {
+  const inset = compact ? 3 : 4
+  const thumb = compact ? 22 : 26
+
   return (
     <button
       type="button"
@@ -113,10 +119,10 @@ function ThemeSwitch({
       disabled={disabled}
       onClick={onToggle}
       className={cn(
-        'relative cursor-pointer overflow-hidden rounded-full border-0 p-0',
+        'relative cursor-pointer overflow-hidden rounded-[980px] border-0 p-0',
         'bg-border-default dark:bg-bg-tertiary',
-        'transition-colors duration-200',
-        EASE,
+        'transition-[background-color]',
+        MOTION,
         on && 'bg-brand-primary dark:bg-brand-primary',
         compact ? 'h-7 min-w-[52px]' : 'h-[34px] min-w-[72px]',
         stretch ? 'w-full' : compact ? 'w-16' : 'w-[72px]',
@@ -125,27 +131,18 @@ function ThemeSwitch({
       )}
     >
       <span
+        aria-hidden
         className={cn(
-          'absolute aspect-square shrink-0 rounded-full bg-text-on-brand',
-          'transition-[left] duration-200',
-          EASE,
-          compact ? 'top-[3px] h-[22px] w-[22px]' : 'top-1 h-[26px] w-[26px]',
-          on
-            ? compact
-              ? 'left-[calc(100%-25px)]'
-              : 'left-[calc(100%-30px)]'
-            : compact
-              ? 'left-[3px]'
-              : 'left-1',
+          'absolute rounded-full bg-white',
+          'transition-[left]',
+          MOTION,
+          compact ? 'size-[22px]' : 'size-[26px]',
         )}
-      >
-        <span
-          className={cn(
-            'absolute top-1/2 left-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-text-disabled',
-            compact ? 'h-[5px] w-[5px]' : 'h-1.5 w-1.5',
-          )}
-        />
-      </span>
+        style={{
+          top: inset,
+          left: on ? `calc(100% - ${thumb + inset}px)` : inset,
+        }}
+      />
     </button>
   )
 }

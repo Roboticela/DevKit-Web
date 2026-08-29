@@ -24,6 +24,30 @@ export { CodeBlock, CodePanel } from './CodeBlock'
 export { CommandPalette } from './CommandPalette'
 export { DocsArticleStub } from './DocsArticleStub'
 export { DocsHeader, DocsSectionTitle } from './DocsCopy'
+export {
+  DocsCard,
+  DocsCardGrid,
+  DocsContrastCard,
+  DocsInlineCode,
+  DocsMeasureRow,
+  DocsPrincipleCard,
+  DocsRadiusCard,
+  DocsRelated,
+  DocsRuleCard,
+  DocsScaleRow,
+  DocsSnippet,
+  DocsStack,
+  DocsStateCard,
+  DocsStateGrid,
+  DocsStateGroup,
+  DocsSwatch,
+  DocsSwatchGrid,
+  DocsTable,
+  DocsTokenGroup,
+  DocsUsage,
+} from './DocsCard'
+export { A11ySection, DocsDoDont, DocsKeys, DocsPrinciples, DocsProse } from './DocsGuide'
+export { DocsPrimitivesDocs } from './DocsPrimitivesDocs'
 export { FlagsDocs } from './FlagsDocs'
 export { FoundationDocs } from './FoundationDocs'
 export { IconsDocs } from './IconsDocs'
@@ -35,8 +59,8 @@ export { DocsNav } from './DocsNav'
 export { DocsPager } from './DocsPager'
 export { DocsSearchTrigger } from './DocsSearchTrigger'
 export { DocsSelect } from './DocsSelect'
-export { Dropdown } from './Dropdown'
-export type { DropdownOption } from './Dropdown'
+export { Dropdown, Dropdown as Select, SELECT_SIZES, SELECT_VARIANTS } from './Dropdown'
+export type { DropdownOption, SelectTriggerSize, SelectTriggerVariant } from './Dropdown'
 export { DocsShell } from './DocsShell'
 export { DocsSidebar } from './DocsSidebar'
 export { DocsToc } from './DocsToc'
@@ -44,11 +68,25 @@ export { Kbd } from './Kbd'
 export { PropsTable } from './PropsTable'
 export type { PropRow } from './PropsTable'
 export { RelatedCard } from './RelatedCard'
-export { SegmentedControl } from './SegmentedControl'
+export { SegmentedControl, SegmentedToolbar, SEGMENTED_CONTENTS, SEGMENTED_MODES, SEGMENTED_SIZES, SEGMENTED_VARIANTS } from './SegmentedControl'
+export type {
+  SegmentedContent,
+  SegmentedMode,
+  SegmentedOption,
+  SegmentedSize,
+  SegmentedStatus,
+  SegmentedVariant,
+} from './SegmentedControl'
 export { ButtonLabel, ButtonSpinner } from './ButtonLabel'
 export { CheckItem } from './ScoreRing'
 export { Checkbox } from './Checkbox'
-export { ConfirmAction } from './ConfirmAction'
+export {
+  ConfirmAction,
+  CONFIRM_ACTION_SIZES,
+  CONFIRM_ACTION_TONES,
+  CONFIRM_ACTION_VARIANTS,
+} from './ConfirmAction'
+export type { ConfirmActionSize, ConfirmActionTone, ConfirmActionVariant } from './ConfirmAction'
 export { ConfirmDialog } from './ConfirmDialog'
 export { CountryFlag } from './CountryFlag'
 export { CountrySelect, countryDisplayName } from './CountrySelect'
@@ -102,7 +140,9 @@ export { NavSearch } from './NavSearch'
 export { OtpBoxes } from './OtpBoxes'
 export { PageHeader } from './PageHeader'
 export { Pagination } from './Pagination'
-export { PasswordReveal } from './PasswordReveal'
+export { PasswordField, PASSWORD_FIELD_SIZES, PASSWORD_FIELD_VARIANTS } from './PasswordField'
+export { PasswordReveal, PASSWORD_REVEAL_SIZES, PASSWORD_REVEAL_VARIANTS } from './PasswordReveal'
+export type { PasswordRevealSize, PasswordRevealVariant } from './PasswordReveal'
 export { PhoneInput } from './PhoneInput'
 export { ProfileButton } from './ProfileButton'
 export { Progress } from './Progress'
@@ -110,6 +150,7 @@ export { Radio } from './Radio'
 export { RecoveryCodesList, RecoveryInput } from './RecoveryInput'
 export { ScoreRing } from './ScoreRing'
 export { SearchSelect } from './SearchSelect'
+export type { SearchSelectOption } from './SearchSelect'
 export { SettingsList, SettingsRow } from './SettingsRow'
 export { SheetNav } from './SheetNav'
 export { SelectMenu, SelectSearch, SelectList, SelectEmpty, SelectOption } from './SelectMenu'
@@ -123,8 +164,19 @@ export { Switch, SwitchGroup, SwitchItem, SWITCH_SIZES, SWITCH_VARIANTS } from '
 export type { SwitchSize, SwitchVariant } from './Switch'
 export { Tabs } from './Tabs'
 export { AuthBrand, AuthLayout, AuthNav, AuthSuccess } from './AuthLayout'
-export { Textarea } from './Textarea'
-export { TextField, AuthField } from './TextField'
+export {
+  Textarea,
+  TEXTAREA_SIZES,
+  TEXTAREA_VARIANTS,
+} from './Textarea'
+export type { TextareaPreview, TextareaSize, TextareaVariant } from './Textarea'
+export {
+  TextField,
+  AuthField,
+  TEXT_FIELD_SIZES,
+  TEXT_FIELD_VARIANTS,
+} from './TextField'
+export type { TextFieldPreview, TextFieldSize, TextFieldVariant } from './TextField'
 export {
   Body,
   Caption,

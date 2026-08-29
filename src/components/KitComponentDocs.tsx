@@ -8,6 +8,9 @@ import {
   DkAppDashboardLayoutTiles,
   DkPadlockSecureClosed,
   DkEnvelopeMessageMail,
+  DkPersonUserProfile,
+  DkAtSign,
+  DkFoldedMapTerritoryMapPinLocation,
   DkAddPlusCreate,
   DkRefreshClockwiseRotate,
   DkFloppyDiskSave,
@@ -16,7 +19,19 @@ import {
   DkShareExportForward,
   DkSecurityShieldProtect,
   DkHandheldMobilePhone,
-  DkWasteBinDelete
+  DkWasteBinDelete,
+  DkLayoutGrid,
+  DkBulletedListItems,
+  DkRowsThree,
+  DkGlobeWorldEarth,
+  DkTextAlignStart,
+  DkTextAlignCenter,
+  DkTextAlignEnd,
+  DkTypographyBoldWeight,
+  DkTypographyItalicSlant,
+  DkTypographyUnderline,
+  DkPencilWriteEdit,
+  DkDocumentPageFold
 } from '@/icons'
 import { Alert } from './Alert'
 import { AuthBrand, AuthLayout } from './AuthLayout'
@@ -29,7 +44,13 @@ import { BrandLogo } from './BrandLogo'
 import { Breadcrumbs } from './Breadcrumbs'
 import { Button } from './Button'
 import { Checkbox } from './Checkbox'
-import { ConfirmAction } from './ConfirmAction'
+import {
+  ConfirmAction,
+  CONFIRM_ACTION_TONES,
+  CONFIRM_ACTION_VARIANTS,
+  type ConfirmActionTone,
+  type ConfirmActionVariant,
+} from './ConfirmAction'
 import { ConfirmDialog } from './ConfirmDialog'
 import { CountrySelect } from './CountrySelect'
 import { DashboardNav } from './DashboardNav'
@@ -38,7 +59,7 @@ import { DashboardSidebar } from './DashboardSidebar'
 import { DataTable } from './DataTable'
 import { DatePicker } from './DatePicker'
 import { Divider } from './Divider'
-import { Dropdown } from './Dropdown'
+import { Dropdown, SELECT_SIZES, SELECT_VARIANTS, type DropdownOption, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
 import { EmptyState } from './EmptyState'
 import { FieldHint, FieldLabel, FormField } from './FieldLabel'
 import { GitHubButton } from './GitHubButton'
@@ -47,6 +68,22 @@ import { IconButton } from './IconButton'
 import { IconTab } from './IconTab'
 import { KeyValueRow } from './KeyValueRow'
 import { KitDocArticle } from './KitDocArticle'
+import { DocsStateCard, DocsStateGrid, DocsStateGroup, DocsStack } from './DocsCard'
+import {
+  bodyGuide,
+  brandLogoGuide,
+  captionGuide,
+  confirmActionGuide,
+  eyebrowGuide,
+  headingGuide,
+  iconButtonGuide,
+  labelGuide,
+  segmentedGuide,
+  subheadGuide,
+  switchGuide,
+  themeIconToggleGuide,
+  themeToggleGuide,
+} from './kit-guides'
 import { LanguageSelect } from './LanguageSelect'
 import { ListGroup, ListRow } from './ListRow'
 import { LoadingScreen } from './LoadingScreen'
@@ -56,7 +93,14 @@ import { OtpBoxes } from './OtpBoxes'
 import { OtherWaysButton } from './OtherWaysButton'
 import { PageHeader } from './PageHeader'
 import { Pagination } from './Pagination'
-import { PasswordReveal } from './PasswordReveal'
+import { PasswordField, PASSWORD_FIELD_VARIANTS } from './PasswordField'
+import {
+  PasswordReveal,
+  PASSWORD_REVEAL_SIZES,
+  PASSWORD_REVEAL_VARIANTS,
+  type PasswordRevealSize,
+  type PasswordRevealVariant,
+} from './PasswordReveal'
 import { PhoneInput } from './PhoneInput'
 import { AppleButton } from './ProviderButtons'
 import { ProfileButton } from './ProfileButton'
@@ -66,7 +110,8 @@ import { Radio } from './Radio'
 import { RecoveryCodesList, RecoveryInput } from './RecoveryInput'
 import { ScoreRing } from './ScoreRing'
 import { SearchSelect } from './SearchSelect'
-import { SegmentedControl } from './SegmentedControl'
+import { SelectTrigger } from './SelectTrigger'
+import { SegmentedControl, SegmentedToolbar, SEGMENTED_VARIANTS, type SegmentedVariant } from './SegmentedControl'
 import { SettingsList, SettingsRow } from './SettingsRow'
 import { SheetNav } from './SheetNav'
 import { SiteFooter } from './SiteFooter'
@@ -77,8 +122,14 @@ import { StatCard } from './StatCard'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { Tabs } from './Tabs'
 import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
-import { Textarea } from './Textarea'
-import { TextField } from './TextField'
+import { Textarea, TEXTAREA_SIZES, TEXTAREA_VARIANTS, type TextareaSize, type TextareaVariant } from './Textarea'
+import {
+  TextField,
+  TEXT_FIELD_SIZES,
+  TEXT_FIELD_VARIANTS,
+  type TextFieldSize,
+  type TextFieldVariant,
+} from './TextField'
 import { AuthLegal, ErrorText, TextLink } from './TextLink'
 import { ThemeIconToggle } from './ThemeIconToggle'
 import { ThemeToggle } from './ThemeToggle'
@@ -98,6 +149,8 @@ type DocDef = {
   statesContent?: ReactNode
   props: PropRow[]
   wide?: boolean
+  usage?: ReactNode
+  accessibility?: ReactNode
 }
 
 const glyph = { strokeWidth: 1.75, absoluteStrokeWidth: true } as const
@@ -218,67 +271,1366 @@ function SwitchDemo() {
   )
 }
 
+const RANGE = [
+  { value: 'day', label: 'Day' },
+  { value: 'week', label: 'Week' },
+  { value: 'month', label: 'Month' },
+] as const
+
+const VARIANT_LABEL: Record<SegmentedVariant, string> = {
+  subtle: 'Subtle',
+  outline: 'Outline',
+  ghost: 'Ghost',
+  primary: 'Primary',
+  pill: 'Pill',
+}
+
+function viewIcon(name: 'grid' | 'list' | 'gallery', size = 18) {
+  const props = { size, ...glyph }
+  if (name === 'grid') return <DkLayoutGrid {...props} />
+  if (name === 'list') return <DkBulletedListItems {...props} />
+  return <DkRowsThree {...props} />
+}
+
+function alignIcon(name: 'start' | 'center' | 'end', size = 18) {
+  const props = { size, ...glyph }
+  if (name === 'start') return <DkTextAlignStart {...props} />
+  if (name === 'center') return <DkTextAlignCenter {...props} />
+  return <DkTextAlignEnd {...props} />
+}
+
 function SegmentedDemo() {
-  const [value, setValue] = useState<'day' | 'week' | 'month'>('week')
+  const [text, setText] = useState<'day' | 'week' | 'month'>('week')
+  const [both, setBoth] = useState<'grid' | 'list' | 'gallery'>('list')
+  const [icon, setIcon] = useState<'start' | 'center' | 'end'>('center')
+  const [grouped, setGrouped] = useState<'edit' | 'preview' | 'code'>('preview')
+  const [action, setAction] = useState<'day' | 'week' | 'month'>('week')
+
   return (
-    <SegmentedControl
-      label="Range"
-      value={value}
-      onChange={setValue}
-      options={[
-        { value: 'day', label: 'Day' },
-        { value: 'week', label: 'Week' },
-        { value: 'month', label: 'Month' },
-      ]}
-    />
+    <div className="flex w-full flex-col gap-8">
+      <SegmentedControl
+        label="Text"
+        value={text}
+        onChange={setText}
+        fullWidth
+        options={[...RANGE]}
+      />
+      <SegmentedControl
+        label="Icon and text"
+        content="both"
+        value={both}
+        onChange={setBoth}
+        fullWidth
+        options={[
+          { value: 'grid', label: 'Grid', icon: viewIcon('grid') },
+          { value: 'list', label: 'List', icon: viewIcon('list') },
+          { value: 'gallery', label: 'Gallery', icon: viewIcon('gallery') },
+        ]}
+      />
+      <SegmentedControl
+        label="Icon"
+        content="icon"
+        value={icon}
+        onChange={setIcon}
+        options={[
+          { value: 'start', label: 'Align left', icon: alignIcon('start') },
+          { value: 'center', label: 'Align center', icon: alignIcon('center') },
+          { value: 'end', label: 'Align right', icon: alignIcon('end') },
+        ]}
+      />
+      <SegmentedControl
+        label="Grouped buttons"
+        mode="grouped"
+        value={grouped}
+        onChange={setGrouped}
+        fullWidth
+        options={[
+          { value: 'edit', label: 'Edit' },
+          { value: 'preview', label: 'Preview' },
+          { value: 'code', label: 'Code' },
+        ]}
+      />
+      <SegmentedControl
+        label="On action"
+        value={action}
+        onChange={setAction}
+        fullWidth
+        onAction={() => wait(900)}
+        options={[...RANGE]}
+      />
+      <div className="flex flex-col gap-2">
+        <Caption as="span">Together</Caption>
+        <SegmentedToolbar>
+          <SegmentedControl
+            content="icon"
+            value={icon}
+            onChange={setIcon}
+            options={[
+              { value: 'start', label: 'Align left', icon: alignIcon('start') },
+              { value: 'center', label: 'Align center', icon: alignIcon('center') },
+              { value: 'end', label: 'Align right', icon: alignIcon('end') },
+            ]}
+          />
+          <IconButton label="Refresh" onAction={() => wait(900)}>
+            <DkRefreshClockwiseRotate size={18} {...glyph} />
+          </IconButton>
+          <Button fullWidth={false} size="md" onClick={() => undefined}>
+            Save
+          </Button>
+        </SegmentedToolbar>
+      </div>
+    </div>
+  )
+}
+
+function SegmentedStates() {
+  const [range, setRange] = useState<'day' | 'week' | 'month'>('week')
+  const [view, setView] = useState<'grid' | 'list' | 'gallery'>('grid')
+  const [align, setAlign] = useState<'start' | 'center' | 'end'>('center')
+  const [style, setStyle] = useState<'bold' | 'italic' | 'underline'>('bold')
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md')
+  const [mail, setMail] = useState<'all' | 'unread' | 'flagged'>('unread')
+
+  return (
+    <div className="flex flex-col gap-10">
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Appearance
+        </Caption>
+        <div className="flex flex-col gap-6">
+          {SEGMENTED_VARIANTS.map((item) => (
+            <div key={item} className="flex flex-col gap-2">
+              <Caption>{VARIANT_LABEL[item]}</Caption>
+              <SegmentedControl
+                variant={item}
+                value={range}
+                onChange={setRange}
+                fullWidth
+                options={[...RANGE]}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Content
+        </Caption>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Icon and text</Caption>
+            <SegmentedControl
+              content="both"
+              value={view}
+              onChange={setView}
+              fullWidth
+              options={[
+                { value: 'grid', label: 'Grid', icon: viewIcon('grid') },
+                { value: 'list', label: 'List', icon: viewIcon('list') },
+                { value: 'gallery', label: 'Gallery', icon: viewIcon('gallery') },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon and text, primary</Caption>
+            <SegmentedControl
+              content="both"
+              variant="primary"
+              value={view}
+              onChange={setView}
+              fullWidth
+              options={[
+                { value: 'grid', label: 'Grid', icon: viewIcon('grid') },
+                { value: 'list', label: 'List', icon: viewIcon('list') },
+                { value: 'gallery', label: 'Gallery', icon: viewIcon('gallery') },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon</Caption>
+            <SegmentedControl
+              content="icon"
+              value={align}
+              onChange={setAlign}
+              options={[
+                { value: 'start', label: 'Align left', icon: alignIcon('start') },
+                { value: 'center', label: 'Align center', icon: alignIcon('center') },
+                { value: 'end', label: 'Align right', icon: alignIcon('end') },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon, pill</Caption>
+            <SegmentedControl
+              content="icon"
+              variant="pill"
+              value={style}
+              onChange={setStyle}
+              options={[
+                { value: 'bold', label: 'Bold', icon: <DkTypographyBoldWeight size={18} {...glyph} /> },
+                { value: 'italic', label: 'Italic', icon: <DkTypographyItalicSlant size={18} {...glyph} /> },
+                { value: 'underline', label: 'Underline', icon: <DkTypographyUnderline size={18} {...glyph} /> },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Badge</Caption>
+            <SegmentedControl
+              value={mail}
+              onChange={setMail}
+              fullWidth
+              options={[
+                { value: 'all', label: 'All', badge: 128 },
+                { value: 'unread', label: 'Unread', badge: 12 },
+                { value: 'flagged', label: 'Flagged', badge: 3 },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Size
+        </Caption>
+        <div className="flex flex-col gap-6">
+          {(['sm', 'md', 'lg'] as const).map((item) => (
+            <div key={item} className="flex flex-col gap-2">
+              <Caption>{item === 'sm' ? 'Small' : item === 'md' ? 'Medium' : 'Large'}</Caption>
+              <SegmentedControl
+                size={item}
+                value={size}
+                onChange={setSize}
+                fullWidth
+                options={[
+                  { value: 'sm', label: 'Small' },
+                  { value: 'md', label: 'Medium' },
+                  { value: 'lg', label: 'Large' },
+                ]}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          State
+        </Caption>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Disabled</Caption>
+            <SegmentedControl disabled value="week" onChange={() => undefined} fullWidth options={[...RANGE]} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Option disabled</Caption>
+            <SegmentedControl
+              value="week"
+              onChange={() => undefined}
+              fullWidth
+              options={[
+                { value: 'day', label: 'Day' },
+                { value: 'week', label: 'Week' },
+                { value: 'year', label: 'Year', disabled: true },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Grouped buttons
+        </Caption>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Text</Caption>
+            <SegmentedControl
+              mode="grouped"
+              value={range}
+              onChange={setRange}
+              fullWidth
+              options={[...RANGE]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon and text</Caption>
+            <SegmentedControl
+              mode="grouped"
+              content="both"
+              value={view}
+              onChange={setView}
+              fullWidth
+              options={[
+                { value: 'grid', label: 'Grid', icon: viewIcon('grid') },
+                { value: 'list', label: 'List', icon: viewIcon('list') },
+                { value: 'gallery', label: 'Gallery', icon: viewIcon('gallery') },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon buttons</Caption>
+            <SegmentedControl
+              mode="grouped"
+              content="icon"
+              variant="outline"
+              value={align}
+              onChange={setAlign}
+              options={[
+                { value: 'start', label: 'Align left', icon: alignIcon('start') },
+                { value: 'center', label: 'Align center', icon: alignIcon('center') },
+                { value: 'end', label: 'Align right', icon: alignIcon('end') },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Primary grouped</Caption>
+            <SegmentedControl
+              mode="grouped"
+              variant="primary"
+              value={range}
+              onChange={setRange}
+              fullWidth
+              options={[...RANGE]}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Loaders and actions
+        </Caption>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Loading segment</Caption>
+            <SegmentedControl
+              value="week"
+              onChange={() => undefined}
+              fullWidth
+              options={[
+                { value: 'day', label: 'Day' },
+                { value: 'week', label: 'Week', loading: true },
+                { value: 'month', label: 'Month' },
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>On action</Caption>
+            <SegmentedControl
+              value={range}
+              onChange={setRange}
+              fullWidth
+              onAction={() => wait(900)}
+              options={[...RANGE]}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon action</Caption>
+            <SegmentedControl
+              content="icon"
+              variant="outline"
+              value={align}
+              onChange={setAlign}
+              options={[
+                {
+                  value: 'start',
+                  label: 'Align left',
+                  icon: alignIcon('start'),
+                  onAction: () => wait(700),
+                },
+                {
+                  value: 'center',
+                  label: 'Align center',
+                  icon: alignIcon('center'),
+                  onAction: () => wait(700),
+                },
+                {
+                  value: 'end',
+                  label: 'Align right',
+                  icon: alignIcon('end'),
+                  onAction: () => wait(700),
+                },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Together
+        </Caption>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Segmented, icon button, and button</Caption>
+            <SegmentedToolbar>
+              <SegmentedControl
+                mode="grouped"
+                value={range}
+                onChange={setRange}
+                options={[...RANGE]}
+              />
+              <IconButton label="Refresh" onAction={() => wait(900)}>
+                <DkRefreshClockwiseRotate size={18} {...glyph} />
+              </IconButton>
+              <Button fullWidth={false}>Apply</Button>
+            </SegmentedToolbar>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Leading and trailing</Caption>
+            <SegmentedControl
+              value={view}
+              onChange={setView}
+              content="both"
+              fullWidth
+              options={[
+                { value: 'grid', label: 'Grid', icon: viewIcon('grid') },
+                { value: 'list', label: 'List', icon: viewIcon('list') },
+                { value: 'gallery', label: 'Gallery', icon: viewIcon('gallery') },
+              ]}
+              leading={
+                <IconButton label="Add" variant="subtle" onAction={() => wait(700)}>
+                  <DkAddPlusCreate size={18} {...glyph} />
+                </IconButton>
+              }
+              trailing={
+                <>
+                  <IconButton label="Refresh" variant="outline" onAction={() => wait(700)}>
+                    <DkRefreshClockwiseRotate size={18} {...glyph} />
+                  </IconButton>
+                  <Button fullWidth={false} size="md">
+                    Save
+                  </Button>
+                </>
+              }
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Attached</Caption>
+            <SegmentedToolbar attached>
+              <SegmentedControl
+                variant="ghost"
+                mode="grouped"
+                value={range}
+                onChange={setRange}
+                className="flex-1"
+                options={[...RANGE]}
+              />
+              <Button fullWidth={false} size="md">
+                Apply
+              </Button>
+            </SegmentedToolbar>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const CONFIRM_VARIANT_LABEL: Record<ConfirmActionVariant, string> = {
+  text: 'Text',
+  ghost: 'Ghost',
+  subtle: 'Subtle',
+  outline: 'Outline',
+  solid: 'Solid',
+}
+
+const CONFIRM_TONE_LABEL: Record<ConfirmActionTone, string> = {
+  danger: 'Danger',
+  brand: 'Brand',
+  neutral: 'Neutral',
+}
+
+function ConfirmActionDemo() {
+  return (
+    <div className="flex w-full flex-wrap items-end justify-center gap-x-5 gap-y-4">
+      {CONFIRM_ACTION_VARIANTS.map((variant) => (
+        <div key={variant} className="flex flex-col items-center gap-2">
+          <ConfirmAction variant={variant} onConfirm={() => undefined} />
+          <Caption as="span">{CONFIRM_VARIANT_LABEL[variant]}</Caption>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ConfirmActionStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {CONFIRM_ACTION_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={CONFIRM_VARIANT_LABEL[variant]}>
+              <ConfirmAction variant={variant} onConfirm={() => undefined} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid>
+          {CONFIRM_ACTION_TONES.map((tone) => (
+            <DocsStateCard key={`text-${tone}`} label={`Text, ${CONFIRM_TONE_LABEL[tone].toLowerCase()}`}>
+              <ConfirmAction
+                tone={tone}
+                label={tone === 'brand' ? 'Send' : tone === 'neutral' ? 'Archive' : 'Remove'}
+                confirmLabel={tone === 'brand' ? 'Send now?' : 'Confirm?'}
+                onConfirm={() => undefined}
+              />
+            </DocsStateCard>
+          ))}
+          {CONFIRM_ACTION_TONES.map((tone) => (
+            <DocsStateCard key={`solid-${tone}`} label={`Solid, ${CONFIRM_TONE_LABEL[tone].toLowerCase()}`}>
+              <ConfirmAction
+                variant="solid"
+                tone={tone}
+                label={tone === 'brand' ? 'Publish' : tone === 'neutral' ? 'Move' : 'Delete'}
+                confirmLabel={tone === 'brand' ? 'Publish now?' : 'Confirm?'}
+                onConfirm={() => undefined}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {(['sm', 'md', 'lg'] as const).map((size) => (
+            <DocsStateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
+              <ConfirmAction variant="outline" size={size} onConfirm={() => undefined} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Loading">
+            <ConfirmAction variant="solid" loading onConfirm={() => undefined} />
+          </DocsStateCard>
+          <DocsStateCard label="Loading, brand">
+            <ConfirmAction
+              variant="solid"
+              tone="brand"
+              label="Send"
+              loading
+              loadingText="Sending…"
+              onConfirm={() => undefined}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <ConfirmAction variant="outline" disabled onConfirm={() => undefined} />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const FIELD_GLYPH = { size: 18, strokeWidth: 1.6, absoluteStrokeWidth: true } as const
+
+const TEXT_FIELD_VARIANT_LABEL: Record<TextFieldVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+  underline: 'Underline',
+  pill: 'Pill',
+}
+
+const TEXT_FIELD_SIZE_LABEL: Record<TextFieldSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function FieldState({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <DocsStateCard label={label} align="stretch">
+      {children}
+    </DocsStateCard>
   )
 }
 
 function TextFieldDemo() {
-  return <TextField placeholder="Email address" defaultValue="" />
-}
-
-function PasswordDemo() {
-  const [visible, setVisible] = useState(false)
   return (
-    <TextField
-      type={visible ? 'text' : 'password'}
-      placeholder="Password"
-      defaultValue="password"
-      trailing={<PasswordReveal visible={visible} onToggle={() => setVisible((open) => !open)} />}
-    />
+    <div className="flex w-full max-w-[400px] flex-col gap-4">
+      {TEXT_FIELD_VARIANTS.map((variant) => (
+        <TextField
+          key={variant}
+          variant={variant}
+          icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+          placeholder={`${TEXT_FIELD_VARIANT_LABEL[variant]} email`}
+        />
+      ))}
+    </div>
   )
 }
 
-function SelectDemo() {
-  const [value, setValue] = useState('md')
+function TextFieldStates() {
   return (
-    <Dropdown
-      label="Size"
-      value={value}
-      onChange={setValue}
-      options={[
-        { value: 'sm', label: 'Small' },
-        { value: 'md', label: 'Medium' },
-        { value: 'lg', label: 'Large' },
-      ]}
-    />
+    <div className="flex flex-col gap-10">
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Appearance
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          {TEXT_FIELD_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={TEXT_FIELD_VARIANT_LABEL[variant]}>
+              <TextField
+                variant={variant}
+                icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+                placeholder="Email address"
+              />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Size
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-3">
+          {TEXT_FIELD_SIZES.map((size) => (
+            <FieldState key={size} label={TEXT_FIELD_SIZE_LABEL[size]}>
+              <TextField
+                size={size}
+                icon={<DkEnvelopeMessageMail size={size === 'sm' ? 16 : 18} strokeWidth={1.6} absoluteStrokeWidth />}
+                placeholder="Email address"
+              />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          State
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          <FieldState label="Empty">
+            <TextField icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />} placeholder="Email address" />
+          </FieldState>
+          <FieldState label="Filled">
+            <TextField
+              icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+              placeholder="Email address"
+              defaultValue="alex@roboticela.com"
+            />
+          </FieldState>
+          <FieldState label="Hover">
+            <TextField
+              icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+              placeholder="Email address"
+              preview="hover"
+            />
+          </FieldState>
+          <FieldState label="Focus">
+            <TextField
+              icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+              placeholder="Email address"
+              defaultValue="alex@roboticela.com"
+              preview="focus"
+            />
+          </FieldState>
+          <FieldState label="Invalid">
+            <TextField
+              icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+              placeholder="Email address"
+              defaultValue="alex"
+              invalid
+            />
+          </FieldState>
+          <FieldState label="Valid">
+            <TextField
+              icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+              placeholder="Email address"
+              defaultValue="alex@roboticela.com"
+              valid
+            />
+          </FieldState>
+          <FieldState label="Disabled">
+            <TextField
+              icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+              placeholder="Email address"
+              defaultValue="alex@roboticela.com"
+              disabled
+            />
+          </FieldState>
+          <FieldState label="Read only">
+            <TextField
+              icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+              placeholder="Email address"
+              defaultValue="alex@roboticela.com"
+              readOnly
+            />
+          </FieldState>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Icons
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          <FieldState label="Name">
+            <TextField
+              icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+              placeholder="Display name"
+              defaultValue="Alex Rivera"
+            />
+          </FieldState>
+          <FieldState label="Username">
+            <TextField icon={<DkAtSign {...FIELD_GLYPH} />} placeholder="Username" defaultValue="alex" />
+          </FieldState>
+          <FieldState label="Search">
+            <TextField
+              variant="pill"
+              icon={<DkMagnifyingGlassFind {...FIELD_GLYPH} />}
+              placeholder="Search"
+            />
+          </FieldState>
+          <FieldState label="Location">
+            <TextField
+              variant="subtle"
+              icon={<DkFoldedMapTerritoryMapPinLocation {...FIELD_GLYPH} />}
+              placeholder="City"
+              defaultValue="Karachi"
+            />
+          </FieldState>
+          <FieldState label="Phone">
+            <TextField
+              variant="ghost"
+              icon={<DkHandheldMobilePhone {...FIELD_GLYPH} />}
+              placeholder="Phone number"
+              defaultValue="+1 415 555 2671"
+            />
+          </FieldState>
+          <FieldState label="Underline">
+            <TextField
+              variant="underline"
+              icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+              placeholder="Full name"
+            />
+          </FieldState>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PasswordRevealDemo() {
+  const [open, setOpen] = useState<Record<PasswordRevealVariant, boolean>>({
+    ghost: false,
+    subtle: false,
+    outline: true,
+    text: false,
+    pill: true,
+  })
+
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-6">
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        {PASSWORD_REVEAL_VARIANTS.map((variant) => (
+          <div key={variant} className="flex flex-col items-center gap-2">
+            <PasswordReveal
+              inField={false}
+              variant={variant}
+              visible={open[variant]}
+              onToggle={() => setOpen((current) => ({ ...current, [variant]: !current[variant] }))}
+            />
+            <Caption as="span">{PASSWORD_REVEAL_LABEL[variant]}</Caption>
+          </div>
+        ))}
+      </div>
+      <PasswordField defaultValue="password" />
+    </div>
+  )
+}
+
+const PASSWORD_REVEAL_LABEL: Record<PasswordRevealVariant, string> = {
+  ghost: 'Ghost',
+  subtle: 'Subtle',
+  outline: 'Outline',
+  text: 'Text',
+  pill: 'Pill',
+}
+
+const PASSWORD_REVEAL_SIZE_LABEL: Record<PasswordRevealSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function PasswordRevealStates() {
+  return (
+    <div className="flex flex-col gap-10">
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Appearance
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          {PASSWORD_REVEAL_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={PASSWORD_REVEAL_LABEL[variant]}>
+              <PasswordField reveal={variant} defaultValue="password" />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Size
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-3">
+          {PASSWORD_REVEAL_SIZES.map((size) => (
+            <FieldState key={size} label={PASSWORD_REVEAL_SIZE_LABEL[size]}>
+              <PasswordField size={size} reveal="pill" defaultValue="password" />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          State
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          <FieldState label="Hidden">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {PASSWORD_REVEAL_VARIANTS.map((variant) => (
+                <PasswordReveal
+                  key={variant}
+                  inField={false}
+                  variant={variant}
+                  visible={false}
+                  onToggle={() => undefined}
+                />
+              ))}
+            </div>
+          </FieldState>
+          <FieldState label="Shown">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {PASSWORD_REVEAL_VARIANTS.map((variant) => (
+                <PasswordReveal
+                  key={variant}
+                  inField={false}
+                  variant={variant}
+                  visible
+                  onToggle={() => undefined}
+                />
+              ))}
+            </div>
+          </FieldState>
+          <FieldState label="Disabled">
+            <PasswordField reveal="ghost" defaultValue="password" disabled />
+          </FieldState>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PasswordFieldDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-4">
+      {PASSWORD_FIELD_VARIANTS.map((variant) => (
+        <PasswordField
+          key={variant}
+          variant={variant}
+          placeholder={`${TEXT_FIELD_VARIANT_LABEL[variant]} password`}
+          defaultValue="password"
+        />
+      ))}
+    </div>
+  )
+}
+
+function PasswordFieldStates() {
+  return (
+    <div className="flex flex-col gap-10">
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Appearance
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          {PASSWORD_FIELD_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={TEXT_FIELD_VARIANT_LABEL[variant]}>
+              <PasswordField variant={variant} defaultValue="password" />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Reveal
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          {PASSWORD_REVEAL_VARIANTS.map((reveal) => (
+            <FieldState key={reveal} label={PASSWORD_REVEAL_LABEL[reveal]}>
+              <PasswordField reveal={reveal} defaultValue="password" />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Size
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-3">
+          {TEXT_FIELD_SIZES.map((size) => (
+            <FieldState key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
+              <PasswordField size={size} defaultValue="password" />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          State
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          <FieldState label="Empty">
+            <PasswordField />
+          </FieldState>
+          <FieldState label="Filled">
+            <PasswordField defaultValue="password" />
+          </FieldState>
+          <FieldState label="Shown">
+            <PasswordField defaultValue="password" visible />
+          </FieldState>
+          <FieldState label="Hover">
+            <PasswordField defaultValue="password" preview="hover" />
+          </FieldState>
+          <FieldState label="Focus">
+            <PasswordField defaultValue="password" preview="focus" />
+          </FieldState>
+          <FieldState label="Invalid">
+            <PasswordField defaultValue="123" invalid />
+          </FieldState>
+          <FieldState label="Valid">
+            <PasswordField defaultValue="password" valid />
+          </FieldState>
+          <FieldState label="Disabled">
+            <PasswordField defaultValue="password" disabled />
+          </FieldState>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const TEXTAREA_VARIANT_LABEL: Record<TextareaVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+  underline: 'Underline',
+  well: 'Well',
+  composer: 'Composer',
+}
+
+const TEXTAREA_SIZE_LABEL: Record<TextareaSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function AreaState({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <DocsStateCard label={label} align="stretch" size="lg" wide>
+      {children}
+    </DocsStateCard>
+  )
+}
+
+function TextareaDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {TEXTAREA_VARIANTS.filter((variant) => variant !== 'composer').map((variant) => (
+        <Textarea
+          key={variant}
+          variant={variant}
+          size="sm"
+          rows={3}
+          icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+          placeholder={`${TEXTAREA_VARIANT_LABEL[variant]} note`}
+        />
+      ))}
+      <div className="min-[735px]:col-span-2">
+        <Textarea
+          variant="composer"
+          icon={<DkMessageInboxTray {...FIELD_GLYPH} />}
+          placeholder="Write a note for your team"
+          hint="Visible to your workspace"
+          maxLength={160}
+          defaultValue="Ship the auth kit on Monday."
+        />
+      </div>
+    </div>
+  )
+}
+
+function TextareaStates() {
+  return (
+    <div className="flex flex-col gap-10">
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Appearance
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          {TEXTAREA_VARIANTS.map((variant) => (
+            <AreaState key={variant} label={TEXTAREA_VARIANT_LABEL[variant]}>
+              <Textarea
+                variant={variant}
+                size="sm"
+                rows={3}
+                icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+                placeholder="Write a note"
+                maxLength={variant === 'composer' ? 80 : undefined}
+                hint={variant === 'composer' ? 'Visible to your team' : undefined}
+              />
+            </AreaState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Size
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-3">
+          {TEXTAREA_SIZES.map((size) => (
+            <AreaState key={size} label={TEXTAREA_SIZE_LABEL[size]}>
+              <Textarea
+                size={size}
+                rows={size === 'lg' ? 5 : 3}
+                icon={<DkPencilWriteEdit size={size === 'sm' ? 16 : 18} strokeWidth={1.6} absoluteStrokeWidth />}
+                placeholder="Write a note"
+              />
+            </AreaState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          State
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          <AreaState label="Empty">
+            <Textarea size="sm" rows={3} icon={<DkPencilWriteEdit {...FIELD_GLYPH} />} placeholder="Write a note" />
+          </AreaState>
+          <AreaState label="Filled">
+            <Textarea
+              size="sm"
+              rows={3}
+              icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+              placeholder="Write a note"
+              defaultValue="Ship the auth kit on Monday."
+            />
+          </AreaState>
+          <AreaState label="Hover">
+            <Textarea
+              size="sm"
+              rows={3}
+              icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+              placeholder="Write a note"
+              preview="hover"
+            />
+          </AreaState>
+          <AreaState label="Focus">
+            <Textarea
+              size="sm"
+              rows={3}
+              icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+              placeholder="Write a note"
+              defaultValue="Ship the auth kit on Monday."
+              preview="focus"
+            />
+          </AreaState>
+          <AreaState label="Invalid">
+            <Textarea
+              size="sm"
+              rows={3}
+              icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+              placeholder="Write a note"
+              defaultValue="Too short"
+              invalid
+            />
+          </AreaState>
+          <AreaState label="Valid">
+            <Textarea
+              size="sm"
+              rows={3}
+              icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+              placeholder="Write a note"
+              defaultValue="Ship the auth kit on Monday."
+              valid
+            />
+          </AreaState>
+          <AreaState label="Disabled">
+            <Textarea
+              size="sm"
+              rows={3}
+              icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+              placeholder="Write a note"
+              defaultValue="Locked"
+              disabled
+            />
+          </AreaState>
+          <AreaState label="Read only">
+            <Textarea
+              size="sm"
+              rows={3}
+              icon={<DkPencilWriteEdit {...FIELD_GLYPH} />}
+              placeholder="Write a note"
+              defaultValue="Published copy."
+              readOnly
+            />
+          </AreaState>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Composer
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[735px]:grid-cols-2">
+          <AreaState label="Feedback">
+            <Textarea
+              variant="composer"
+              size="sm"
+              icon={<DkMessageInboxTray {...FIELD_GLYPH} />}
+              placeholder="What can we improve?"
+              hint="Sent to the product team"
+              maxLength={120}
+            />
+          </AreaState>
+          <AreaState label="Well, counted">
+            <Textarea
+              variant="well"
+              size="sm"
+              rows={3}
+              icon={<DkDocumentPageFold {...FIELD_GLYPH} />}
+              placeholder="Internal note"
+              defaultValue="Keep the Monday launch note short."
+              count
+              maxLength={80}
+            />
+          </AreaState>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const SELECT_GLYPH = { size: 18, strokeWidth: 1.6, absoluteStrokeWidth: true } as const
+
+const SELECT_SIZE_OPTIONS: DropdownOption[] = [
+  { value: 'sm', label: 'Small' },
+  { value: 'md', label: 'Medium' },
+  { value: 'lg', label: 'Large' },
+]
+
+const SELECT_PLAN_OPTIONS: DropdownOption[] = [
+  {
+    value: 'starter',
+    label: 'Starter',
+    description: 'One workspace',
+    icon: <DkLayoutGrid {...SELECT_GLYPH} />,
+  },
+  {
+    value: 'team',
+    label: 'Team',
+    description: 'Up to ten people',
+    icon: <DkRowsThree {...SELECT_GLYPH} />,
+  },
+  {
+    value: 'studio',
+    label: 'Studio',
+    description: 'Unlimited seats',
+    icon: <DkAppDashboardLayoutTiles {...SELECT_GLYPH} />,
+  },
+  {
+    value: 'enterprise',
+    label: 'Enterprise',
+    description: 'Coming later',
+    icon: <DkGlobeWorldEarth {...SELECT_GLYPH} />,
+    disabled: true,
+  },
+]
+
+const SELECT_VARIANT_LABEL: Record<SelectTriggerVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+  underline: 'Underline',
+  pill: 'Pill',
+}
+
+function SelectPlay({
+  value: initial = 'md',
+  options = SELECT_SIZE_OPTIONS,
+  ...rest
+}: {
+  value?: string
+  options?: DropdownOption[]
+  label?: string
+  variant?: SelectTriggerVariant
+  size?: SelectTriggerSize
+  icon?: ReactNode
+  placeholder?: string
+  searchable?: boolean
+  searchPlaceholder?: string
+  invalid?: boolean
+  valid?: boolean
+  disabled?: boolean
+  compact?: boolean
+}) {
+  const [value, setValue] = useState(initial)
+  return <Dropdown value={value} onChange={setValue} options={options} {...rest} />
+}
+
+function SelectDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-4">
+      {SELECT_VARIANTS.map((variant) => (
+        <SelectPlay
+          key={variant}
+          variant={variant}
+          icon={<DkGlobeWorldEarth {...SELECT_GLYPH} />}
+          placeholder={`${SELECT_VARIANT_LABEL[variant]} select`}
+        />
+      ))}
+    </div>
+  )
+}
+
+function SelectStates() {
+  return (
+    <div className="flex flex-col gap-10">
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Appearance
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          {SELECT_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
+              <SelectPlay variant={variant} />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Icons
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2">
+          <FieldState label="Field icon">
+            <SelectPlay icon={<DkGlobeWorldEarth {...SELECT_GLYPH} />} placeholder="Region" />
+          </FieldState>
+          <FieldState label="Option icons">
+            <SelectPlay value="team" options={SELECT_PLAN_OPTIONS} placeholder="Plan" />
+          </FieldState>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Search
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2">
+          <FieldState label="Filterable list">
+            <SelectPlay
+              searchable
+              searchPlaceholder="Search plans"
+              value="team"
+              options={SELECT_PLAN_OPTIONS}
+              placeholder="Plan"
+            />
+          </FieldState>
+          <FieldState label="Search, subtle">
+            <SelectPlay
+              variant="subtle"
+              searchable
+              searchPlaceholder="Search"
+              icon={<DkMagnifyingGlassFind {...SELECT_GLYPH} />}
+              options={SELECT_PLAN_OPTIONS}
+              placeholder="Plan"
+            />
+          </FieldState>
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          Size
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-3">
+          {SELECT_SIZES.map((size) => (
+            <FieldState key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
+              <SelectPlay size={size} icon={<DkGlobeWorldEarth {...SELECT_GLYPH} />} />
+            </FieldState>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Caption className="mb-3 font-medium" tone="secondary">
+          State
+        </Caption>
+        <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+          <FieldState label="Empty">
+            <SelectPlay value="" placeholder="Choose a size" />
+          </FieldState>
+          <FieldState label="Filled">
+            <SelectPlay />
+          </FieldState>
+          <FieldState label="Hover">
+            <SelectTrigger preview="hover">Medium</SelectTrigger>
+          </FieldState>
+          <FieldState label="Open">
+            <SelectTrigger preview="open" leading={<DkGlobeWorldEarth {...SELECT_GLYPH} />}>
+              Medium
+            </SelectTrigger>
+          </FieldState>
+          <FieldState label="Invalid">
+            <SelectPlay invalid />
+          </FieldState>
+          <FieldState label="Valid">
+            <SelectPlay valid />
+          </FieldState>
+          <FieldState label="Disabled">
+            <SelectPlay disabled />
+          </FieldState>
+          <FieldState label="Compact">
+            <SelectPlay compact />
+          </FieldState>
+        </div>
+      </div>
+    </div>
   )
 }
 
 function SearchSelectDemo() {
-  const [value, setValue] = useState('us')
+  const [value, setValue] = useState('team')
   return (
-    <DkMagnifyingGlassFindSelect
-      label="Region"
-      value={value}
-      onChange={setValue}
-      options={[
-        { value: 'us', label: 'United States' },
-        { value: 'gb', label: 'United Kingdom' },
-        { value: 'pk', label: 'Pakistan' },
-      ]}
-    />
+    <div className="w-full max-w-[400px]">
+      <SearchSelect
+        label="Plan"
+        value={value}
+        onChange={setValue}
+        placeholder="Choose a plan"
+        searchPlaceholder="Search plans"
+        options={SELECT_PLAN_OPTIONS.filter((option) => !option.disabled)}
+      />
+    </div>
   )
 }
 
@@ -523,8 +1875,9 @@ const TEXT_PROPS: PropRow[] = [
 const DOCS: Record<string, DocDef> = {
   heading: {
     title: 'Heading',
-    description: 'Display and h1–h3.',
+    description: 'The title of a page or section. Display is a hero. Levels 1, 2, and 3 follow the document outline.',
     wide: true,
+    ...headingGuide,
     Demo: () => (
       <div className="flex w-full flex-col gap-2">
         <Heading>A pressable control that triggers an action.</Heading>
@@ -537,6 +1890,8 @@ const DOCS: Record<string, DocDef> = {
       { label: 'Heading 1', node: <Heading level={1}>Welcome back</Heading> },
       { label: 'Heading 2', node: <Heading level={2}>Projects</Heading> },
       { label: 'Heading 3', node: <Heading level={3}>Account</Heading> },
+      { label: 'Secondary', node: <Heading level={3} tone="secondary">Account</Heading> },
+      { label: 'Center', node: <Heading level={3} align="center">Account</Heading> },
     ],
     props: [
       p('level', "1 | 2 | 3 | 'display'", '1', 'Display or h1–h3 on the type scale.'),
@@ -545,8 +1900,9 @@ const DOCS: Record<string, DocDef> = {
   },
   subhead: {
     title: 'Subhead',
-    description: 'The supporting line under a heading.',
+    description: 'One supporting sentence that sits directly under a heading.',
     wide: true,
+    ...subheadGuide,
     Demo: () => (
       <div className="flex w-full flex-col gap-2">
         <Heading level={3}>Welcome back</Heading>
@@ -557,14 +1913,16 @@ const DOCS: Record<string, DocDef> = {
     states: [
       { label: 'Default', node: <Subhead>Use your DevKit Account to continue.</Subhead> },
       { label: 'Primary', node: <Subhead tone="primary">Use your DevKit Account to continue.</Subhead> },
+      { label: 'Tertiary', node: <Subhead tone="tertiary">Use your DevKit Account to continue.</Subhead> },
       { label: 'Center', node: <Subhead align="center">Use your DevKit Account to continue.</Subhead> },
     ],
     props: TEXT_PROPS,
   },
   body: {
     title: 'Body',
-    description: 'Content paragraphs at the reading size.',
+    description: 'Paragraphs at the reading size. Use the default for pages and the small size inside cards.',
     wide: true,
+    ...bodyGuide,
     Demo: () => (
       <Body>
         A pressable control that triggers an action. Short supporting copy sits at the content size so
@@ -584,25 +1942,31 @@ const DOCS: Record<string, DocDef> = {
         node: <Body size="sm">Secondary copy uses the small content size for captions inside cards.</Body>,
       },
       { label: 'Primary', node: <Body tone="primary">Primary content for emphasis on a light surface.</Body> },
+      { label: 'Danger', node: <Body tone="danger">This action cannot be undone.</Body> },
+      { label: 'Disabled', node: <Body tone="disabled">This setting is unavailable.</Body> },
     ],
     props: [p('size', "'md' | 'sm'", "'md'", 'Content or content-small.'), ...TEXT_PROPS],
   },
   caption: {
     title: 'Caption',
-    description: 'Small supporting copy for timestamps and hints.',
+    description: 'Quiet supporting copy for timestamps, counts, and hints. Do not put essential instructions here.',
+    ...captionGuide,
     Demo: () => <Caption>Last updated Aug 29, 2026</Caption>,
     code: `<Caption>Last updated Aug 29, 2026</Caption>\n`,
     states: [
       { label: 'Default', node: <Caption>Last updated Aug 29, 2026</Caption> },
       { label: 'Secondary', node: <Caption tone="secondary">12 members</Caption> },
+      { label: 'Success', node: <Caption tone="success">Saved just now</Caption> },
       { label: 'Danger', node: <Caption tone="danger">This action cannot be undone.</Caption> },
+      { label: 'Center', node: <Caption align="center">Optional</Caption> },
     ],
     props: TEXT_PROPS,
   },
   eyebrow: {
     title: 'Eyebrow',
-    description: 'A short uppercase label above a heading.',
+    description: 'A short uppercase kicker that sits above a heading. Keep it to a few words.',
     wide: true,
+    ...eyebrowGuide,
     Demo: () => (
       <div className="flex w-full flex-col gap-2">
         <Eyebrow>Components / Typography</Eyebrow>
@@ -619,19 +1983,22 @@ const DOCS: Record<string, DocDef> = {
   },
   label: {
     title: 'Label',
-    description: 'Medium-weight copy for controls and fields.',
+    description: 'Medium weight text for fields and controls. In forms, prefer Field Label so the input stays associated.',
+    ...labelGuide,
     Demo: () => <Label>Email address</Label>,
     code: `<Label>Email address</Label>\n`,
     states: [
       { label: 'Default', node: <Label>Email address</Label> },
       { label: 'Secondary', node: <Label tone="secondary">Optional</Label> },
       { label: 'Disabled', node: <Label tone="disabled">Unavailable</Label> },
+      { label: 'Danger', node: <Label tone="danger">Invalid email</Label> },
     ],
     props: TEXT_PROPS,
   },
   'icon-button': {
     title: 'Icon Button',
-    description: 'A compact control for a single icon action.',
+    description: 'A compact button that shows only a glyph. The label prop is the accessible name.',
+    ...iconButtonGuide,
     Demo: IconButtonDemo,
     wide: true,
     code: `<IconButton label="Copy" onAction={() => copy()}>\n  <DkClipboardCopyDuplicate />\n</IconButton>\n`,
@@ -771,7 +2138,8 @@ const DOCS: Record<string, DocDef> = {
   },
   switch: {
     title: 'Switch',
-    description: 'A two-state control for an immediate setting. Use SwitchGroup when several settings sit together.',
+    description: 'An immediate on or off setting. The change applies as soon as the control is flipped.',
+    ...switchGuide,
     Demo: SwitchDemo,
     wide: true,
     code: `<Switch variant="primary" checked={on} onChange={setOn} label="Primary" />
@@ -816,100 +2184,216 @@ const DOCS: Record<string, DocDef> = {
   },
   'segmented-control': {
     title: 'Segmented Control',
-    description: 'A mutually exclusive set of options.',
+    description: 'A small set of options where only one can be selected. Use it for views, ranges, and toolbars.',
+    ...segmentedGuide,
     Demo: SegmentedDemo,
-    code: `<SegmentedControl value={value} onChange={setValue} options={[...]} />\n`,
+    wide: true,
+    code: `<SegmentedControl mode="grouped" value={view} onChange={setView} options={[...]} />
+
+<SegmentedToolbar>
+  <SegmentedControl content="icon" value={align} onChange={setAlign} options={[...]} />
+  <IconButton label="Refresh" onAction={reload}><DkRefreshClockwiseRotate /></IconButton>
+  <Button fullWidth={false}>Save</Button>
+</SegmentedToolbar>
+`,
+    statesContent: <SegmentedStates />,
     props: [
       p('value', 'string', '—', 'The selected option.'),
-      p('options', 'SegmentedOption[]', '—', 'Labels and values.'),
+      p('options', 'SegmentedOption[]', '—', 'Labels, values, optional icons, badges, loading, and onAction.'),
       p('onChange', '(value: T) => void', '—', 'Called when the selection changes.'),
+      p("mode", "'inset' | 'grouped'", "'inset'", 'Sliding thumb, or joined buttons with a selected fill.'),
+      p("variant", "'subtle' | 'outline' | 'ghost' | 'primary' | 'pill'", "'subtle'", 'Track and selected style.'),
+      p("content", "'label' | 'icon' | 'both'", "'label'", 'Text only, icons only, or icon plus text.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Control height. Medium is 44px, matching buttons and fields.'),
+      p('fullWidth', 'boolean', 'false', 'Stretches the control to the container width.'),
+      p('leading', 'ReactNode', 'undefined', 'Control before the segments, such as an Icon Button.'),
+      p('trailing', 'ReactNode', 'undefined', 'Control after the segments, such as a Button.'),
+      p('onAction', '(value: T) => void | Promise<void>', 'undefined', 'Runs after a segment is pressed. Shows a spinner, then a check or X. Arrow keys only change the selection.'),
+      p('successMs', 'number', '1600', 'How long the check or X stays visible after onAction.'),
+      p('disabled', 'boolean', 'false', 'Prevents interaction with every option.'),
+      p('label', 'string', 'undefined', 'Optional caption above the control, and the accessible name.'),
+      p('icon', 'ReactNode', 'undefined', 'Leading icon on a SegmentedOption.'),
+      p('badge', 'number | string', 'undefined', 'Trailing count on a SegmentedOption.'),
+      p('loading', 'boolean', 'false', 'Shows a spinner on that segment.'),
+      p('status', "'idle' | 'loading' | 'success' | 'error'", 'undefined', 'Controlled overlay on a SegmentedOption.'),
+      p('options[].onAction', '() => void | Promise<void>', 'undefined', 'Per-option action. Overrides the control-level onAction.'),
     ],
   },
   'confirm-action': {
     title: 'Confirm Action',
-    description: 'A two-tap destructive text action.',
-    Demo: () => <ConfirmAction onConfirm={() => undefined} />,
-    code: `<ConfirmAction onConfirm={remove} label="Remove" />\n`,
+    ...confirmActionGuide,
+    description: 'A button that asks once, then runs the action on a second press. Use it for remove, sign out, and similar row actions.',
+    Demo: ConfirmActionDemo,
+    wide: true,
+    code: `<ConfirmAction onConfirm={remove} />
+<ConfirmAction variant="ghost" onConfirm={remove} />
+<ConfirmAction variant="subtle" onConfirm={remove} />
+<ConfirmAction variant="outline" onConfirm={remove} />
+<ConfirmAction variant="solid" onConfirm={remove} />
+<ConfirmAction variant="solid" tone="brand" label="Send" confirmLabel="Send now?" onConfirm={send} />
+`,
+    statesContent: <ConfirmActionStates />,
     props: [
       p('onConfirm', '() => void', '—', 'Runs after the second tap.'),
       p('label', 'string', "'Remove'", 'Idle label.'),
       p('confirmLabel', 'string', "'Confirm?'", 'Armed label.'),
+      p("variant", "'text' | 'ghost' | 'subtle' | 'outline' | 'solid'", "'text'", 'Chrome. Text is compact; the rest are pills. Armed state fills with the tone.'),
+      p("tone", "'danger' | 'brand' | 'neutral'", "'danger'", 'Color. Danger for destructive, brand for send/publish, neutral for archive/move.'),
+      p("size", "'sm' | 'md' | 'lg'", "'sm'", 'Pill height. Text stays compact until armed.'),
+      p('loading', 'boolean', 'false', 'Shows a spinner and disables the control.'),
+      p('loadingText', 'string', "'Removing…'", 'Label while loading.'),
+      p('resetMs', 'number', '3000', 'How long the armed label stays before returning to idle.'),
+      p('disabled', 'boolean', 'false', 'Prevents press.'),
     ],
   },
   'text-field': {
     title: 'Text Field',
-    description: 'A single-line text input.',
+    description: 'A single-line input with a leading icon. Outline, subtle, ghost, underline, and pill — filled, focus, and invalid use the same brand, success, and danger tokens as the rest of the kit.',
     Demo: TextFieldDemo,
-    code: `<TextField placeholder="Email address" />\n`,
-    states: [
-      { label: 'Default', node: <TextField placeholder="Email address" /> },
-      { label: 'Filled', node: <TextField defaultValue="alex@roboticela.com" /> },
-      { label: 'Invalid', node: <TextField defaultValue="alex" invalid /> },
-      { label: 'Disabled', node: <TextField defaultValue="alex@roboticela.com" disabled /> },
-    ],
+    wide: true,
+    code: `<TextField icon={<DkEnvelopeMessageMail />} placeholder="Email address" />
+<TextField variant="subtle" icon={<DkEnvelopeMessageMail />} placeholder="Email address" />
+<TextField variant="ghost" icon={<DkEnvelopeMessageMail />} placeholder="Email address" />
+<TextField variant="underline" icon={<DkEnvelopeMessageMail />} placeholder="Email address" />
+<TextField variant="pill" icon={<DkMagnifyingGlassFind />} placeholder="Search" />
+`,
+    statesContent: <TextFieldStates />,
     props: [
-      p('icon', 'ReactNode', 'undefined', 'Leading icon inside the field.'),
+      p('icon', 'ReactNode', 'undefined', 'Leading icon inside the field. Auth and settings fields always pass one.'),
       p('trailing', 'ReactNode', 'undefined', 'Trailing control, such as Password Reveal.'),
-      p('invalid', 'boolean', 'false', 'Error border and aria-invalid.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Chrome. Outline matches other form controls.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height. Medium is 44px, matching buttons and selects.'),
+      p('invalid', 'boolean', 'false', 'Danger border, icon, and aria-invalid.'),
+      p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the input.'),
     ],
   },
   textarea: {
     title: 'Textarea',
-    description: 'A multi-line text input.',
-    Demo: () => <Textarea placeholder="Notes" rows={4} />,
-    code: `<Textarea placeholder="Notes" />\n`,
-    states: [
-      { label: 'Default', node: <Textarea placeholder="Notes" rows={3} /> },
-      { label: 'Invalid', node: <Textarea defaultValue="Too short" invalid rows={3} /> },
-      { label: 'Disabled', node: <Textarea defaultValue="Locked" disabled rows={3} /> },
+    description: 'A multi-line input with a leading icon. Outline, subtle, ghost, underline, well, and composer — filled, focus, and invalid use the same tokens as Text Field.',
+    Demo: TextareaDemo,
+    wide: true,
+    code: `<Textarea icon={<DkPencilWriteEdit />} placeholder="Write a note" />
+<Textarea variant="subtle" icon={<DkPencilWriteEdit />} placeholder="Write a note" />
+<Textarea variant="ghost" icon={<DkPencilWriteEdit />} placeholder="Write a note" />
+<Textarea variant="underline" icon={<DkPencilWriteEdit />} placeholder="Write a note" />
+<Textarea variant="well" icon={<DkDocumentPageFold />} placeholder="Internal note" />
+<Textarea variant="composer" icon={<DkMessageInboxTray />} placeholder="Write a note" hint="Visible to your team" maxLength={160} />
+`,
+    statesContent: <TextareaStates />,
+    props: [
+      p('icon', 'ReactNode', 'undefined', 'Leading icon at the top of the field.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'well' | 'composer'", "'outline'", 'Chrome. Well is a Notes-style pad. Composer adds a footer for the count.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Type scale and minimum height.'),
+      p('invalid', 'boolean', 'false', 'Danger border, icon, and aria-invalid.'),
+      p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
+      p('maxLength', 'number', 'undefined', 'Native limit. Also shows a count when set.'),
+      p('count', 'boolean', 'false', 'Show a character count even without maxLength.'),
+      p('hint', 'ReactNode', 'undefined', 'Caption on the composer footer, opposite the count.'),
+      p("resize", "'y' | 'none'", 'well/composer: none, else y', 'Whether the field can be stretched.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the field.'),
     ],
-    props: [p('invalid', 'boolean', 'false', 'Error border and aria-invalid.')],
+  },
+  'password-field': {
+    title: 'Password Field',
+    description: 'A password input with a lock and a reveal control. Outline, subtle, ghost, underline, and pill — with ghost, subtle, outline, text, or pill reveal.',
+    Demo: PasswordFieldDemo,
+    wide: true,
+    code: `<PasswordField />
+<PasswordField variant="subtle" />
+<PasswordField variant="ghost" />
+<PasswordField variant="underline" />
+<PasswordField variant="pill" />
+<PasswordField reveal="ghost" />
+<PasswordField reveal="pill" />
+`,
+    statesContent: <PasswordFieldStates />,
+    props: [
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Text Field.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Height and type. Also sizes the reveal.'),
+      p("reveal", "'ghost' | 'subtle' | 'outline' | 'text' | 'pill'", "'text'", 'The trailing show/hide control. Text is Show / Hide.'),
+      p('visible', 'boolean', 'undefined', 'Controlled visibility. Omit to manage it inside the field.'),
+      p('onVisibleChange', '(visible: boolean) => void', 'undefined', 'Called when the reveal is pressed.'),
+      p('icon', 'ReactNode', 'lock', 'Leading icon. Defaults to the lock.'),
+      p('invalid', 'boolean', 'false', 'Danger border, icon, and aria-invalid.'),
+      p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the field.'),
+    ],
   },
   'password-reveal': {
     title: 'Password Reveal',
-    description: 'Show or hide a password field.',
-    Demo: PasswordDemo,
-    code: `<TextField type={visible ? 'text' : 'password'} trailing={<PasswordReveal visible={visible} onToggle={toggle} />} />\n`,
+    description: 'Show or hide a password. Ghost, subtle, outline, Apple-style Show/Hide text, or a pill — designed as a field accessory, not a separate button.',
+    Demo: PasswordRevealDemo,
+    wide: true,
+    code: `<PasswordReveal visible={visible} onToggle={toggle} />
+<PasswordReveal variant="subtle" visible={visible} onToggle={toggle} />
+<PasswordReveal variant="outline" visible={visible} onToggle={toggle} />
+<PasswordReveal variant="text" visible={visible} onToggle={toggle} />
+<PasswordReveal variant="pill" visible={visible} onToggle={toggle} />
+
+<PasswordField />
+`,
+    statesContent: <PasswordRevealStates />,
     props: [
       p('visible', 'boolean', '—', 'Whether the password is shown.'),
-      p('onToggle', '() => void', '—', 'Called when the eye is pressed.'),
+      p('onToggle', '() => void', '—', 'Called when the control is pressed.'),
+      p("variant", "'ghost' | 'subtle' | 'outline' | 'text' | 'pill'", "'ghost'", 'Icon only, filled, outlined, Show/Hide text, or a labeled pill.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Hit target and type. Match the field size.'),
+      p('inField', 'boolean', 'true', 'Position inside a Text Field. Set false for a standalone control.'),
+      p('showLabel', 'string', "'Show'", 'Label on the text and pill variants.'),
+      p('hideLabel', 'string', "'Hide'", 'Label while the password is visible.'),
+      p('disabled', 'boolean', 'false', 'Prevents press.'),
     ],
   },
   select: {
     title: 'Select',
-    description: 'A compact dropdown for a single value.',
+    description:
+      'A single-value menu. Outline, subtle, ghost, underline, and pill match Text Field. Options can carry an icon and a short description. Search filters the list. The popup is the same width as the field.',
     Demo: SelectDemo,
-    code: `<Dropdown label="Size" value={value} onChange={setValue} options={[...]} />\n`,
-    states: [
-      { label: 'Default', node: <SelectDemo /> },
-      {
-        label: 'Disabled',
-        node: (
-          <Dropdown
-            label="Size"
-            value="md"
-            onChange={() => undefined}
-            disabled
-            options={[{ value: 'md', label: 'Medium' }]}
-          />
-        ),
-      },
-    ],
+    wide: true,
+    code: `<Dropdown value={value} onChange={setValue} options={options} />
+<Dropdown variant="subtle" value={value} onChange={setValue} options={options} />
+<Dropdown variant="ghost" icon={<DkGlobeWorldEarth />} value={value} onChange={setValue} options={options} />
+<Dropdown variant="underline" value={value} onChange={setValue} options={options} />
+<Dropdown variant="pill" value={value} onChange={setValue} options={options} />
+
+<Dropdown
+  searchable
+  icon={<DkGlobeWorldEarth />}
+  options={[
+    { value: 'team', label: 'Team', icon: <DkRowsThree />, description: 'Up to ten people' },
+  ]}
+/>
+`,
+    statesContent: <SelectStates />,
     props: [
       p('value', 'string', '—', 'The selected option.'),
-      p('options', 'DropdownOption[]', '—', 'Menu items.'),
-      p('compact', 'boolean', 'false', 'Smaller trigger for toolbars.'),
+      p('options', 'DropdownOption[]', '—', 'Menu items. Each can include icon, description, and disabled.'),
+      p('onChange', '(value: string) => void', '—', 'Called when an option is chosen.'),
+      p('icon', 'ReactNode', 'undefined', 'Leading icon on the field. Replaced by the selected option icon when present.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Text Field.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height. Compact defaults to small.'),
+      p('searchable', 'boolean', 'false', 'Adds a search field at the top of the popup.'),
+      p('searchPlaceholder', 'string', "'Search'", 'Placeholder for the search field.'),
+      p('placeholder', 'string', "'Select'", 'Shown when no option is selected.'),
+      p('invalid', 'boolean', 'false', 'Danger border.'),
+      p('valid', 'boolean', 'false', 'Success border. Ignored when invalid.'),
+      p('compact', 'boolean', 'false', 'Smaller trigger for toolbars. The popup still matches the field width.'),
+      p('disabled', 'boolean', 'false', 'Prevents opening the menu.'),
     ],
   },
   'search-select': {
     title: 'Search Select',
-    description: 'A searchable single-select menu.',
+    description: 'A searchable single-select. The popup matches the field width.',
     Demo: SearchSelectDemo,
-    code: `<DkMagnifyingGlassFindSelect value={value} onChange={setValue} options={[...]} />\n`,
+    code: `<SearchSelect value={value} onChange={setValue} options={[...]} />\n`,
     props: [
       p('value', 'string', '—', 'The selected option.'),
-      p('options', 'SearchSelectOption[]', '[]', 'Filterable items.'),
-      p('allowClear', 'boolean', 'false', 'Adds a clear row.'),
+      p('icon', 'ReactNode', 'undefined', 'Leading icon on the field. Replaced by the selected option icon when present.'),
+      p('options', 'SearchSelectOption[]', '[]', 'Filterable items. Each can include icon, meta, and description.'),
+      p('allowClear', 'boolean', 'true', 'Adds a clear row.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height.'),
     ],
   },
   'country-select': {
@@ -1017,11 +2501,15 @@ const DOCS: Record<string, DocDef> = {
     Demo: () => (
       <FormField>
         <FieldLabel htmlFor="demo-name">Display name</FieldLabel>
-        <TextField id="demo-name" placeholder="Alex Rivera" />
+        <TextField
+          id="demo-name"
+          icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+          placeholder="Alex Rivera"
+        />
         <FieldHint>Shown on your public profile.</FieldHint>
       </FormField>
     ),
-    code: `<FormField>\n  <FieldLabel>Display name</FieldLabel>\n  <TextField />\n  <FieldHint>Shown on your public profile.</FieldHint>\n</FormField>\n`,
+    code: `<FormField>\n  <FieldLabel>Display name</FieldLabel>\n  <TextField icon={<DkPersonUserProfile />} />\n  <FieldHint>Shown on your public profile.</FieldHint>\n</FormField>\n`,
     props: [
       p('optional', 'boolean', 'false', 'Adds an Optional suffix on FieldLabel.'),
       p('children', 'ReactNode', '—', 'Label text.'),
@@ -1413,7 +2901,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'brand-logo': {
     title: 'Brand Logo',
-    description: 'The product mark, wordmark, and lockup.',
+    description: 'The company mark, the product wordmark, and the lockup that pairs them.',
+    ...brandLogoGuide,
     Demo: BrandLogoDemo,
     code: `<BrandLogo variant="lockup" />\n<BrandLogo variant="text" />\n<BrandLogo />\n<BrandLogo variant="icon" />\n`,
     states: [
@@ -1431,7 +2920,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'theme-toggle': {
     title: 'Theme Toggle',
-    description: 'Light and dark with a labeled switch, or the switch alone.',
+    description: 'A labeled switch that sets light or dark for the whole page. Compact and switch only layouts are included.',
+    ...themeToggleGuide,
     wide: true,
     Demo: () => (
       <div className="w-full max-w-[260px]">
@@ -1462,7 +2952,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'theme-icon-toggle': {
     title: 'Theme Icon Toggle',
-    description: 'An icon-only control for light and dark, including both icons at once.',
+    description: 'A compact control that sets light or dark with sun and moon icons. Variants show one icon or both at once.',
+    ...themeIconToggleGuide,
     Demo: () => (
       <div className="flex flex-wrap items-center justify-center gap-4">
         <ThemeIconToggle />
@@ -1605,6 +3096,8 @@ export function KitComponentDocs({ slug }: { slug: string }) {
       statesContent={def.statesContent}
       props={def.props}
       wide={def.wide}
+      usage={def.usage}
+      accessibility={def.accessibility}
     />
   )
 }

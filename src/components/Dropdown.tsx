@@ -1,18 +1,31 @@
 'use client'
 
+import { useMemo, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import {
   DkTaskCompleteCheckmark
 } from '@/icons'
 import { cn } from '@/lib/cn'
 import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
-import { SelectList, SelectMenu, SelectOption } from './SelectMenu'
-import { SelectTrigger } from './SelectTrigger'
+import { SelectEmpty, SelectList, SelectMenu, SelectOption, SelectSearch } from './SelectMenu'
+import {
+  SelectTrigger,
+  SELECT_SIZES,
+  SELECT_VARIANTS,
+  type SelectTriggerSize,
+  type SelectTriggerVariant,
+} from './SelectTrigger'
 import { Caption } from './Text'
+
+export type { SelectTriggerSize, SelectTriggerVariant }
+export { SELECT_SIZES, SELECT_VARIANTS }
 
 export type DropdownOption<T extends string = string> = {
   value: T
   label: string
+  icon?: ReactNode
+  description?: string
+  disabled?: boolean
 }
 
 export function Dropdown<T extends string>({
@@ -23,6 +36,15 @@ export function Dropdown<T extends string>({
   disabled = false,
   compact = false,
   className,
+  variant = 'outline',
+  size,
+  icon,
+  placeholder = 'Select',
+  searchable = false,
+  searchPlaceholder = 'Search',
+  invalid = false,
+  valid = false,
+  emptyMessage = 'No results found',
 }: {
   label?: string
   value: T
@@ -31,47 +53,79 @@ export function Dropdown<T extends string>({
   disabled?: boolean
   compact?: boolean
   className?: string
+  variant?: SelectTriggerVariant
+  size?: SelectTriggerSize
+  icon?: ReactNode
+  placeholder?: string
+  searchable?: boolean
+  searchPlaceholder?: string
+  invalid?: boolean
+  valid?: boolean
+  emptyMessage?: string
 }) {
+  const resolvedSize: SelectTriggerSize = size ?? (compact ? 'sm' : 'md')
+  const dense = resolvedSize === 'sm'
+  const selected = options.find((option) => option.value === value)
+  const triggerIcon = selected?.icon ?? icon
+
   const {
     open,
     setOpen,
+    query,
+    setQuery,
     menuStyle,
     openUp,
     rootRef,
     triggerRef,
     menuRef,
+    searchRef,
     listId,
     close,
-  } = useAnchoredMenu([options.length], {
-    minWidth: compact ? 148 : 220,
-    maxWidth: compact ? 240 : 360,
-    estimatedHeight: Math.min(360, 48 + options.length * (compact ? 36 : 44)),
+  } = useAnchoredMenu([options.length, searchable], {
+    matchWidth: true,
+    estimatedHeight: Math.min(
+      360,
+      (searchable ? 56 : 16) + options.length * (dense ? 36 : 44),
+    ),
   })
 
-  const selected = options.find((option) => option.value === value)
+  const filtered = useMemo(() => {
+    if (!searchable) return options
+    const q = query.trim().toLowerCase()
+    if (!q) return options
+    return options.filter(
+      (option) =>
+        option.label.toLowerCase().includes(q) ||
+        option.value.toLowerCase().includes(q) ||
+        option.description?.toLowerCase().includes(q),
+    )
+  }, [options, query, searchable])
 
   return (
-    <div className={cn('flex min-w-[7.5rem] flex-col gap-1 font-sans', className)} ref={rootRef}>
+    <div
+      className={cn('flex flex-col gap-1 font-sans', compact ? 'min-w-[7.5rem]' : 'w-full min-w-0', className)}
+      ref={rootRef}
+    >
       {label ? (
         <Caption as="span">{label}</Caption>
       ) : null}
       <SelectTrigger
         ref={triggerRef}
         open={open}
-        chevronSize={compact ? 14 : 16}
+        variant={variant}
+        size={resolvedSize}
+        leading={triggerIcon}
+        placeholder={!selected}
+        invalid={invalid}
+        valid={valid}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
         aria-label={label}
         disabled={disabled}
-        className={
-          compact
-            ? 'h-8 gap-2 rounded-[8px] px-2.5 pr-2 text-[13px]'
-            : undefined
-        }
         onClick={() => setOpen((current) => !current)}
       >
-        {selected?.label ?? 'Select'}
+        {selected?.label ?? placeholder}
       </SelectTrigger>
 
       {open
@@ -84,36 +138,51 @@ export function Dropdown<T extends string>({
               menuRef={menuRef}
               className="z-[400]"
             >
+              {searchable ? (
+                <SelectSearch
+                  searchRef={searchRef}
+                  value={query}
+                  onChange={setQuery}
+                  placeholder={searchPlaceholder}
+                />
+              ) : null}
               <SelectList>
-                {options.map((option) => {
-                  const isSelected = option.value === value
-                  return (
-                    <SelectOption
-                      key={option.value}
-                      selected={isSelected}
-                      className={compact ? 'min-h-8 gap-2 px-2 text-[13px]' : undefined}
-                      name={
-                        <span className={isSelected ? 'text-brand-primary' : undefined}>
-                          {option.label}
-                        </span>
-                      }
-                      check={
-                        isSelected ? (
-                          <DkTaskCompleteCheckmark
-                            className="shrink-0 text-brand-primary"
-                            size={compact ? 14 : 16}
-                            strokeWidth={2.25}
-                            absoluteStrokeWidth
-                          />
-                        ) : null
-                      }
-                      onClick={() => {
-                        onChange(option.value)
-                        close()
-                      }}
-                    />
-                  )
-                })}
+                {filtered.length === 0 ? (
+                  <SelectEmpty>{emptyMessage}</SelectEmpty>
+                ) : (
+                  filtered.map((option) => {
+                    const isSelected = option.value === value
+                    return (
+                      <SelectOption
+                        key={option.value}
+                        selected={isSelected}
+                        disabled={option.disabled}
+                        leading={option.icon}
+                        description={option.description}
+                        className={dense ? 'min-h-8 gap-2 px-2 text-[13px]' : undefined}
+                        name={
+                          <span className={isSelected ? 'text-brand-primary' : undefined}>
+                            {option.label}
+                          </span>
+                        }
+                        check={
+                          isSelected ? (
+                            <DkTaskCompleteCheckmark
+                              className="shrink-0 text-brand-primary"
+                              size={dense ? 14 : 16}
+                              strokeWidth={2.25}
+                              absoluteStrokeWidth
+                            />
+                          ) : null
+                        }
+                        onClick={() => {
+                          onChange(option.value)
+                          close()
+                        }}
+                      />
+                    )
+                  })
+                )}
               </SelectList>
             </SelectMenu>,
             document.body,
@@ -122,3 +191,5 @@ export function Dropdown<T extends string>({
     </div>
   )
 }
+
+export { Dropdown as Select }

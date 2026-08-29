@@ -28,6 +28,13 @@ export const FIELD_INVALID = cn(
   'focus:shadow-[0_0_0_2px_var(--danger-focus-ring)]',
 )
 
+export const FIELD_VALID = cn(
+  'outline-none',
+  'border-success',
+  'focus:border-success',
+  'focus:shadow-[0_0_0_2px_var(--success-focus-ring)]',
+)
+
 export const FIELD_SURFACE =
   'border-border-default bg-bg-elevated text-text-primary dark:border-border-default dark:bg-bg-secondary'
 
@@ -45,7 +52,7 @@ export const CONTROL_TRIGGER = cn(
 
 export const MENU_SURFACE = cn(
   'z-50 flex flex-col overflow-hidden rounded-2xl border border-border-default bg-bg-elevated p-2.5 text-text-primary',
-  'dark:bg-bg-secondary',
+  'box-border dark:bg-bg-secondary',
   'origin-top animate-select-in',
 )
 

@@ -203,6 +203,7 @@ export function PhoneInput({
                         key={`${item.iso}-${item.dial}`}
                         selected={selected}
                         leading={<CountryFlag iso={item.iso} size={20} />}
+                        leadingFit="flag"
                         name={
                           <span className={selected ? 'text-brand-primary' : undefined}>
                             {item.name}

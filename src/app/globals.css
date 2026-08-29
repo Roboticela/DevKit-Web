@@ -16,6 +16,7 @@
 
   --success: #30d158;
   --success-subtle: rgba(48, 209, 88, 0.1);
+  --success-focus-ring: rgba(48, 209, 88, 0.25);
   --warning: #ff9f0a;
   --warning-subtle: rgba(255, 159, 10, 0.1);
   --danger: #ff3b30;
@@ -89,6 +90,7 @@ html[data-theme="dark"] {
 
   --success: #30d158;
   --success-subtle: rgba(48, 209, 88, 0.15);
+  --success-focus-ring: rgba(48, 209, 88, 0.3);
   --warning: #ff9f0a;
   --warning-subtle: rgba(255, 159, 10, 0.15);
   --danger: #ff453a;
@@ -144,6 +146,7 @@ html[data-theme="dark"] {
 
   --color-success: var(--success);
   --color-success-subtle: var(--success-subtle);
+  --color-success-focus-ring: var(--success-focus-ring);
   --color-warning: var(--warning);
   --color-warning-subtle: var(--warning-subtle);
   --color-danger: var(--danger);
@@ -458,6 +461,32 @@ body {
 .dk-range:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.dk-field:-webkit-autofill,
+.dk-field:-webkit-autofill:hover,
+.dk-field:-webkit-autofill:focus,
+.dk-field:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--text-primary);
+  caret-color: var(--text-primary);
+  box-shadow: 0 0 0 1000px var(--field-autofill-bg, var(--bg-elevated)) inset;
+  transition:
+    background-color 99999s ease-in-out 0s,
+    color 99999s ease-in-out 0s;
+}
+
+.dk-field:-webkit-autofill:focus {
+  border-color: var(--brand-primary);
+  box-shadow:
+    0 0 0 1000px var(--field-autofill-bg, var(--bg-elevated)) inset,
+    0 0 0 2px var(--brand-primary-focus-ring);
+}
+
+.dk-field[aria-invalid='true']:-webkit-autofill:focus {
+  border-color: var(--danger);
+  box-shadow:
+    0 0 0 1000px var(--field-autofill-bg, var(--bg-elevated)) inset,
+    0 0 0 2px var(--danger-focus-ring);
 }
 
 [data-provider-stack] {

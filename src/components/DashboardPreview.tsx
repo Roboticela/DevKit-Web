@@ -10,7 +10,9 @@ import {
   DkLogoutExitSession,
   DkAddPlusCreate,
   DkGearSettingsPreferences,
-  DkPeopleUsersGroup
+  DkPeopleUsersGroup,
+  DkEnvelopeMessageMail,
+  DkPencilWriteEdit
 } from '@/icons'
 import { Alert } from './Alert'
 import { Badge } from './Badge'
@@ -284,9 +286,13 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
               <Checkbox label="SMS backup codes" disabled />
             </div>
             <Textarea
+              variant="well"
+              icon={<DkPencilWriteEdit size={18} strokeWidth={1.6} absoluteStrokeWidth />}
               placeholder="Internal note"
               value={note}
               onChange={(event) => setNote(event.target.value)}
+              maxLength={160}
+              count
             />
           </div>
         ) : null}
@@ -306,7 +312,11 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
         }
       >
         <p className="m-0 mb-4">They’ll get a link to join this workspace.</p>
-        <TextField placeholder="Email" defaultValue="sam@roboticela.com" className="!px-4" />
+        <TextField
+          icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+          placeholder="Email"
+          defaultValue="sam@roboticela.com"
+        />
       </Modal>
     </DashboardShell>
   )

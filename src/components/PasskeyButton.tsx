@@ -2,7 +2,7 @@
 
 import type { ButtonHTMLAttributes } from 'react'
 import {
-  DkFingerprintBiometricScan
+  DkFingerprintBiometricScanPattern
 } from '@/icons'
 import { AuthProviderButton } from './AuthProviderButton'
 
@@ -18,7 +18,7 @@ export function PasskeyButton({
 }: PasskeyButtonProps) {
   return (
     <AuthProviderButton
-      icon={<DkFingerprintBiometricScan size={18} strokeWidth={1.75} absoluteStrokeWidth />}
+      icon={<DkFingerprintBiometricScanPattern size={18} strokeWidth={1.75} absoluteStrokeWidth />}
       loading={loading}
       loadingText="Waiting for passkey…"
       {...rest}

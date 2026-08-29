@@ -7,8 +7,8 @@ import { DocsDemoPanel } from './DocsDemoPanel'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PropsTable, type PropRow } from './PropsTable'
+import { DocsRelated, DocsStateCard, DocsStateGrid } from './DocsCard'
 import { RelatedCard } from './RelatedCard'
-import { Caption } from './Text'
 
 export function KitDocArticle({
   slug,
@@ -21,6 +21,8 @@ export function KitDocArticle({
   props,
   fadeKey,
   wide = false,
+  usage,
+  accessibility,
 }: {
   slug: string
   title: string
@@ -32,6 +34,8 @@ export function KitDocArticle({
   props: PropRow[]
   fadeKey?: string
   wide?: boolean
+  usage?: ReactNode
+  accessibility?: ReactNode
 }) {
   const [replay, setReplay] = useState(0)
   const ctx = findDocContext(DOCS_NAV, slug)
@@ -46,6 +50,13 @@ export function KitDocArticle({
         title={title}
         description={description}
       />
+
+      {usage ? (
+        <section id="usage" className="mt-10 scroll-mt-20">
+          <DocsSectionTitle>Usage</DocsSectionTitle>
+          {usage}
+        </section>
+      ) : null}
 
       <section id="live-demo" className="mt-8 scroll-mt-20 animate-docs-demo-in motion-reduce:animate-none">
         <DocsDemoPanel
@@ -64,16 +75,13 @@ export function KitDocArticle({
         <section id="states" className="mt-12 scroll-mt-20">
           <DocsSectionTitle>States</DocsSectionTitle>
           {statesContent ?? (
-            <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+            <DocsStateGrid>
               {states!.map((item) => (
-                <div key={item.label} className="flex flex-col gap-2">
-                  <div className="flex min-h-[100px] items-center justify-center rounded-xl bg-bg-secondary px-4 py-6">
-                    {item.node}
-                  </div>
-                  <Caption align="center">{item.label}</Caption>
-                </div>
+                <DocsStateCard key={item.label} label={item.label}>
+                  {item.node}
+                </DocsStateCard>
               ))}
-            </div>
+            </DocsStateGrid>
           )}
         </section>
       ) : null}
@@ -83,10 +91,17 @@ export function KitDocArticle({
         <PropsTable rows={props} />
       </section>
 
+      {accessibility ? (
+        <section id="accessibility" className="mt-12 scroll-mt-20">
+          <DocsSectionTitle>Accessibility</DocsSectionTitle>
+          {accessibility}
+        </section>
+      ) : null}
+
       {related.length ? (
         <section className="mt-12">
           <DocsSectionTitle className="mb-3">Related</DocsSectionTitle>
-          <div className="grid grid-cols-1 gap-3 min-[735px]:grid-cols-3">
+          <DocsRelated>
             {related.map((item) => (
               <RelatedCard
                 key={item.id}
@@ -95,7 +110,7 @@ export function KitDocArticle({
                 description={item.description ?? item.searchGroup}
               />
             ))}
-          </div>
+          </DocsRelated>
         </section>
       ) : null}
 

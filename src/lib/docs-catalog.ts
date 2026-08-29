@@ -14,6 +14,7 @@ export type DocsSearchGroup =
   | 'App Shell'
   | 'Commerce'
   | 'Content'
+  | 'Documentation'
 
 export type DocsNavItem = {
   id: string
@@ -50,51 +51,52 @@ export const DOCS_NAV: DocsNavSection[] = [
     id: 'foundations',
     label: 'Foundations',
     items: [
-      c('colors', 'Colors', 'Foundations', 'Brand, semantic, and neutral tokens.'),
-      c('typography', 'Typography', 'Foundations', 'Type scale, weight, and tracking.'),
-      c('spacing', 'Spacing', 'Foundations', 'The spacing scale used across the kit.'),
-      c('radius', 'Radius', 'Foundations', 'Corner radii for fields, cards, and pills.'),
-      c('layout', 'Layout', 'Foundations', 'Breakpoints, content widths, and page padding.'),
-      c('icons', 'Icons', 'Foundations', 'A searchable local icon set tagged by meaning.'),
-      c('brand-logo', 'Brand Logo', 'Foundations', 'The product mark, wordmark, and lockup.'),
-      c('theme-toggle', 'Theme Toggle', 'Foundations', 'Light and dark with a labeled switch, or the switch alone.'),
-      c('theme-icon-toggle', 'Theme Icon Toggle', 'Foundations', 'An icon-only control for light and dark, including both icons at once.'),
-      c('country-flag', 'Country Flag', 'Foundations', 'Searchable flags for every ISO country code.'),
+      c('colors', 'Colors', 'Foundations', 'Tokens for brand, status, type, surfaces, and borders. Use a token so light and dark stay correct.'),
+      c('typography', 'Typography', 'Foundations', 'The type scale for the kit. Size, weight, and tracking live here and the Text components apply them.'),
+      c('spacing', 'Spacing', 'Foundations', 'The only spacing steps the kit uses. Pick the nearest value on this scale instead of inventing a new gap.'),
+      c('radius', 'Radius', 'Foundations', 'Corner rounding for fields, cards, panels, and pills. Match the radius to what the object is.'),
+      c('layout', 'Layout', 'Foundations', 'Breakpoints, content widths, and page padding. Start from the small screen and add columns as the viewport grows.'),
+      c('icons', 'Icons', 'Foundations', 'A local icon library you can search by name or meaning. Use these glyphs in buttons, fields, and empty states.'),
+      c('brand-logo', 'Brand Logo', 'Foundations', 'The company mark, the product wordmark, and the lockup that pairs them.'),
+      c('theme-toggle', 'Theme Toggle', 'Foundations', 'A labeled switch that sets light or dark for the whole page. Compact and switch only layouts are included.'),
+      c('theme-icon-toggle', 'Theme Icon Toggle', 'Foundations', 'A compact control that sets light or dark with sun and moon icons. Variants show one icon or both at once.'),
+      c('country-flag', 'Country Flag', 'Foundations', 'A flag image for every ISO country code. Search by name, code, or dialing code.'),
     ],
   },
   {
     id: 'type',
     label: 'Typography',
     items: [
-      c('text', 'Text', 'Typography', 'Heading, subhead, content, and the rest of the type scale.'),
-      c('heading', 'Heading', 'Typography', 'Display and h1–h3.'),
-      c('subhead', 'Subhead', 'Typography', 'The supporting line under a heading.'),
-      c('body', 'Body', 'Typography', 'Content paragraphs at the reading size.'),
-      c('caption', 'Caption', 'Typography', 'Small supporting copy for timestamps and hints.'),
-      c('eyebrow', 'Eyebrow', 'Typography', 'A short uppercase label above a heading.'),
-      c('label', 'Label', 'Typography', 'Medium-weight copy for controls and fields.'),
+      c('text', 'Text', 'Typography', 'The full type scale in one place. Heading, subhead, body, caption, eyebrow, and label share these sizes and tones.'),
+      c('heading', 'Heading', 'Typography', 'The title of a page or section. Display is a hero. Levels 1, 2, and 3 follow the document outline.'),
+      c('subhead', 'Subhead', 'Typography', 'One supporting sentence that sits directly under a heading.'),
+      c('body', 'Body', 'Typography', 'Paragraphs at the reading size. Use the default for pages and the small size inside cards.'),
+      c('caption', 'Caption', 'Typography', 'Quiet supporting copy for timestamps, counts, and hints. Do not put essential instructions here.'),
+      c('eyebrow', 'Eyebrow', 'Typography', 'A short uppercase kicker that sits above a heading. Keep it to a few words.'),
+      c('label', 'Label', 'Typography', 'Medium weight text for fields and controls. In forms, prefer Field Label so the input stays associated.'),
     ],
   },
   {
     id: 'actions',
     label: 'Actions',
     items: [
-      c('button', 'Button', 'Buttons', 'A pressable control that triggers an action.'),
-      c('icon-button', 'Icon Button', 'Buttons', 'A compact control for a single icon action.'),
-      c('switch', 'Switch', 'Buttons', 'A two-state control, including grouped rows and color variants.'),
-      c('segmented-control', 'Segmented Control', 'Buttons', 'A mutually exclusive set of options.'),
-      c('confirm-action', 'Confirm Action', 'Buttons', 'A two-tap destructive text action.'),
+      c('button', 'Button', 'Buttons', 'The main control for running an action. Use one primary button on a screen.'),
+      c('icon-button', 'Icon Button', 'Buttons', 'A compact button that shows only a glyph. The label prop is the accessible name.'),
+      c('switch', 'Switch', 'Buttons', 'An immediate on or off setting. The change applies as soon as the control is flipped.'),
+      c('segmented-control', 'Segmented Control', 'Buttons', 'A small set of options where only one can be selected. Use it for views, ranges, and toolbars.'),
+      c('confirm-action', 'Confirm Action', 'Buttons', 'A button that asks once, then runs the action on a second press. Use it for remove, sign out, and similar row actions.'),
     ],
   },
   {
     id: 'forms',
     label: 'Forms',
     items: [
-      c('text-field', 'Text Field', 'Forms', 'A single-line text input.'),
-      c('textarea', 'Textarea', 'Forms', 'A multi-line text input.'),
-      c('password-reveal', 'Password Reveal', 'Forms', 'Show or hide a password field.'),
-      c('select', 'Select', 'Forms', 'A compact dropdown for a single value.'),
-      c('search-select', 'Search Select', 'Forms', 'A searchable single-select menu.'),
+      c('text-field', 'Text Field', 'Forms', 'A single-line input with a leading icon, in outline, subtle, ghost, underline, and pill.'),
+      c('password-field', 'Password Field', 'Forms', 'A password input with a lock, reveal control, and every field chrome.', true),
+      c('textarea', 'Textarea', 'Forms', 'A multi-line input in outline, subtle, ghost, underline, well, and composer.'),
+      c('password-reveal', 'Password Reveal', 'Forms', 'Show or hide a password, as an icon, Show/Hide, or a pill.'),
+      c('select', 'Select', 'Forms', 'A single-value menu with field chrome variants, option icons, and an optional search. The popup matches the field width.'),
+      c('search-select', 'Search Select', 'Forms', 'A searchable single-select. The popup matches the field width.'),
       c('country-select', 'Country Select', 'Forms', 'Choose a country from a searchable list.'),
       c('language-select', 'Language Select', 'Forms', 'Choose a language from a searchable list.'),
       c('phone-input', 'Phone Input', 'Forms', 'A phone number field with country code.'),
@@ -185,11 +187,70 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('dashboard-shell', 'Dashboard Shell', 'App Shell', 'Sidebar, top bar, and main canvas.'),
     ],
   },
+  {
+    id: 'documentation',
+    label: 'Documentation',
+    items: [
+      c('docs-card', 'Card', 'Documentation', 'A rounded surface for principles, stacks, and other docs content.', true),
+      c('docs-card-grid', 'Card Grid', 'Documentation', 'A responsive grid for docs cards. Use two, three, four, or six columns.', true),
+      c('docs-stack', 'Stack', 'Documentation', 'A vertical stack with the kit spacing scale. Use it to group docs blocks.', true),
+      c('docs-usage', 'Usage', 'Documentation', 'The standard vertical rhythm for a usage section: prose, principles, then do and don’t.', true),
+      c('docs-token-group', 'Token Group', 'Documentation', 'A labeled group of token samples with an optional note.', true),
+      c('docs-state-card', 'State Card', 'Documentation', 'A labeled tile that shows one control state on a quiet surface.', true),
+      c('docs-state-grid', 'State Grid', 'Documentation', 'A grid of state cards. Matches the live states section on kit pages.', true),
+      c('docs-state-group', 'State Group', 'Documentation', 'A caption plus a grid of state cards, for appearance, size, or tone.', true),
+      c('docs-swatch', 'Swatch', 'Documentation', 'A color chip that shows the token fill and its CSS variable name.', true),
+      c('docs-swatch-grid', 'Swatch Grid', 'Documentation', 'A four column grid of color swatches for a token family.', true),
+      c('docs-contrast-card', 'Contrast Card', 'Documentation', 'A reading pair of foreground and background tokens, shown at body size.', true),
+      c('docs-radius-card', 'Radius Card', 'Documentation', 'A sample corner next to its name, pixel value, and intended use.', true),
+      c('docs-scale-row', 'Scale Row', 'Documentation', 'A percentage bar for content widths and other values relative to a max.', true),
+      c('docs-measure-row', 'Measure Row', 'Documentation', 'A pixel bar for spacing steps, shown at their true width.', true),
+      c('docs-table', 'Docs Table', 'Documentation', 'A simple table for scales, breakpoints, and keyboard maps.', true),
+      c('docs-snippet', 'Snippet', 'Documentation', 'A monospace code sample on a secondary surface.', true),
+      c('docs-related', 'Related', 'Documentation', 'A three column grid for related component links.', true),
+      c('docs-principle-card', 'Principle Card', 'Documentation', 'A numbered principle with a short title and supporting line.', true),
+      c('docs-rule-card', 'Rule Card', 'Documentation', 'A do or don’t list with a success or danger tone.', true),
+      c('docs-inline-code', 'Inline Code', 'Documentation', 'A monospace token or prop name inside a sentence.', true),
+      c('docs-prose', 'Prose', 'Documentation', 'A reading column capped at 692px for docs body copy.', true),
+      c('docs-principles', 'Principles', 'Documentation', 'Three principle cards in a row. Use them to state how a component should be used.', true),
+      c('docs-do-dont', 'Do Don’t', 'Documentation', 'A paired do list and don’t list for a usage section.', true),
+      c('docs-keys', 'Keys', 'Documentation', 'A keyboard table with Key and Action columns.', true),
+      c('a11y-section', 'Accessibility Section', 'Documentation', 'Requirements in a callout, with an optional keyboard table below.', true),
+    ],
+  },
 ]
 
 export const DOCS_ITEMS: DocsNavItem[] = DOCS_NAV.flatMap((section) => section.items)
 
 export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'radius', 'layout', 'icons'])
+
+export const DOCS_PRIMITIVE_IDS = new Set([
+  'docs-card',
+  'docs-card-grid',
+  'docs-stack',
+  'docs-usage',
+  'docs-token-group',
+  'docs-state-card',
+  'docs-state-grid',
+  'docs-state-group',
+  'docs-swatch',
+  'docs-swatch-grid',
+  'docs-contrast-card',
+  'docs-radius-card',
+  'docs-scale-row',
+  'docs-measure-row',
+  'docs-table',
+  'docs-snippet',
+  'docs-related',
+  'docs-principle-card',
+  'docs-rule-card',
+  'docs-inline-code',
+  'docs-prose',
+  'docs-principles',
+  'docs-do-dont',
+  'docs-keys',
+  'a11y-section',
+])
 
 export const COMPONENT_ALIASES: Record<string, string> = {
   toggle: 'switch',
@@ -198,6 +259,7 @@ export const COMPONENT_ALIASES: Record<string, string> = {
   content: 'body',
   paragraph: 'body',
   'theme-icon': 'theme-icon-toggle',
+  password: 'password-field',
 }
 
 export const SEARCH_GROUP_ORDER: DocsSearchGroup[] = [
@@ -214,6 +276,7 @@ export const SEARCH_GROUP_ORDER: DocsSearchGroup[] = [
   'App Shell',
   'Commerce',
   'Content',
+  'Documentation',
 ]
 
 export function searchDocs(query: string): Array<{ group: DocsSearchGroup; items: DocsNavItem[] }> {
@@ -255,6 +318,7 @@ export function adjacentDocs(items: DocsNavItem[], slug: string) {
 
 export const BUTTON_TOC: DocsTocItem[] = [
   { id: 'overview', label: 'Overview' },
+  { id: 'usage', label: 'Usage' },
   { id: 'live-demo', label: 'Live Demo' },
   { id: 'code', label: 'Code' },
   { id: 'states', label: 'States' },
@@ -262,7 +326,19 @@ export const BUTTON_TOC: DocsTocItem[] = [
   { id: 'accessibility', label: 'Accessibility' },
 ]
 
-export const TEXT_TOC: DocsTocItem[] = BUTTON_TOC
+export const TEXT_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'usage', label: 'Usage' },
+  { id: 'live-demo', label: 'Live Demo' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'Variants' },
+  { id: 'tones', label: 'Tones' },
+  { id: 'stack', label: 'Stack' },
+  { id: 'props', label: 'Props' },
+  { id: 'accessibility', label: 'Accessibility' },
+]
+
+export const GUIDE_TOC: DocsTocItem[] = BUTTON_TOC
 
 export const KIT_TOC: DocsTocItem[] = [
   { id: 'overview', label: 'Overview' },
@@ -274,16 +350,55 @@ export const KIT_TOC: DocsTocItem[] = [
 
 export const FOUNDATION_TOC: DocsTocItem[] = [
   { id: 'overview', label: 'Overview' },
+  { id: 'usage', label: 'Usage' },
   { id: 'tokens', label: 'Tokens' },
+  { id: 'accessibility', label: 'Accessibility' },
+]
+
+export const COLORS_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'usage', label: 'Usage' },
+  { id: 'tokens', label: 'Tokens' },
+  { id: 'contrast', label: 'Contrast' },
+  { id: 'accessibility', label: 'Accessibility' },
+]
+
+export const TYPE_FOUNDATION_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'usage', label: 'Usage' },
+  { id: 'tokens', label: 'Scale' },
+  { id: 'stack', label: 'Stack' },
+  { id: 'accessibility', label: 'Accessibility' },
 ]
 
 export const ICONS_TOC: DocsTocItem[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'usage', label: 'Usage' },
+  { id: 'library', label: 'Library' },
+  { id: 'accessibility', label: 'Accessibility' },
 ]
 
 export const FLAGS_TOC: DocsTocItem[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'usage', label: 'Usage' },
+  { id: 'library', label: 'Library' },
   { id: 'props', label: 'Props' },
+  { id: 'accessibility', label: 'Accessibility' },
 ]
+
+export const GUIDE_SLUGS = new Set([
+  'heading',
+  'subhead',
+  'body',
+  'caption',
+  'eyebrow',
+  'label',
+  'icon-button',
+  'switch',
+  'segmented-control',
+  'confirm-action',
+  'brand-logo',
+  'theme-toggle',
+  'theme-icon-toggle',
+  ...DOCS_PRIMITIVE_IDS,
+])

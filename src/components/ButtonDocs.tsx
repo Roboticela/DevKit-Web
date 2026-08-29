@@ -10,17 +10,18 @@ import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { brand } from '@/lib/devkit'
 import { Badge } from './Badge'
 import { Button, type ButtonSize, type ButtonVariant } from './Button'
-import { Callout } from './Callout'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup, DocsUsage } from './DocsCard'
+import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
 import { Dropdown } from './Dropdown'
 import { PropsTable, type PropRow } from './PropsTable'
 import { RelatedCard } from './RelatedCard'
 import { SegmentedControl } from './SegmentedControl'
 import { Switch } from './Switch'
-import { Caption } from './Text'
+import { Body, Caption } from './Text'
 
 type DemoVariant = 'primary' | 'secondary' | 'action' | 'ghost' | 'destructive'
 type DemoState = 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 'loading'
@@ -190,7 +191,7 @@ export function ButtonDocs() {
       <DocsHeader
         crumb="Components / Actions / Button"
         title="Button"
-        description="A pressable control that triggers an action."
+        description="The main control for running an action. Use one primary button on a screen."
       >
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <Badge tone="verified">
@@ -202,6 +203,38 @@ export function ButtonDocs() {
           <Badge tone="muted">Android</Badge>
         </div>
       </DocsHeader>
+
+      <section id="usage" className="mt-10 scroll-mt-20">
+        <DocsSectionTitle>Usage</DocsSectionTitle>
+        <DocsUsage>
+          <DocsProse>
+            <Body>
+              Button is the primary way to trigger an action. One primary per view. Secondary, action, and ghost sit
+              beside it. Danger is destructive only. Height is 44px at medium — the same as fields — so a form row
+              aligns.
+            </Body>
+          </DocsProse>
+          <DocsPrinciples
+            items={[
+              { title: 'One primary', body: 'Filled brand-primary is the commit. Everything else is quieter on purpose.' },
+              { title: 'Verb first', body: 'Continue, Save, Delete. Not “Click here” and not a raw icon without a word.' },
+              { title: 'Loading replaces', body: 'The label becomes a status string and the control is inert until the promise settles.' },
+            ]}
+          />
+          <DocsDoDont
+            doItems={[
+              'Use primary for the happy path, secondary for an alternate, ghost for dismiss.',
+              'Pass fullWidth={false} when the button sits in a toolbar. The default is full width for forms.',
+              'Use leading or trailing icons to reinforce a direction, not to decorate.',
+            ]}
+            dontItems={[
+              'Do not place two primary buttons in the same view.',
+              'Do not use danger for a routine cancel.',
+              'Do not leave a loading button pressable — loading already disables it.',
+            ]}
+          />
+        </DocsUsage>
+      </section>
 
       <section id="live-demo" className="mt-8 scroll-mt-20 animate-docs-demo-in motion-reduce:animate-none">
         <DocsDemoPanel
@@ -215,6 +248,8 @@ export function ButtonDocs() {
             <>
               <SegmentedControl
                 label="Variant"
+                size="sm"
+                fullWidth
                 value={variant}
                 onChange={setVariant}
                 options={VARIANTS.map((value) => ({
@@ -224,6 +259,7 @@ export function ButtonDocs() {
               />
               <SegmentedControl
                 label="Size"
+                size="sm"
                 value={size}
                 onChange={setSize}
                 options={SIZES.map((value) => ({ value, label: SIZE_LABEL[value] }))}
@@ -270,31 +306,25 @@ export function ButtonDocs() {
 
       <section id="states" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>States</DocsSectionTitle>
-        <div className="flex flex-col gap-8">
+        <DocsStack gap={8}>
           {VARIANTS.map((demoVariant) => (
-            <div key={demoVariant}>
-              <Caption className="mb-3 font-medium" tone="secondary">
-                {VARIANT_LABEL[demoVariant]}
-              </Caption>
-              <div className="grid grid-cols-2 gap-4 min-[480px]:grid-cols-3 min-[1068px]:grid-cols-6">
+            <DocsStateGroup key={demoVariant} title={VARIANT_LABEL[demoVariant]}>
+              <DocsStateGrid columns={6}>
                 {STATES.map((item) => (
-                  <div key={item.value} className="flex flex-col gap-2">
-                    <div className="pointer-events-none flex h-[100px] items-center justify-center rounded-xl bg-bg-secondary px-4">
-                      <DemoButton
-                        variant={demoVariant}
-                        size="md"
-                        state={item.value}
-                        icon="right"
-                        fullWidth={false}
-                      />
-                    </div>
-                    <Caption align="center">{item.label}</Caption>
-                  </div>
+                  <DocsStateCard key={item.value} label={item.label} inert>
+                    <DemoButton
+                      variant={demoVariant}
+                      size="md"
+                      state={item.value}
+                      icon="right"
+                      fullWidth={false}
+                    />
+                  </DocsStateCard>
                 ))}
-              </div>
-            </div>
+              </DocsStateGrid>
+            </DocsStateGroup>
           ))}
-        </div>
+        </DocsStack>
       </section>
 
       <section id="props" className="mt-12 scroll-mt-20">
@@ -303,38 +333,44 @@ export function ButtonDocs() {
       </section>
 
       <section id="accessibility" className="mt-8 scroll-mt-20">
-        <Callout>
-          <ul className="m-0 list-disc space-y-1.5 pl-4">
-            <li>Reachable and activatable with the keyboard — Tab to focus, Space or Enter to press.</li>
-            <li>
-              Uses a native <code className="font-mono text-[12px]">button</code> element, so{' '}
-              <code className="font-mono text-[12px]">role=&quot;button&quot;</code> is not required.
-            </li>
-            <li>Focus is a 2px brand ring. Disabled and loading states are not focusable.</li>
-            <li>Loading replaces the label with a status string and exposes a busy spinner.</li>
-          </ul>
-        </Callout>
+        <DocsSectionTitle>Accessibility</DocsSectionTitle>
+        <A11ySection
+          intro="A button is a native control. Do not recreate it with a clickable div."
+          items={[
+            'Uses a native button element, so role="button" is not required.',
+            'Tab to focus. Space or Enter to press. Focus is a 2px brand ring.',
+            'Disabled and loading are not focusable and cannot be activated.',
+            'Loading replaces the label with a status string and exposes a busy spinner.',
+            'Icon-only actions belong on Icon Button, which requires an accessible label.',
+            'fullWidth defaults to true for forms. Pass false in toolbars so the hit target is the pill, not the row.',
+          ]}
+          keys={[
+            { keys: ['Tab'], action: 'Focus the button' },
+            { keys: ['Space'], action: 'Activate' },
+            { keys: ['Enter'], action: 'Activate' },
+          ]}
+        />
       </section>
 
       <section className="mt-12">
         <DocsSectionTitle className="mb-3">Related</DocsSectionTitle>
-        <div className="grid grid-cols-1 gap-3 min-[735px]:grid-cols-3">
+        <DocsRelated>
           <RelatedCard
             href="/components/icon-button"
             title="Icon Button"
-            description="A compact control for a single icon action."
+            description="A compact button that shows only a glyph."
           />
           <RelatedCard
             href="/components/switch"
             title="Switch"
-            description="A two-state control for an immediate setting."
+            description="An immediate on or off setting."
           />
           <RelatedCard
             href="/components/segmented-control"
             title="Segmented Control"
-            description="A mutually exclusive set of options."
+            description="A small set of options where only one can be selected."
           />
-        </div>
+        </DocsRelated>
       </section>
 
       <DocsPager className="mt-12" {...adjacentDocs(DOCS_ITEMS, 'button')} />
