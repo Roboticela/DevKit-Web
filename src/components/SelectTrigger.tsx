@@ -1,7 +1,9 @@
 'use client'
 
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react'
-import { ChevronDown } from 'lucide-react'
+import {
+  DkChevronCaretDown
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { CONTROL_TRIGGER, EASE, OPEN_RING } from '@/lib/styles'
 
@@ -52,7 +54,7 @@ export function SelectTrigger({
         )}
         aria-hidden="true"
       >
-        <ChevronDown size={chevronSize} strokeWidth={1.75} absoluteStrokeWidth />
+        <DkChevronCaretDown size={chevronSize} strokeWidth={1.75} absoluteStrokeWidth />
       </span>
     </button>
   )

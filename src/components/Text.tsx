@@ -90,6 +90,7 @@ export type TextProps = {
   align?: TextAlign
   as?: ElementType
   className?: string
+  htmlFor?: string
   children: ReactNode
 } & HTMLAttributes<HTMLElement>
 

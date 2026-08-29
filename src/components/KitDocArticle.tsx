@@ -1,7 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { adjacentDocs, DOCS_ITEMS, findDocContext, DOCS_NAV } from '@/lib/docs-catalog'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
@@ -18,6 +17,7 @@ export function KitDocArticle({
   demo,
   code,
   states,
+  statesContent,
   props,
   fadeKey,
   wide = false,
@@ -28,14 +28,16 @@ export function KitDocArticle({
   demo: ReactNode
   code: string
   states?: { label: string; node: ReactNode }[]
+  statesContent?: ReactNode
   props: PropRow[]
   fadeKey?: string
   wide?: boolean
 }) {
-  const router = useRouter()
+  const [replay, setReplay] = useState(0)
   const ctx = findDocContext(DOCS_NAV, slug)
   const related = (ctx?.section.items ?? []).filter((item) => item.id !== slug).slice(0, 3)
   const pager = adjacentDocs(DOCS_ITEMS, slug)
+  const demoKey = `${fadeKey ?? slug}-${replay}`
 
   return (
     <article>
@@ -47,9 +49,9 @@ export function KitDocArticle({
 
       <section id="live-demo" className="mt-8 scroll-mt-20 animate-docs-demo-in motion-reduce:animate-none">
         <DocsDemoPanel
-          fadeKey={fadeKey}
-          onCopy={() => void navigator.clipboard.writeText(code)}
-          onPlayground={() => router.push('/')}
+          fadeKey={demoKey}
+          onCopy={() => navigator.clipboard.writeText(code)}
+          onReplay={() => setReplay((current) => current + 1)}
         >
           <div className={wide ? 'w-full' : 'w-full max-w-[460px]'}>{demo}</div>
         </DocsDemoPanel>
@@ -58,19 +60,21 @@ export function KitDocArticle({
         </div>
       </section>
 
-      {states?.length ? (
+      {statesContent || states?.length ? (
         <section id="states" className="mt-12 scroll-mt-20">
           <DocsSectionTitle>States</DocsSectionTitle>
-          <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
-            {states.map((item) => (
-              <div key={item.label} className="flex flex-col gap-2">
-                <div className="flex min-h-[100px] items-center justify-center rounded-xl bg-bg-secondary px-4 py-6">
-                  {item.node}
+          {statesContent ?? (
+            <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3">
+              {states!.map((item) => (
+                <div key={item.label} className="flex flex-col gap-2">
+                  <div className="flex min-h-[100px] items-center justify-center rounded-xl bg-bg-secondary px-4 py-6">
+                    {item.node}
+                  </div>
+                  <Caption align="center">{item.label}</Caption>
                 </div>
-                <Caption align="center">{item.label}</Caption>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
       ) : null}
 

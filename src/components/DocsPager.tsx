@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { cn } from '@/lib/cn'
-import { EASE } from '@/lib/styles'
 import { Label } from './Text'
 
 export function DocsPager({
@@ -20,14 +19,9 @@ export function DocsPager({
       {prev ? (
         <Link
           href={prev.href}
-          className={cn(
-            'text-sm font-medium text-text-secondary no-underline',
-            'transition-colors duration-150',
-            EASE,
-            'hover:text-brand-primary',
-          )}
+          className="group no-underline"
         >
-          <Label as="span" tone="secondary" className="transition-colors duration-150 hover:text-brand-primary">
+          <Label as="span" tone="secondary" className="group-hover:text-brand-primary">
             ← {prev.label}
           </Label>
         </Link>
@@ -37,14 +31,9 @@ export function DocsPager({
       {next ? (
         <Link
           href={next.href}
-          className={cn(
-            'text-sm font-medium text-text-secondary no-underline',
-            'transition-colors duration-150',
-            EASE,
-            'hover:text-brand-primary',
-          )}
+          className="group no-underline"
         >
-          <Label as="span" tone="secondary" className="transition-colors duration-150 hover:text-brand-primary">
+          <Label as="span" tone="secondary" className="group-hover:text-brand-primary">
             {next.label} →
           </Label>
         </Link>

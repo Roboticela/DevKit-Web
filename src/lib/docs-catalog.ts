@@ -53,11 +53,13 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('colors', 'Colors', 'Foundations', 'Brand, semantic, and neutral tokens.'),
       c('typography', 'Typography', 'Foundations', 'Type scale, weight, and tracking.'),
       c('spacing', 'Spacing', 'Foundations', 'The spacing scale used across the kit.'),
-      c('icons', 'Icons', 'Foundations', 'Brand marks, flags, and icon treatment.'),
+      c('radius', 'Radius', 'Foundations', 'Corner radii for fields, cards, and pills.'),
+      c('layout', 'Layout', 'Foundations', 'Breakpoints, content widths, and page padding.'),
+      c('icons', 'Icons', 'Foundations', 'A searchable local icon set tagged by meaning.'),
       c('brand-logo', 'Brand Logo', 'Foundations', 'The product mark, wordmark, and lockup.'),
       c('theme-toggle', 'Theme Toggle', 'Foundations', 'Light and dark with a labeled switch, or the switch alone.'),
-      c('theme-icon-toggle', 'Theme Icon Toggle', 'Foundations', 'An icon-only control for light and dark.'),
-      c('country-flag', 'Country Flag', 'Foundations', 'A flag glyph for a country ISO code.'),
+      c('theme-icon-toggle', 'Theme Icon Toggle', 'Foundations', 'An icon-only control for light and dark, including both icons at once.'),
+      c('country-flag', 'Country Flag', 'Foundations', 'Searchable flags for every ISO country code.'),
     ],
   },
   {
@@ -79,7 +81,7 @@ export const DOCS_NAV: DocsNavSection[] = [
     items: [
       c('button', 'Button', 'Buttons', 'A pressable control that triggers an action.'),
       c('icon-button', 'Icon Button', 'Buttons', 'A compact control for a single icon action.'),
-      c('switch', 'Switch', 'Buttons', 'A two-state control for an immediate setting.'),
+      c('switch', 'Switch', 'Buttons', 'A two-state control, including grouped rows and color variants.'),
       c('segmented-control', 'Segmented Control', 'Buttons', 'A mutually exclusive set of options.'),
       c('confirm-action', 'Confirm Action', 'Buttons', 'A two-tap destructive text action.'),
     ],
@@ -187,7 +189,7 @@ export const DOCS_NAV: DocsNavSection[] = [
 
 export const DOCS_ITEMS: DocsNavItem[] = DOCS_NAV.flatMap((section) => section.items)
 
-export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'icons'])
+export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'radius', 'layout', 'icons'])
 
 export const COMPONENT_ALIASES: Record<string, string> = {
   toggle: 'switch',
@@ -273,4 +275,15 @@ export const KIT_TOC: DocsTocItem[] = [
 export const FOUNDATION_TOC: DocsTocItem[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'tokens', label: 'Tokens' },
+]
+
+export const ICONS_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'usage', label: 'Usage' },
+]
+
+export const FLAGS_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'usage', label: 'Usage' },
+  { id: 'props', label: 'Props' },
 ]

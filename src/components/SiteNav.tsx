@@ -2,9 +2,15 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, Search, ShoppingBag, X } from 'lucide-react'
+import {
+  DkNavigationMenuBars,
+  DkMagnifyingGlassFind,
+  DkShoppingBagPurchase,
+  DkCloseDismissCancel
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { BrandLogo } from './BrandLogo'
+import { IconButton } from './IconButton'
 import { ThemeToggle } from './ThemeToggle'
 
 const LINKS = [
@@ -55,22 +61,14 @@ export function SiteNav({ active = 'Products' }: { active?: string }) {
               </li>
             ))}
             <li className="flex h-11 shrink-0 items-center">
-              <button
-                type="button"
-                className="inline-flex size-11 items-center justify-center border-0 bg-transparent text-text-primary"
-                aria-label="Search"
-              >
-                <Search {...ICON} />
-              </button>
+              <IconButton label="Search">
+                <DkMagnifyingGlassFind {...ICON} />
+              </IconButton>
             </li>
             <li className="flex h-11 shrink-0 items-center">
-              <button
-                type="button"
-                className="inline-flex size-11 items-center justify-center border-0 bg-transparent text-text-primary"
-                aria-label="Bag"
-              >
-                <ShoppingBag {...ICON} />
-              </button>
+              <IconButton label="Bag">
+                <DkShoppingBagPurchase {...ICON} />
+              </IconButton>
             </li>
             <li className="flex h-11 shrink-0 items-center">
               <ThemeToggle compact />
@@ -81,14 +79,12 @@ export function SiteNav({ active = 'Products' }: { active?: string }) {
             <Link href="/" className="inline-flex items-center text-text-primary no-underline">
               <BrandLogo variant="text" size={20} />
             </Link>
-            <button
-              type="button"
-              className="inline-flex size-11 items-center justify-center border-0 bg-transparent text-text-primary"
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            <IconButton
+              label={menuOpen ? 'Close menu' : 'Open menu'}
               onClick={() => setMenuOpen((current) => !current)}
             >
-              {menuOpen ? <X {...ICON} /> : <Menu {...ICON} />}
-            </button>
+              {menuOpen ? <DkCloseDismissCancel {...ICON} /> : <DkNavigationMenuBars {...ICON} />}
+            </IconButton>
           </div>
         </div>
       </div>

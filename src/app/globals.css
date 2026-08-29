@@ -354,6 +354,15 @@ html[data-theme="dark"] {
   }
 }
 
+.dk-brand-logo {
+  transition: opacity 300ms var(--ease-apple);
+}
+
+a:hover .dk-brand-logo,
+button:hover .dk-brand-logo {
+  opacity: 0.72;
+}
+
 .docs-demo-grid {
   background-image: radial-gradient(circle, var(--border-default) 1px, transparent 1px);
   background-size: 16px 16px;

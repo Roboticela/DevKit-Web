@@ -1,7 +1,9 @@
 'use client'
 
 import type { CSSProperties, ReactNode, RefObject } from 'react'
-import { Search } from 'lucide-react'
+import {
+  DkMagnifyingGlassFind
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { MENU_SEARCH_INPUT, MENU_SURFACE } from '@/lib/styles'
 
@@ -53,7 +55,7 @@ export function SelectSearch({
         className="pointer-events-none absolute top-1/2 left-3 inline-flex -translate-y-1/2 text-text-tertiary"
         aria-hidden="true"
       >
-        <Search size={16} strokeWidth={1.75} absoluteStrokeWidth />
+        <DkMagnifyingGlassFind size={16} strokeWidth={1.75} absoluteStrokeWidth />
       </span>
       <input
         ref={searchRef}

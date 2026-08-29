@@ -2,13 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import {
+  DkNavigationMenuBars,
+  DkCloseDismissCancel,
+  DkGithubOctocatBrandLogo,
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { BrandLogo } from './BrandLogo'
 import { CommandPalette } from './CommandPalette'
+import { IconButton } from './IconButton'
 import { DocsSearchTrigger } from './DocsSearchTrigger'
-import { GitHubMark } from './GitHubMark'
 import { ThemeIconToggle } from './ThemeIconToggle'
 
 const TABS = [
@@ -44,18 +48,18 @@ export function DocsNav({
     <>
       <header className="sticky top-0 z-[200] h-[52px] border-b border-border-default bg-bg-secondary">
         <div className="relative flex h-full items-center gap-3 px-4 min-[735px]:px-6">
-          <button
-            type="button"
-            className="inline-flex size-9 cursor-pointer items-center justify-center rounded-[10px] border-0 bg-transparent text-text-secondary hover:bg-bg-hover min-[1024px]:hidden"
-            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+          <IconButton
+            label={menuOpen ? 'Close navigation' : 'Open navigation'}
+            size="sm"
+            className="text-text-secondary min-[1024px]:hidden"
             onClick={onMenu}
           >
             {menuOpen ? (
-              <X size={18} strokeWidth={1.75} absoluteStrokeWidth />
+              <DkCloseDismissCancel size={18} strokeWidth={1.75} absoluteStrokeWidth />
             ) : (
-              <Menu size={18} strokeWidth={1.75} absoluteStrokeWidth />
+              <DkNavigationMenuBars size={18} strokeWidth={1.75} absoluteStrokeWidth />
             )}
-          </button>
+          </IconButton>
 
           <Link href="/components/button" className="inline-flex items-center text-text-primary no-underline">
             <BrandLogo variant="lockup" size={20} />
@@ -103,7 +107,7 @@ export function DocsNav({
               aria-label="GitHub"
               className="inline-flex size-9 items-center justify-center rounded-[10px] text-text-secondary no-underline hover:bg-bg-hover hover:text-text-primary"
             >
-              <GitHubMark size={16} />
+              <DkGithubOctocatBrandLogo size={16} />
             </a>
           </div>
         </div>

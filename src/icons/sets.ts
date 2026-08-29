@@ -1,0 +1,41 @@
+export const ICON_PACKS = [
+  { id: 'kit', label: 'Kit' },
+  { id: 'lucide', label: 'Lucide' },
+  { id: 'fa', label: 'Font Awesome 5' },
+  { id: 'fa6', label: 'Font Awesome 6' },
+  { id: 'md', label: 'Material' },
+  { id: 'hi', label: 'Heroicons' },
+  { id: 'hi2', label: 'Heroicons 2' },
+  { id: 'fi', label: 'Feather' },
+  { id: 'bs', label: 'Bootstrap' },
+  { id: 'bi', label: 'Boxicons' },
+  { id: 'ai', label: 'Ant Design' },
+  { id: 'ri', label: 'Remix' },
+  { id: 'tb', label: 'Tabler' },
+  { id: 'gi', label: 'Game Icons' },
+  { id: 'io', label: 'Ionicons 4' },
+  { id: 'io5', label: 'Ionicons 5' },
+  { id: 'si', label: 'Simple Icons' },
+  { id: 'go', label: 'Octicons' },
+  { id: 'di', label: 'Devicons' },
+  { id: 'gr', label: 'Grommet' },
+  { id: 'cg', label: 'css.gg' },
+  { id: 'vsc', label: 'VS Code' },
+  { id: 'wi', label: 'Weather' },
+  { id: 'im', label: 'IcoMoon' },
+  { id: 'fc', label: 'Flat Color' },
+  { id: 'ti', label: 'Typicons' },
+  { id: 'ci', label: 'Circum' },
+  { id: 'tfi', label: 'Themify' },
+  { id: 'sl', label: 'Simple Line' },
+  { id: 'rx', label: 'Radix' },
+  { id: 'pi', label: 'Phosphor' },
+  { id: 'lia', label: 'Line Awesome' },
+  { id: 'lu', label: 'Lucide (RI)' },
+] as const
+
+export type IconPackId = (typeof ICON_PACKS)[number]['id']
+
+export const REACT_ICON_PACKS = ICON_PACKS.filter(
+  (pack) => pack.id !== 'kit' && pack.id !== 'lucide',
+)

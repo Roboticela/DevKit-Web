@@ -2,7 +2,9 @@
 
 import { useEffect, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { X } from 'lucide-react'
+import {
+  DkCloseDismissCancel
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { IconButton } from './IconButton'
 import { Body, Heading } from './Text'
@@ -53,7 +55,7 @@ export function Modal({
         aria-modal="true"
         aria-labelledby="modal-title"
         className={cn(
-          'relative z-[1] w-full max-w-[440px] rounded-t-[20px] border border-border-default bg-bg-elevated p-6',
+          'relative z-[1] w-full max-h-[min(92dvh,760px)] max-w-[440px] overflow-y-auto overscroll-contain rounded-t-[20px] border border-border-default bg-bg-elevated p-6',
           'dark:bg-bg-secondary',
           'min-[735px]:rounded-2xl min-[735px]:p-8',
           'animate-select-in motion-reduce:animate-none',
@@ -61,11 +63,11 @@ export function Modal({
         )}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
-          <Heading level={3} as="h2" id="modal-title">
+          <Heading level={3} as="h2" id="modal-title" className="min-w-0 break-all">
             {title}
           </Heading>
           <IconButton label="Close" size="sm" onClick={onClose}>
-            <X size={16} strokeWidth={1.75} absoluteStrokeWidth />
+            <DkCloseDismissCancel size={16} strokeWidth={1.75} absoluteStrokeWidth />
           </IconButton>
         </div>
         <Body size="sm" as="div">

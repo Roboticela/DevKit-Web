@@ -1,7 +1,9 @@
 'use client'
 
 import type { ButtonHTMLAttributes } from 'react'
-import { Fingerprint } from 'lucide-react'
+import {
+  DkFingerprintBiometricScan
+} from '@/icons'
 import { AuthProviderButton } from './AuthProviderButton'
 
 type PasskeyButtonProps = {
@@ -16,7 +18,7 @@ export function PasskeyButton({
 }: PasskeyButtonProps) {
   return (
     <AuthProviderButton
-      icon={<Fingerprint size={18} strokeWidth={1.75} absoluteStrokeWidth />}
+      icon={<DkFingerprintBiometricScan size={18} strokeWidth={1.75} absoluteStrokeWidth />}
       loading={loading}
       loadingText="Waiting for passkey…"
       {...rest}

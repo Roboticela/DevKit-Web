@@ -1,8 +1,11 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
+import {
+  DkArrowDirectionLeft,
+  DkArrowDirectionRight,
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { brand } from '@/lib/devkit'
 import { Badge } from './Badge'
@@ -120,8 +123,8 @@ function buildSnippet(opts: {
   if (opts.fullWidth) attrs.push('fullWidth')
   if (opts.state === 'disabled') attrs.push('disabled')
   if (opts.state === 'loading') attrs.push('loading')
-  if (opts.icon === 'left') attrs.push('leading={<ArrowLeft />}')
-  if (opts.icon === 'right') attrs.push('trailing={<ArrowRight />}')
+  if (opts.icon === 'left') attrs.push('leading={<DkArrowDirectionLeft />}')
+  if (opts.icon === 'right') attrs.push('trailing={<DkArrowDirectionRight />}')
 
   return `import { Button } from '@${brand.companyName.toLowerCase()}/devkit'\n\n<Button ${attrs.join(' ')}>\n  Button\n</Button>\n`
 }
@@ -151,8 +154,8 @@ function DemoButton({
       loading={state === 'loading'}
       loadingText="Loading..."
       preview={preview ?? previewOf(state)}
-      leading={icon === 'left' ? <ArrowLeft {...arrow} /> : undefined}
-      trailing={icon === 'right' ? <ArrowRight {...arrow} /> : undefined}
+      leading={icon === 'left' ? <DkArrowDirectionLeft {...arrow} /> : undefined}
+      trailing={icon === 'right' ? <DkArrowDirectionRight {...arrow} /> : undefined}
     >
       Button
     </Button>
@@ -160,19 +163,19 @@ function DemoButton({
 }
 
 export function ButtonDocs() {
-  const router = useRouter()
   const [variant, setVariant] = useState<DemoVariant>(DEFAULTS.variant)
   const [size, setSize] = useState<ButtonSize>(DEFAULTS.size)
   const [state, setState] = useState<DemoState>(DEFAULTS.state)
   const [icon, setIcon] = useState<DemoIcon>(DEFAULTS.icon)
   const [fullWidth, setFullWidth] = useState(DEFAULTS.fullWidth)
   const [grid, setGrid] = useState(false)
+  const [replay, setReplay] = useState(0)
 
   const code = useMemo(
     () => buildSnippet({ variant, size, state, icon, fullWidth }),
     [variant, size, state, icon, fullWidth],
   )
-  const fadeKey = `${variant}-${size}-${state}-${icon}-${fullWidth}`
+  const fadeKey = `${variant}-${size}-${state}-${icon}-${fullWidth}-${replay}`
 
   function reset() {
     setVariant(DEFAULTS.variant)
@@ -191,7 +194,7 @@ export function ButtonDocs() {
       >
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <Badge tone="verified">
-            <Check size={10} strokeWidth={2.5} absoluteStrokeWidth />
+            <DkTaskCompleteCheckmark size={10} strokeWidth={2.5} absoluteStrokeWidth />
             Stable
           </Badge>
           <Badge tone="muted">Web</Badge>
@@ -204,8 +207,8 @@ export function ButtonDocs() {
         <DocsDemoPanel
           fadeKey={fadeKey}
           grid={grid}
-          onCopy={() => void navigator.clipboard.writeText(code)}
-          onPlayground={() => router.push('/')}
+          onCopy={() => navigator.clipboard.writeText(code)}
+          onReplay={() => setReplay((current) => current + 1)}
           onReset={reset}
           onToggleGrid={() => setGrid((open) => !open)}
           controls={

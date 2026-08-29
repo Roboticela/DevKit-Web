@@ -1,7 +1,10 @@
 'use client'
 
-import { Search } from 'lucide-react'
+import {
+  DkMagnifyingGlassFind
+} from '@/icons'
 import { cn } from '@/lib/cn'
+import { IconButton } from './IconButton'
 import { Kbd } from './Kbd'
 
 export function DocsSearchTrigger({
@@ -17,18 +20,14 @@ export function DocsSearchTrigger({
 }) {
   if (compact) {
     return (
-      <button
-        type="button"
+      <IconButton
+        label={placeholder}
+        size="sm"
+        className={cn('text-text-tertiary hover:text-text-primary', className)}
         onClick={onClick}
-        aria-label={placeholder}
-        className={cn(
-          'inline-flex size-9 cursor-pointer items-center justify-center rounded-[10px] border-0 bg-transparent text-text-tertiary',
-          'hover:bg-bg-hover hover:text-text-primary',
-          className,
-        )}
       >
-        <Search size={16} strokeWidth={1.75} absoluteStrokeWidth />
-      </button>
+        <DkMagnifyingGlassFind size={16} strokeWidth={1.75} absoluteStrokeWidth />
+      </IconButton>
     )
   }
 
@@ -42,7 +41,7 @@ export function DocsSearchTrigger({
         className,
       )}
     >
-      <Search size={14} strokeWidth={1.75} absoluteStrokeWidth className="shrink-0 text-text-tertiary" />
+      <DkMagnifyingGlassFind size={14} strokeWidth={1.75} absoluteStrokeWidth className="shrink-0 text-text-tertiary" />
       <span className="min-w-0 flex-1 truncate text-[13px] font-normal text-text-tertiary">
         {placeholder}
       </span>

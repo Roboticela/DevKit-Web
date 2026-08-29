@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { DocsChrome } from "@/components/DocsChrome";
 import { ThemeProvider } from "@/lib/theme";
 import "./globals.css";
 
@@ -18,7 +19,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <DocsChrome>{children}</DocsChrome>
+        </ThemeProvider>
       </body>
     </html>
   );

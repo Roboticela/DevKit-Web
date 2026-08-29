@@ -2,14 +2,9 @@
 
 import Link from 'next/link'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
-import { BrandLogo } from './BrandLogo'
-import { CountryFlag } from './CountryFlag'
 import { DocsHeader } from './DocsCopy'
 import { DocsPager } from './DocsPager'
-import { GitHubMark } from './GitHubMark'
-import { GoogleMark } from './GoogleMark'
-import { AppleMark } from './providerMarks'
-import { Text, type TextVariant } from './Text'
+import { Caption, Heading, Label, Subhead, type TextVariant } from './Text'
 
 const COLOR_GROUPS = [
   {
@@ -49,6 +44,27 @@ const TYPE_ROWS: { role: string; variant: TextVariant; size: string; weight: str
 
 const SPACE = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128]
 
+const RADII = [
+  { value: 8, label: 'Control', use: 'Fields and compact controls.' },
+  { value: 12, label: 'Card', use: 'Small cards and grouped lists.' },
+  { value: 18, label: 'Panel', use: 'Large cards, images, and dialogs.' },
+  { value: 980, label: 'Pill', use: 'Buttons and chip-like controls.' },
+] as const
+
+const BREAKPOINTS = [
+  { query: '≤ 734px', label: 'Mobile', padding: '22px', columns: '1, 16px gutters' },
+  { query: '735–1068px', label: 'Tablet', padding: '40px', columns: '12, 24px gutters' },
+  { query: '≥ 1069px', label: 'Desktop', padding: 'min(5vw, 80px)', columns: '12, 24px gutters' },
+] as const
+
+const WIDTHS = [
+  { value: 692, use: 'Single-column copy' },
+  { value: 760, use: 'Docs article' },
+  { value: 900, use: 'Wide docs' },
+  { value: 980, use: 'Text-focused marketing' },
+  { value: 1024, use: 'Marketing sections and site nav' },
+] as const
+
 function FoundationFrame({
   slug,
   title,
@@ -78,7 +94,9 @@ export function FoundationDocs({ slug }: { slug: string }) {
         <div className="flex flex-col gap-8">
           {COLOR_GROUPS.map((group) => (
             <div key={group.label}>
-              <h2 className="m-0 mb-3 text-[13px] font-medium text-text-secondary">{group.label}</h2>
+              <Caption as="h2" tone="secondary" className="mb-3 font-medium">
+                {group.label}
+              </Caption>
               <div className="grid grid-cols-2 gap-3 min-[735px]:grid-cols-4">
                 {group.tokens.map((token) => (
                   <div key={token} className="overflow-hidden rounded-xl border border-border-default">
@@ -99,10 +117,14 @@ export function FoundationDocs({ slug }: { slug: string }) {
       <FoundationFrame slug={slug} title="Typography" description="Type scale, weight, and tracking.">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
-            <Text variant="h2">Almost before we knew it, we had left the ground.</Text>
-            <Text variant="subhead">Use Heading, Subhead, and Body for page copy. Tokens live here; components live under Typography.</Text>
-            <Link href="/components/text" className="w-fit text-[17px] font-medium text-text-link no-underline">
-              Open Text
+            <Heading level={2}>Almost before we knew it, we had left the ground.</Heading>
+            <Subhead>
+              Use Heading, Subhead, and Body for page copy. Tokens live here; components live under Typography.
+            </Subhead>
+            <Link href="/components/text" className="w-fit no-underline">
+              <Label as="span" tone="link">
+                Open Text
+              </Label>
             </Link>
           </div>
           <div className="overflow-x-auto rounded-xl border border-border-default">
@@ -149,23 +171,95 @@ export function FoundationDocs({ slug }: { slug: string }) {
     )
   }
 
-  return (
-    <FoundationFrame slug={slug} title="Icons" description="Brand marks, flags, and icon treatment.">
-      <div className="grid grid-cols-3 gap-4 min-[735px]:grid-cols-6">
-        {[
-          ['Logo', <BrandLogo key="logo" size={28} />],
-          ['Icon', <BrandLogo key="icon" variant="icon" size={28} />],
-          ['Google', <GoogleMark key="g" size={22} />],
-          ['GitHub', <GitHubMark key="gh" size={22} />],
-          ['Apple', <AppleMark key="a" size={22} />],
-          ['US', <CountryFlag key="us" iso="US" size={22} />],
-        ].map(([label, node]) => (
-          <div key={String(label)} className="flex flex-col items-center gap-2 rounded-xl bg-bg-secondary px-3 py-6">
-            {node}
-            <span className="text-[11px] text-text-tertiary">{label}</span>
+  if (slug === 'radius') {
+    return (
+      <FoundationFrame slug={slug} title="Radius" description="Corner radii for fields, cards, and pills.">
+        <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2">
+          {RADII.map((item) => (
+            <div
+              key={item.value}
+              className="flex items-center gap-4 rounded-[12px] bg-bg-secondary px-4 py-4"
+            >
+              <div
+                className="h-11 w-[72px] shrink-0 bg-bg-tertiary"
+                style={{ borderRadius: item.value }}
+              />
+              <div className="min-w-0">
+                <Label as="p">{item.label}</Label>
+                <Caption className="mt-1 font-mono">{item.value}px</Caption>
+                <Caption tone="secondary" className="mt-1">
+                  {item.use}
+                </Caption>
+              </div>
+            </div>
+          ))}
+        </div>
+      </FoundationFrame>
+    )
+  }
+
+  if (slug === 'layout') {
+    return (
+      <FoundationFrame
+        slug={slug}
+        title="Layout"
+        description="Breakpoints, content widths, and page padding."
+      >
+        <div className="flex flex-col gap-8">
+          <div>
+            <Caption as="h2" tone="secondary" className="mb-3 font-medium">
+              Breakpoints
+            </Caption>
+            <div className="overflow-x-auto rounded-[12px] border border-border-default">
+              <table className="w-full min-w-[480px] border-collapse text-left text-[13px]">
+                <thead>
+                  <tr className="border-b border-border-subtle bg-bg-secondary">
+                    <th className="px-4 py-2 font-medium text-text-secondary">Range</th>
+                    <th className="px-4 py-2 font-medium text-text-secondary">Name</th>
+                    <th className="px-4 py-2 font-medium text-text-secondary">Edge padding</th>
+                    <th className="px-4 py-2 font-medium text-text-secondary">Grid</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {BREAKPOINTS.map((row) => (
+                    <tr key={row.label} className="border-b border-border-subtle last:border-0">
+                      <td className="px-4 py-2 font-mono text-text-primary">{row.query}</td>
+                      <td className="px-4 py-2 text-text-primary">{row.label}</td>
+                      <td className="px-4 py-2 font-mono text-text-secondary">{row.padding}</td>
+                      <td className="px-4 py-2 text-text-secondary">{row.columns}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        ))}
-      </div>
-    </FoundationFrame>
-  )
+          <div>
+            <Caption as="h2" tone="secondary" className="mb-3 font-medium">
+              Content width
+            </Caption>
+            <div className="flex flex-col gap-3">
+              {WIDTHS.map((item) => (
+                <div key={item.value} className="flex items-center gap-4">
+                  <span className="w-10 shrink-0 font-mono text-[12px] text-text-tertiary">
+                    {item.value}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div
+                      className="h-3 max-w-full rounded-[4px] bg-brand-primary"
+                      style={{ width: `${Math.round((item.value / 1024) * 100)}%` }}
+                    />
+                    <Caption tone="secondary" className="mt-1">
+                      {item.use}
+                    </Caption>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </FoundationFrame>
+    )
+  }
+
+  return null
 }

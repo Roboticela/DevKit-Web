@@ -1,8 +1,9 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Check } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { Badge } from './Badge'
@@ -124,14 +125,14 @@ function snippet(variant: TextVariant, tone: TextTone, align: TextAlign) {
 }
 
 export function TextDocs() {
-  const router = useRouter()
   const [variant, setVariant] = useState<TextVariant>('h1')
   const [tone, setTone] = useState<TextTone>('primary')
   const [align, setAlign] = useState<TextAlign>('start')
   const [grid, setGrid] = useState(false)
+  const [replay, setReplay] = useState(0)
 
   const code = useMemo(() => snippet(variant, tone, align), [variant, tone, align])
-  const fadeKey = `${variant}-${tone}-${align}`
+  const fadeKey = `${variant}-${tone}-${align}-${replay}`
 
   function reset() {
     setVariant('h1')
@@ -153,7 +154,7 @@ export function TextDocs() {
       >
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <Badge tone="verified">
-            <Check size={10} strokeWidth={2.5} absoluteStrokeWidth />
+            <DkTaskCompleteCheckmark size={10} strokeWidth={2.5} absoluteStrokeWidth />
             Stable
           </Badge>
           <Badge tone="muted">Web</Badge>
@@ -166,8 +167,8 @@ export function TextDocs() {
         <DocsDemoPanel
           fadeKey={fadeKey}
           grid={grid}
-          onCopy={() => void navigator.clipboard.writeText(code)}
-          onPlayground={() => router.push('/')}
+          onCopy={() => navigator.clipboard.writeText(code)}
+          onReplay={() => setReplay((current) => current + 1)}
           onReset={reset}
           onToggleGrid={() => setGrid((open) => !open)}
           controls={

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/cn'
-import { ButtonLabel } from './ButtonLabel'
+import { Button } from './Button'
 
 export function ConfirmAction({
   onConfirm,
@@ -28,15 +28,17 @@ export function ConfirmAction({
   }, [confirming])
 
   return (
-    <button
+    <Button
       type="button"
+      variant={confirming ? 'danger' : 'ghost'}
+      size="sm"
+      fullWidth={false}
+      loading={loading}
+      loadingText={loadingText ?? (label === 'Sign Out' ? 'Signing out…' : 'Removing…')}
       className={cn(
-        'inline-flex shrink-0 cursor-pointer items-center rounded-[980px] border-0 bg-transparent px-2.5 py-1 font-sans text-[13px] font-medium leading-[1.2] text-danger',
-        'hover:underline disabled:cursor-wait disabled:opacity-70 disabled:no-underline',
-        confirming && 'bg-danger text-white no-underline hover:no-underline',
+        confirming ? undefined : 'h-auto px-2.5 py-1 text-danger hover:text-danger hover:underline',
         className,
       )}
-      disabled={loading}
       onClick={(event) => {
         event.stopPropagation()
         if (loading) return
@@ -48,13 +50,7 @@ export function ConfirmAction({
         setConfirming(true)
       }}
     >
-      <ButtonLabel
-        loading={loading}
-        loadingText={loadingText ?? (label === 'Sign Out' ? 'Signing out…' : 'Removing…')}
-        light={confirming}
-      >
-        {confirming ? confirmLabel : label}
-      </ButtonLabel>
-    </button>
+      {confirming ? confirmLabel : label}
+    </Button>
   )
 }

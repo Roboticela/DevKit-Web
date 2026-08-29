@@ -33,7 +33,10 @@ export function BrandLogo({
 
   const mark = (
     <img
-      className={cn('block object-contain', variant === 'mark' || variant === 'icon' ? className : 'shrink-0')}
+      className={cn(
+        'block object-contain',
+        variant === 'mark' || variant === 'icon' ? className : 'shrink-0',
+      )}
       src={src}
       alt={variant === 'mark' || variant === 'icon' ? label : ''}
       width={size}
@@ -45,11 +48,11 @@ export function BrandLogo({
   )
 
   if (variant === 'mark' || variant === 'icon') {
-    return mark
+    return <span className="dk-brand-logo inline-flex">{mark}</span>
   }
 
   return (
-    <span className={cn('inline-flex items-center gap-2 text-text-primary', className)}>
+    <span className={cn('dk-brand-logo inline-flex items-center gap-2 text-text-primary', className)}>
       {mark}
       <span
         className={cn(

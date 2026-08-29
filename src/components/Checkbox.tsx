@@ -1,5 +1,7 @@
 import type { InputHTMLAttributes, ReactNode } from 'react'
-import { Check } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { Body } from './Text'
@@ -38,7 +40,7 @@ export function Checkbox({
             'dark:bg-bg-secondary',
           )}
         >
-          <Check
+          <DkTaskCompleteCheckmark
             size={12}
             strokeWidth={2.5}
             absoluteStrokeWidth

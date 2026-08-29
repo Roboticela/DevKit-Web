@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
-import { Check } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { Caption, Label } from './Text'
@@ -53,7 +55,7 @@ export function VerificationMethodCard({
         aria-hidden="true"
       >
         {selected ? (
-          <Check
+          <DkTaskCompleteCheckmark
             size={12}
             strokeWidth={3}
             absoluteStrokeWidth

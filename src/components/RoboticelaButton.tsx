@@ -1,8 +1,8 @@
 'use client'
 
 import type { ButtonHTMLAttributes } from 'react'
+import { DkRoboticelaBrandLogo } from '@/icons'
 import { AuthProviderButton } from './AuthProviderButton'
-import { RoboticelaMark } from './RoboticelaMark'
 
 type RoboticelaButtonProps = {
   loading?: boolean
@@ -14,7 +14,7 @@ export function RoboticelaButton({
   ...rest
 }: RoboticelaButtonProps) {
   return (
-    <AuthProviderButton icon={<RoboticelaMark size={20} />} {...rest}>
+    <AuthProviderButton icon={<DkRoboticelaBrandLogo size={20} />} {...rest}>
       {children}
     </AuthProviderButton>
   )

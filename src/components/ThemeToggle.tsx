@@ -1,9 +1,13 @@
 'use client'
 
-import { Moon, Sun } from 'lucide-react'
+import {
+  DkCrescentMoonNightAppearance,
+  DkRadiantSunDaylightAppearance
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { useTheme, type Theme } from '@/lib/theme'
+import { Caption } from './Text'
 
 export type ThemeToggleVariant = 'default' | 'compact' | 'labels' | 'icons' | 'switch'
 
@@ -109,7 +113,7 @@ function ThemeSwitch({
       disabled={disabled}
       onClick={onToggle}
       className={cn(
-        'relative cursor-pointer rounded-[980px] border-0 p-0',
+        'relative cursor-pointer overflow-hidden rounded-full border-0 p-0',
         'bg-border-default dark:bg-bg-tertiary',
         'transition-colors duration-200',
         EASE,
@@ -122,10 +126,10 @@ function ThemeSwitch({
     >
       <span
         className={cn(
-          'absolute rounded-full bg-text-on-brand',
+          'absolute aspect-square shrink-0 rounded-full bg-text-on-brand',
           'transition-[left] duration-200',
           EASE,
-          compact ? 'top-[3px] size-[22px]' : 'top-1 size-[26px]',
+          compact ? 'top-[3px] h-[22px] w-[22px]' : 'top-1 h-[26px] w-[26px]',
           on
             ? compact
               ? 'left-[calc(100%-25px)]'
@@ -137,8 +141,8 @@ function ThemeSwitch({
       >
         <span
           className={cn(
-            'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-text-disabled',
-            compact ? 'size-[5px]' : 'size-1.5',
+            'absolute top-1/2 left-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-text-disabled',
+            compact ? 'h-[5px] w-[5px]' : 'h-1.5 w-1.5',
           )}
         />
       </span>
@@ -164,7 +168,7 @@ function ModeButton({
   onSelect: () => void
 }) {
   const label = mode === 'light' ? 'Light' : 'Dark'
-  const Icon = mode === 'light' ? Sun : Moon
+  const Icon = mode === 'light' ? DkRadiantSunDaylightAppearance : DkCrescentMoonNightAppearance
 
   return (
     <button
@@ -174,8 +178,8 @@ function ModeButton({
         'transition-colors duration-150',
         EASE,
         stacked
-          ? 'min-w-0 flex-col gap-1 text-[11px] font-medium leading-[1.2]'
-          : 'h-11 shrink-0 flex-row gap-1 whitespace-nowrap text-xs font-normal leading-none',
+          ? 'min-w-0 flex-col gap-1'
+          : 'h-11 shrink-0 flex-row gap-1 whitespace-nowrap',
         active && 'text-text-primary',
         disabled && 'cursor-not-allowed opacity-55',
       )}

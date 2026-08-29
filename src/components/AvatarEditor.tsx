@@ -4,8 +4,13 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { createPortal } from 'react-dom'
 import Cropper, { type Area } from 'react-easy-crop'
 import 'react-easy-crop/react-easy-crop.css'
-import { RotateCcw, RotateCw } from 'lucide-react'
+import {
+  DkRotateCounterclockwise,
+  DkRotateClockwise
+} from '@/icons'
+import { Button } from './Button'
 import { ButtonLabel } from './ButtonLabel'
+import { IconButton } from './IconButton'
 import { SheetNav } from './SheetNav'
 import { Slider } from './Slider'
 
@@ -203,9 +208,6 @@ export function AvatarEditor({
     }
   }
 
-  const toolClass =
-    'mb-0.5 inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#38383a] bg-transparent p-0 text-brand-primary hover:text-brand-primary-hover disabled:cursor-not-allowed disabled:opacity-40'
-
   return createPortal(
     <div
       className="fixed inset-0 z-[1200] flex items-stretch justify-center bg-black text-white min-[735px]:items-center min-[735px]:bg-black/72 min-[735px]:p-12"
@@ -273,15 +275,15 @@ export function AvatarEditor({
           />
 
           <div className="flex items-end gap-3">
-            <button
-              type="button"
-              className={toolClass}
+            <IconButton
+              label="Rotate left 90 degrees"
+              variant="outline"
+              className="mb-0.5 shrink-0 border-[#38383a] bg-transparent text-brand-primary hover:bg-transparent hover:text-brand-primary-hover"
               disabled={busy}
               onClick={() => setRotation((value) => wrapRotation(value - 90))}
-              aria-label="Rotate left 90 degrees"
             >
-              <RotateCcw size={18} strokeWidth={1.5} absoluteStrokeWidth aria-hidden />
-            </button>
+              <DkRotateCounterclockwise size={18} strokeWidth={1.5} absoluteStrokeWidth aria-hidden />
+            </IconButton>
 
             <Slider
               label="Rotation"
@@ -295,15 +297,15 @@ export function AvatarEditor({
               aria-label="Rotation"
             />
 
-            <button
-              type="button"
-              className={toolClass}
+            <IconButton
+              label="Rotate right 90 degrees"
+              variant="outline"
+              className="mb-0.5 shrink-0 border-[#38383a] bg-transparent text-brand-primary hover:bg-transparent hover:text-brand-primary-hover"
               disabled={busy}
               onClick={() => setRotation((value) => wrapRotation(value + 90))}
-              aria-label="Rotate right 90 degrees"
             >
-              <RotateCw size={18} strokeWidth={1.5} absoluteStrokeWidth aria-hidden />
-            </button>
+              <DkRotateClockwise size={18} strokeWidth={1.5} absoluteStrokeWidth aria-hidden />
+            </IconButton>
           </div>
 
           {error ? (
@@ -312,24 +314,26 @@ export function AvatarEditor({
 
           <div className="flex flex-col items-center gap-3 pt-1">
             {onChooseAnother ? (
-              <button
-                type="button"
-                className="cursor-pointer border-0 bg-transparent p-1 font-sans text-[17px] font-normal leading-[1.2] text-brand-primary hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:no-underline"
+              <Button
+                variant="ghost"
+                fullWidth={false}
+                className="h-auto p-1 text-brand-primary hover:underline"
                 disabled={busy}
                 onClick={onChooseAnother}
               >
                 Choose a Different Photo
-              </button>
+              </Button>
             ) : null}
             {canRemove && onRemove ? (
-              <button
-                type="button"
-                className="cursor-pointer border-0 bg-transparent p-1 font-sans text-[17px] font-normal leading-[1.2] text-danger hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:no-underline"
+              <Button
+                variant="ghost"
+                fullWidth={false}
+                className="h-auto p-1 text-danger hover:text-danger hover:underline"
                 disabled={busy}
                 onClick={() => void onRemove()}
               >
                 Remove Photo
-              </button>
+              </Button>
             ) : null}
           </div>
         </div>

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { DkTaskCompleteCheckmark, DkClipboardCopyDuplicate } from '@/icons'
 import { cn } from '@/lib/cn'
+import { Button } from './Button'
 import { Caption } from './Text'
 
 export function TotpManualKey({
@@ -47,24 +48,23 @@ export function TotpManualKey({
         >
           {secret}
         </code>
-        <button
-          type="button"
-          className={cn(
-            'inline-flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-[980px] px-3.5 font-sans text-sm font-medium leading-none',
-            dark
-              ? 'border border-[#3a3a3c] bg-[#1c1c1e] text-brand-primary hover:border-brand-primary'
-              : 'border border-border-default bg-transparent text-brand-primary hover:border-brand-primary dark:border-border-strong',
-          )}
-          onClick={() => void handleCopy()}
+        <Button
+          variant="action"
+          size="sm"
+          fullWidth={false}
           aria-label={copied ? 'Copied' : 'Copy key'}
+          className={dark ? 'border-[#3a3a3c] bg-[#1c1c1e] text-brand-primary hover:border-brand-primary' : 'text-brand-primary hover:border-brand-primary'}
+          leading={
+            copied ? (
+              <DkTaskCompleteCheckmark size={16} strokeWidth={2} absoluteStrokeWidth aria-hidden />
+            ) : (
+              <DkClipboardCopyDuplicate size={16} strokeWidth={1.75} absoluteStrokeWidth aria-hidden />
+            )
+          }
+          onClick={() => void handleCopy()}
         >
-          {copied ? (
-            <Check size={16} strokeWidth={2} absoluteStrokeWidth aria-hidden />
-          ) : (
-            <Copy size={16} strokeWidth={1.75} absoluteStrokeWidth aria-hidden />
-          )}
-          <span>{copied ? 'Copied' : 'Copy'}</span>
-        </button>
+          {copied ? 'Copied' : 'Copy'}
+        </Button>
       </div>
     </div>
   )

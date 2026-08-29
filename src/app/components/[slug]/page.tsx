@@ -1,20 +1,17 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import { ButtonDocs } from '@/components/ButtonDocs'
-import { DocsShell } from '@/components/DocsShell'
+import { FlagsDocs } from '@/components/FlagsDocs'
 import { FoundationDocs } from '@/components/FoundationDocs'
+import { IconsDocs } from '@/components/IconsDocs'
 import { KitComponentDocs } from '@/components/KitComponentDocs'
 import { TextDocs } from '@/components/TextDocs'
 import {
-  BUTTON_TOC,
   COMPONENT_ALIASES,
   DOCS_ITEMS,
   DOCS_NAV,
   findDocContext,
   FOUNDATION_IDS,
-  FOUNDATION_TOC,
-  KIT_TOC,
-  TEXT_TOC,
 } from '@/lib/docs-catalog'
 
 export function generateStaticParams() {
@@ -50,33 +47,11 @@ export default async function ComponentDocPage({
   const ctx = findDocContext(DOCS_NAV, raw)
   if (!ctx) notFound()
 
-  if (raw === 'button') {
-    return (
-      <DocsShell activeId="button" toc={BUTTON_TOC}>
-        <ButtonDocs />
-      </DocsShell>
-    )
-  }
+  if (raw === 'button') return <ButtonDocs />
+  if (raw === 'text') return <TextDocs />
+  if (raw === 'icons') return <IconsDocs />
+  if (raw === 'country-flag') return <FlagsDocs />
+  if (FOUNDATION_IDS.has(raw)) return <FoundationDocs slug={raw} />
 
-  if (raw === 'text') {
-    return (
-      <DocsShell activeId="text" toc={TEXT_TOC}>
-        <TextDocs />
-      </DocsShell>
-    )
-  }
-
-  if (FOUNDATION_IDS.has(raw)) {
-    return (
-      <DocsShell activeId={raw} toc={FOUNDATION_TOC}>
-        <FoundationDocs slug={raw} />
-      </DocsShell>
-    )
-  }
-
-  return (
-    <DocsShell activeId={raw} toc={KIT_TOC}>
-      <KitComponentDocs slug={raw} />
-    </DocsShell>
-  )
+  return <KitComponentDocs slug={raw} />
 }

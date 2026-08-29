@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { brand } from '@/lib/devkit'
 import { AVAILABLE_COUNTRY_ISOS, AVAILABLE_LANGUAGE_IDS } from '@/lib/languages'
 import { BrandLogo } from './BrandLogo'
+import { Button } from './Button'
 import { CountrySelect } from './CountrySelect'
 import { LanguageSelect } from './LanguageSelect'
 import { Caption, Label } from './Text'
@@ -81,12 +82,9 @@ export function SiteFooter() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
-            <button
-              type="submit"
-              className="grid h-10 cursor-pointer place-items-center rounded-[980px] border-0 bg-brand-primary px-5 font-sans text-sm font-medium leading-none whitespace-nowrap text-text-on-brand transition-colors duration-150 hover:bg-brand-primary-hover"
-            >
+            <Button type="submit" size="sm" fullWidth={false} className="h-10 px-5">
               Subscribe
-            </button>
+            </Button>
           </form>
         </div>
 

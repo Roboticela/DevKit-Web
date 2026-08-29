@@ -1,11 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { DocsArticleStub } from '@/components/DocsArticleStub'
-import { DocsShell } from '@/components/DocsShell'
-import { MaintenanceNote } from '@/components/MaintenanceNote'
 import { SignInDocs } from '@/components/SignInDocs'
 import { adjacentDocs, findDocContext } from '@/lib/docs-catalog'
-import { PAGES_ITEMS, PAGES_NAV, SIGN_IN_TOC } from '@/lib/pages-catalog'
+import { PAGES_ITEMS, PAGES_NAV } from '@/lib/pages-catalog'
 
 export function generateStaticParams() {
   return PAGES_ITEMS.map((item) => ({ slug: item.id }))
@@ -34,38 +32,16 @@ export default async function PageDocPage({
   const ctx = findDocContext(PAGES_NAV, slug)
   if (!ctx) notFound()
 
-  if (slug === 'sign-in') {
-    return (
-      <DocsShell
-        activeId="sign-in"
-        activeTab="Pages"
-        sections={PAGES_NAV}
-        toc={SIGN_IN_TOC}
-        contentWidth={900}
-        sidebarFooter={<MaintenanceNote />}
-      >
-        <SignInDocs />
-      </DocsShell>
-    )
-  }
+  if (slug === 'sign-in') return <SignInDocs />
 
   const { prev, next } = adjacentDocs(PAGES_ITEMS, slug)
 
   return (
-    <DocsShell
-      activeId={slug}
-      activeTab="Pages"
-      sections={PAGES_NAV}
-      toc={[{ id: 'overview', label: 'Overview' }]}
-      contentWidth={900}
-      sidebarFooter={<MaintenanceNote />}
-    >
-      <DocsArticleStub
-        eyebrow={`Pages / ${ctx.section.label} / ${ctx.item.label}`}
-        title={ctx.item.label}
-        prev={prev}
-        next={next}
-      />
-    </DocsShell>
+    <DocsArticleStub
+      eyebrow={`Pages / ${ctx.section.label} / ${ctx.item.label}`}
+      title={ctx.item.label}
+      prev={prev}
+      next={next}
+    />
   )
 }

@@ -1,5 +1,8 @@
-import { ChevronRight } from 'lucide-react'
+import {
+  DkChevronCaretRight
+} from '@/icons'
 import { cn } from '@/lib/cn'
+import { Button } from './Button'
 import { Caption } from './Text'
 
 export type BreadcrumbItem = {
@@ -21,7 +24,7 @@ export function Breadcrumbs({
         return (
           <span key={`${item.label}-${index}`} className="inline-flex items-center gap-1">
             {index > 0 ? (
-              <ChevronRight
+              <DkChevronCaretRight
                 size={14}
                 strokeWidth={1.75}
                 absoluteStrokeWidth
@@ -39,13 +42,15 @@ export function Breadcrumbs({
                 {item.label}
               </Caption>
             ) : (
-              <button
-                type="button"
-                className="cursor-pointer border-0 bg-transparent p-0 hover:text-brand-primary"
+              <Button
+                variant="ghost"
+                size="sm"
+                fullWidth={false}
+                className="h-auto px-0"
                 onClick={item.onClick}
               >
                 <Caption as="span">{item.label}</Caption>
-              </button>
+              </Button>
             )}
           </span>
         )

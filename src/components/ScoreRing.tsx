@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
-import { Check } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { Caption } from './Text'
 
@@ -67,7 +69,7 @@ export function CheckItem({
     <div className={cn('flex h-8 items-center gap-2', className)}>
       {done ? (
         <span className="inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-success text-white">
-          <Check size={10} strokeWidth={3} absoluteStrokeWidth aria-hidden />
+          <DkTaskCompleteCheckmark size={10} strokeWidth={3} absoluteStrokeWidth aria-hidden />
         </span>
       ) : (
         <span className="block size-4 shrink-0 rounded-full border-[1.5px] border-text-tertiary" />

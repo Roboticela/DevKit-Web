@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { Button } from './Button'
 import { Caption, Label } from './Text'
 
 export function SheetNav({
@@ -31,14 +32,15 @@ export function SheetNav({
         className,
       )}
     >
-      <button
-        type="button"
-        className="cursor-pointer border-0 bg-transparent p-2 pl-0 text-left font-sans text-[17px] font-normal leading-none text-brand-primary hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:no-underline"
+      <Button
+        variant="ghost"
+        fullWidth={false}
+        className="h-auto justify-self-start p-2 pl-0 text-brand-primary hover:underline"
         disabled={cancelDisabled}
         onClick={onCancel}
       >
         {cancelLabel}
-      </button>
+      </Button>
       <div className="min-w-0 text-center">
         <Label as="p" align="center" className="text-white">
           {title}
@@ -49,14 +51,15 @@ export function SheetNav({
           </Caption>
         ) : null}
       </div>
-      <button
-        type="button"
-        className="min-w-24 cursor-pointer justify-self-end border-0 bg-transparent p-2 pr-0 text-right font-sans text-[17px] font-semibold leading-none text-brand-primary hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:no-underline"
+      <Button
+        variant="ghost"
+        fullWidth={false}
+        className="min-w-24 h-auto justify-self-end p-2 pr-0 font-semibold text-brand-primary hover:underline"
         disabled={doneDisabled}
         onClick={onDone}
       >
         {doneLabel}
-      </button>
+      </Button>
     </header>
   )
 }

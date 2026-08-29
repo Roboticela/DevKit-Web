@@ -1,7 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Lock, Mail } from 'lucide-react'
+import {
+  DkPadlockSecureClosed,
+  DkEnvelopeMessageMail
+} from '@/icons'
 import { brand } from '@/lib/devkit'
 import type { SignInPreviewState } from '@/lib/pages-catalog'
 import { AppleButton } from './ProviderButtons'
@@ -46,7 +49,7 @@ export function SignInPage({
       >
         <div className="flex flex-col gap-4">
           <TextField
-            icon={<Mail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+            icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
             type="email"
             name="email"
             placeholder="Email address"
@@ -57,7 +60,7 @@ export function SignInPage({
             disabled={disabled}
           />
           <TextField
-            icon={<Lock size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+            icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
             type={visible ? 'text' : 'password'}
             name="password"
             placeholder="Password"

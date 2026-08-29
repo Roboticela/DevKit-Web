@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Code2, Copy, ExternalLink } from 'lucide-react'
+import { DkClipboardCopyDuplicate, DkSourceCodeChevronsPair } from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { BrowserChrome } from './BrowserChrome'
 import { BreakpointToggle, PREVIEW_WIDTH, type PreviewBreakpoint } from './BreakpointToggle'
-import { IconAction } from './CodeBlock'
+import { IconButton } from './IconButton'
 
 export function ViewportPreview({
   src,
@@ -15,7 +15,6 @@ export function ViewportPreview({
   fullHref,
   fadeKey,
   onCopy,
-  onPlayground,
   onSource,
   className,
 }: {
@@ -23,8 +22,7 @@ export function ViewportPreview({
   url: string
   fullHref: string
   fadeKey?: string
-  onCopy?: () => void
-  onPlayground?: () => void
+  onCopy?: () => void | Promise<void>
   onSource?: () => void
   className?: string
 }) {
@@ -43,15 +41,26 @@ export function ViewportPreview({
       <div className="flex h-9 items-center justify-between gap-3 border-b border-border-default bg-bg-secondary px-3">
         <p className="m-0 text-[13px] font-medium text-text-primary">Live Preview</p>
         <div className="flex items-center">
-          <IconAction label="Copy code" onClick={onCopy}>
-            <Copy size={14} strokeWidth={1.75} absoluteStrokeWidth />
-          </IconAction>
-          <IconAction label="Open in playground" onClick={onPlayground}>
-            <ExternalLink size={14} strokeWidth={1.75} absoluteStrokeWidth />
-          </IconAction>
-          <IconAction label="View source" onClick={onSource}>
-            <Code2 size={14} strokeWidth={1.75} absoluteStrokeWidth />
-          </IconAction>
+          {onCopy ? (
+            <IconButton
+              label="Copy code"
+              size="sm"
+              className="text-text-tertiary hover:text-text-primary"
+              onAction={onCopy}
+            >
+              <DkClipboardCopyDuplicate size={14} strokeWidth={1.75} absoluteStrokeWidth />
+            </IconButton>
+          ) : null}
+          {onSource ? (
+            <IconButton
+              label="View source"
+              size="sm"
+              className="text-text-tertiary hover:text-text-primary"
+              onClick={onSource}
+            >
+              <DkSourceCodeChevronsPair size={14} strokeWidth={1.75} absoluteStrokeWidth />
+            </IconButton>
+          ) : null}
         </div>
       </div>
       <BrowserChrome url={url} href={fullHref} />

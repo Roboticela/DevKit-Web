@@ -11,7 +11,10 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
-    "next-env.d.ts",
+    "src/icons/data/**",
+    "src/icons/lucide.ts",
+    "src/icons/loaders.ts",
+    "src/icons/catalog.json",
   ]),
 ]);
 

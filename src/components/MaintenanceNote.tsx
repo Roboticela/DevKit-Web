@@ -1,5 +1,7 @@
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import {
+  DkArrowUpRightLaunch
+} from '@/icons'
 import { Caption, Label } from './Text'
 
 export function MaintenanceNote({
@@ -26,7 +28,7 @@ export function MaintenanceNote({
         <Caption as="span" tone="link">
           {linkLabel}
         </Caption>
-        <ArrowUpRight size={11} strokeWidth={2} absoluteStrokeWidth />
+        <DkArrowUpRightLaunch size={11} strokeWidth={2} absoluteStrokeWidth />
       </Link>
     </div>
   )

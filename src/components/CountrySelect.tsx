@@ -2,7 +2,10 @@
 
 import { useMemo } from 'react'
 import { createPortal } from 'react-dom'
-import { Check, Globe } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark,
+  DkGlobeWorldEarth
+} from '@/icons'
 import { COUNTRIES, sortedCountriesForSearch } from '@/lib/countries'
 import { cn } from '@/lib/cn'
 import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
@@ -71,7 +74,7 @@ export function CountrySelect({
           selected ? (
             <CountryFlag iso={selected.iso} size={compact ? 16 : 18} />
           ) : (
-            <Globe size={compact ? 16 : 18} strokeWidth={1.75} absoluteStrokeWidth />
+            <DkGlobeWorldEarth size={compact ? 16 : 18} strokeWidth={1.75} absoluteStrokeWidth />
           )
         }
         placeholder={!selected}
@@ -105,11 +108,11 @@ export function CountrySelect({
                 {allowClear ? (
                   <SelectOption
                     selected={!selected}
-                    leading={<Globe size={18} strokeWidth={1.75} absoluteStrokeWidth />}
+                    leading={<DkGlobeWorldEarth size={18} strokeWidth={1.75} absoluteStrokeWidth />}
                     name="Not set"
                     check={
                       !selected ? (
-                        <Check
+                        <DkTaskCompleteCheckmark
                           className="shrink-0 text-brand-primary"
                           size={16}
                           strokeWidth={2.25}
@@ -139,7 +142,7 @@ export function CountrySelect({
                         meta={available ? item.iso : 'Coming soon'}
                         check={
                           isSelected ? (
-                            <Check
+                            <DkTaskCompleteCheckmark
                               className="shrink-0 text-brand-primary"
                               size={16}
                               strokeWidth={2.25}

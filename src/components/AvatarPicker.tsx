@@ -1,9 +1,12 @@
 'use client'
 
 import { useImperativeHandle, useRef, type ChangeEvent, type Ref } from 'react'
-import { Camera } from 'lucide-react'
+import {
+  DkPhotoCameraCapture
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { Avatar } from './Avatar'
+import { IconButton } from './IconButton'
 
 export type AvatarPickerHandle = {
   open: () => void
@@ -53,20 +56,16 @@ export function AvatarPicker({
   return (
     <div className={cn('relative size-[112px]', className)}>
       <Avatar src={src} name={name} size="xl" />
-      <button
-        type="button"
-        className={cn(
-          'absolute -right-0.5 -bottom-0.5 inline-flex size-7 cursor-pointer items-center justify-center rounded-full border-0 bg-brand-primary p-0 text-white',
-          'outline-[3px] outline-solid outline-[var(--bg-primary)]',
-          'hover:bg-brand-primary-hover active:bg-brand-primary-active',
-          'disabled:cursor-not-allowed disabled:opacity-55',
-        )}
-        aria-label={hasPhoto ? 'Edit photo' : 'Add photo'}
+      <IconButton
+        label={hasPhoto ? 'Edit photo' : 'Add photo'}
+        variant="primary"
+        size="sm"
+        className="absolute -right-0.5 -bottom-0.5 outline-[3px] outline-solid outline-[var(--bg-primary)]"
         disabled={disabled}
         onClick={openPicker}
       >
-        <Camera size={14} strokeWidth={1.5} absoluteStrokeWidth color="#ffffff" aria-hidden />
-      </button>
+        <DkPhotoCameraCapture size={14} strokeWidth={1.5} absoluteStrokeWidth color="#ffffff" aria-hidden />
+      </IconButton>
       <input
         ref={inputRef}
         type="file"

@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Check } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { brand } from '@/lib/devkit'
 import { PAGES_ITEMS, SIGN_IN_STATES, type SignInPreviewState } from '@/lib/pages-catalog'
@@ -168,7 +170,7 @@ export function SignInDocs() {
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <Heading>Sign In</Heading>
           <Badge tone="verified">
-            <Check size={10} strokeWidth={2.5} absoluteStrokeWidth />
+            <DkTaskCompleteCheckmark size={10} strokeWidth={2.5} absoluteStrokeWidth />
             Stable
           </Badge>
         </div>
@@ -195,8 +197,7 @@ export function SignInDocs() {
           url={`${brand.supportLabel}/sign-in`}
           fullHref={fullHref}
           fadeKey={`${state}-${theme}`}
-          onCopy={() => void navigator.clipboard.writeText(REACT_SOURCE)}
-          onPlayground={() => window.open(fullHref, '_blank', 'noreferrer')}
+          onCopy={() => navigator.clipboard.writeText(REACT_SOURCE)}
           onSource={() => window.open('/sign-in', '_blank', 'noreferrer')}
         />
         <div id="code" className="scroll-mt-20">

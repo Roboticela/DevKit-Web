@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { Button } from './Button'
 import { Body, Caption } from './Text'
 
 export function ListGroup({
@@ -31,18 +32,19 @@ export function TextAction({
   danger?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="sm"
+      fullWidth={false}
       className={cn(
-        'cursor-pointer border-0 bg-transparent p-0 font-sans text-sm font-normal leading-none no-underline',
-        danger ? 'text-danger' : 'text-brand-primary',
-        'hover:underline disabled:cursor-not-allowed disabled:opacity-45 disabled:no-underline',
+        'h-auto px-0 hover:underline',
+        danger ? 'text-danger hover:text-danger' : 'text-brand-primary',
         className,
       )}
       {...rest}
     >
       {children}
-    </button>
+    </Button>
   )
 }
 

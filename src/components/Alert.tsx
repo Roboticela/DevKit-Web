@@ -1,18 +1,25 @@
 import type { ReactNode } from 'react'
-import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from 'lucide-react'
+import {
+  DkAlertCircleWarning,
+  DkSuccessCircleCheckmark,
+  DkInformationCircleDetails,
+  DkWarningTriangleAlert,
+  DkCloseDismissCancel
+} from '@/icons'
 import { cn } from '@/lib/cn'
+import { IconButton } from './IconButton'
 import { Caption, Label } from './Text'
 
 type AlertTone = 'info' | 'success' | 'warning' | 'danger'
 
 const TONE: Record<
   AlertTone,
-  { wrap: string; icon: typeof Info }
+  { wrap: string; icon: typeof DkInformationCircleDetails }
 > = {
-  info: { wrap: 'bg-brand-primary-subtle text-text-primary', icon: Info },
-  success: { wrap: 'bg-success-subtle text-text-primary', icon: CircleCheck },
-  warning: { wrap: 'bg-warning-subtle text-text-primary', icon: TriangleAlert },
-  danger: { wrap: 'bg-danger-subtle text-text-primary', icon: CircleAlert },
+  info: { wrap: 'bg-brand-primary-subtle text-text-primary', icon: DkInformationCircleDetails },
+  success: { wrap: 'bg-success-subtle text-text-primary', icon: DkSuccessCircleCheckmark },
+  warning: { wrap: 'bg-warning-subtle text-text-primary', icon: DkWarningTriangleAlert },
+  danger: { wrap: 'bg-danger-subtle text-text-primary', icon: DkAlertCircleWarning },
 }
 
 const ICON_COLOR: Record<AlertTone, string> = {
@@ -58,14 +65,14 @@ export function Alert({
         ) : null}
       </div>
       {onDismiss ? (
-        <button
-          type="button"
-          className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-text-tertiary hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"
-          aria-label="Dismiss"
+        <IconButton
+          label="Dismiss"
+          size="sm"
+          className="text-text-tertiary hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"
           onClick={onDismiss}
         >
-          <X size={14} strokeWidth={2} absoluteStrokeWidth />
-        </button>
+          <DkCloseDismissCancel size={14} strokeWidth={2} absoluteStrokeWidth />
+        </IconButton>
       ) : null}
     </div>
   )

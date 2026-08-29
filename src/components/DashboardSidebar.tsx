@@ -47,7 +47,7 @@ export function SidebarNavItem({
     >
       <span className="inline-flex shrink-0 text-current">{item.icon}</span>
       <span className="min-w-0 flex-1 truncate">
-        <Label as="span" className="text-inherit">
+        <Label as="span" className="block truncate text-inherit">
           {item.label}
         </Label>
       </span>

@@ -1,7 +1,23 @@
 'use client'
 
 import { useState, type ComponentType, type ReactNode } from 'react'
-import { Bell, Inbox, LayoutDashboard, Mail, Shield, Smartphone } from 'lucide-react'
+import {
+  DkClipboardCopyDuplicate,
+  DkFavoriteHeartLove,
+  DkMessageInboxTray,
+  DkAppDashboardLayoutTiles,
+  DkPadlockSecureClosed,
+  DkEnvelopeMessageMail,
+  DkAddPlusCreate,
+  DkRefreshClockwiseRotate,
+  DkFloppyDiskSave,
+  DkMagnifyingGlassFind,
+  DkGearSettingsPreferences,
+  DkShareExportForward,
+  DkSecurityShieldProtect,
+  DkHandheldMobilePhone,
+  DkWasteBinDelete
+} from '@/icons'
 import { Alert } from './Alert'
 import { AuthBrand, AuthLayout } from './AuthLayout'
 import { AuthProviderStack } from './AuthProviderButton'
@@ -15,7 +31,6 @@ import { Button } from './Button'
 import { Checkbox } from './Checkbox'
 import { ConfirmAction } from './ConfirmAction'
 import { ConfirmDialog } from './ConfirmDialog'
-import { CountryFlag } from './CountryFlag'
 import { CountrySelect } from './CountrySelect'
 import { DashboardNav } from './DashboardNav'
 import { DashboardShell } from './DashboardShell'
@@ -59,7 +74,7 @@ import { SiteNav } from './SiteNav'
 import { Skeleton } from './Skeleton'
 import { Slider } from './Slider'
 import { StatCard } from './StatCard'
-import { Switch } from './Switch'
+import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { Tabs } from './Tabs'
 import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
 import { Textarea } from './Textarea'
@@ -80,21 +95,127 @@ type DocDef = {
   Demo: ComponentType
   code: string
   states?: { label: string; node: ReactNode }[]
+  statesContent?: ReactNode
   props: PropRow[]
   wide?: boolean
 }
 
+const glyph = { strokeWidth: 1.75, absoluteStrokeWidth: true } as const
+
+function wait(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms)
+  })
+}
+
 function IconButtonDemo() {
   return (
-    <IconButton label="Notifications">
-      <Bell size={18} strokeWidth={1.75} absoluteStrokeWidth />
-    </IconButton>
+    <div className="flex flex-wrap items-center justify-center gap-3">
+      <IconButton label="Search">
+        <DkMagnifyingGlassFind size={18} {...glyph} />
+      </IconButton>
+      <IconButton label="Favorite" variant="subtle">
+        <DkFavoriteHeartLove size={18} {...glyph} />
+      </IconButton>
+      <IconButton label="Share" variant="outline">
+        <DkShareExportForward size={18} {...glyph} />
+      </IconButton>
+      <IconButton label="Add" variant="primary" onAction={() => wait(900)}>
+        <DkAddPlusCreate size={18} {...glyph} />
+      </IconButton>
+      <IconButton label="Copy" onAction={() => wait(900)}>
+        <DkClipboardCopyDuplicate size={18} {...glyph} />
+      </IconButton>
+      <IconButton label="Locked" disabled>
+        <DkPadlockSecureClosed size={18} {...glyph} />
+      </IconButton>
+    </div>
   )
 }
 
+function BrandLogoDemo() {
+  return (
+    <div className="flex min-w-0 flex-col items-start gap-6">
+      <BrandLogo variant="lockup" size={20} />
+      <BrandLogo variant="text" size={20} />
+      <div className="flex items-center gap-6">
+        <BrandLogo size={32} />
+        <BrandLogo variant="icon" size={32} />
+      </div>
+    </div>
+  )
+}
+
+const SWITCH_VARIANT_LABEL: Record<SwitchVariant, string> = {
+  primary: 'Primary',
+  subtle: 'Subtle',
+  outline: 'Outline',
+  ghost: 'Ghost',
+  danger: 'Danger',
+}
+
 function SwitchDemo() {
-  const [on, setOn] = useState(true)
-  return <Switch checked={on} onChange={setOn} label="Notifications" />
+  const [variants, setVariants] = useState<Record<SwitchVariant, boolean>>({
+    primary: true,
+    subtle: true,
+    outline: false,
+    ghost: true,
+    danger: false,
+  })
+  const [notify, setNotify] = useState(true)
+  const [digest, setDigest] = useState(false)
+  const [alerts, setAlerts] = useState(true)
+  const [preview, setPreview] = useState(true)
+
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-8">
+      <div className="flex flex-wrap items-end justify-center gap-x-6 gap-y-4">
+        {SWITCH_VARIANTS.map((variant) => (
+          <div key={variant} className="flex flex-col items-center gap-2">
+            <Switch
+              variant={variant}
+              checked={variants[variant]}
+              onChange={(next) => setVariants((current) => ({ ...current, [variant]: next }))}
+              label={SWITCH_VARIANT_LABEL[variant]}
+            />
+            <Caption as="span">{SWITCH_VARIANT_LABEL[variant]}</Caption>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-2">
+        <Caption as="span">Group</Caption>
+        <SwitchGroup label="Preferences">
+          <SwitchItem
+            title="Notifications"
+            description="Push and email alerts"
+            checked={notify}
+            onChange={setNotify}
+          />
+          <SwitchItem
+            title="Weekly digest"
+            description="A summary every Monday"
+            checked={digest}
+            onChange={setDigest}
+            variant="subtle"
+          />
+          <SwitchItem
+            title="Security alerts"
+            description="Sign-in and recovery"
+            checked={alerts}
+            onChange={setAlerts}
+            variant="danger"
+          />
+          <SwitchItem
+            title="Preview features"
+            checked={preview}
+            onChange={setPreview}
+            variant="outline"
+            size="sm"
+          />
+        </SwitchGroup>
+      </div>
+    </div>
+  )
 }
 
 function SegmentedDemo() {
@@ -148,7 +269,7 @@ function SelectDemo() {
 function SearchSelectDemo() {
   const [value, setValue] = useState('us')
   return (
-    <SearchSelect
+    <DkMagnifyingGlassFindSelect
       label="Region"
       value={value}
       onChange={setValue}
@@ -281,8 +402,8 @@ function SidebarDemo() {
           {
             label: 'Workspace',
             items: [
-              { id: 'overview', label: 'Overview', icon: <LayoutDashboard {...icon} /> },
-              { id: 'inbox', label: 'Inbox', icon: <Inbox {...icon} />, badge: 3 },
+              { id: 'overview', label: 'Overview', icon: <DkAppDashboardLayoutTiles {...icon} /> },
+              { id: 'inbox', label: 'Inbox', icon: <DkMessageInboxTray {...icon} />, badge: 3 },
             ],
           },
         ]}
@@ -315,7 +436,7 @@ function ShellDemo() {
         sections={[
           {
             label: 'Workspace',
-            items: [{ id: 'overview', label: 'Overview', icon: <LayoutDashboard {...icon} /> }],
+            items: [{ id: 'overview', label: 'Overview', icon: <DkAppDashboardLayoutTiles {...icon} /> }],
           },
         ]}
         activeId="overview"
@@ -373,14 +494,14 @@ function MethodDemo() {
       <VerificationMethodCard
         selected={value === 'app'}
         onClick={() => setValue('app')}
-        icon={<Shield size={18} strokeWidth={1.75} absoluteStrokeWidth />}
+        icon={<DkSecurityShieldProtect size={18} strokeWidth={1.75} absoluteStrokeWidth />}
         title="Authenticator app"
         subtitle="Use a one-time code"
       />
       <VerificationMethodCard
         selected={value === 'sms'}
         onClick={() => setValue('sms')}
-        icon={<Smartphone size={18} strokeWidth={1.75} absoluteStrokeWidth />}
+        icon={<DkHandheldMobilePhone size={18} strokeWidth={1.75} absoluteStrokeWidth />}
         title="Text message"
         subtitle="Send a code to your phone"
       />
@@ -512,49 +633,185 @@ const DOCS: Record<string, DocDef> = {
     title: 'Icon Button',
     description: 'A compact control for a single icon action.',
     Demo: IconButtonDemo,
-    code: `<IconButton label="Notifications">\n  <Bell />\n</IconButton>\n`,
+    wide: true,
+    code: `<IconButton label="Copy" onAction={() => copy()}>\n  <DkClipboardCopyDuplicate />\n</IconButton>\n`,
     states: [
-      { label: 'Default', node: <IconButtonDemo /> },
+      {
+        label: 'Ghost',
+        node: (
+          <IconButton label="Search">
+            <DkMagnifyingGlassFind size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Subtle',
+        node: (
+          <IconButton label="Favorite" variant="subtle">
+            <DkFavoriteHeartLove size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Outline',
+        node: (
+          <IconButton label="Share" variant="outline">
+            <DkShareExportForward size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Primary',
+        node: (
+          <IconButton label="Add" variant="primary">
+            <DkAddPlusCreate size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Danger',
+        node: (
+          <IconButton label="Delete" variant="danger">
+            <DkWasteBinDelete size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Small',
+        node: (
+          <IconButton label="Settings" size="sm">
+            <DkGearSettingsPreferences size={16} {...glyph} />
+          </IconButton>
+        ),
+      },
       {
         label: 'Badge',
         node: (
-          <IconButton label="Notifications" badge={3}>
-            <Bell size={18} strokeWidth={1.75} absoluteStrokeWidth />
+          <IconButton label="Inbox" badge={3}>
+            <DkEnvelopeMessageMail size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Action',
+        node: (
+          <IconButton label="Save" variant="primary" onAction={() => wait(900)}>
+            <DkFloppyDiskSave size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Loading',
+        node: (
+          <IconButton label="Refreshing" loading>
+            <DkRefreshClockwiseRotate size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Success',
+        node: (
+          <IconButton label="Copied" status="success">
+            <DkClipboardCopyDuplicate size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Success primary',
+        node: (
+          <IconButton label="Saved" variant="primary" status="success">
+            <DkFloppyDiskSave size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Error',
+        node: (
+          <IconButton label="Failed" status="error">
+            <DkShareExportForward size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Loading primary',
+        node: (
+          <IconButton label="Saving" variant="primary" loading>
+            <DkFloppyDiskSave size={18} {...glyph} />
           </IconButton>
         ),
       },
       {
         label: 'Disabled',
         node: (
-          <IconButton label="Notifications" disabled>
-            <Bell size={18} strokeWidth={1.75} absoluteStrokeWidth />
+          <IconButton label="Locked" disabled>
+            <DkPadlockSecureClosed size={18} {...glyph} />
+          </IconButton>
+        ),
+      },
+      {
+        label: 'Disabled outline',
+        node: (
+          <IconButton label="Settings" variant="outline" disabled>
+            <DkGearSettingsPreferences size={18} {...glyph} />
           </IconButton>
         ),
       },
     ],
     props: [
       p('label', 'string', '—', 'Accessible name. Required.'),
+      p("variant", "'ghost' | 'subtle' | 'outline' | 'primary' | 'danger'", "'ghost'", 'Visual style of the control.'),
+      p("size", "'sm' | 'md'", "'md'", 'Control size.'),
+      p('loading', 'boolean', 'false', 'Replaces the icon with a spinner and disables the control.'),
+      p("status", "'idle' | 'loading' | 'success' | 'error'", "'idle'", 'Controlled overlay. Success shows a check; error shows an X.'),
+      p('onAction', '() => void | Promise<void>', 'undefined', 'Runs on click: spinner, then check or X, then the original icon.'),
+      p('successMs', 'number', '1600', 'How long the check or X stays before the icon returns.'),
       p('badge', 'number | string', 'undefined', 'Optional count overlay.'),
-      p('size', "'sm' | 'md'", "'md'", 'Control size.'),
+      p('disabled', 'boolean', 'false', 'Prevents press. Also applied while loading, success, or error.'),
     ],
   },
   switch: {
     title: 'Switch',
-    description: 'A two-state control for an immediate setting.',
+    description: 'A two-state control for an immediate setting. Use SwitchGroup when several settings sit together.',
     Demo: SwitchDemo,
-    code: `<Switch checked={on} onChange={setOn} label="Notifications" />\n`,
+    wide: true,
+    code: `<Switch variant="primary" checked={on} onChange={setOn} label="Primary" />
+<Switch variant="subtle" checked={on} onChange={setOn} label="Subtle" />
+<Switch variant="outline" checked={on} onChange={setOn} label="Outline" />
+<Switch variant="ghost" checked={on} onChange={setOn} label="Ghost" />
+<Switch variant="danger" checked={on} onChange={setOn} label="Danger" />
+
+<SwitchGroup label="Preferences">
+  <SwitchItem title="Notifications" checked={on} onChange={setOn} />
+  <SwitchItem title="Weekly digest" checked={digest} onChange={setDigest} variant="subtle" />
+</SwitchGroup>
+`,
     states: [
-      { label: 'Off', node: <Switch checked={false} label="Off" /> },
-      { label: 'On', node: <Switch checked label="On" /> },
+      { label: 'Primary off', node: <Switch checked={false} label="Primary off" /> },
+      { label: 'Primary on', node: <Switch checked label="Primary on" /> },
+      { label: 'Subtle off', node: <Switch checked={false} variant="subtle" label="Subtle off" /> },
+      { label: 'Subtle on', node: <Switch checked variant="subtle" label="Subtle on" /> },
+      { label: 'Outline off', node: <Switch checked={false} variant="outline" label="Outline off" /> },
+      { label: 'Outline on', node: <Switch checked variant="outline" label="Outline on" /> },
+      { label: 'Ghost off', node: <Switch checked={false} variant="ghost" label="Ghost off" /> },
+      { label: 'Ghost on', node: <Switch checked variant="ghost" label="Ghost on" /> },
+      { label: 'Danger off', node: <Switch checked={false} variant="danger" label="Danger off" /> },
+      { label: 'Danger on', node: <Switch checked variant="danger" label="Danger on" /> },
+      { label: 'Small', node: <Switch checked size="sm" label="Small" /> },
+      { label: 'Medium', node: <Switch checked size="md" label="Medium" /> },
+      { label: 'Large', node: <Switch checked size="lg" label="Large" /> },
       { label: 'Disabled', node: <Switch checked disabled label="Disabled" /> },
       { label: 'Loading', node: <Switch checked loading label="Loading" /> },
     ],
     props: [
       p('checked', 'boolean', '—', 'Whether the switch is on.'),
       p('onChange', '(next: boolean) => void', '—', 'Called when the value changes.'),
-      p('size', "'sm' | 'md'", "'md'", 'Track size.'),
+      p("variant", "'primary' | 'subtle' | 'outline' | 'ghost' | 'danger'", "'primary'", 'Track style. Danger is for destructive settings only.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Track size.'),
       p('disabled', 'boolean', 'false', 'Prevents interaction.'),
       p('loading', 'boolean', 'false', 'Shows a spinner in the thumb.'),
+      p('label', 'string', 'undefined', 'Accessible name on Switch. Visible title lives on SwitchItem.'),
+      p('title', 'string', '—', 'Visible label on SwitchItem.'),
+      p('description', 'string', 'undefined', 'Optional supporting copy on SwitchItem.'),
     ],
   },
   'segmented-control': {
@@ -648,7 +905,7 @@ const DOCS: Record<string, DocDef> = {
     title: 'Search Select',
     description: 'A searchable single-select menu.',
     Demo: SearchSelectDemo,
-    code: `<SearchSelect value={value} onChange={setValue} options={[...]} />\n`,
+    code: `<DkMagnifyingGlassFindSelect value={value} onChange={setValue} options={[...]} />\n`,
     props: [
       p('value', 'string', '—', 'The selected option.'),
       p('options', 'SearchSelectOption[]', '[]', 'Filterable items.'),
@@ -911,8 +1168,8 @@ const DOCS: Record<string, DocDef> = {
     description: 'A compact tab with an icon and label.',
     Demo: () => (
       <div className="flex w-full gap-1">
-        <IconTab icon={<LayoutDashboard size={18} />} label="Home" active />
-        <IconTab icon={<Inbox size={18} />} label="Inbox" />
+        <IconTab icon={<DkAppDashboardLayoutTiles size={18} />} label="Home" active />
+        <IconTab icon={<DkMessageInboxTray size={18} />} label="Inbox" />
       </div>
     ),
     code: `<IconTab icon={<Home />} label="Home" active />\n`,
@@ -1157,16 +1414,7 @@ const DOCS: Record<string, DocDef> = {
   'brand-logo': {
     title: 'Brand Logo',
     description: 'The product mark, wordmark, and lockup.',
-    Demo: () => (
-      <div className="flex w-full flex-col items-start gap-6">
-        <BrandLogo variant="lockup" size={20} />
-        <BrandLogo variant="text" size={20} />
-        <div className="flex items-center gap-6">
-          <BrandLogo size={32} />
-          <BrandLogo variant="icon" size={32} />
-        </div>
-      </div>
-    ),
+    Demo: BrandLogoDemo,
     code: `<BrandLogo variant="lockup" />\n<BrandLogo variant="text" />\n<BrandLogo />\n<BrandLogo variant="icon" />\n`,
     states: [
       { label: 'Lockup', node: <BrandLogo variant="lockup" size={20} /> },
@@ -1214,36 +1462,28 @@ const DOCS: Record<string, DocDef> = {
   },
   'theme-icon-toggle': {
     title: 'Theme Icon Toggle',
-    description: 'An icon-only control for light and dark.',
-    Demo: () => <ThemeIconToggle />,
-    code: `<ThemeIconToggle />\n<ThemeIconToggle variant="subtle" />\n<ThemeIconToggle variant="outline" />\n<ThemeIconToggle size="sm" />\n`,
+    description: 'An icon-only control for light and dark, including both icons at once.',
+    Demo: () => (
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        <ThemeIconToggle />
+        <ThemeIconToggle variant="pair" />
+      </div>
+    ),
+    code: `<ThemeIconToggle />\n<ThemeIconToggle variant="subtle" />\n<ThemeIconToggle variant="outline" />\n<ThemeIconToggle variant="pair" />\n<ThemeIconToggle variant="segmented" />\n<ThemeIconToggle variant="split" />\n`,
     states: [
       { label: 'Ghost', node: <ThemeIconToggle variant="ghost" /> },
       { label: 'Subtle', node: <ThemeIconToggle variant="subtle" /> },
       { label: 'Outline', node: <ThemeIconToggle variant="outline" /> },
-      { label: 'Small', node: <ThemeIconToggle size="sm" /> },
-      { label: 'Disabled', node: <ThemeIconToggle disabled /> },
+      { label: 'Pair', node: <ThemeIconToggle variant="pair" /> },
+      { label: 'Segmented', node: <ThemeIconToggle variant="segmented" /> },
+      { label: 'Split', node: <ThemeIconToggle variant="split" /> },
+      { label: 'Small pair', node: <ThemeIconToggle variant="pair" size="sm" /> },
+      { label: 'Disabled', node: <ThemeIconToggle variant="pair" disabled /> },
     ],
     props: [
-      p("variant", "'ghost' | 'subtle' | 'outline'", "'ghost'", 'Surface treatment.'),
+      p("variant", "'ghost' | 'subtle' | 'outline' | 'pair' | 'segmented' | 'split'", "'ghost'", 'Single swapping icon, or both sun and moon at once.'),
       p("size", "'sm' | 'md'", "'md'", 'Hit target size.'),
       p('disabled', 'boolean', 'false', 'Prevents changing the theme.'),
-    ],
-  },
-  'country-flag': {
-    title: 'Country Flag',
-    description: 'A flag glyph for a country ISO code.',
-    Demo: () => (
-      <div className="flex items-center gap-4">
-        <CountryFlag iso="US" size={24} />
-        <CountryFlag iso="PK" size={24} />
-        <CountryFlag iso="GB" size={24} />
-      </div>
-    ),
-    code: `<CountryFlag iso="US" size={24} />\n`,
-    props: [
-      p('iso', 'string', '—', 'ISO 3166-1 alpha-2 code.'),
-      p('size', 'number', '18', 'Rendered size.'),
     ],
   },
   'auth-layout': {
@@ -1362,6 +1602,7 @@ export function KitComponentDocs({ slug }: { slug: string }) {
       demo={<Demo />}
       code={def.code}
       states={def.states}
+      statesContent={def.statesContent}
       props={def.props}
       wide={def.wide}
     />

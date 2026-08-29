@@ -1,6 +1,8 @@
 'use client'
 
-import { Search } from 'lucide-react'
+import {
+  DkMagnifyingGlassFind
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE, FOCUS_RING } from '@/lib/styles'
 
@@ -27,7 +29,7 @@ export function NavSearch({
         className,
       )}
     >
-      <Search size={15} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />
+      <DkMagnifyingGlassFind size={15} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />
       <input
         type="search"
         value={value}

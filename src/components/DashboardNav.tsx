@@ -2,7 +2,10 @@
 
 import type { ReactNode } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import {
+  DkNavigationMenuBars,
+  DkCloseDismissCancel
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { BrandLogo } from './BrandLogo'
 import { IconButton } from './IconButton'
@@ -56,9 +59,9 @@ export function DashboardNav({
             onClick={onMenuClick}
           >
             {menuOpen ? (
-              <X size={18} strokeWidth={1.6} absoluteStrokeWidth />
+              <DkCloseDismissCancel size={18} strokeWidth={1.6} absoluteStrokeWidth />
             ) : (
-              <Menu size={18} strokeWidth={1.6} absoluteStrokeWidth />
+              <DkNavigationMenuBars size={18} strokeWidth={1.6} absoluteStrokeWidth />
             )}
           </IconButton>
         ) : null}

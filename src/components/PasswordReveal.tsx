@@ -1,6 +1,10 @@
 'use client'
 
-import { Eye, EyeOff } from 'lucide-react'
+import {
+  DkVisibilityEyeShown,
+  DkVisibilityEyeHidden
+} from '@/icons'
+import { IconButton } from './IconButton'
 
 export function PasswordReveal({
   visible,
@@ -10,17 +14,17 @@ export function PasswordReveal({
   onToggle: () => void
 }) {
   return (
-    <button
-      type="button"
-      className="absolute top-1/2 right-2 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-lg border-0 bg-transparent p-0 text-text-tertiary hover:text-text-primary"
+    <IconButton
+      label={visible ? 'Hide password' : 'Show password'}
+      size="sm"
+      className="absolute top-1/2 right-2 -translate-y-1/2 text-text-tertiary hover:text-text-primary"
       onClick={onToggle}
-      aria-label={visible ? 'Hide password' : 'Show password'}
     >
       {visible ? (
-        <EyeOff size={18} strokeWidth={1.6} absoluteStrokeWidth />
+        <DkVisibilityEyeHidden size={18} strokeWidth={1.6} absoluteStrokeWidth />
       ) : (
-        <Eye size={18} strokeWidth={1.6} absoluteStrokeWidth />
+        <DkVisibilityEyeShown size={18} strokeWidth={1.6} absoluteStrokeWidth />
       )}
-    </button>
+    </IconButton>
   )
 }

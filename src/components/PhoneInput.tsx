@@ -4,7 +4,10 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
-import { Check, ChevronDown } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark,
+  DkChevronCaretDown
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import {
   caretFromDigitCount,
@@ -144,7 +147,7 @@ export function PhoneInput({
           )}
           aria-hidden="true"
         >
-          <ChevronDown size={14} strokeWidth={2} absoluteStrokeWidth />
+          <DkChevronCaretDown size={14} strokeWidth={2} absoluteStrokeWidth />
         </span>
       </button>
 
@@ -217,7 +220,7 @@ export function PhoneInput({
                         }
                         check={
                           selected ? (
-                            <Check
+                            <DkTaskCompleteCheckmark
                               className="shrink-0 text-brand-primary"
                               size={16}
                               strokeWidth={2.25}

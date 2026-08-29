@@ -1,8 +1,8 @@
 'use client'
 
 import type { ButtonHTMLAttributes } from 'react'
+import { DkGithubOctocatBrandLogo } from '@/icons'
 import { AuthProviderButton } from './AuthProviderButton'
-import { GitHubMark } from './GitHubMark'
 
 type GitHubButtonProps = {
   loading?: boolean
@@ -14,7 +14,7 @@ export function GitHubButton({
   ...rest
 }: GitHubButtonProps) {
   return (
-    <AuthProviderButton icon={<GitHubMark />} {...rest}>
+    <AuthProviderButton icon={<DkGithubOctocatBrandLogo size={18} />} {...rest}>
       {children}
     </AuthProviderButton>
   )

@@ -1,5 +1,7 @@
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import {
+  DkArrowUpRightLaunch
+} from '@/icons'
 import { cn } from '@/lib/cn'
 
 export function BrowserChrome({
@@ -34,7 +36,7 @@ export function BrowserChrome({
           className="inline-flex shrink-0 items-center gap-1 text-[13px] font-medium text-brand-primary no-underline hover:underline max-[734px]:sr-only"
         >
           Open Full Preview
-          <ArrowUpRight size={12} strokeWidth={2} absoluteStrokeWidth />
+          <DkArrowUpRightLaunch size={12} strokeWidth={2} absoluteStrokeWidth />
         </Link>
       ) : (
         <span className="w-8 shrink-0" />

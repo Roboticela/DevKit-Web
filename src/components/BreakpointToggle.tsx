@@ -1,8 +1,12 @@
 'use client'
 
-import { Monitor, Smartphone, Tablet } from 'lucide-react'
+import {
+  DkDesktopComputerDisplayScreen,
+  DkHandheldMobilePhone,
+  DkHandheldTabletDevice
+} from '@/icons'
 import { cn } from '@/lib/cn'
-import { EASE } from '@/lib/styles'
+import { IconButton } from './IconButton'
 
 export type PreviewBreakpoint = 'desktop' | 'tablet' | 'mobile'
 
@@ -15,11 +19,11 @@ export const PREVIEW_WIDTH: Record<PreviewBreakpoint, number> = {
 const OPTIONS: Array<{
   id: PreviewBreakpoint
   label: string
-  icon: typeof Monitor
+  icon: typeof DkDesktopComputerDisplayScreen
 }> = [
-  { id: 'desktop', label: 'Desktop', icon: Monitor },
-  { id: 'tablet', label: 'Tablet', icon: Tablet },
-  { id: 'mobile', label: 'Mobile', icon: Smartphone },
+  { id: 'desktop', label: 'Desktop', icon: DkDesktopComputerDisplayScreen },
+  { id: 'tablet', label: 'Tablet', icon: DkHandheldTabletDevice },
+  { id: 'mobile', label: 'Mobile', icon: DkHandheldMobilePhone },
 ]
 
 export function BreakpointToggle({
@@ -41,25 +45,19 @@ export function BreakpointToggle({
         const selected = option.id === value
         const Icon = option.icon
         return (
-          <button
+          <IconButton
             key={option.id}
-            type="button"
+            label={`${option.label} ${PREVIEW_WIDTH[option.id]}px`}
+            title={`${option.label} (${PREVIEW_WIDTH[option.id]}px)`}
+            size="sm"
+            variant={selected ? 'primary' : 'ghost'}
             role="radio"
             aria-checked={selected}
-            aria-label={`${option.label} ${PREVIEW_WIDTH[option.id]}px`}
-            title={`${option.label} (${PREVIEW_WIDTH[option.id]}px)`}
+            className={selected ? undefined : 'text-text-tertiary'}
             onClick={() => onChange(option.id)}
-            className={cn(
-              'inline-flex size-9 cursor-pointer items-center justify-center rounded-[8px] border-0',
-              'transition-colors duration-150',
-              EASE,
-              selected
-                ? 'bg-brand-primary text-text-on-brand'
-                : 'bg-transparent text-text-tertiary hover:bg-bg-hover hover:text-text-primary',
-            )}
           >
             <Icon size={16} strokeWidth={1.75} absoluteStrokeWidth />
-          </button>
+          </IconButton>
         )
       })}
     </div>

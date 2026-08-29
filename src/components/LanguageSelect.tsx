@@ -2,7 +2,10 @@
 
 import { useMemo } from 'react'
 import { createPortal } from 'react-dom'
-import { Check, Languages } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark,
+  DkTranslateLanguagesWorld
+} from '@/icons'
 import {
   AVAILABLE_LANGUAGE_IDS,
   languageDisplayName,
@@ -64,7 +67,7 @@ export function LanguageSelect({
         ref={triggerRef}
         open={open}
         className={compact ? 'h-9 gap-2 rounded-[10px] px-3 text-[13px]' : undefined}
-        leading={<Languages size={compact ? 16 : 18} strokeWidth={1.75} absoluteStrokeWidth />}
+        leading={<DkTranslateLanguagesWorld size={compact ? 16 : 18} strokeWidth={1.75} absoluteStrokeWidth />}
         placeholder={!selectedLabel}
         chevronSize={compact ? 14 : 16}
         aria-haspopup="listbox"
@@ -105,13 +108,13 @@ export function LanguageSelect({
                         selected={isSelected}
                         unavailable={!available}
                         leading={
-                          <Languages size={18} strokeWidth={1.75} absoluteStrokeWidth />
+                          <DkTranslateLanguagesWorld size={18} strokeWidth={1.75} absoluteStrokeWidth />
                         }
                         name={item.name}
                         meta={available ? item.id : 'Coming soon'}
                         check={
                           isSelected ? (
-                            <Check
+                            <DkTaskCompleteCheckmark
                               className="shrink-0 text-brand-primary"
                               size={16}
                               strokeWidth={2.25}

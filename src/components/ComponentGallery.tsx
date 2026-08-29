@@ -3,20 +3,20 @@
 import { useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  Bell,
-  ChevronRight,
-  CreditCard,
-  Fingerprint,
-  Inbox,
-  KeyRound,
-  Lock,
-  LogOut,
-  Mail,
-  MonitorSmartphone,
-  Shield,
-  Smartphone,
-  User,
-} from 'lucide-react'
+  DkNotificationBellAlert,
+  DkChevronCaretRight,
+  DkPaymentCreditCard,
+  DkFingerprintBiometricScan,
+  DkMessageInboxTray,
+  DkRoundKeyAccess,
+  DkPadlockSecureClosed,
+  DkLogoutExitSession,
+  DkEnvelopeMessageMail,
+  DkDevicesDesktopAndMobile,
+  DkSecurityShieldProtect,
+  DkHandheldMobilePhone,
+  DkPersonUserProfile
+} from '@/icons'
 import { AVAILABLE_COUNTRY_ISOS } from '@/lib/languages'
 import { Alert } from './Alert'
 import { AuthBrand, AuthLayout, AuthSuccess } from './AuthLayout'
@@ -71,7 +71,7 @@ import { Slider } from './Slider'
 import { SiteFooter } from './SiteFooter'
 import { SiteNav } from './SiteNav'
 import { Skeleton } from './Skeleton'
-import { Switch } from './Switch'
+import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { TextField } from './TextField'
 import { AuthLegal, ErrorText, StatusText, TextLink } from './TextLink'
 import { ThemeIconToggle } from './ThemeIconToggle'
@@ -103,6 +103,58 @@ const SECTIONS = [
 
 function StateLabel({ children }: { children: string }) {
   return <Caption className="mb-2">{children}</Caption>
+}
+
+function SwitchPreview() {
+  const [variants, setVariants] = useState<Record<SwitchVariant, boolean>>({
+    primary: true,
+    subtle: true,
+    outline: false,
+    ghost: true,
+    danger: false,
+  })
+  const [notify, setNotify] = useState(true)
+  const [twoFactor, setTwoFactor] = useState(false)
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-end gap-x-5 gap-y-4">
+        {SWITCH_VARIANTS.map((variant) => (
+          <div key={variant} className="flex flex-col items-center gap-2">
+            <Switch
+              variant={variant}
+              checked={variants[variant]}
+              onChange={(next) => setVariants((current) => ({ ...current, [variant]: next }))}
+              label={variant}
+            />
+            <Caption as="span" className="capitalize">
+              {variant}
+            </Caption>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-2">
+        <Caption as="span">Group</Caption>
+        <SwitchGroup label="Preferences">
+          <SwitchItem
+            title="Notifications"
+            description="Push and email"
+            checked={notify}
+            onChange={setNotify}
+          />
+          <SwitchItem
+            title="Two-factor"
+            description="Sign-in extra step"
+            checked={twoFactor}
+            onChange={setTwoFactor}
+            variant="subtle"
+          />
+          <SwitchItem title="Loading" checked size="sm" loading variant="outline" />
+          <SwitchItem title="Disabled" checked={false} disabled variant="danger" />
+        </SwitchGroup>
+      </div>
+    </div>
+  )
 }
 
 function DemoCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -149,7 +201,6 @@ export function ComponentGallery() {
   const [recovery, setRecovery] = useState('XK4M-92QP')
   const [method, setMethod] = useState<'email' | 'passkey' | 'authenticator'>('email')
   const [notify, setNotify] = useState(true)
-  const [twoFactor, setTwoFactor] = useState(false)
   const [digest, setDigest] = useState(true)
   const [page, setPage] = useState(1)
   const pickerRef = useRef<AvatarPickerHandle>(null)
@@ -224,6 +275,18 @@ export function ComponentGallery() {
             <DemoCard>
               <StateLabel>Icon outline</StateLabel>
               <ThemeIconToggle variant="outline" />
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Icon pair</StateLabel>
+              <ThemeIconToggle variant="pair" />
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Icon segmented</StateLabel>
+              <ThemeIconToggle variant="segmented" />
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Icon split</StateLabel>
+              <ThemeIconToggle variant="split" />
             </DemoCard>
           </div>
         </Section>
@@ -323,19 +386,19 @@ export function ComponentGallery() {
               <StateLabel>Default / filled</StateLabel>
               <div className="flex flex-col gap-4">
                 <TextField
-                  icon={<User size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   placeholder="Name"
                   value="Alex Rivera"
                   onChange={() => undefined}
                 />
                 <TextField
-                  icon={<Mail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   placeholder="Email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
                 <TextField
-                  icon={<Lock size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
                   value={password}
@@ -353,17 +416,17 @@ export function ComponentGallery() {
               <StateLabel>Placeholder, error, disabled</StateLabel>
               <div className="flex flex-col gap-4">
                 <TextField
-                  icon={<Mail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   placeholder="Email"
                 />
                 <TextField
-                  icon={<Mail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   placeholder="Email"
                   defaultValue="not-an-email"
                   invalid
                 />
                 <TextField
-                  icon={<Lock size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   placeholder="Password"
                   disabled
                   defaultValue="••••••••"
@@ -491,37 +554,37 @@ export function ComponentGallery() {
               <StateLabel>Method cards — rest, selected, disabled</StateLabel>
               <div className="mx-auto flex max-w-[460px] flex-col gap-3">
                 <div className="mb-4 flex justify-center text-text-primary">
-                  <Shield size={56} strokeWidth={1.5} absoluteStrokeWidth />
+                  <DkSecurityShieldProtect size={56} strokeWidth={1.5} absoluteStrokeWidth />
                 </div>
                 <VerificationMethodCard
-                  icon={<Mail size={28} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkEnvelopeMessageMail size={28} strokeWidth={1.6} absoluteStrokeWidth />}
                   title="Email"
                   subtitle="Code sent to a***@roboticela.com"
                   selected={method === 'email'}
                   onClick={() => setMethod('email')}
                 />
                 <VerificationMethodCard
-                  icon={<Fingerprint size={28} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkFingerprintBiometricScan size={28} strokeWidth={1.6} absoluteStrokeWidth />}
                   title="Passkey"
                   subtitle="Use Face ID, Touch ID, or a security key"
                   selected={method === 'passkey'}
                   onClick={() => setMethod('passkey')}
                 />
                 <VerificationMethodCard
-                  icon={<Smartphone size={28} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkHandheldMobilePhone size={28} strokeWidth={1.6} absoluteStrokeWidth />}
                   title="Authenticator"
                   subtitle="Use a code from your authenticator app"
                   selected={method === 'authenticator'}
                   onClick={() => setMethod('authenticator')}
                 />
                 <VerificationMethodCard
-                  icon={<KeyRound size={28} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkRoundKeyAccess size={28} strokeWidth={1.6} absoluteStrokeWidth />}
                   title="Recovery code"
                   subtitle="Not configured for this account"
                   disabled
                 />
                 <VerificationMethodCard
-                  icon={<MonitorSmartphone size={28} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkDevicesDesktopAndMobile size={28} strokeWidth={1.6} absoluteStrokeWidth />}
                   title="Another device"
                   subtitle="No other signed-in devices"
                   disabled
@@ -535,24 +598,7 @@ export function ComponentGallery() {
           <div className="grid gap-4 min-[735px]:grid-cols-2">
             <DemoCard>
               <StateLabel>Switch</StateLabel>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-[17px]">Notifications</span>
-                  <Switch checked={notify} onChange={setNotify} label="Notifications" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[17px]">Two-factor</span>
-                  <Switch checked={twoFactor} onChange={setTwoFactor} label="Two-factor" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[17px]">Small / loading</span>
-                  <Switch checked size="sm" loading label="Loading" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[17px]">Disabled</span>
-                  <Switch checked={false} disabled label="Disabled" />
-                </div>
-              </div>
+              <SwitchPreview />
             </DemoCard>
             <DemoCard>
               <StateLabel>Badges, divider, legal</StateLabel>
@@ -597,9 +643,11 @@ export function ComponentGallery() {
                   setEditorOpen(true)
                 }}
               />
-              <button
-                type="button"
-                className="mt-4 cursor-pointer border-0 bg-transparent p-0 font-sans text-sm text-brand-primary hover:underline"
+              <Button
+                variant="ghost"
+                size="sm"
+                fullWidth={false}
+                className="mt-4 h-auto px-0 text-brand-primary hover:underline"
                 onClick={() => {
                   const canvas = document.createElement('canvas')
                   canvas.width = 640
@@ -619,7 +667,7 @@ export function ComponentGallery() {
                 }}
               >
                 Open editor with sample
-              </button>
+              </Button>
             </DemoCard>
 
             <DemoCard>
@@ -633,14 +681,14 @@ export function ComponentGallery() {
                 <SettingsRow
                   label="Language"
                   description="English (US)"
-                  control={<ChevronRight size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  control={<DkChevronCaretRight size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   onClick={() => undefined}
                 />
                 <SettingsRow
                   label="Delete account"
                   description="Permanently remove this profile"
                   danger
-                  control={<ChevronRight size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  control={<DkChevronCaretRight size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   onClick={() => setLogoutOpen(true)}
                 />
               </SettingsList>
@@ -715,7 +763,7 @@ export function ComponentGallery() {
                   item={{
                     id: 'profile',
                     label: 'Profile',
-                    icon: <User size={16} strokeWidth={1.6} absoluteStrokeWidth />,
+                    icon: <DkPersonUserProfile size={16} strokeWidth={1.6} absoluteStrokeWidth />,
                   }}
                   active={sidebarPiece === 'profile'}
                   onSelect={setSidebarPiece}
@@ -724,7 +772,7 @@ export function ComponentGallery() {
                   item={{
                     id: 'security',
                     label: 'Security',
-                    icon: <Shield size={16} strokeWidth={1.6} absoluteStrokeWidth />,
+                    icon: <DkSecurityShieldProtect size={16} strokeWidth={1.6} absoluteStrokeWidth />,
                     badge: 2,
                   }}
                   active={sidebarPiece === 'security'}
@@ -734,7 +782,7 @@ export function ComponentGallery() {
                   item={{
                     id: 'billing',
                     label: 'Billing',
-                    icon: <CreditCard size={16} strokeWidth={1.6} absoluteStrokeWidth />,
+                    icon: <DkPaymentCreditCard size={16} strokeWidth={1.6} absoluteStrokeWidth />,
                   }}
                   active={sidebarPiece === 'billing'}
                   onSelect={setSidebarPiece}
@@ -743,7 +791,7 @@ export function ComponentGallery() {
                   item={{
                     id: 'logout',
                     label: 'Log out',
-                    icon: <LogOut size={16} strokeWidth={1.6} absoluteStrokeWidth />,
+                    icon: <DkLogoutExitSession size={16} strokeWidth={1.6} absoluteStrokeWidth />,
                     tone: 'danger',
                   }}
                   onSelect={() => setLogoutOpen(true)}
@@ -755,25 +803,25 @@ export function ComponentGallery() {
               <StateLabel>Icon tab</StateLabel>
               <div className="flex gap-0.5">
                 <IconTab
-                  icon={<User size={16} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkPersonUserProfile size={16} strokeWidth={1.6} absoluteStrokeWidth />}
                   label="Profile"
                   active={iconTab === 'profile'}
                   onClick={() => setIconTab('profile')}
                 />
                 <IconTab
-                  icon={<Shield size={16} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkSecurityShieldProtect size={16} strokeWidth={1.6} absoluteStrokeWidth />}
                   label="Security"
                   active={iconTab === 'security'}
                   onClick={() => setIconTab('security')}
                 />
                 <IconTab
-                  icon={<Bell size={16} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkNotificationBellAlert size={16} strokeWidth={1.6} absoluteStrokeWidth />}
                   label="Alerts"
                   active={iconTab === 'alerts'}
                   onClick={() => setIconTab('alerts')}
                 />
                 <IconTab
-                  icon={<LogOut size={16} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkLogoutExitSession size={16} strokeWidth={1.6} absoluteStrokeWidth />}
                   label="Logout"
                   tone="danger"
                   onClick={() => setLogoutOpen(true)}
@@ -893,7 +941,7 @@ export function ComponentGallery() {
             <DemoCard>
               <StateLabel>Empty, skeleton, progress</StateLabel>
               <EmptyState
-                icon={<Inbox size={32} strokeWidth={1.5} absoluteStrokeWidth />}
+                icon={<DkMessageInboxTray size={32} strokeWidth={1.5} absoluteStrokeWidth />}
                 title="No messages"
                 body="Mentions and reviews will show up here."
               />
@@ -934,17 +982,17 @@ export function ComponentGallery() {
                 <form className="mt-8 flex flex-col" onSubmit={(event) => event.preventDefault()}>
                   <div className="flex flex-col gap-4">
                     <TextField
-                      icon={<User size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                      icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                       placeholder="Name"
                       defaultValue="Alex Rivera"
                     />
                     <TextField
-                      icon={<Mail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                      icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                       placeholder="Email"
                       defaultValue="alex@roboticela.com"
                     />
                     <TextField
-                      icon={<Lock size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                      icon={<DkPadlockSecureClosed size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                       type="password"
                       placeholder="Password"
                       defaultValue="password"
@@ -990,7 +1038,7 @@ export function ComponentGallery() {
                 title="Link expired"
                 subhead="This sign-in link is no longer valid. Request a new one to continue."
                 narrowSubhead
-                icon={<Lock size={44} strokeWidth={1.5} absoluteStrokeWidth />}
+                icon={<DkPadlockSecureClosed size={44} strokeWidth={1.5} absoluteStrokeWidth />}
               />
               <Button className="mt-8">Send a new link</Button>
             </DemoCard>

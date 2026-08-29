@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState, type ReactNode } from 'react'
-import { Check, Copy } from 'lucide-react'
+import {
+  DkClipboardCopyDuplicate
+} from '@/icons'
 import { cn } from '@/lib/cn'
-import { EASE } from '@/lib/styles'
+import { IconButton } from './IconButton'
 
 function highlightLine(line: string) {
   const tokens = line.split(
@@ -46,23 +47,7 @@ export function CodeBlock({
   fadeKey?: string
   className?: string
 }) {
-  const [copied, setCopied] = useState(false)
   const lines = code.replace(/\n$/, '').split('\n')
-
-  useEffect(() => {
-    if (!copied) return
-    const timer = window.setTimeout(() => setCopied(false), 2000)
-    return () => window.clearTimeout(timer)
-  }, [copied])
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(code)
-      setCopied(true)
-    } catch {
-      setCopied(false)
-    }
-  }
 
   return (
     <div className={cn('relative bg-black text-[#f5f5f7]', className)}>
@@ -81,25 +66,14 @@ export function CodeBlock({
           ))}
         </code>
       </pre>
-      <button
-        type="button"
-        onClick={copy}
-        title={copied ? 'Copied!' : 'Copy'}
-        aria-label={copied ? 'Copied' : 'Copy code'}
-        className={cn(
-          'absolute top-3 right-3 inline-flex size-8 cursor-pointer items-center justify-center rounded-[8px] border-0',
-          'bg-[rgba(255,255,255,0.08)] text-[#f5f5f7]',
-          'transition-colors duration-150',
-          EASE,
-          'hover:bg-[rgba(255,255,255,0.14)]',
-        )}
+      <IconButton
+        label="Copy code"
+        size="sm"
+        className="absolute top-3 right-3 bg-[rgba(255,255,255,0.08)] text-[#f5f5f7] hover:bg-[rgba(255,255,255,0.14)]"
+        onAction={() => navigator.clipboard.writeText(code)}
       >
-        {copied ? (
-          <Check size={14} strokeWidth={2} absoluteStrokeWidth className="text-success" />
-        ) : (
-          <Copy size={14} strokeWidth={1.75} absoluteStrokeWidth />
-        )}
-      </button>
+        <DkClipboardCopyDuplicate size={14} strokeWidth={1.75} absoluteStrokeWidth />
+      </IconButton>
     </div>
   )
 }
@@ -120,31 +94,4 @@ export function CodePanel({
 
 export function copyCode(code: string): Promise<void> {
   return navigator.clipboard.writeText(code)
-}
-
-export function IconAction({
-  label,
-  onClick,
-  children,
-}: {
-  label: string
-  onClick?: () => void
-  children: ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      onClick={onClick}
-      className={cn(
-        'inline-flex size-8 cursor-pointer items-center justify-center rounded-[8px] border-0 bg-transparent text-text-tertiary',
-        'transition-colors duration-150',
-        EASE,
-        'hover:bg-bg-hover hover:text-text-primary',
-      )}
-    >
-      {children}
-    </button>
-  )
 }

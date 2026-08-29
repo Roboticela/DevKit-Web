@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
-import { Info } from 'lucide-react'
+import {
+  DkInformationCircleDetails
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { Body, Label } from './Text'
 
@@ -20,7 +22,7 @@ export function Callout({
       )}
     >
       <Label as="p" className="mb-2 inline-flex items-center gap-2">
-        <Info size={16} strokeWidth={1.75} absoluteStrokeWidth className="text-brand-primary" />
+        <DkInformationCircleDetails size={16} strokeWidth={1.75} absoluteStrokeWidth className="text-brand-primary" />
         {title}
       </Label>
       <Body size="sm" as="div">

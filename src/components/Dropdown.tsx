@@ -1,7 +1,9 @@
 'use client'
 
 import { createPortal } from 'react-dom'
-import { Check } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
 import { SelectList, SelectMenu, SelectOption } from './SelectMenu'
@@ -97,7 +99,7 @@ export function Dropdown<T extends string>({
                       }
                       check={
                         isSelected ? (
-                          <Check
+                          <DkTaskCompleteCheckmark
                             className="shrink-0 text-brand-primary"
                             size={compact ? 14 : 16}
                             strokeWidth={2.25}

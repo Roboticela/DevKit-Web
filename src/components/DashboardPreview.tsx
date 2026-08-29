@@ -2,16 +2,16 @@
 
 import { useMemo, useState } from 'react'
 import {
-  BarChart3,
-  Bell,
-  FolderKanban,
-  Inbox,
-  LayoutDashboard,
-  LogOut,
-  Plus,
-  Settings,
-  Users,
-} from 'lucide-react'
+  DkBarChartAnalyticsColumns,
+  DkNotificationBellAlert,
+  DkKanbanFolderBoard,
+  DkMessageInboxTray,
+  DkAppDashboardLayoutTiles,
+  DkLogoutExitSession,
+  DkAddPlusCreate,
+  DkGearSettingsPreferences,
+  DkPeopleUsersGroup
+} from '@/icons'
 import { Alert } from './Alert'
 import { Badge } from './Badge'
 import { Breadcrumbs } from './Breadcrumbs'
@@ -62,16 +62,16 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
   const sections = useMemo(() => {
     const query = search.trim().toLowerCase()
     const main = [
-      { id: 'overview', label: 'Overview', icon: <LayoutDashboard {...ICON} /> },
-      { id: 'projects', label: 'Projects', icon: <FolderKanban {...ICON} /> },
-      { id: 'customers', label: 'Customers', icon: <Users {...ICON} /> },
-      { id: 'analytics', label: 'Analytics', icon: <BarChart3 {...ICON} /> },
-      { id: 'inbox', label: 'Inbox', icon: <Inbox {...ICON} />, badge: 3 },
+      { id: 'overview', label: 'Overview', icon: <DkAppDashboardLayoutTiles {...ICON} /> },
+      { id: 'projects', label: 'Projects', icon: <DkKanbanFolderBoard {...ICON} /> },
+      { id: 'customers', label: 'Customers', icon: <DkPeopleUsersGroup {...ICON} /> },
+      { id: 'analytics', label: 'Analytics', icon: <DkBarChartAnalyticsColumns {...ICON} /> },
+      { id: 'inbox', label: 'Inbox', icon: <DkMessageInboxTray {...ICON} />, badge: 3 },
     ].filter((item) => !query || item.label.toLowerCase().includes(query))
 
     const account = [
-      { id: 'settings', label: 'Settings', icon: <Settings {...ICON} /> },
-      { id: 'logout', label: 'Log out', icon: <LogOut {...ICON} />, tone: 'danger' as const },
+      { id: 'settings', label: 'Settings', icon: <DkGearSettingsPreferences {...ICON} /> },
+      { id: 'logout', label: 'Log out', icon: <DkLogoutExitSession {...ICON} />, tone: 'danger' as const },
     ].filter((item) => !query || item.label.toLowerCase().includes(query))
 
     return [
@@ -114,7 +114,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
       brandHref="/"
       navActions={
         <IconButton label="Notifications" size="sm" badge={3}>
-          <Bell size={16} strokeWidth={1.6} absoluteStrokeWidth />
+          <DkNotificationBellAlert size={16} strokeWidth={1.6} absoluteStrokeWidth />
         </IconButton>
       }
       footer={<ThemeToggle />}
@@ -202,7 +202,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
                 <div className="w-full min-[735px]:w-[168px]">
                   <Button onClick={() => setInviteOpen(true)}>
                     <span className="inline-flex items-center gap-2">
-                      <Plus size={16} strokeWidth={2} absoluteStrokeWidth />
+                      <DkAddPlusCreate size={16} strokeWidth={2} absoluteStrokeWidth />
                       New
                     </span>
                   </Button>
@@ -260,7 +260,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
 
         {page === 'inbox' ? (
           <EmptyState
-            icon={<Inbox size={36} strokeWidth={1.5} absoluteStrokeWidth />}
+            icon={<DkMessageInboxTray size={36} strokeWidth={1.5} absoluteStrokeWidth />}
             title="Inbox is clear"
             body="New mentions and review requests will land here."
             action={<Button onClick={() => navigate('projects')}>View projects</Button>}

@@ -2,10 +2,13 @@
 
 import { useState, type ReactNode } from 'react'
 import Link from 'next/link'
-import { ChevronDown } from 'lucide-react'
+import {
+  DkChevronCaretDown
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { DOCS_NAV, type DocsNavSection } from '@/lib/docs-catalog'
+import { Caption, Label } from './Text'
 
 function SidebarSection({
   section,
@@ -24,13 +27,12 @@ function SidebarSection({
         type="button"
         className={cn(
           'flex h-8 w-full cursor-pointer items-center justify-between border-0 bg-transparent px-2 text-left',
-          'font-sans text-base font-semibold text-text-primary',
         )}
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
       >
-        {section.label}
-        <ChevronDown
+        <Label as="span">{section.label}</Label>
+        <DkChevronCaretDown
           size={14}
           strokeWidth={1.75}
           absoluteStrokeWidth
@@ -57,7 +59,7 @@ function SidebarSection({
                 href={item.href}
                 onClick={onNavigate}
                 className={cn(
-                  'relative flex h-8 items-center gap-2 rounded-[8px] pr-2 pl-3 text-[13px] font-normal no-underline',
+                  'relative flex h-8 items-center gap-2 rounded-[8px] pr-2 pl-3 no-underline',
                   'transition-colors duration-200',
                   EASE,
                   active
@@ -71,7 +73,11 @@ function SidebarSection({
                     aria-hidden
                   />
                 ) : null}
-                <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                <span className="min-w-0 flex-1 truncate">
+                  <Caption as="span" className="block truncate text-inherit">
+                    {item.label}
+                  </Caption>
+                </span>
                 {item.isNew ? (
                   <span className="rounded-[980px] bg-success-subtle px-1.5 py-0.5 text-[10px] font-medium leading-none text-success">
                     New

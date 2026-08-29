@@ -12,9 +12,16 @@ import {
   type CSSProperties,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { Calendar, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  DkCalendarDateSchedule,
+  DkChevronCaretDown,
+  DkChevronCaretLeft,
+  DkChevronCaretRight
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE, FIELD_SURFACE, FOCUS_VISIBLE_RING, OPEN_RING } from '@/lib/styles'
+import { Button } from './Button'
+import { IconButton } from './IconButton'
 
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'] as const
 const MONTHS_SHORT = [
@@ -454,7 +461,7 @@ export function DatePicker(props: DatePickerProps) {
         onClick={() => setOpen((current) => !current)}
       >
         <span className="inline-flex shrink-0 text-text-tertiary" aria-hidden="true">
-          <Calendar size={18} strokeWidth={1.75} absoluteStrokeWidth />
+          <DkCalendarDateSchedule size={18} strokeWidth={1.75} absoluteStrokeWidth />
         </span>
         <span
           className={cn(
@@ -472,7 +479,7 @@ export function DatePicker(props: DatePickerProps) {
           )}
           aria-hidden="true"
         >
-          <ChevronDown size={14} strokeWidth={2} absoluteStrokeWidth />
+          <DkChevronCaretDown size={14} strokeWidth={2} absoluteStrokeWidth />
         </span>
       </button>
 
@@ -510,15 +517,15 @@ export function DatePicker(props: DatePickerProps) {
                 />
 
                 <div className="mb-4 flex h-8 items-center justify-between">
-                  <button
-                    type="button"
-                    className="inline-flex size-8 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-text-tertiary transition-colors duration-150 hover:bg-bg-hover disabled:cursor-default disabled:opacity-35"
-                    aria-label={`Previous ${navLabel}`}
+                  <IconButton
+                    label={`Previous ${navLabel}`}
+                    size="sm"
+                    className="text-text-tertiary"
                     disabled={!canPrev}
                     onClick={() => shiftMonth(-1)}
                   >
-                    <ChevronLeft size={16} strokeWidth={2} absoluteStrokeWidth />
-                  </button>
+                    <DkChevronCaretLeft size={16} strokeWidth={2} absoluteStrokeWidth />
+                  </IconButton>
 
                   {view === 'calendar' ? (
                     <div className="inline-flex min-w-0 items-center gap-1.5">
@@ -551,15 +558,15 @@ export function DatePicker(props: DatePickerProps) {
                     </span>
                   )}
 
-                  <button
-                    type="button"
-                    className="inline-flex size-8 cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent text-text-tertiary transition-colors duration-150 hover:bg-bg-hover disabled:cursor-default disabled:opacity-35"
-                    aria-label={`Next ${navLabel}`}
+                  <IconButton
+                    label={`Next ${navLabel}`}
+                    size="sm"
+                    className="text-text-tertiary"
                     disabled={!canNext}
                     onClick={() => shiftMonth(1)}
                   >
-                    <ChevronRight size={16} strokeWidth={2} absoluteStrokeWidth />
-                  </button>
+                    <DkChevronCaretRight size={16} strokeWidth={2} absoluteStrokeWidth />
+                  </IconButton>
                 </div>
 
                 <div className="animate-date-picker-crossfade" key={`${view}-${fadeKey}`}>
@@ -688,30 +695,34 @@ export function DatePicker(props: DatePickerProps) {
                 </div>
 
                 <div className="mt-5 flex items-center justify-between gap-3 border-t border-border-default pt-4">
-                  <button
-                    type="button"
-                    className="cursor-pointer border-0 bg-transparent p-0 font-sans text-sm font-normal text-brand-primary no-underline hover:underline"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    fullWidth={false}
+                    className="h-auto px-0 text-brand-primary hover:underline"
                     onClick={selectToday}
                   >
                     Today
-                  </button>
+                  </Button>
                   <div className="ml-auto inline-flex items-center gap-3">
-                    <button
-                      type="button"
-                      className="cursor-pointer border-0 bg-transparent p-0 font-sans text-sm font-normal text-text-tertiary no-underline hover:underline"
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      fullWidth={false}
+                      className="h-auto px-0 hover:underline"
                       onClick={clearSelection}
                     >
                       Clear
-                    </button>
+                    </Button>
                     {isRange ? (
-                      <button
-                        type="button"
-                        className="h-9 cursor-pointer rounded-[980px] border-0 bg-brand-primary px-4 font-sans text-sm font-medium text-white disabled:cursor-default disabled:opacity-45"
+                      <Button
+                        size="sm"
+                        fullWidth={false}
                         onClick={commitRange}
                         disabled={!draftRange.start}
                       >
                         Done
-                      </button>
+                      </Button>
                     ) : null}
                   </div>
                 </div>

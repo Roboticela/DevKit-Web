@@ -2,7 +2,9 @@
 
 import { useMemo, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { Check } from 'lucide-react'
+import {
+  DkTaskCompleteCheckmark
+} from '@/icons'
 import { cn } from '@/lib/cn'
 import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
 import { SelectEmpty, SelectList, SelectMenu, SelectOption, SelectSearch } from './SelectMenu'
@@ -127,7 +129,7 @@ export function SearchSelect({
                     name={clearLabel}
                     check={
                       !value ? (
-                        <Check
+                        <DkTaskCompleteCheckmark
                           className="shrink-0 text-brand-primary"
                           size={16}
                           strokeWidth={2.25}
@@ -164,7 +166,7 @@ export function SearchSelect({
                         }
                         check={
                           isSelected ? (
-                            <Check
+                            <DkTaskCompleteCheckmark
                               className="shrink-0 text-brand-primary"
                               size={16}
                               strokeWidth={2.25}
