@@ -8,7 +8,7 @@ import {
   DkRotateCounterclockwise,
   DkRotateClockwise
 } from '@/icons'
-import { Button } from './Button'
+import { Anchor } from './Anchor'
 import { ButtonLabel } from './ButtonLabel'
 import { IconButton } from './IconButton'
 import { SheetNav } from './SheetNav'
@@ -219,6 +219,8 @@ export function AvatarEditor({
         <SheetNav
           title="Move and Scale"
           subtitle="Pinch to zoom · Drag to reposition"
+          variant="ghost"
+          onDark
           onCancel={onCancel}
           onDone={() => void handleSave()}
           cancelDisabled={busy}
@@ -314,26 +316,19 @@ export function AvatarEditor({
 
           <div className="flex flex-col items-center gap-3 pt-1">
             {onChooseAnother ? (
-              <Button
-                variant="ghost"
-                fullWidth={false}
-                className="h-auto p-1 text-brand-primary hover:underline"
-                disabled={busy}
-                onClick={onChooseAnother}
-              >
+              <Anchor size="md" disabled={busy} onClick={onChooseAnother}>
                 Choose a Different Photo
-              </Button>
+              </Anchor>
             ) : null}
             {canRemove && onRemove ? (
-              <Button
-                variant="ghost"
-                fullWidth={false}
-                className="h-auto p-1 text-danger hover:text-danger hover:underline"
+              <Anchor
+                size="md"
+                tone="danger"
                 disabled={busy}
                 onClick={() => void onRemove()}
               >
                 Remove Photo
-              </Button>
+              </Anchor>
             ) : null}
           </div>
         </div>

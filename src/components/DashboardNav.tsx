@@ -9,7 +9,7 @@ import {
 import { cn } from '@/lib/cn'
 import { BrandLogo } from './BrandLogo'
 import { IconButton } from './IconButton'
-import { NavSearch } from './NavSearch'
+import { NavSearch, type NavSearchSize, type NavSearchVariant } from './NavSearch'
 import { ProfileButton } from './ProfileButton'
 import { Label } from './Text'
 
@@ -23,6 +23,7 @@ export function DashboardNav({
   onUserClick,
   actions,
   brandHref,
+  showBrand = true,
   className,
 }: {
   title?: string
@@ -30,6 +31,11 @@ export function DashboardNav({
     value: string
     onChange: (value: string) => void
     placeholder?: string
+    variant?: NavSearchVariant
+    size?: NavSearchSize
+    shortcut?: string
+    loading?: boolean
+    disabled?: boolean
   }
   menuOpen?: boolean
   onMenuClick?: () => void
@@ -38,13 +44,13 @@ export function DashboardNav({
   onUserClick?: () => void
   actions?: ReactNode
   brandHref?: string
+  showBrand?: boolean
   className?: string
 }) {
   return (
     <header
       className={cn(
-        'relative z-[2] grid h-[52px] shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-border-default bg-bg-elevated px-4',
-        'dark:bg-bg-primary',
+        'relative z-[2] grid h-[52px] shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-border-default bg-bg-primary px-4',
         'min-[735px]:grid-cols-[1fr_auto_1fr] min-[735px]:gap-4 min-[735px]:px-6',
         className,
       )}
@@ -65,13 +71,15 @@ export function DashboardNav({
             )}
           </IconButton>
         ) : null}
-        {brandHref ? (
-          <Link href={brandHref} className="flex items-center text-text-primary no-underline">
+        {showBrand ? (
+          brandHref ? (
+            <Link href={brandHref} className="flex items-center text-text-primary no-underline">
+              <BrandLogo variant="text" size={18} labelClassName="hidden min-[735px]:inline" />
+            </Link>
+          ) : (
             <BrandLogo variant="text" size={18} labelClassName="hidden min-[735px]:inline" />
-          </Link>
-        ) : (
-          <BrandLogo variant="text" size={18} labelClassName="hidden min-[735px]:inline" />
-        )}
+          )
+        ) : null}
       </div>
 
       {title ? (
@@ -88,6 +96,11 @@ export function DashboardNav({
             value={search.value}
             onChange={search.onChange}
             placeholder={search.placeholder}
+            variant={search.variant}
+            size={search.size}
+            shortcut={search.shortcut}
+            loading={search.loading}
+            disabled={search.disabled}
           />
         ) : null}
         {actions}

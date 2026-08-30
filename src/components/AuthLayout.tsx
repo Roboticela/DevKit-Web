@@ -4,9 +4,10 @@ import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/cn'
 import { brand } from '@/lib/devkit'
+import { Anchor } from './Anchor'
 import { BrandLogo } from './BrandLogo'
 import { ThemeToggle } from './ThemeToggle'
-import { Body, Caption, Heading, Label, Subhead } from './Text'
+import { Body, Heading, Label, Subhead } from './Text'
 
 export function AuthNav({
   navLinkTo,
@@ -27,14 +28,9 @@ export function AuthNav({
       <div className="flex items-center gap-4">
         <ThemeToggle compact />
         {navLinkTo && navLinkLabel ? (
-          <Link
-            className="whitespace-nowrap text-brand-primary no-underline hover:underline"
-            href={navLinkTo}
-          >
-            <Caption as="span" tone="link">
-              {navLinkLabel}
-            </Caption>
-          </Link>
+          <Anchor href={navLinkTo} size="sm" className="whitespace-nowrap">
+            {navLinkLabel}
+          </Anchor>
         ) : null}
       </div>
     </header>

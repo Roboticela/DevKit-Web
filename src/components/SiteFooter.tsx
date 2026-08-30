@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { brand } from '@/lib/devkit'
 import { AVAILABLE_COUNTRY_ISOS, AVAILABLE_LANGUAGE_IDS } from '@/lib/languages'
+import { Anchor } from './Anchor'
 import { BrandLogo } from './BrandLogo'
 import { Button } from './Button'
 import { CountrySelect } from './CountrySelect'
@@ -97,11 +98,9 @@ export function SiteFooter() {
               <ul className="m-0 flex list-none flex-col gap-2 p-0">
                 {column.links.map((link) => (
                   <li key={link}>
-                    <a href={`#${link}`} className="text-text-secondary no-underline hover:underline">
-                      <Caption as="span" tone="secondary">
-                        {link}
-                      </Caption>
-                    </a>
+                    <Anchor href={`#${link}`} variant="subtle" size="sm">
+                      {link}
+                    </Anchor>
                   </li>
                 ))}
               </ul>

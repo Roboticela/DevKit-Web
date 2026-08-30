@@ -6,6 +6,7 @@ import {
 } from '@/icons'
 import { cn } from '@/lib/cn'
 import { MENU_SEARCH_INPUT, MENU_SURFACE } from '@/lib/styles'
+import { EmptyPopup } from './EmptyPopup'
 
 export function SelectMenu({
   id,
@@ -79,8 +80,15 @@ export function SelectList({ children }: { children: ReactNode }) {
 }
 
 export function SelectEmpty({ children }: { children: ReactNode }) {
+  const title = typeof children === 'string' ? children : 'No results'
   return (
-    <p className="m-0 px-3 py-6 text-center text-sm text-text-tertiary">{children}</p>
+    <EmptyPopup
+      surface="plain"
+      size="sm"
+      icon={<DkMagnifyingGlassFind strokeWidth={1.5} absoluteStrokeWidth />}
+      title={title}
+      body={typeof children === 'string' ? undefined : children}
+    />
   )
 }
 

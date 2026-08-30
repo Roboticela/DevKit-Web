@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
 import { BUTTON_TOC, DOCS_NAV, type DocsNavSection, type DocsTocItem } from '@/lib/docs-catalog'
 import { DocsFooter } from './DocsFooter'
@@ -27,8 +27,11 @@ export function DocsShell({
 }) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
+  const previousPath = useRef(pathname)
 
   useEffect(() => {
+    if (previousPath.current === pathname) return
+    previousPath.current = pathname
     setMenuOpen(false)
   }, [pathname])
 

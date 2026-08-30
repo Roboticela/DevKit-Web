@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/lib/cn'
-import { Button } from './Button'
+import { Anchor } from './Anchor'
 import { Body, Caption } from './Text'
 
 export function ListGroup({
@@ -32,19 +32,14 @@ export function TextAction({
   danger?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <Button
-      variant="ghost"
+    <Anchor
       size="sm"
-      fullWidth={false}
-      className={cn(
-        'h-auto px-0 hover:underline',
-        danger ? 'text-danger hover:text-danger' : 'text-brand-primary',
-        className,
-      )}
+      tone={danger ? 'danger' : 'brand'}
+      className={className}
       {...rest}
     >
       {children}
-    </Button>
+    </Anchor>
   )
 }
 

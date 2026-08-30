@@ -324,7 +324,7 @@ export function IconsDocs() {
           open={detailOpen}
           onClose={() => setDetailOpen(false)}
           title={selected.name}
-          className="max-w-[560px]"
+          size="lg"
         >
           <p className="m-0 text-[13px] text-text-tertiary">
             {packLabel(selected.pack)}

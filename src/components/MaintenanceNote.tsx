@@ -1,7 +1,4 @@
-import Link from 'next/link'
-import {
-  DkArrowUpRightLaunch
-} from '@/icons'
+import { Anchor } from './Anchor'
 import { Caption, Label } from './Text'
 
 export function MaintenanceNote({
@@ -21,15 +18,9 @@ export function MaintenanceNote({
       <Caption tone="secondary" className="mt-1 mb-2">
         {children}
       </Caption>
-      <Link
-        href={href}
-        className="inline-flex items-center gap-0.5 text-brand-primary no-underline hover:underline"
-      >
-        <Caption as="span" tone="link">
-          {linkLabel}
-        </Caption>
-        <DkArrowUpRightLaunch size={11} strokeWidth={2} absoluteStrokeWidth />
-      </Link>
+      <Anchor href={href} size="sm">
+        {linkLabel}
+      </Anchor>
     </div>
   )
 }

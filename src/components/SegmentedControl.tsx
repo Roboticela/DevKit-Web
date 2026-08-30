@@ -13,7 +13,7 @@ import {
   DkTaskCompleteCheckmark
 } from '@/icons'
 import { cn } from '@/lib/cn'
-import { ButtonSpinner } from './ButtonLabel'
+import { Loader } from './Loader'
 import { Caption } from './Text'
 
 export type SegmentedSize = 'sm' | 'md' | 'lg'
@@ -390,7 +390,12 @@ export function SegmentedControl<T extends string>({
             </span>
             {busy ? (
               <span className="absolute inset-0 inline-flex items-center justify-center">
-                <ButtonSpinner light={light} onWhite={!light} size={metric.mark - 2} />
+                <Loader
+                  decorative
+                  size={metric.mark - 2}
+                  onDark={light}
+                  tone={light ? 'default' : 'brand'}
+                />
               </span>
             ) : null}
             {status === 'success' ? (

@@ -33,6 +33,7 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
     let toc = KIT_TOC
     let contentWidth: 760 | 900 = 760
     if (slug === 'button') toc = BUTTON_TOC
+    else if (slug === 'anchor') toc = BUTTON_TOC
     else if (slug === 'text') toc = TEXT_TOC
     else if (GUIDE_SLUGS.has(slug)) toc = GUIDE_TOC
     else if (slug === 'icons') {

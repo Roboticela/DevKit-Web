@@ -1,6 +1,5 @@
-import Link from 'next/link'
 import { cn } from '@/lib/cn'
-import { Label } from './Text'
+import { Anchor } from './Anchor'
 
 export function DocsPager({
   prev,
@@ -17,26 +16,16 @@ export function DocsPager({
       className={cn('flex items-center justify-between gap-4 border-t border-border-default pt-6', className)}
     >
       {prev ? (
-        <Link
-          href={prev.href}
-          className="group no-underline"
-        >
-          <Label as="span" tone="secondary" className="group-hover:text-brand-primary">
-            ← {prev.label}
-          </Label>
-        </Link>
+        <Anchor href={prev.href} size="md">
+          ← {prev.label}
+        </Anchor>
       ) : (
         <span />
       )}
       {next ? (
-        <Link
-          href={next.href}
-          className="group no-underline"
-        >
-          <Label as="span" tone="secondary" className="group-hover:text-brand-primary">
-            {next.label} →
-          </Label>
-        </Link>
+        <Anchor href={next.href} size="md">
+          {next.label} →
+        </Anchor>
       ) : null}
     </nav>
   )

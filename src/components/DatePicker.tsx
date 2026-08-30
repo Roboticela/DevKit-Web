@@ -11,6 +11,7 @@ import {
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
+import { Anchor } from './Anchor'
 import { Button } from './Button'
 import { IconButton } from './IconButton'
 import { SelectMenu } from './SelectMenu'
@@ -633,27 +634,18 @@ export function DatePicker(props: DatePickerProps) {
               </div>
 
               <div className="mt-2 flex items-center justify-between gap-3 border-t border-border-default pt-2.5">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  fullWidth={false}
-                  className="h-auto px-1.5 text-brand-primary hover:underline"
-                  disabled={todayDisabled}
-                  onClick={selectToday}
-                >
+                <Anchor size="sm" disabled={todayDisabled} onClick={selectToday}>
                   Today
-                </Button>
+                </Anchor>
                 <div className="ml-auto inline-flex items-center gap-1">
-                  <Button
-                    variant="ghost"
+                  <Anchor
+                    variant="plain"
                     size="sm"
-                    fullWidth={false}
-                    className="h-auto px-1.5 hover:underline"
                     disabled={!hasValue}
                     onClick={clearSelection}
                   >
                     Clear
-                  </Button>
+                  </Anchor>
                   {isRange ? (
                     <Button
                       size="sm"

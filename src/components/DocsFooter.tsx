@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { brand } from '@/lib/devkit'
+import { Anchor } from './Anchor'
 import { Caption } from './Text'
 
 const LINKS = [
@@ -18,13 +18,9 @@ export function DocsFooter() {
         </Caption>
         <nav className="flex flex-wrap gap-5" aria-label="Footer">
           {LINKS.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="text-text-tertiary no-underline hover:text-text-primary"
-            >
-              <Caption as="span">{link.label}</Caption>
-            </Link>
+            <Anchor key={link.label} href={link.href} variant="subtle" size="sm">
+              {link.label}
+            </Anchor>
           ))}
         </nav>
       </div>

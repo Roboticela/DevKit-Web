@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import {
   DocsCard,
@@ -19,7 +18,8 @@ import {
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
-import { Body, Caption, Heading, Label, Subhead, type TextVariant } from './Text'
+import { Anchor } from './Anchor'
+import { Body, Caption, Heading, Subhead, type TextVariant } from './Text'
 
 const COLOR_GROUPS = [
   {
@@ -286,11 +286,9 @@ export function FoundationDocs({ slug }: { slug: string }) {
                 'Do not use display more than once in a viewport.',
               ]}
             />
-            <Link href="/components/text" className="w-fit no-underline">
-              <Label as="span" tone="link">
-                Open Text
-              </Label>
-            </Link>
+            <Anchor href="/components/text" variant="standalone" size="md">
+              Open Text
+            </Anchor>
           </DocsUsage>
         }
         tokens={

@@ -2,7 +2,7 @@
 
 import { useRef, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
-import { ButtonSpinner } from './ButtonLabel'
+import { Loader } from './Loader'
 import { Caption, Label } from './Text'
 
 export type SwitchVariant = 'primary' | 'subtle' | 'outline' | 'ghost' | 'danger'
@@ -147,7 +147,7 @@ export function Switch({
             transformOrigin: checked ? 'right center' : 'left center',
           }}
         >
-          {loading ? <ButtonSpinner onWhite size={compact ? 12 : 14} /> : null}
+          {loading ? <Loader decorative size={compact ? 12 : 14} tone="brand" /> : null}
         </span>
       </span>
     </button>

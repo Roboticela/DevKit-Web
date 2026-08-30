@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState, type ButtonHTMLAttributes } from 'react'
+import { useEffect, useState, type ButtonHTMLAttributes, type MouseEvent } from 'react'
 import { cn } from '@/lib/cn'
 import { PILL_BUTTON } from '@/lib/styles'
+import { Anchor } from './Anchor'
 import { ButtonLabel } from './ButtonLabel'
 
 export type ConfirmActionVariant = 'text' | 'ghost' | 'subtle' | 'outline' | 'solid'
@@ -23,12 +24,6 @@ const sizes: Record<ConfirmActionSize, string> = {
   sm: 'h-8 px-3.5 text-sm',
   md: 'h-11 px-[22px] text-[17px]',
   lg: 'h-[50px] px-6 text-[17px]',
-}
-
-const textIdle: Record<ConfirmActionTone, string> = {
-  danger: 'text-danger hover:text-danger hover:underline',
-  brand: 'text-brand-primary hover:text-brand-primary-hover hover:underline',
-  neutral: 'text-text-secondary hover:text-text-primary hover:underline',
 }
 
 const ghostIdle: Record<ConfirmActionTone, string> = {
@@ -61,17 +56,12 @@ function surfaceClass(
   confirming: boolean,
   size: ConfirmActionSize,
 ) {
-  const compact = variant === 'text' && !confirming
-  if (compact) {
-    return cn('h-auto px-2.5 py-1 font-normal', textIdle[tone])
-  }
-
   const shape = sizes[size]
   if (confirming || variant === 'solid') return cn(shape, fill[tone])
   if (variant === 'ghost') return cn(shape, ghostIdle[tone])
   if (variant === 'subtle') return cn(shape, subtleIdle[tone])
   if (variant === 'outline') return cn(shape, outlineIdle[tone])
-  return cn(shape, textIdle[tone])
+  return cn(shape, fill[tone])
 }
 
 export function ConfirmAction({
@@ -102,12 +92,53 @@ export function ConfirmAction({
   const [confirming, setConfirming] = useState(false)
   const filled = confirming || variant === 'solid'
   const light = filled && tone !== 'neutral'
+  const compact = variant === 'text' && !confirming
 
   useEffect(() => {
     if (!confirming) return
     const timer = window.setTimeout(() => setConfirming(false), resetMs)
     return () => window.clearTimeout(timer)
   }, [confirming, resetMs])
+
+  function handleClick(event: MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation()
+    onClick?.(event)
+    if (event.defaultPrevented || loading || disabled) return
+    if (confirming) {
+      onConfirm()
+      setConfirming(false)
+      return
+    }
+    setConfirming(true)
+  }
+
+  if (compact) {
+    return (
+      <Anchor
+        {...rest}
+        size={size === 'lg' ? 'lg' : size === 'md' ? 'md' : 'sm'}
+        tone={tone === 'neutral' ? 'brand' : tone}
+        variant={tone === 'neutral' ? 'plain' : 'inline'}
+        disabled={disabled || loading}
+        className={className}
+        aria-pressed={confirming}
+        aria-busy={loading || undefined}
+        onClick={handleClick}
+      >
+        {loading ? (
+          <ButtonLabel
+            loading
+            loadingText={loadingText ?? (label === 'Sign Out' ? 'Signing out…' : 'Removing…')}
+            light={false}
+          >
+            {label}
+          </ButtonLabel>
+        ) : (
+          label
+        )}
+      </Anchor>
+    )
+  }
 
   return (
     <button
@@ -123,17 +154,7 @@ export function ConfirmAction({
       disabled={disabled || loading}
       aria-pressed={confirming}
       aria-busy={loading || undefined}
-      onClick={(event) => {
-        event.stopPropagation()
-        onClick?.(event)
-        if (event.defaultPrevented || loading || disabled) return
-        if (confirming) {
-          onConfirm()
-          setConfirming(false)
-          return
-        }
-        setConfirming(true)
-      }}
+      onClick={handleClick}
     >
       <ButtonLabel
         loading={loading}

@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { cn } from '@/lib/cn'
+import { Anchor } from './Anchor'
 
 export type CompositionNode = {
   label: string
@@ -32,9 +32,9 @@ function TreeRows({
               {branch}
             </span>
             {node.href ? (
-              <Link href={node.href} className="text-brand-primary no-underline hover:underline">
+              <Anchor href={node.href} size="inherit">
                 {node.label}
-              </Link>
+              </Anchor>
             ) : (
               <span className="text-text-secondary">{node.label}</span>
             )}

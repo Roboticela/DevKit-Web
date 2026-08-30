@@ -4,12 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import {
   DkNavigationMenuBars,
-  DkMagnifyingGlassFind,
   DkShoppingBagPurchase,
-  DkCloseDismissCancel
+  DkCloseDismissCancel,
 } from '@/icons'
 import { cn } from '@/lib/cn'
 import { BrandLogo } from './BrandLogo'
+import { CommandPalette, CommandSearch, type CommandItem } from './CommandPalette'
 import { IconButton } from './IconButton'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -22,14 +22,42 @@ const LINKS = [
 
 const ICON = { size: 18, strokeWidth: 1.6, absoluteStrokeWidth: true } as const
 
+const SEARCH_ITEMS: CommandItem[] = [
+  { id: 'store', label: 'Find a Store', group: 'Quick Links', kind: 'link', href: '#products' },
+  { id: 'products', label: 'Products', group: 'Quick Links', kind: 'link', href: '#products' },
+  { id: 'services', label: 'Services', group: 'Quick Links', kind: 'link', href: '#services' },
+  { id: 'reels', label: 'Reels', group: 'Quick Links', kind: 'link', href: '#reels' },
+  { id: 'support', label: 'Support', group: 'Quick Links', kind: 'link', href: '#support' },
+  {
+    id: 'accessories',
+    label: 'Accessories',
+    group: 'Suggested',
+    href: '#products',
+    description: 'Cases, cables, and more',
+  },
+  {
+    id: 'airpods',
+    label: 'AirPods',
+    group: 'Suggested',
+    href: '#products',
+    description: 'Wireless audio',
+  },
+]
+
 export function SiteNav({ active = 'Products' }: { active?: string }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  function openSearch() {
+    setMenuOpen(false)
+    setSearchOpen(true)
+  }
 
   return (
     <nav className="sticky top-0 z-[200] font-sans antialiased">
       <div
         className={cn(
-            'relative z-[3] h-11 overflow-visible',
+          'relative z-[3] h-11 overflow-visible',
           menuOpen
             ? 'bg-bg-elevated dark:bg-bg-primary'
             : 'bg-[color-mix(in_srgb,var(--bg-primary)_72%,transparent)] backdrop-blur-[20px] backdrop-saturate-[180%]',
@@ -61,9 +89,7 @@ export function SiteNav({ active = 'Products' }: { active?: string }) {
               </li>
             ))}
             <li className="flex h-11 shrink-0 items-center">
-              <IconButton label="Search">
-                <DkMagnifyingGlassFind {...ICON} />
-              </IconButton>
+              <CommandSearch icon placeholder="Search" onClick={openSearch} active={searchOpen} />
             </li>
             <li className="flex h-11 shrink-0 items-center">
               <IconButton label="Bag">
@@ -79,12 +105,15 @@ export function SiteNav({ active = 'Products' }: { active?: string }) {
             <Link href="/" className="inline-flex items-center text-text-primary no-underline">
               <BrandLogo variant="text" size={20} />
             </Link>
-            <IconButton
-              label={menuOpen ? 'Close menu' : 'Open menu'}
-              onClick={() => setMenuOpen((current) => !current)}
-            >
-              {menuOpen ? <DkCloseDismissCancel {...ICON} /> : <DkNavigationMenuBars {...ICON} />}
-            </IconButton>
+            <div className="flex items-center">
+              <CommandSearch icon placeholder="Search" onClick={openSearch} active={searchOpen} />
+              <IconButton
+                label={menuOpen ? 'Close menu' : 'Open menu'}
+                onClick={() => setMenuOpen((current) => !current)}
+              >
+                {menuOpen ? <DkCloseDismissCancel {...ICON} /> : <DkNavigationMenuBars {...ICON} />}
+              </IconButton>
+            </div>
           </div>
         </div>
       </div>
@@ -105,6 +134,19 @@ export function SiteNav({ active = 'Products' }: { active?: string }) {
           </div>
         </div>
       ) : null}
+
+      <CommandPalette
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        variant="nav"
+        items={SEARCH_ITEMS}
+        placeholder="Search"
+        onSelect={(item) => {
+          if (item.href?.startsWith('#')) {
+            document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' })
+          }
+        }}
+      />
     </nav>
   )
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type ComponentType, type ReactNode } from 'react'
+import { cn } from '@/lib/cn'
 import {
   DkClipboardCopyDuplicate,
   DkFavoriteHeartLove,
@@ -15,6 +16,7 @@ import {
   DkRefreshClockwiseRotate,
   DkFloppyDiskSave,
   DkMagnifyingGlassFind,
+  DkAnalogClockTime,
   DkGearSettingsPreferences,
   DkShareExportForward,
   DkSecurityShieldProtect,
@@ -31,17 +33,31 @@ import {
   DkTypographyItalicSlant,
   DkTypographyUnderline,
   DkPencilWriteEdit,
-  DkDocumentPageFold
+  DkDocumentPageFold,
+  DkNotificationBellAlert,
+  DkLogoutExitSession,
+  DkResidentialHouseHome,
+  DkFileFolderDirectory,
+  DkFileFolderDirectoryOpened
 } from '@/icons'
 import { Alert, ALERT_SIZES, ALERT_TONES, ALERT_VARIANTS, type AlertSize, type AlertTone, type AlertVariant } from './Alert'
+import { Anchor } from './Anchor'
 import { AuthBrand, AuthLayout } from './AuthLayout'
 import { AuthProviderStack } from './AuthProviderButton'
-import { Avatar } from './Avatar'
+import { Avatar, AvatarGroup, AVATAR_SHAPES, AVATAR_SIZES, AVATAR_STATUSES, AVATAR_TONES, AVATAR_VARIANTS, AVATAR_SHAPE_LABEL, AVATAR_SIZE_LABEL, AVATAR_STATUS_LABEL, AVATAR_TONE_LABEL, AVATAR_VARIANT_LABEL } from './Avatar'
 import { AvatarEditor } from './AvatarEditor'
 import { AvatarPicker } from './AvatarPicker'
 import { Badge } from './Badge'
 import { BrandLogo } from './BrandLogo'
-import { Breadcrumbs } from './Breadcrumbs'
+import {
+  Breadcrumbs,
+  BREADCRUMB_SEPARATORS,
+  BREADCRUMB_SEPARATOR_LABEL,
+  BREADCRUMB_SIZES,
+  BREADCRUMB_SIZE_LABEL,
+  BREADCRUMB_VARIANTS,
+  BREADCRUMB_VARIANT_LABEL,
+} from './Breadcrumbs'
 import { Button } from './Button'
 import { Checkbox, CheckboxGroup, CHECKBOX_SIZES, CHECKBOX_TONES, CHECKBOX_VARIANTS, type CheckboxSize, type CheckboxTone, type CheckboxVariant } from './Checkbox'
 import {
@@ -51,11 +67,34 @@ import {
   type ConfirmActionTone,
   type ConfirmActionVariant,
 } from './ConfirmAction'
-import { ConfirmDialog } from './ConfirmDialog'
+import {
+  ConfirmDialog,
+  CONFIRM_DIALOG_SIZES,
+  CONFIRM_DIALOG_TONES,
+  CONFIRM_DIALOG_VARIANTS,
+  CONFIRM_DIALOG_SIZE_LABEL,
+  CONFIRM_DIALOG_TONE_LABEL,
+  CONFIRM_DIALOG_VARIANT_LABEL,
+  type ConfirmDialogSize,
+  type ConfirmDialogTone,
+  type ConfirmDialogVariant,
+} from './ConfirmDialog'
 import { CountrySelect } from './CountrySelect'
 import { DashboardNav } from './DashboardNav'
 import { DashboardShell } from './DashboardShell'
-import { DashboardSidebar } from './DashboardSidebar'
+import {
+  DashboardSidebar,
+  SidebarNavItem,
+  SIDEBAR_SIZES,
+  SIDEBAR_SIZE_LABEL,
+  SIDEBAR_VARIANTS,
+  SIDEBAR_VARIANT_LABEL,
+  type SidebarItem,
+  type SidebarItemPreview,
+  type SidebarSection,
+  type SidebarSize,
+  type SidebarVariant,
+} from './DashboardSidebar'
 import { DataTable } from './DataTable'
 import {
   DatePicker,
@@ -68,6 +107,17 @@ import {
 } from './DatePicker'
 import { Divider } from './Divider'
 import { Dropdown, SELECT_SIZES, SELECT_VARIANTS, type DropdownOption, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
+import {
+  EmptyPopup,
+  EMPTY_POPUP_SIZES,
+  EMPTY_POPUP_SURFACES,
+  EMPTY_POPUP_TONES,
+  EMPTY_POPUP_VARIANTS,
+  EMPTY_POPUP_SIZE_LABEL,
+  EMPTY_POPUP_SURFACE_LABEL,
+  EMPTY_POPUP_TONE_LABEL,
+  EMPTY_POPUP_VARIANT_LABEL,
+} from './EmptyPopup'
 import {
   EmptyState,
   EMPTY_STATE_SIZES,
@@ -93,7 +143,16 @@ import {
 import { GitHubButton } from './GitHubButton'
 import { GoogleButton } from './GoogleButton'
 import { IconButton } from './IconButton'
-import { IconTab } from './IconTab'
+import {
+  IconTab,
+  IconTabBar,
+  ICON_TAB_LAYOUTS,
+  ICON_TAB_SIZES,
+  ICON_TAB_VARIANTS,
+  ICON_TAB_LAYOUT_LABEL,
+  ICON_TAB_SIZE_LABEL,
+  ICON_TAB_VARIANT_LABEL,
+} from './IconTab'
 import { KeyValueRow } from './KeyValueRow'
 import { KitDocArticle } from './KitDocArticle'
 import { DocsStateCard, DocsStateGrid, DocsStateGroup, DocsStack } from './DocsCard'
@@ -101,35 +160,51 @@ import {
   alertGuide,
   bodyGuide,
   brandLogoGuide,
+  breadcrumbGuide,
   captionGuide,
   checkboxGuide,
   citySelectGuide,
   confirmActionGuide,
+  confirmDialogGuide,
   countrySelectGuide,
   countySelectGuide,
   datePickerGuide,
+  emptyPopupGuide,
   emptyStateGuide,
+  avatarGuide,
   eyebrowGuide,
   fieldLabelGuide,
   headingGuide,
   iconButtonGuide,
+  iconTabGuide,
   labelGuide,
   languageSelectGuide,
+  loadingScreenGuide,
+  loaderGuide,
+  modalGuide,
+  commandPaletteGuide,
+  navSearchGuide,
   numberFieldGuide,
   otpGuide,
+  paginationGuide,
   passwordFieldGuide,
   passwordRevealGuide,
   phoneInputGuide,
+  profileButtonGuide,
   progressGuide,
   radioGuide,
   recoveryGuide,
+  scoreRingGuide,
   segmentedGuide,
   selectGuide,
+  sheetNavGuide,
+  sidebarNavGuide,
   skeletonGuide,
   sliderGuide,
   stateSelectGuide,
   subheadGuide,
   switchGuide,
+  tabsGuide,
   textareaGuide,
   textFieldGuide,
   themeIconToggleGuide,
@@ -137,8 +212,51 @@ import {
 } from './kit-guides'
 import { LanguageSelect } from './LanguageSelect'
 import { ListGroup, ListRow } from './ListRow'
-import { LoadingScreen } from './LoadingScreen'
-import { Modal } from './Modal'
+import {
+  Loader,
+  LOADER_SIZES,
+  LOADER_TONES,
+  LOADER_VARIANTS,
+  LOADER_SIZE_LABEL,
+  LOADER_TONE_LABEL,
+  LOADER_VARIANT_LABEL,
+} from './Loader'
+import {
+  LoadingScreen,
+  LOADING_SCREEN_INDICATORS,
+  LOADING_SCREEN_SIZES,
+  LOADING_SCREEN_VARIANTS,
+  LOADING_SCREEN_INDICATOR_LABEL,
+  LOADING_SCREEN_SIZE_LABEL,
+  LOADING_SCREEN_VARIANT_LABEL,
+} from './LoadingScreen'
+import {
+  CommandPalette,
+  CommandSearch,
+  COMMAND_PALETTE_SIZES,
+  COMMAND_PALETTE_VARIANTS,
+  COMMAND_PALETTE_VARIANT_LABEL,
+  COMMAND_PALETTE_SIZE_LABEL,
+  COMMAND_SEARCH_SIZES,
+  COMMAND_SEARCH_VARIANTS,
+  COMMAND_SEARCH_VARIANT_LABEL,
+  COMMAND_SEARCH_SIZE_LABEL,
+  type CommandItem,
+  type CommandPaletteSize,
+  type CommandPaletteVariant,
+} from './CommandPalette'
+import {
+  Modal,
+  MODAL_SIZES,
+  MODAL_TONES,
+  MODAL_VARIANTS,
+  MODAL_SIZE_LABEL,
+  MODAL_TONE_LABEL,
+  MODAL_VARIANT_LABEL,
+  type ModalSize,
+  type ModalTone,
+  type ModalVariant,
+} from './Modal'
 import {
   NumberField,
   NUMBER_FIELD_ALIGN_LABEL,
@@ -158,11 +276,29 @@ import {
   type NumberFieldVariant,
   type NumberFieldWidth,
 } from './NumberField'
-import { NavSearch } from './NavSearch'
+import {
+  NavSearch,
+  NAV_SEARCH_SIZES,
+  NAV_SEARCH_SIZE_LABEL,
+  NAV_SEARCH_VARIANTS,
+  NAV_SEARCH_VARIANT_LABEL,
+  type NavSearchSize,
+  type NavSearchVariant,
+} from './NavSearch'
 import { OtpBoxes, OTP_BOXES_SIZES, OTP_BOXES_VARIANTS, type OtpBoxesSize, type OtpBoxesVariant } from './OtpBoxes'
 import { OtherWaysButton } from './OtherWaysButton'
 import { PageHeader } from './PageHeader'
-import { Pagination } from './Pagination'
+import {
+  Pagination,
+  PAGINATION_ALIGNS,
+  PAGINATION_LAYOUTS,
+  PAGINATION_SIZES,
+  PAGINATION_VARIANTS,
+  PAGINATION_ALIGN_LABEL,
+  PAGINATION_LAYOUT_LABEL,
+  PAGINATION_SIZE_LABEL,
+  PAGINATION_VARIANT_LABEL,
+} from './Pagination'
 import { PasswordField, PASSWORD_FIELD_VARIANTS } from './PasswordField'
 import {
   PasswordReveal,
@@ -174,7 +310,15 @@ import {
 import { PhoneInput } from './PhoneInput'
 import { CitySelect, CountySelect, StateSelect } from './PlaceSelect'
 import { AppleButton } from './ProviderButtons'
-import { ProfileButton } from './ProfileButton'
+import {
+  ProfileButton,
+  PROFILE_BUTTON_LAYOUTS,
+  PROFILE_BUTTON_SIZES,
+  PROFILE_BUTTON_VARIANTS,
+  PROFILE_BUTTON_LAYOUT_LABEL,
+  PROFILE_BUTTON_SIZE_LABEL,
+  PROFILE_BUTTON_VARIANT_LABEL,
+} from './ProfileButton'
 import { Progress, PROGRESS_SIZES, PROGRESS_TONES, PROGRESS_VARIANTS, PROGRESS_SIZE_LABEL, PROGRESS_TONE_LABEL, PROGRESS_VARIANT_LABEL } from './Progress'
 import { type PropRow } from './PropsTable'
 import { Radio, RadioGroup, RADIO_SIZES, RADIO_TONES, RADIO_VARIANTS, type RadioSize, type RadioTone, type RadioVariant } from './Radio'
@@ -188,11 +332,33 @@ import {
   type RecoveryInputSize,
   type RecoveryInputVariant,
 } from './RecoveryInput'
-import { ScoreRing } from './ScoreRing'
+import {
+  ScoreRing,
+  SCORE_RING_SIZES,
+  SCORE_RING_TONES,
+  SCORE_RING_VARIANTS,
+  SCORE_RING_SIZE_LABEL,
+  SCORE_RING_TONE_LABEL,
+  SCORE_RING_VARIANT_LABEL,
+} from './ScoreRing'
 import { SelectTrigger } from './SelectTrigger'
 import { SegmentedControl, SegmentedToolbar, SEGMENTED_VARIANTS, type SegmentedVariant } from './SegmentedControl'
 import { SettingsList, SettingsRow } from './SettingsRow'
-import { SheetNav } from './SheetNav'
+import {
+  SheetNav,
+  SHEET_NAV_LAYOUTS,
+  SHEET_NAV_LAYOUT_LABEL,
+  SHEET_NAV_SIZES,
+  SHEET_NAV_SIZE_LABEL,
+  SHEET_NAV_TONES,
+  SHEET_NAV_TONE_LABEL,
+  SHEET_NAV_VARIANTS,
+  SHEET_NAV_VARIANT_LABEL,
+  type SheetNavLayout,
+  type SheetNavSize,
+  type SheetNavTone,
+  type SheetNavVariant,
+} from './SheetNav'
 import { SiteFooter } from './SiteFooter'
 import { SiteNav } from './SiteNav'
 import { Skeleton, SKELETON_MOTIONS, SKELETON_MOTION_LABEL, SKELETON_SHAPES, SKELETON_SHAPE_LABEL, SKELETON_SIZES, SKELETON_SIZE_LABEL, SKELETON_VARIANTS, SKELETON_VARIANT_LABEL } from './Skeleton'
@@ -210,7 +376,7 @@ import {
 } from './Slider'
 import { StatCard } from './StatCard'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
-import { Tabs } from './Tabs'
+import { Tabs, TABS_ALIGNS, TABS_SIZES, TABS_VARIANTS, TABS_ALIGN_LABEL, TABS_SIZE_LABEL, TABS_VARIANT_LABEL } from './Tabs'
 import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
 import { Textarea, TEXTAREA_SIZES, TEXTAREA_VARIANTS, type TextareaSize, type TextareaVariant } from './Textarea'
 import {
@@ -2189,12 +2355,230 @@ function ProgressStates() {
   )
 }
 
+function ScoreRingDemo() {
+  return (
+    <div className="flex w-full flex-col items-center gap-10">
+      <div className="flex flex-wrap items-end justify-center gap-8">
+        {SCORE_RING_VARIANTS.map((variant) => (
+          <ScoreRing
+            key={variant}
+            variant={variant}
+            score={variant === 'ghost' ? 48 : 72}
+            label={SCORE_RING_VARIANT_LABEL[variant]}
+          />
+        ))}
+      </div>
+      <div className="flex flex-wrap items-end justify-center gap-8">
+        {SCORE_RING_VARIANTS.map((variant) => (
+          <ScoreRing
+            key={`unknown-${variant}`}
+            variant={variant}
+            indeterminate
+            label={`${SCORE_RING_VARIANT_LABEL[variant]} unknown`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ScoreRingStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {SCORE_RING_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={SCORE_RING_VARIANT_LABEL[variant]} className="bg-bg-primary">
+              <ScoreRing variant={variant} label={SCORE_RING_VARIANT_LABEL[variant]} score={72} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {SCORE_RING_SIZES.map((size) => (
+            <DocsStateCard key={size} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+              <ScoreRing size={size} label={SCORE_RING_SIZE_LABEL[size]} score={72} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Pill size">
+        <DocsStateGrid columns={3}>
+          {SCORE_RING_SIZES.map((size) => (
+            <DocsStateCard key={`pill-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+              <ScoreRing variant="pill" size={size} label={SCORE_RING_SIZE_LABEL[size]} score={72} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid>
+          {SCORE_RING_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={SCORE_RING_TONE_LABEL[tone]} className="bg-bg-primary">
+              <ScoreRing
+                tone={tone}
+                label={SCORE_RING_TONE_LABEL[tone]}
+                score={tone === 'success' ? 100 : 72}
+                showCheck={tone === 'success'}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid>
+          {SCORE_RING_VARIANTS.map((variant) => (
+            <DocsStateCard key={`dark-${variant}`} label={SCORE_RING_VARIANT_LABEL[variant]} className="bg-black">
+              <ScoreRing variant={variant} label={SCORE_RING_VARIANT_LABEL[variant]} score={72} onDark />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown">
+        <DocsStateGrid>
+          {SCORE_RING_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`unknown-${variant}`}
+              label={SCORE_RING_VARIANT_LABEL[variant]}
+              className="bg-bg-primary"
+            >
+              <ScoreRing variant={variant} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown size">
+        <DocsStateGrid columns={3}>
+          {SCORE_RING_SIZES.map((size) => (
+            <DocsStateCard key={`unknown-size-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+              <ScoreRing size={size} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown pill size">
+        <DocsStateGrid columns={3}>
+          {SCORE_RING_SIZES.map((size) => (
+            <DocsStateCard key={`unknown-pill-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+              <ScoreRing variant="pill" size={size} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown tone">
+        <DocsStateGrid>
+          {SCORE_RING_TONES.map((tone) => (
+            <DocsStateCard key={`unknown-tone-${tone}`} label={SCORE_RING_TONE_LABEL[tone]} className="bg-bg-primary">
+              <ScoreRing tone={tone} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown on dark">
+        <DocsStateGrid>
+          {SCORE_RING_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`unknown-dark-${variant}`}
+              label={SCORE_RING_VARIANT_LABEL[variant]}
+              className="bg-black"
+            >
+              <ScoreRing variant={variant} label="Preparing" indeterminate onDark />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Empty" className="bg-bg-primary">
+            <ScoreRing label="Waiting" score={0} />
+          </DocsStateCard>
+          <DocsStateCard label="Partial" className="bg-bg-primary">
+            <ScoreRing label="Profile" score={72} />
+          </DocsStateCard>
+          <DocsStateCard label="Complete" className="bg-bg-primary">
+            <ScoreRing label="Done" score={100} tone="success" />
+          </DocsStateCard>
+          <DocsStateCard label="Checked" className="bg-bg-primary">
+            <ScoreRing label="Verified" score={100} tone="success" showCheck />
+          </DocsStateCard>
+          <DocsStateCard label="Failed" className="bg-bg-primary">
+            <ScoreRing label="Failed" score={28} tone="danger" />
+          </DocsStateCard>
+          <DocsStateCard label="No percent" className="bg-bg-primary">
+            <ScoreRing label="Health" score={86} showValue={false} />
+          </DocsStateCard>
+          <DocsStateCard label="Unlabeled" className="bg-bg-primary">
+            <ScoreRing score={72} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" className="bg-bg-primary">
+            <ScoreRing label="Paused" score={41} disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Unknown unlabeled" className="bg-bg-primary">
+            <ScoreRing indeterminate />
+          </DocsStateCard>
+          <DocsStateCard label="Unknown disabled" className="bg-bg-primary">
+            <ScoreRing label="Preparing" indeterminate disabled />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
 function SkeletonDemo() {
   return (
     <div className="flex w-full max-w-[400px] flex-col gap-6">
-      {SKELETON_VARIANTS.map((variant) => (
-        <Skeleton key={variant} variant={variant} lines={3} label={`${SKELETON_VARIANT_LABEL[variant]} loading`} />
-      ))}
+      <Skeleton loading label="Loading stats">
+        <StatCard
+          label="Revenue"
+          value="$48,290"
+          delta={{ value: '+12.4%', tone: 'up' }}
+          hint="vs last month"
+        />
+      </Skeleton>
+      <Skeleton loading label="Loading profile">
+        <div className="flex items-center gap-3">
+          <Avatar name="Maya Chen" size="lg" />
+          <div className="min-w-0 flex-1">
+            <Label as="p">Maya Chen</Label>
+            <Caption>Workspace owner</Caption>
+          </div>
+        </div>
+      </Skeleton>
+      <Skeleton loading label="Loading action">
+        <Button>Save changes</Button>
+      </Skeleton>
+    </div>
+  )
+}
+
+function SkeletonLiveToggle() {
+  const [loading, setLoading] = useState(true)
+
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <Button variant="secondary" fullWidth={false} size="sm" onClick={() => setLoading((value) => !value)}>
+        {loading ? 'Show content' : 'Show skeleton'}
+      </Button>
+      <Skeleton loading={loading} label="Loading stats">
+        <StatCard
+          label="Revenue"
+          value="$48,290"
+          delta={{ value: '+12.4%', tone: 'up' }}
+          hint="vs last month"
+        />
+      </Skeleton>
     </div>
   )
 }
@@ -2202,6 +2586,52 @@ function SkeletonDemo() {
 function SkeletonStates() {
   return (
     <DocsStack gap={10}>
+      <DocsStateGroup title="Auto">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Toggle" align="stretch" wide>
+            <SkeletonLiveToggle />
+          </DocsStateCard>
+          <DocsStateCard label="Button" align="stretch" wide>
+            <Skeleton loading label="Loading action">
+              <Button>Save changes</Button>
+            </Skeleton>
+          </DocsStateCard>
+          <DocsStateCard label="Field" align="stretch" wide>
+            <Skeleton loading label="Loading field">
+              <TextField placeholder="Email address" />
+            </Skeleton>
+          </DocsStateCard>
+          <DocsStateCard label="Avatar row" align="stretch" wide>
+            <Skeleton loading label="Loading profile">
+              <div className="flex w-full items-center gap-3">
+                <Avatar name="Maya Chen" size="lg" />
+                <div className="min-w-0 flex-1">
+                  <Label as="p">Maya Chen</Label>
+                  <Caption>Workspace owner</Caption>
+                </div>
+              </div>
+            </Skeleton>
+          </DocsStateCard>
+          <DocsStateCard label="Alert" align="stretch" wide>
+            <Skeleton loading label="Loading alert">
+              <Alert tone="info" title="Workspace is in sync">
+                Changes publish to every seat.
+              </Alert>
+            </Skeleton>
+          </DocsStateCard>
+          <DocsStateCard label="Stat card" align="stretch" wide>
+            <Skeleton loading label="Loading stats">
+              <StatCard
+                label="Revenue"
+                value="$48,290"
+                delta={{ value: '+12.4%', tone: 'up' }}
+                hint="vs last month"
+              />
+            </Skeleton>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
       <DocsStateGroup title="Appearance">
         <DocsStateGrid columns={2}>
           {SKELETON_VARIANTS.map((variant) => (
@@ -2535,6 +2965,462 @@ function EmptyStateStates() {
               title="Inbox is clear"
               body="New mentions and review requests will land here."
             />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function EmptyPopupDemo() {
+  return (
+    <div className="flex w-full flex-wrap items-start justify-center gap-4">
+      {EMPTY_POPUP_VARIANTS.map((variant) => (
+        <EmptyPopup
+          key={variant}
+          variant={variant}
+          icon={<EmptyIcon name="search" />}
+          title={EMPTY_POPUP_VARIANT_LABEL[variant]}
+          body="Try a different search."
+        />
+      ))}
+    </div>
+  )
+}
+
+function EmptyPopupStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {EMPTY_POPUP_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={EMPTY_POPUP_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <div className="flex justify-center">
+                <EmptyPopup
+                  variant={variant}
+                  icon={<EmptyIcon name="search" />}
+                  title="No results"
+                  body="Try a different search."
+                />
+              </div>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {EMPTY_POPUP_SIZES.map((size) => (
+            <DocsStateCard key={size} label={EMPTY_POPUP_SIZE_LABEL[size]} align="stretch" wide className="bg-bg-primary">
+              <div className="flex justify-center">
+                <EmptyPopup
+                  size={size}
+                  icon={<EmptyIcon name="inbox" />}
+                  title="No notifications"
+                  body="You are all caught up."
+                  action={<EmptyAction size="sm">Refresh</EmptyAction>}
+                />
+              </div>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {EMPTY_POPUP_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={EMPTY_POPUP_TONE_LABEL[tone]} align="stretch" wide className="bg-bg-primary">
+              <div className="flex justify-center">
+                <EmptyPopup
+                  tone={tone}
+                  icon={<EmptyIcon name={tone === 'danger' ? 'refresh' : tone === 'warning' ? 'lock' : 'inbox'} />}
+                  title={
+                    tone === 'success'
+                      ? 'Inbox is clear'
+                      : tone === 'warning'
+                        ? 'No access'
+                        : tone === 'danger'
+                          ? 'Could not load'
+                          : 'No notifications'
+                  }
+                  body={
+                    tone === 'success'
+                      ? 'New mentions will land here.'
+                      : tone === 'warning'
+                        ? 'Ask an owner to invite you.'
+                        : tone === 'danger'
+                          ? 'Check the connection, then try again.'
+                          : 'Mentions will show up here.'
+                  }
+                />
+              </div>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Surface">
+        <DocsStateGrid columns={2}>
+          {EMPTY_POPUP_SURFACES.map((surface) => (
+            <DocsStateCard
+              key={surface}
+              label={EMPTY_POPUP_SURFACE_LABEL[surface]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <div className="flex justify-center">
+                <EmptyPopup
+                  surface={surface}
+                  variant="outline"
+                  icon={<EmptyIcon name="search" />}
+                  title="No results"
+                  body="Try a different search."
+                />
+              </div>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Title only" align="stretch" wide className="bg-bg-primary">
+            <div className="flex justify-center">
+              <EmptyPopup title="No results" />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="No icon" align="stretch" wide className="bg-bg-primary">
+            <div className="flex justify-center">
+              <EmptyPopup title="No results" body="Try a different search." />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="No notifications" align="stretch" wide className="bg-bg-primary">
+            <div className="flex justify-center">
+              <EmptyPopup
+                icon={<EmptyIcon name="inbox" />}
+                title="No notifications"
+                body="You are all caught up."
+              />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="Could not load" align="stretch" wide className="bg-bg-primary">
+            <div className="flex justify-center">
+              <EmptyPopup
+                tone="danger"
+                icon={<EmptyIcon name="refresh" />}
+                title="Could not load"
+                body="Check the connection, then try again."
+                action={<EmptyAction size="sm" variant="secondary">Try again</EmptyAction>}
+              />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="Plain in a menu" align="stretch" wide className="bg-bg-primary">
+            <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-2xl border border-border-default bg-bg-elevated p-2.5 dark:bg-bg-secondary">
+              <EmptyPopup
+                surface="plain"
+                size="sm"
+                icon={<EmptyIcon name="search" />}
+                title="No results"
+                body="Try a different search."
+              />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="With secondary" align="stretch" wide className="bg-bg-primary">
+            <div className="flex justify-center">
+              <EmptyPopup
+                icon={<EmptyIcon name="grid" />}
+                title="No projects"
+                body="Create one or import."
+                action={<EmptyAction size="sm">New</EmptyAction>}
+                secondary={<EmptyAction size="sm" variant="ghost">Import</EmptyAction>}
+              />
+            </div>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function LoadingFrame({
+  children,
+  height = 'h-[200px]',
+  onDark = false,
+}: {
+  children: ReactNode
+  height?: string
+  onDark?: boolean
+}) {
+  return (
+    <div className={`w-full overflow-hidden rounded-[12px] ${height} ${onDark ? 'bg-black' : 'bg-bg-primary'}`}>
+      {children}
+    </div>
+  )
+}
+
+function LoadingState({
+  variant,
+  size,
+  indicator,
+  preview = 'initial',
+  showLogo,
+  showStatus,
+  onDark,
+  height,
+}: {
+  variant?: 'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'
+  size?: 'sm' | 'md' | 'lg'
+  indicator?: 'spinner' | 'bar' | 'none'
+  preview?: 'initial' | 'delayed'
+  showLogo?: boolean
+  showStatus?: boolean
+  onDark?: boolean
+  height?: string
+}) {
+  return (
+    <LoadingFrame height={height} onDark={onDark}>
+      <LoadingScreen
+        embedded
+        variant={variant}
+        size={size}
+        indicator={indicator}
+        preview={preview}
+        showLogo={showLogo}
+        showStatus={showStatus}
+        onDark={onDark}
+        status="Setting things up…"
+        delayedStatus="This is taking longer than usual…"
+      />
+    </LoadingFrame>
+  )
+}
+
+function LoadingScreenDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-4">
+      {LOADING_SCREEN_VARIANTS.map((variant) => (
+        <LoadingState key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function LoadingScreenStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {LOADING_SCREEN_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={LOADING_SCREEN_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <LoadingState variant={variant} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {LOADING_SCREEN_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={LOADING_SCREEN_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              size="lg"
+              className="bg-bg-primary"
+            >
+              <LoadingState
+                size={size}
+                height={size === 'sm' ? 'h-[160px]' : size === 'lg' ? 'h-[260px]' : 'h-[200px]'}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Indicator">
+        <DocsStateGrid columns={2}>
+          {LOADING_SCREEN_INDICATORS.map((indicator) => (
+            <DocsStateCard
+              key={indicator}
+              label={LOADING_SCREEN_INDICATOR_LABEL[indicator]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <LoadingState indicator={indicator} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid columns={2}>
+          {LOADING_SCREEN_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`dark-${variant}`}
+              label={LOADING_SCREEN_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <LoadingState variant={variant} onDark />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Initial" align="stretch" wide className="bg-bg-primary">
+            <LoadingState preview="initial" />
+          </DocsStateCard>
+          <DocsStateCard label="Delayed" align="stretch" wide className="bg-bg-primary">
+            <LoadingState preview="delayed" />
+          </DocsStateCard>
+          <DocsStateCard label="No mark" align="stretch" wide className="bg-bg-primary">
+            <LoadingState showLogo={false} />
+          </DocsStateCard>
+          <DocsStateCard label="No status" align="stretch" wide className="bg-bg-primary">
+            <LoadingState showStatus={false} />
+          </DocsStateCard>
+          <DocsStateCard label="Bar" align="stretch" wide className="bg-bg-primary">
+            <LoadingState indicator="bar" />
+          </DocsStateCard>
+          <DocsStateCard label="Bar, delayed" align="stretch" wide className="bg-bg-primary">
+            <LoadingState indicator="bar" preview="delayed" />
+          </DocsStateCard>
+          <DocsStateCard label="Mark only" align="stretch" wide className="bg-bg-primary">
+            <LoadingState indicator="none" showStatus={false} />
+          </DocsStateCard>
+          <DocsStateCard label="Outline, delayed" align="stretch" wide className="bg-bg-primary">
+            <LoadingState variant="outline" preview="delayed" />
+          </DocsStateCard>
+          <DocsStateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
+            <LoadingState variant="pill" size="sm" height="h-[160px]" />
+          </DocsStateCard>
+          <DocsStateCard label="Ghost, large" align="stretch" wide className="bg-bg-primary">
+            <LoadingState variant="ghost" size="lg" height="h-[260px]" />
+          </DocsStateCard>
+          <DocsStateCard label="Delayed on dark" align="stretch" wide className="bg-black">
+            <LoadingState preview="delayed" onDark />
+          </DocsStateCard>
+          <DocsStateCard label="Bar on dark" align="stretch" wide className="bg-black">
+            <LoadingState indicator="bar" onDark />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function LoaderDemo() {
+  return (
+    <div className="flex w-full flex-wrap items-end justify-center gap-8">
+      {LOADER_VARIANTS.map((variant) => (
+        <Loader key={variant} variant={variant} label={LOADER_VARIANT_LABEL[variant]} />
+      ))}
+    </div>
+  )
+}
+
+function LoaderStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {LOADER_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={LOADER_VARIANT_LABEL[variant]} className="bg-bg-primary">
+              <Loader variant={variant} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {LOADER_SIZES.map((size) => (
+            <DocsStateCard key={size} label={LOADER_SIZE_LABEL[size]} className="bg-bg-primary">
+              <Loader size={size} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid>
+          {LOADER_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={LOADER_TONE_LABEL[tone]} className="bg-bg-primary">
+              <Loader tone={tone} label={LOADER_TONE_LABEL[tone]} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid>
+          {LOADER_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`dark-${variant}`}
+              label={LOADER_VARIANT_LABEL[variant]}
+              className="bg-black"
+            >
+              <Loader variant={variant} onDark />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Spinning" className="bg-bg-primary">
+            <Loader />
+          </DocsStateCard>
+          <DocsStateCard label="Static" className="bg-bg-primary">
+            <Loader spinning={false} />
+          </DocsStateCard>
+          <DocsStateCard label="With label" className="bg-bg-primary">
+            <Loader label="Saving" />
+          </DocsStateCard>
+          <DocsStateCard label="Inline" className="bg-bg-primary">
+            <Loader layout="inline" label="Loading messages" />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" className="bg-bg-primary">
+            <Loader label="Paused" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Default tone" className="bg-bg-primary">
+            <Loader tone="default" label="Loading" />
+          </DocsStateCard>
+          <DocsStateCard label="Pill, small" className="bg-bg-primary">
+            <Loader variant="pill" size="sm" />
+          </DocsStateCard>
+          <DocsStateCard label="Ghost, large" className="bg-bg-primary">
+            <Loader variant="ghost" size="lg" />
+          </DocsStateCard>
+          <DocsStateCard label="Outline, inline" className="bg-bg-primary">
+            <Loader variant="outline" layout="inline" label="Refreshing" />
+          </DocsStateCard>
+          <DocsStateCard label="Danger" className="bg-bg-primary">
+            <Loader tone="danger" label="Retrying" />
+          </DocsStateCard>
+          <DocsStateCard label="Inline on dark" className="bg-black">
+            <Loader layout="inline" label="Loading" onDark />
+          </DocsStateCard>
+          <DocsStateCard label="Pill on dark" className="bg-black">
+            <Loader variant="pill" onDark />
           </DocsStateCard>
         </DocsStateGrid>
       </DocsStateGroup>
@@ -4088,83 +4974,1914 @@ function RecoveryStates() {
   )
 }
 
+const BREADCRUMB_PATH = [
+  { label: 'Projects', onClick: () => undefined },
+  { label: 'Atlas', onClick: () => undefined },
+  { label: 'Settings' },
+]
+
+function crumbGlyph(name: 'home' | 'folder' | 'open') {
+  const Icon =
+    name === 'home'
+      ? DkResidentialHouseHome
+      : name === 'open'
+        ? DkFileFolderDirectoryOpened
+        : DkFileFolderDirectory
+  return <Icon strokeWidth={1.75} absoluteStrokeWidth />
+}
+
+function BreadcrumbDemo() {
+  const labels = ['Projects', 'Atlas', 'Settings']
+  const [here, setHere] = useState(2)
+  const items = labels.slice(0, here + 1).map((label, index) => ({
+    label,
+    onClick: index < here ? () => setHere(index) : undefined,
+  }))
+
+  return (
+    <div className="flex w-full flex-col gap-5">
+      {BREADCRUMB_VARIANTS.map((variant) => (
+        <div key={variant} className="flex flex-col gap-2">
+          <Caption>{BREADCRUMB_VARIANT_LABEL[variant]}</Caption>
+          <Breadcrumbs variant={variant} items={items} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function BreadcrumbStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {BREADCRUMB_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={BREADCRUMB_VARIANT_LABEL[variant]} align="stretch" wide className="bg-bg-primary">
+              <Breadcrumbs variant={variant} items={BREADCRUMB_PATH} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {BREADCRUMB_SIZES.map((size) => (
+            <DocsStateCard key={size} label={BREADCRUMB_SIZE_LABEL[size]} align="stretch" wide>
+              <Breadcrumbs size={size} items={BREADCRUMB_PATH} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Separator">
+        <DocsStateGrid columns={2}>
+          {BREADCRUMB_SEPARATORS.map((separator) => (
+            <DocsStateCard key={separator} label={BREADCRUMB_SEPARATOR_LABEL[separator]} align="stretch" wide>
+              <Breadcrumbs separator={separator} items={BREADCRUMB_PATH} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Default" align="stretch" wide>
+            <Breadcrumbs items={BREADCRUMB_PATH} />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" align="stretch" wide inert>
+            <Breadcrumbs items={BREADCRUMB_PATH} preview="hover" previewIndex={0} />
+          </DocsStateCard>
+          <DocsStateCard label="Focus" align="stretch" wide inert>
+            <Breadcrumbs items={BREADCRUMB_PATH} preview="focus" previewIndex={0} />
+          </DocsStateCard>
+          <DocsStateCard label="Active" align="stretch" wide inert>
+            <Breadcrumbs items={BREADCRUMB_PATH} preview="active" previewIndex={0} />
+          </DocsStateCard>
+          <DocsStateCard label="Current" align="stretch" wide>
+            <Breadcrumbs items={[{ label: 'Settings' }]} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide>
+            <Breadcrumbs
+              items={[
+                { label: 'Projects', onClick: () => undefined },
+                { label: 'Atlas', onClick: () => undefined, disabled: true },
+                { label: 'Settings' },
+              ]}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Collapsed" align="stretch" wide>
+            <Breadcrumbs
+              maxItems={4}
+              items={[
+                { label: 'Home', onClick: () => undefined },
+                { label: 'Library', onClick: () => undefined },
+                { label: 'Projects', onClick: () => undefined },
+                { label: 'Atlas', onClick: () => undefined },
+                { label: 'Production', onClick: () => undefined },
+                { label: 'Settings' },
+              ]}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Icons" align="stretch" wide>
+            <Breadcrumbs
+              items={[
+                { label: 'Home', icon: crumbGlyph('home'), iconOnly: true, onClick: () => undefined },
+                { label: 'Projects', icon: crumbGlyph('folder'), onClick: () => undefined },
+                { label: 'Atlas', icon: crumbGlyph('open') },
+              ]}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Pill, hover" align="stretch" wide inert className="bg-bg-primary">
+            <Breadcrumbs variant="pill" items={BREADCRUMB_PATH} preview="hover" previewIndex={0} />
+          </DocsStateCard>
+          <DocsStateCard label="Fill, current" align="stretch" wide className="bg-bg-primary">
+            <Breadcrumbs variant="fill" items={BREADCRUMB_PATH} />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const TAB_ITEMS = [
+  { id: 'all', label: 'All' },
+  { id: 'live', label: 'Live' },
+  { id: 'review', label: 'In review' },
+]
+
+function SidebarWidth({ children }: { children: ReactNode }) {
+  return <div className="w-full max-w-[260px]">{children}</div>
+}
+
 function TabsDemo() {
   const [value, setValue] = useState('all')
   return (
+    <div className="flex w-full flex-col gap-8">
+      {TABS_VARIANTS.map((variant) => (
+        <div key={variant} className="flex flex-col gap-2">
+          <Caption>{TABS_VARIANT_LABEL[variant]}</Caption>
+          <Tabs
+            variant={variant}
+            value={value}
+            onChange={setValue}
+            items={TAB_ITEMS}
+            fullWidth
+            aria-label={TABS_VARIANT_LABEL[variant]}
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function TabsPlay({
+  variant,
+  size,
+  align,
+  fullWidth = true,
+  disabled,
+  preview,
+  items = TAB_ITEMS,
+  value: controlled,
+  onChange,
+  label,
+}: {
+  variant?: (typeof TABS_VARIANTS)[number]
+  size?: (typeof TABS_SIZES)[number]
+  align?: (typeof TABS_ALIGNS)[number]
+  fullWidth?: boolean
+  disabled?: boolean
+  preview?: 'hover' | 'focus'
+  items?: { id: string; label: string; icon?: ReactNode; badge?: number | string; disabled?: boolean }[]
+  value?: string
+  onChange?: (id: string) => void
+  label: string
+}) {
+  const [local, setLocal] = useState(controlled ?? items[0]?.id ?? 'all')
+  const value = controlled ?? local
+  return (
     <Tabs
+      variant={variant}
+      size={size}
+      align={align}
+      fullWidth={fullWidth}
+      disabled={disabled}
+      preview={preview}
       value={value}
-      onChange={setValue}
-      items={[
-        { id: 'all', label: 'All' },
-        { id: 'live', label: 'Live' },
-        { id: 'review', label: 'In review' },
-      ]}
+      onChange={onChange ?? setLocal}
+      items={items}
+      aria-label={label}
     />
+  )
+}
+
+function TabsStates() {
+  const [value, setValue] = useState('all')
+  const [view, setView] = useState('grid')
+  const [mail, setMail] = useState('unread')
+
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <div className="flex flex-col gap-6">
+          {TABS_VARIANTS.map((variant) => (
+            <div key={variant} className="flex flex-col gap-2">
+              <Caption>{TABS_VARIANT_LABEL[variant]}</Caption>
+              <TabsPlay
+                variant={variant}
+                value={value}
+                onChange={setValue}
+                label={TABS_VARIANT_LABEL[variant]}
+              />
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <div className="flex flex-col gap-6">
+          {TABS_SIZES.map((size) => (
+            <div key={size} className="flex flex-col gap-2">
+              <Caption>{TABS_SIZE_LABEL[size]}</Caption>
+              <TabsPlay size={size} value={value} onChange={setValue} label={TABS_SIZE_LABEL[size]} />
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Content">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Icon and label</Caption>
+            <Tabs
+              variant="subtle"
+              fullWidth
+              value={view}
+              onChange={setView}
+              items={[
+                { id: 'grid', label: 'Grid', icon: viewIcon('grid', 16) },
+                { id: 'list', label: 'List', icon: viewIcon('list', 16) },
+                { id: 'gallery', label: 'Gallery', icon: viewIcon('gallery', 16) },
+              ]}
+              aria-label="View"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Badge</Caption>
+            <Tabs
+              value={mail}
+              onChange={setMail}
+              items={[
+                { id: 'all', label: 'All' },
+                { id: 'unread', label: 'Unread', badge: 12 },
+                { id: 'flagged', label: 'Flagged', badge: 2 },
+              ]}
+              aria-label="Mail"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon, badge, pill</Caption>
+            <Tabs
+              variant="pill"
+              fullWidth
+              value={mail}
+              onChange={setMail}
+              items={[
+                { id: 'all', label: 'All', icon: viewIcon('grid', 16) },
+                { id: 'unread', label: 'Unread', icon: viewIcon('list', 16), badge: 12 },
+                { id: 'flagged', label: 'Flagged', icon: viewIcon('gallery', 16), badge: 2 },
+              ]}
+              aria-label="Mail, pill"
+            />
+          </div>
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          {TABS_VARIANTS.flatMap((variant) => [
+            <DocsStateCard
+              key={`${variant}-hover`}
+              label={`${TABS_VARIANT_LABEL[variant]}, hover`}
+              inert
+              align="stretch"
+              wide
+              className="overflow-visible py-8"
+            >
+              <TabsPlay variant={variant} preview="hover" label={`${TABS_VARIANT_LABEL[variant]} hover`} />
+            </DocsStateCard>,
+            <DocsStateCard
+              key={`${variant}-focus`}
+              label={`${TABS_VARIANT_LABEL[variant]}, focus`}
+              inert
+              align="stretch"
+              wide
+              className="overflow-visible py-8"
+            >
+              <TabsPlay variant={variant} preview="focus" label={`${TABS_VARIANT_LABEL[variant]} focus`} />
+            </DocsStateCard>,
+          ])}
+          <DocsStateCard label="Disabled tab" align="stretch" wide>
+            <TabsPlay
+              value={value}
+              onChange={setValue}
+              items={[
+                { id: 'all', label: 'All' },
+                { id: 'live', label: 'Live' },
+                { id: 'review', label: 'In review', disabled: true },
+              ]}
+              label="Disabled tab"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" inert align="stretch" wide>
+            <TabsPlay disabled label="Disabled" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <div className="flex flex-col gap-6">
+          {TABS_ALIGNS.map((align) => (
+            <div key={align} className="flex flex-col gap-2">
+              <Caption>{TABS_ALIGN_LABEL[align]}</Caption>
+              <TabsPlay
+                variant="subtle"
+                align={align}
+                value={value}
+                onChange={setValue}
+                label={TABS_ALIGN_LABEL[align]}
+              />
+            </div>
+          ))}
+          <div className="flex flex-col gap-2">
+            <Caption>Narrow</Caption>
+            <SidebarWidth>
+              <Tabs
+                value={value}
+                onChange={setValue}
+                items={[
+                  { id: 'all', label: 'All' },
+                  { id: 'live', label: 'Live' },
+                  { id: 'review', label: 'In review' },
+                  { id: 'paused', label: 'Paused' },
+                  { id: 'archived', label: 'Archived' },
+                ]}
+                aria-label="Narrow"
+              />
+            </SidebarWidth>
+          </div>
+        </div>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const ICON_TAB_ITEMS = [
+  { id: 'home', label: 'Home', icon: <DkAppDashboardLayoutTiles /> },
+  { id: 'inbox', label: 'Inbox', icon: <DkMessageInboxTray />, badge: 3 },
+  { id: 'alerts', label: 'Alerts', icon: <DkNotificationBellAlert /> },
+  { id: 'profile', label: 'Profile', icon: <DkPersonUserProfile /> },
+]
+
+function TabBarWidth({ children }: { children: ReactNode }) {
+  return <div className="w-full min-w-0 max-w-[375px]">{children}</div>
+}
+
+function IconTabDemo() {
+  const [value, setValue] = useState('home')
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      {ICON_TAB_VARIANTS.map((variant) => (
+        <div key={variant} className="flex w-full max-w-[375px] flex-col gap-2">
+          <Caption>{ICON_TAB_VARIANT_LABEL[variant]}</Caption>
+          <IconTabBar
+            variant={variant}
+            value={value}
+            onChange={setValue}
+            items={ICON_TAB_ITEMS}
+            aria-label={ICON_TAB_VARIANT_LABEL[variant]}
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function IconTabStates() {
+  const [value, setValue] = useState('home')
+  const [view, setView] = useState('inbox')
+  const items = ICON_TAB_ITEMS
+
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <div className="flex flex-col gap-6">
+          {ICON_TAB_VARIANTS.map((variant) => (
+            <div key={variant} className="flex flex-col gap-2">
+              <Caption>{ICON_TAB_VARIANT_LABEL[variant]}</Caption>
+              <TabBarWidth>
+                <IconTabBar
+                  variant={variant}
+                  value={value}
+                  onChange={setValue}
+                  items={items}
+                  aria-label={ICON_TAB_VARIANT_LABEL[variant]}
+                />
+              </TabBarWidth>
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <div className="flex flex-col gap-6">
+          {ICON_TAB_LAYOUTS.map((layout) => (
+            <div key={layout} className="flex flex-col gap-2">
+              <Caption>{ICON_TAB_LAYOUT_LABEL[layout]}</Caption>
+              <TabBarWidth>
+                <IconTabBar
+                  layout={layout}
+                  variant={layout === 'stacked' ? 'ghost' : 'subtle'}
+                  fullWidth={layout !== 'icon'}
+                  value={view}
+                  onChange={setView}
+                  items={items}
+                  aria-label={ICON_TAB_LAYOUT_LABEL[layout]}
+                />
+              </TabBarWidth>
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <div className="flex flex-col gap-6">
+          {ICON_TAB_SIZES.map((size) => (
+            <div key={size} className="flex flex-col gap-2">
+              <Caption>{ICON_TAB_SIZE_LABEL[size]}</Caption>
+              <TabBarWidth>
+                <IconTabBar
+                  size={size}
+                  value={value}
+                  onChange={setValue}
+                  items={items}
+                  aria-label={ICON_TAB_SIZE_LABEL[size]}
+                />
+              </TabBarWidth>
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Content">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Badge</Caption>
+            <TabBarWidth>
+              <IconTabBar
+                value={view}
+                onChange={setView}
+                items={items}
+                aria-label="Badge"
+              />
+            </TabBarWidth>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Inline, pill</Caption>
+            <TabBarWidth>
+              <IconTabBar
+                layout="inline"
+                variant="pill"
+                fullWidth
+                value={view}
+                onChange={setView}
+                items={items}
+                aria-label="Inline pill"
+              />
+            </TabBarWidth>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Icon, fill</Caption>
+            <IconTabBar
+              layout="icon"
+              variant="fill"
+              fullWidth={false}
+              value={view}
+              onChange={setView}
+              items={items}
+              aria-label="Icon fill"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Danger</Caption>
+            <TabBarWidth>
+              <div className="flex items-stretch gap-1">
+                <IconTabBar
+                  className="min-w-0 flex-1"
+                  value={value}
+                  onChange={setValue}
+                  items={items.slice(0, 3)}
+                  aria-label="Main"
+                />
+                <IconTab
+                  tone="danger"
+                  icon={<DkLogoutExitSession />}
+                  label="Log out"
+                  onClick={() => undefined}
+                />
+              </div>
+            </TabBarWidth>
+          </div>
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={3}>
+          <DocsStateCard label="Default">
+            <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" />
+          </DocsStateCard>
+          <DocsStateCard label="Hover">
+            <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus">
+            <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" preview="focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Selected">
+            <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" active />
+          </DocsStateCard>
+          <DocsStateCard label="Fill selected">
+            <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" variant="fill" active />
+          </DocsStateCard>
+          <DocsStateCard label="Pill selected">
+            <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" variant="pill" active />
+          </DocsStateCard>
+          <DocsStateCard label="Badge">
+            <IconTab icon={<DkMessageInboxTray />} label="Inbox" badge={3} active />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <IconTab icon={<DkPadlockSecureClosed />} label="Locked" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Danger">
+            <IconTab icon={<DkLogoutExitSession />} label="Log out" tone="danger" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Bar">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Disabled item</Caption>
+            <TabBarWidth>
+              <IconTabBar
+                value={value}
+                onChange={setValue}
+                items={[
+                  items[0],
+                  items[1],
+                  { ...items[2], disabled: true },
+                  items[3],
+                ]}
+                aria-label="Disabled item"
+              />
+            </TabBarWidth>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Disabled</Caption>
+            <TabBarWidth>
+              <IconTabBar
+                disabled
+                value={value}
+                onChange={setValue}
+                items={items}
+                aria-label="Disabled bar"
+              />
+            </TabBarWidth>
+          </div>
+        </div>
+      </DocsStateGroup>
+    </DocsStack>
   )
 }
 
 function PaginationDemo() {
   const [page, setPage] = useState(2)
-  return <Pagination page={page} pageCount={5} onChange={setPage} />
+  const [longPage, setLongPage] = useState(12)
+  const [compactPage, setCompactPage] = useState(3)
+
+  return (
+    <div className="flex w-full flex-col gap-8">
+      {PAGINATION_VARIANTS.map((variant) => (
+        <div key={variant} className="flex flex-col gap-2">
+          <Caption>{PAGINATION_VARIANT_LABEL[variant]}</Caption>
+          <Pagination variant={variant} page={page} pageCount={5} onChange={setPage} />
+        </div>
+      ))}
+      <div className="flex flex-col gap-2">
+        <Caption>Many pages</Caption>
+        <Pagination page={longPage} pageCount={48} onChange={setLongPage} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <Caption>Compact</Caption>
+        <Pagination layout="compact" page={compactPage} pageCount={48} onChange={setCompactPage} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <Caption>Simple</Caption>
+        <Pagination layout="simple" page={compactPage} pageCount={48} onChange={setCompactPage} />
+      </div>
+    </div>
+  )
+}
+
+function PaginationStates() {
+  const [page, setPage] = useState(12)
+  const [shortPage, setShortPage] = useState(2)
+  const [layoutPage, setLayoutPage] = useState(8)
+  const noop = () => undefined
+
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <div className="flex flex-col gap-6">
+          {PAGINATION_VARIANTS.map((variant) => (
+            <div key={variant} className="flex flex-col gap-2">
+              <Caption>{PAGINATION_VARIANT_LABEL[variant]}</Caption>
+              <Pagination
+                variant={variant}
+                page={page}
+                pageCount={48}
+                onChange={setPage}
+                aria-label={PAGINATION_VARIANT_LABEL[variant]}
+              />
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <div className="flex flex-col gap-6">
+          {PAGINATION_LAYOUTS.map((layout) => (
+            <div key={layout} className="flex flex-col gap-2">
+              <Caption>{PAGINATION_LAYOUT_LABEL[layout]}</Caption>
+              <Pagination
+                layout={layout}
+                page={layoutPage}
+                pageCount={48}
+                onChange={setLayoutPage}
+                aria-label={PAGINATION_LAYOUT_LABEL[layout]}
+              />
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <div className="flex flex-col gap-6">
+          {PAGINATION_SIZES.map((size) => (
+            <div key={size} className="flex flex-col gap-2">
+              <Caption>{PAGINATION_SIZE_LABEL[size]}</Caption>
+              <Pagination
+                size={size}
+                page={page}
+                pageCount={48}
+                onChange={setPage}
+                aria-label={PAGINATION_SIZE_LABEL[size]}
+              />
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Window">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Caption>Few pages</Caption>
+            <Pagination page={shortPage} pageCount={5} onChange={setShortPage} aria-label="Few pages" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Start</Caption>
+            <Pagination page={1} pageCount={48} onChange={noop} aria-label="Start" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Middle</Caption>
+            <Pagination page={12} pageCount={48} onChange={noop} aria-label="Middle" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>End</Caption>
+            <Pagination page={48} pageCount={48} onChange={noop} aria-label="End" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Tight window</Caption>
+            <Pagination
+              page={12}
+              pageCount={48}
+              siblingCount={0}
+              onChange={noop}
+              aria-label="Tight window"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Caption>Wide window</Caption>
+            <Pagination
+              page={12}
+              pageCount={48}
+              siblingCount={2}
+              onChange={noop}
+              aria-label="Wide window"
+            />
+          </div>
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Default" align="stretch" wide>
+            <Pagination page={3} pageCount={5} onChange={noop} />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" align="stretch" wide inert>
+            <Pagination page={3} pageCount={5} onChange={noop} preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus" align="stretch" wide inert>
+            <Pagination page={3} pageCount={5} onChange={noop} preview="focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Active" align="stretch" wide inert>
+            <Pagination page={3} pageCount={5} onChange={noop} preview="active" />
+          </DocsStateCard>
+          <DocsStateCard label="First page" align="stretch" wide>
+            <Pagination page={1} pageCount={5} onChange={noop} />
+          </DocsStateCard>
+          <DocsStateCard label="Last page" align="stretch" wide>
+            <Pagination page={5} pageCount={5} onChange={noop} />
+          </DocsStateCard>
+          <DocsStateCard label="Single page" align="stretch" wide>
+            <Pagination page={1} pageCount={1} onChange={noop} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide>
+            <Pagination page={3} pageCount={5} onChange={noop} disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide>
+            <Pagination page={3} pageCount={5} onChange={noop} loading />
+          </DocsStateCard>
+          <DocsStateCard label="Next hover" align="stretch" wide inert>
+            <Pagination
+              page={3}
+              pageCount={5}
+              onChange={noop}
+              preview="hover"
+              previewTarget="next"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="First and last" align="stretch" wide>
+            <Pagination page={12} pageCount={48} onChange={noop} showFirstLast />
+          </DocsStateCard>
+          <DocsStateCard label="Full width" align="stretch" wide>
+            <Pagination page={3} pageCount={5} onChange={noop} fullWidth />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Align">
+        <div className="flex flex-col gap-6">
+          {PAGINATION_ALIGNS.map((align) => (
+            <div key={align} className="flex flex-col gap-2">
+              <Caption>{PAGINATION_ALIGN_LABEL[align]}</Caption>
+              <Pagination
+                align={align}
+                page={3}
+                pageCount={5}
+                onChange={noop}
+                aria-label={PAGINATION_ALIGN_LABEL[align]}
+              />
+            </div>
+          ))}
+        </div>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const COMMAND_GLYPH = { size: 16, strokeWidth: 1.75, absoluteStrokeWidth: true } as const
+
+const COMMAND_ITEMS: CommandItem[] = [
+  {
+    id: 'new-file',
+    label: 'New file',
+    group: 'Actions',
+    shortcut: '⌘N',
+    icon: <DkAddPlusCreate {...COMMAND_GLYPH} />,
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    group: 'Actions',
+    shortcut: '⌘,',
+    description: 'Preferences for this workspace',
+    icon: <DkGearSettingsPreferences {...COMMAND_GLYPH} />,
+  },
+  {
+    id: 'copy',
+    label: 'Copy link',
+    group: 'Actions',
+    shortcut: '⌘C',
+    icon: <DkClipboardCopyDuplicate {...COMMAND_GLYPH} />,
+  },
+  {
+    id: 'button',
+    label: 'Button',
+    group: 'Go to',
+    meta: 'Buttons',
+    description: 'The main control for running an action.',
+    icon: <DkDocumentPageFold {...COMMAND_GLYPH} />,
+  },
+  {
+    id: 'modal',
+    label: 'Modal',
+    group: 'Go to',
+    meta: 'Overlay',
+    description: 'A focused overlay for a form or a decision.',
+    icon: <DkDocumentPageFold {...COMMAND_GLYPH} />,
+  },
+  {
+    id: 'profile',
+    label: 'Alex Rivera',
+    group: 'People',
+    description: 'View profile',
+    icon: <DkPersonUserProfile {...COMMAND_GLYPH} />,
+  },
+]
+
+const NAV_ITEMS: CommandItem[] = [
+  { id: 'store', label: 'Find a Store', group: 'Quick Links', kind: 'link' },
+  { id: 'products', label: 'Products', group: 'Quick Links', kind: 'link' },
+  { id: 'services', label: 'Services', group: 'Quick Links', kind: 'link' },
+  { id: 'support', label: 'Support', group: 'Quick Links', kind: 'link' },
+  {
+    id: 'recent-settings',
+    label: 'Settings',
+    group: 'Suggested',
+    description: 'Workspace preferences',
+    icon: <DkAnalogClockTime {...COMMAND_GLYPH} />,
+  },
+  {
+    id: 'recent-button',
+    label: 'Button',
+    group: 'Suggested',
+    description: 'Components',
+    icon: <DkMagnifyingGlassFind {...COMMAND_GLYPH} />,
+  },
+]
+
+function CommandPaletteDemo() {
+  const [open, setOpen] = useState<CommandPaletteVariant | null>(null)
+  const close = () => setOpen(null)
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <CommandSearch placeholder="Search commands…" onClick={() => setOpen('command')} active={open === 'command'} />
+        <CommandSearch variant="pill" placeholder="Search" shortcut={false} onClick={() => setOpen('spotlight')} active={open === 'spotlight'} />
+        <CommandSearch icon placeholder="Search" onClick={() => setOpen('nav')} active={open === 'nav'} />
+      </div>
+      <div className="flex w-full flex-wrap gap-2">
+        {COMMAND_PALETTE_VARIANTS.map((variant) => (
+          <Button
+            key={variant}
+            fullWidth={false}
+            variant="action"
+            onClick={() => setOpen(variant)}
+          >
+            {COMMAND_PALETTE_VARIANT_LABEL[variant]}
+          </Button>
+        ))}
+      </div>
+      {COMMAND_PALETTE_VARIANTS.map((variant) => (
+        <CommandPalette
+          key={variant}
+          open={open === variant}
+          onClose={close}
+          variant={variant}
+          items={variant === 'nav' ? NAV_ITEMS : COMMAND_ITEMS}
+          placeholder={variant === 'nav' ? 'Search' : 'Search commands…'}
+          onSelect={close}
+        />
+      ))}
+    </div>
+  )
+}
+
+function CommandPalettePreview({
+  variant = 'command',
+  size = 'md',
+  query = '',
+  index = 0,
+  loading = false,
+  items = COMMAND_ITEMS,
+}: {
+  variant?: CommandPaletteVariant
+  size?: CommandPaletteSize
+  query?: string
+  index?: number
+  loading?: boolean
+  items?: CommandItem[]
+}) {
+  return (
+    <CommandPalette
+      open
+      embedded
+      variant={variant}
+      size={size}
+      query={query}
+      index={index}
+      loading={loading}
+      items={items}
+      onClose={() => undefined}
+      onSelect={() => undefined}
+    />
+  )
+}
+
+function CommandPaletteStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {COMMAND_PALETTE_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={COMMAND_PALETTE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              size="lg"
+              className="overflow-hidden p-0"
+            >
+              <CommandPalettePreview
+                variant={variant}
+                items={variant === 'nav' ? NAV_ITEMS : COMMAND_ITEMS}
+                query={variant === 'command' ? 'set' : ''}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {COMMAND_PALETTE_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={COMMAND_PALETTE_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              size="lg"
+              className="overflow-hidden p-0"
+            >
+              <CommandPalettePreview size={size} query="new" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Idle" align="stretch" wide size="lg" className="overflow-hidden p-0">
+            <CommandPalettePreview />
+          </DocsStateCard>
+          <DocsStateCard label="Typing" align="stretch" wide size="lg" className="overflow-hidden p-0">
+            <CommandPalettePreview query="set" />
+          </DocsStateCard>
+          <DocsStateCard label="Selected" align="stretch" wide size="lg" className="overflow-hidden p-0">
+            <CommandPalettePreview query="a" index={1} />
+          </DocsStateCard>
+          <DocsStateCard label="Empty" align="stretch" wide size="lg" className="overflow-hidden p-0">
+            <CommandPalettePreview query="xyz" />
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide size="lg" className="overflow-hidden p-0">
+            <CommandPalettePreview query="set" loading />
+          </DocsStateCard>
+          <DocsStateCard label="Spotlight typing" align="stretch" wide size="lg" className="overflow-hidden p-0">
+            <CommandPalettePreview variant="spotlight" query="button" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Search trigger">
+        <DocsStateGrid columns={2}>
+          {COMMAND_SEARCH_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={COMMAND_SEARCH_VARIANT_LABEL[variant]}>
+              <CommandSearch
+                variant={variant}
+                placeholder="Search"
+                shortcut={variant === 'fill' || variant === 'subtle' ? '⌘K' : false}
+                onClick={() => undefined}
+              />
+            </DocsStateCard>
+          ))}
+          <DocsStateCard label="Icon">
+            <CommandSearch icon placeholder="Search" onClick={() => undefined} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <CommandSearch placeholder="Search" disabled onClick={() => undefined} />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Trigger size">
+        <DocsStateGrid columns={3}>
+          {COMMAND_SEARCH_SIZES.map((size) => (
+            <DocsStateCard key={size} label={COMMAND_SEARCH_SIZE_LABEL[size]}>
+              <CommandSearch
+                size={size}
+                placeholder="Search"
+                shortcut={size === 'sm' ? '⌘K' : false}
+                onClick={() => undefined}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
 }
 
 function ModalDemo() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<ModalVariant | null>(null)
+  const close = () => setOpen(null)
   return (
     <>
-      <Button fullWidth={false} onClick={() => setOpen(true)}>
-        Open modal
-      </Button>
-      <Modal open={open} onClose={() => setOpen(false)} title="Invite teammate">
-        <p className="m-0 text-[15px] text-text-secondary">Send an invite to join this workspace.</p>
+      <div className="flex w-full flex-wrap gap-2">
+        {MODAL_VARIANTS.map((variant) => (
+          <Button
+            key={variant}
+            fullWidth={false}
+            variant={variant === 'alert' ? 'danger' : 'action'}
+            onClick={() => setOpen(variant)}
+          >
+            {MODAL_VARIANT_LABEL[variant]}
+          </Button>
+        ))}
+      </div>
+      <Modal
+        open={open === 'dialog'}
+        onClose={close}
+        title="Invite teammate"
+        description="They’ll get a link to join this workspace."
+        actions={[
+          { label: 'Send invite', tone: 'primary', onClick: close },
+          { label: 'Cancel', tone: 'cancel', onClick: close },
+        ]}
+      >
+        <TextField
+          icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+          placeholder="Email"
+          defaultValue="sam@roboticela.com"
+        />
       </Modal>
+      <Modal
+        open={open === 'alert'}
+        onClose={close}
+        variant="alert"
+        tone="danger"
+        icon
+        title="Delete this project?"
+        description="This cannot be undone."
+        actions={[
+          { label: 'Cancel', tone: 'cancel', onClick: close },
+          { label: 'Delete', tone: 'danger', onClick: close },
+        ]}
+      />
+      <Modal
+        open={open === 'sheet'}
+        onClose={close}
+        variant="sheet"
+        title="Edit profile"
+        description="This name is shown on your public profile."
+        actions={[
+          { label: 'Save', tone: 'primary', onClick: close },
+          { label: 'Cancel', tone: 'cancel', onClick: close },
+        ]}
+      >
+        <TextField
+          icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+          placeholder="Name"
+          defaultValue="Alex Rivera"
+        />
+      </Modal>
+      <Modal
+        open={open === 'action'}
+        onClose={close}
+        variant="action"
+        title="Photo"
+        actions={[
+          { label: 'Copy link', onClick: close },
+          { label: 'Share', onClick: close },
+          { label: 'Delete', tone: 'danger', onClick: close },
+          { label: 'Cancel', tone: 'cancel', onClick: close },
+        ]}
+      />
     </>
+  )
+}
+
+const MODAL_TONE_COPY: Record<ModalTone, { title: string; description: string }> = {
+  default: { title: 'Invite teammate', description: 'They’ll get a link to join this workspace.' },
+  danger: { title: 'Delete this project?', description: 'This cannot be undone.' },
+  success: { title: 'Invite sent', description: 'Sam can join for 7 days.' },
+  warning: { title: 'Unsaved changes', description: 'Leave without saving?' },
+}
+
+function ModalPreview({
+  variant = 'dialog',
+  size = 'md',
+  tone = 'default',
+  title,
+  description,
+  icon,
+  showClose,
+  dismissible,
+  loading,
+  children,
+  actions,
+}: {
+  variant?: ModalVariant
+  size?: ModalSize
+  tone?: ModalTone
+  title?: string
+  description?: string
+  icon?: boolean
+  showClose?: boolean
+  dismissible?: boolean
+  loading?: boolean
+  children?: ReactNode
+  actions?: {
+    label: string
+    tone?: 'primary' | 'danger' | 'cancel' | 'default'
+    loading?: boolean
+    loadingText?: string
+    disabled?: boolean
+  }[]
+}) {
+  const copy = MODAL_TONE_COPY[tone]
+  const dialogActions =
+    actions ??
+    (variant === 'action'
+      ? [
+          { label: 'Copy link', tone: 'default' as const },
+          { label: 'Share', tone: 'default' as const },
+          { label: 'Delete', tone: 'danger' as const },
+          { label: 'Cancel', tone: 'cancel' as const },
+        ]
+      : variant === 'alert'
+        ? [
+            { label: 'Cancel', tone: 'cancel' as const },
+            {
+              label: tone === 'danger' ? 'Delete' : 'Continue',
+              tone: tone === 'danger' ? ('danger' as const) : ('primary' as const),
+              loading,
+              loadingText: loading ? 'Working…' : undefined,
+              disabled: loading,
+            },
+          ]
+        : [
+            {
+              label: tone === 'danger' ? 'Delete' : 'Send invite',
+              tone: tone === 'danger' ? ('danger' as const) : ('primary' as const),
+              loading,
+              loadingText: loading ? 'Sending…' : undefined,
+            },
+            { label: 'Cancel', tone: 'cancel' as const, disabled: loading },
+          ])
+
+  return (
+    <Modal
+      open
+      embedded
+      onClose={() => undefined}
+      variant={variant}
+      size={size}
+      tone={tone}
+      icon={icon}
+      showClose={showClose}
+      dismissible={dismissible}
+      loading={loading}
+      title={title ?? (variant === 'action' ? 'Select an option' : copy.title)}
+      description={description ?? (variant === 'action' ? undefined : copy.description)}
+      actions={dialogActions}
+    >
+      {children}
+    </Modal>
+  )
+}
+
+function ModalStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {MODAL_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={MODAL_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              size="lg"
+              className="p-0 overflow-hidden"
+            >
+              <ModalPreview variant={variant} tone={variant === 'alert' ? 'danger' : 'default'} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {MODAL_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={MODAL_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              size="lg"
+              className="p-0 overflow-hidden"
+            >
+              <ModalPreview size={size} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {MODAL_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={MODAL_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              size="lg"
+              className="p-0 overflow-hidden"
+            >
+              <ModalPreview variant="alert" tone={tone} icon />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Default" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview />
+          </DocsStateCard>
+          <DocsStateCard label="With icon" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview icon />
+          </DocsStateCard>
+          <DocsStateCard label="Title only" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview description="" title="Invite teammate" />
+          </DocsStateCard>
+          <DocsStateCard label="No close" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview showClose={false} dismissible={false} />
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview loading dismissible={false} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled action" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview
+              actions={[
+                { label: 'Send invite', tone: 'primary', disabled: true },
+                { label: 'Cancel', tone: 'cancel' },
+              ]}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Form" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview>
+              <TextField
+                icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                placeholder="Email"
+                defaultValue="sam@roboticela.com"
+              />
+            </ModalPreview>
+          </DocsStateCard>
+          <DocsStateCard label="Scrolling" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview size="sm" description="Read the terms before you continue.">
+              <p className="m-0">
+                This workspace is for your team. Invited people can view projects, leave comments, and create new
+                items. You can change access later in Settings.
+              </p>
+              <p className="mt-3 mb-0">
+                Sending an invite does not bill a seat until they accept. You can revoke the link at any time.
+              </p>
+            </ModalPreview>
+          </DocsStateCard>
+          <DocsStateCard label="Destructive alert" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview variant="alert" tone="danger" icon />
+          </DocsStateCard>
+          <DocsStateCard label="Action sheet" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ModalPreview variant="action" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
   )
 }
 
 function ConfirmDialogDemo() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<ConfirmDialogVariant | null>(null)
+  const close = () => setOpen(null)
   return (
     <>
-      <Button variant="danger" fullWidth={false} onClick={() => setOpen(true)}>
-        Delete project
-      </Button>
+      <div className="flex w-full flex-wrap gap-2">
+        {CONFIRM_DIALOG_VARIANTS.map((variant) => (
+          <Button
+            key={variant}
+            fullWidth={false}
+            variant={variant === 'alert' ? 'danger' : 'action'}
+            onClick={() => setOpen(variant)}
+          >
+            {CONFIRM_DIALOG_VARIANT_LABEL[variant]}
+          </Button>
+        ))}
+      </div>
       <ConfirmDialog
-        open={open}
-        onClose={() => setOpen(false)}
+        open={open === 'alert'}
+        onClose={close}
         title="Delete this project?"
         body="This cannot be undone."
         confirmLabel="Delete"
-        onConfirm={() => setOpen(false)}
+        onConfirm={close}
+      />
+      <ConfirmDialog
+        open={open === 'dialog'}
+        onClose={close}
+        variant="dialog"
+        tone="brand"
+        icon
+        title="Publish this page?"
+        body="It will be visible to everyone on the web."
+        confirmLabel="Publish"
+        onConfirm={close}
+      />
+      <ConfirmDialog
+        open={open === 'sheet'}
+        onClose={close}
+        variant="sheet"
+        tone="warning"
+        icon
+        title="Leave without saving?"
+        body="Your edits will be lost."
+        confirmLabel="Leave"
+        onConfirm={close}
+      />
+      <ConfirmDialog
+        open={open === 'action'}
+        onClose={close}
+        variant="action"
+        title="This photo"
+        body="Choose what happens next."
+        confirmLabel="Delete"
+        onConfirm={close}
       />
     </>
   )
 }
 
+const CONFIRM_TONE_COPY: Record<
+  ConfirmDialogTone,
+  { title: string; body: string; confirm: string }
+> = {
+  danger: { title: 'Delete this project?', body: 'This cannot be undone.', confirm: 'Delete' },
+  brand: { title: 'Publish this page?', body: 'It will be visible to everyone.', confirm: 'Publish' },
+  warning: { title: 'Leave without saving?', body: 'Your edits will be lost.', confirm: 'Leave' },
+  success: { title: 'Restore this version?', body: 'It becomes the current draft.', confirm: 'Restore' },
+  neutral: { title: 'Archive this project?', body: 'You can find it later in Archive.', confirm: 'Archive' },
+}
+
+function ConfirmPreview({
+  variant = 'alert',
+  size = 'md',
+  tone = 'danger',
+  icon,
+  showCancel = true,
+  showClose,
+  dismissible,
+  loading,
+  confirmDisabled,
+  secondaryLabel,
+  title,
+  body,
+  confirmLabel,
+}: {
+  variant?: ConfirmDialogVariant
+  size?: ConfirmDialogSize
+  tone?: ConfirmDialogTone
+  icon?: boolean
+  showCancel?: boolean
+  showClose?: boolean
+  dismissible?: boolean
+  loading?: boolean
+  confirmDisabled?: boolean
+  secondaryLabel?: string
+  title?: string
+  body?: string | false
+  confirmLabel?: string
+}) {
+  const copy = CONFIRM_TONE_COPY[tone]
+  return (
+    <ConfirmDialog
+      open
+      embedded
+      onClose={() => undefined}
+      onConfirm={() => undefined}
+      onSecondary={secondaryLabel ? () => undefined : undefined}
+      variant={variant}
+      size={size}
+      tone={tone}
+      icon={icon}
+      showCancel={showCancel}
+      showClose={showClose}
+      dismissible={dismissible}
+      loading={loading}
+      confirmDisabled={confirmDisabled}
+      secondaryLabel={secondaryLabel}
+      title={title ?? copy.title}
+      body={body === false ? undefined : (body ?? copy.body)}
+      confirmLabel={confirmLabel ?? copy.confirm}
+    />
+  )
+}
+
+function ConfirmDialogStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {CONFIRM_DIALOG_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={CONFIRM_DIALOG_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              size="lg"
+              className="p-0 overflow-hidden"
+            >
+              <ConfirmPreview variant={variant} tone={variant === 'alert' || variant === 'action' ? 'danger' : 'brand'} icon={variant === 'dialog' || variant === 'sheet'} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {CONFIRM_DIALOG_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={CONFIRM_DIALOG_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              size="lg"
+              className="p-0 overflow-hidden"
+            >
+              <ConfirmPreview size={size} icon />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {CONFIRM_DIALOG_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={CONFIRM_DIALOG_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              size="lg"
+              className="p-0 overflow-hidden"
+            >
+              <ConfirmPreview tone={tone} icon />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Default" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview />
+          </DocsStateCard>
+          <DocsStateCard label="With icon" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview icon />
+          </DocsStateCard>
+          <DocsStateCard label="Title only" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview body={false} />
+          </DocsStateCard>
+          <DocsStateCard label="Single action" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview showCancel={false} tone="brand" icon />
+          </DocsStateCard>
+          <DocsStateCard label="Three actions" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview
+              tone="warning"
+              icon
+              title="Unsaved changes"
+              body="Save before you leave?"
+              confirmLabel="Save"
+              secondaryLabel="Don’t save"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview loading icon />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled confirm" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview confirmDisabled icon />
+          </DocsStateCard>
+          <DocsStateCard label="Locked" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview dismissible={false} icon />
+          </DocsStateCard>
+          <DocsStateCard label="With close" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview variant="dialog" tone="brand" icon showClose />
+          </DocsStateCard>
+          <DocsStateCard label="Action sheet" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+            <ConfirmPreview variant="action" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function NavSearchPlay({
+  value: initial = '',
+  ...rest
+}: {
+  value?: string
+  placeholder?: string
+  variant?: NavSearchVariant
+  size?: NavSearchSize
+  shortcut?: string
+  loading?: boolean
+  disabled?: boolean
+  expanded?: boolean
+  defaultExpanded?: boolean
+  preview?: 'hover' | 'focus'
+}) {
+  const [value, setValue] = useState(initial)
+  return <NavSearch value={value} onChange={setValue} {...rest} />
+}
+
 function NavSearchDemo() {
-  const [value, setValue] = useState('')
-  return <NavSearch value={value} onChange={setValue} className="w-full max-w-[220px]" />
+  return (
+    <div className="flex w-full max-w-[280px] flex-col items-center gap-4">
+      {NAV_SEARCH_VARIANTS.map((variant) => (
+        <NavSearchPlay
+          key={variant}
+          variant={variant}
+          placeholder={NAV_SEARCH_VARIANT_LABEL[variant]}
+          shortcut={variant === 'pill' ? '⌘K' : undefined}
+        />
+      ))}
+    </div>
+  )
+}
+
+function NavSearchStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {NAV_SEARCH_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={NAV_SEARCH_VARIANT_LABEL[variant]}>
+              <NavSearchPlay variant={variant} placeholder="Search" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {NAV_SEARCH_SIZES.map((size) => (
+            <DocsStateCard key={size} label={NAV_SEARCH_SIZE_LABEL[size]}>
+              <NavSearchPlay size={size} placeholder="Search" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Empty">
+            <NavSearchPlay placeholder="Search" />
+          </DocsStateCard>
+          <DocsStateCard label="Hover">
+            <NavSearchPlay placeholder="Search" preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus">
+            <NavSearchPlay value="Projects" preview="focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Filled">
+            <NavSearchPlay value="Projects" />
+          </DocsStateCard>
+          <DocsStateCard label="Loading">
+            <NavSearchPlay value="Alex" loading />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <NavSearchPlay value="Projects" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Shortcut">
+            <NavSearchPlay placeholder="Search" shortcut="⌘K" />
+          </DocsStateCard>
+          <DocsStateCard label="Icon, hover">
+            <NavSearchPlay variant="icon" placeholder="Search" preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Icon, expanded">
+            <NavSearchPlay variant="icon" expanded placeholder="Search" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const SIDEBAR_GLYPH = { size: 18, strokeWidth: 1.5, absoluteStrokeWidth: true } as const
+
+function sidebarSections(opts?: { disabled?: boolean; collapsible?: boolean }): SidebarSection[] {
+  return [
+    {
+      label: 'Workspace',
+      collapsible: opts?.collapsible,
+      items: [
+        { id: 'overview', label: 'Overview', icon: <DkAppDashboardLayoutTiles {...SIDEBAR_GLYPH} /> },
+        { id: 'projects', label: 'Projects', icon: <DkFileFolderDirectory {...SIDEBAR_GLYPH} /> },
+        { id: 'inbox', label: 'Inbox', icon: <DkMessageInboxTray {...SIDEBAR_GLYPH} />, badge: 3 },
+      ],
+    },
+    {
+      label: 'Account',
+      collapsible: opts?.collapsible,
+      items: [
+        {
+          id: 'settings',
+          label: 'Settings',
+          icon: <DkGearSettingsPreferences {...SIDEBAR_GLYPH} />,
+          disabled: opts?.disabled,
+        },
+        {
+          id: 'logout',
+          label: 'Log out',
+          icon: <DkLogoutExitSession {...SIDEBAR_GLYPH} />,
+          tone: 'danger',
+        },
+      ],
+    },
+  ]
+}
+
+function SidebarPlay({
+  variant = 'fill',
+  size = 'md',
+  collapsed = false,
+  collapsible = false,
+  search = false,
+  account = false,
+  collapsibleSections = false,
+  canvas = false,
+  className,
+}: {
+  variant?: SidebarVariant
+  size?: SidebarSize
+  collapsed?: boolean
+  collapsible?: boolean
+  search?: boolean
+  account?: boolean
+  collapsibleSections?: boolean
+  canvas?: boolean
+  className?: string
+}) {
+  const [active, setActive] = useState('overview')
+  const [query, setQuery] = useState('')
+  const [rail, setRail] = useState(collapsed)
+  const titles: Record<string, string> = {
+    overview: 'Overview',
+    projects: 'Projects',
+    inbox: 'Inbox',
+    settings: 'Settings',
+    logout: 'Overview',
+  }
+
+  const sidebar = (
+    <DashboardSidebar
+      variant={variant}
+      size={size}
+      collapsed={collapsible ? rail : collapsed}
+      onCollapsedChange={collapsible ? setRail : undefined}
+      collapsible={collapsible}
+      brand
+      activeId={active}
+      onSelect={setActive}
+      sections={sidebarSections({ collapsible: collapsibleSections })}
+      search={search ? { value: query, onChange: setQuery, placeholder: 'Search' } : undefined}
+      account={
+        account
+          ? { name: 'Alex Rivera', detail: 'Workspace owner', onClick: () => setActive('settings') }
+          : undefined
+      }
+      footer={<ThemeToggle variant={(collapsible ? rail : collapsed) ? 'switch' : 'default'} />}
+      className={canvas ? undefined : 'h-full'}
+    />
+  )
+
+  if (!canvas) return sidebar
+
+  return (
+    <div className={cn('flex h-full min-h-0 w-full overflow-hidden bg-bg-primary', className)}>
+      {sidebar}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex h-[52px] shrink-0 items-center border-b border-border-default px-5">
+          <Label as="span">{titles[active] ?? 'Overview'}</Label>
+        </div>
+        <div className="min-h-0 flex-1 bg-bg-primary" />
+      </div>
+    </div>
+  )
 }
 
 function SidebarDemo() {
-  const [active, setActive] = useState('overview')
-  const icon = { size: 18, strokeWidth: 1.5, absoluteStrokeWidth: true } as const
   return (
-    <div className="h-[280px] overflow-hidden rounded-[12px] border border-border-default">
-      <DashboardSidebar
-        activeId={active}
-        onSelect={setActive}
-        sections={[
-          {
-            label: 'Workspace',
-            items: [
-              { id: 'overview', label: 'Overview', icon: <DkAppDashboardLayoutTiles {...icon} /> },
-              { id: 'inbox', label: 'Inbox', icon: <DkMessageInboxTray {...icon} />, badge: 3 },
-            ],
-          },
-        ]}
-      />
+    <div className="-m-8 h-[480px] w-[calc(100%+4rem)] overflow-hidden">
+      <SidebarPlay canvas collapsible account />
     </div>
+  )
+}
+
+function SidebarItemPlay({
+  label,
+  item,
+  active,
+  preview,
+}: {
+  label: string
+  item: SidebarItem
+  active?: boolean
+  preview?: SidebarItemPreview
+}) {
+  return (
+    <DocsStateCard label={label} align="stretch">
+      <div className="w-full max-w-[240px]">
+        <SidebarNavItem item={item} active={active} preview={preview} />
+      </div>
+    </DocsStateCard>
+  )
+}
+
+function SidebarStates() {
+  const overview: SidebarItem = {
+    id: 'overview',
+    label: 'Overview',
+    icon: <DkAppDashboardLayoutTiles {...SIDEBAR_GLYPH} />,
+  }
+  const inbox: SidebarItem = {
+    id: 'inbox',
+    label: 'Inbox',
+    icon: <DkMessageInboxTray {...SIDEBAR_GLYPH} />,
+    badge: 3,
+  }
+  const locked: SidebarItem = {
+    id: 'settings',
+    label: 'Settings',
+    icon: <DkGearSettingsPreferences {...SIDEBAR_GLYPH} />,
+    disabled: true,
+  }
+  const logout: SidebarItem = {
+    id: 'logout',
+    label: 'Log out',
+    icon: <DkLogoutExitSession {...SIDEBAR_GLYPH} />,
+    tone: 'danger',
+  }
+
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {SIDEBAR_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={SIDEBAR_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              size="lg"
+              className="overflow-hidden p-0 items-stretch min-h-[360px]"
+            >
+              <div className="h-[360px] w-full">
+                <SidebarPlay variant={variant} canvas />
+              </div>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {SIDEBAR_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={SIDEBAR_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              size="lg"
+              className="overflow-hidden p-0 items-stretch min-h-[360px]"
+            >
+              <div className="h-[360px] w-full">
+                <SidebarPlay size={size} canvas />
+              </div>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Mode">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard
+            label="Expanded"
+            align="stretch"
+            wide
+            size="lg"
+            className="overflow-hidden p-0 items-stretch min-h-[360px]"
+          >
+            <div className="h-[360px] w-full">
+              <SidebarPlay canvas collapsible />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard
+            label="Rail"
+            align="stretch"
+            wide
+            size="lg"
+            className="overflow-hidden p-0 items-stretch min-h-[360px]"
+          >
+            <div className="h-[360px] w-full">
+              <SidebarPlay canvas collapsed collapsible />
+            </div>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Item">
+        <DocsStateGrid>
+          <SidebarItemPlay label="Default" item={overview} />
+          <SidebarItemPlay label="Hover" item={overview} preview="hover" />
+          <SidebarItemPlay label="Focus" item={overview} preview="focus" />
+          <SidebarItemPlay label="Active" item={overview} preview="active" />
+          <SidebarItemPlay label="Selected" item={overview} active />
+          <SidebarItemPlay label="Disabled" item={locked} />
+          <SidebarItemPlay label="Badge" item={inbox} />
+          <SidebarItemPlay label="Danger" item={logout} />
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Composition">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard
+            label="Search"
+            align="stretch"
+            wide
+            size="lg"
+            className="overflow-hidden p-0 items-stretch min-h-[360px]"
+          >
+            <div className="h-[360px] w-full">
+              <SidebarPlay canvas search />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard
+            label="Account"
+            align="stretch"
+            wide
+            size="lg"
+            className="overflow-hidden p-0 items-stretch min-h-[360px]"
+          >
+            <div className="h-[360px] w-full">
+              <SidebarPlay canvas account />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard
+            label="Collapsible groups"
+            align="stretch"
+            wide
+            size="lg"
+            className="overflow-hidden p-0 items-stretch min-h-[360px]"
+          >
+            <div className="h-[360px] w-full">
+              <SidebarPlay canvas collapsibleSections />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard
+            label="Brand and canvas"
+            align="stretch"
+            wide
+            size="lg"
+            className="overflow-hidden p-0 items-stretch min-h-[360px]"
+          >
+            <div className="h-[360px] w-full">
+              <SidebarPlay canvas account collapsible />
+            </div>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
   )
 }
 
@@ -4179,27 +6896,294 @@ function DashboardNavDemo() {
 
 function ShellDemo() {
   const [open, setOpen] = useState(false)
+  const [collapsed, setCollapsed] = useState(false)
   const [search, setSearch] = useState('')
-  const icon = { size: 18, strokeWidth: 1.5, absoluteStrokeWidth: true } as const
   return (
-    <div className="h-[320px] overflow-hidden rounded-[12px] border border-border-default">
+    <div className="h-[360px] overflow-hidden rounded-[12px] border border-border-default">
       <DashboardShell
         title="Overview"
         sidebarOpen={open}
         onSidebarOpenChange={setOpen}
+        sidebarCollapsed={collapsed}
+        onSidebarCollapsedChange={setCollapsed}
         search={{ value: search, onChange: setSearch }}
         userName="Alex Rivera"
-        sections={[
-          {
-            label: 'Workspace',
-            items: [{ id: 'overview', label: 'Overview', icon: <DkAppDashboardLayoutTiles {...icon} /> }],
-          },
-        ]}
+        brandHref="/"
+        sections={sidebarSections()}
         activeId="overview"
+        footer={<ThemeToggle variant={collapsed ? 'switch' : 'default'} />}
       >
         <p className="m-0 p-6 text-sm text-text-secondary">Main canvas</p>
       </DashboardShell>
     </div>
+  )
+}
+
+function AvatarDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {AVATAR_VARIANTS.map((variant) => (
+        <Avatar key={variant} name="Alex Rivera" size="lg" variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function AvatarStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={3}>
+          {AVATAR_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={AVATAR_VARIANT_LABEL[variant]}>
+              <Avatar name="Alex Rivera" size="lg" variant={variant} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {AVATAR_SIZES.map((size) => (
+            <DocsStateCard key={size} label={AVATAR_SIZE_LABEL[size]}>
+              <Avatar name="Alex Rivera" size={size} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={3}>
+          {AVATAR_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={AVATAR_TONE_LABEL[tone]}>
+              <Avatar name="Alex Rivera" size="lg" tone={tone} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Presence">
+        <DocsStateGrid columns={3}>
+          {AVATAR_STATUSES.filter((status) => status !== 'none').map((status) => (
+            <DocsStateCard key={status} label={AVATAR_STATUS_LABEL[status]}>
+              <Avatar name="Alex Rivera" size="lg" status={status} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Shape">
+        <DocsStateGrid columns={2}>
+          {AVATAR_SHAPES.map((shape) => (
+            <DocsStateCard key={shape} label={AVATAR_SHAPE_LABEL[shape]}>
+              <Avatar name="Alex Rivera" size="lg" shape={shape} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={3}>
+          <DocsStateCard label="Initials">
+            <Avatar name="Alex Rivera" size="lg" />
+          </DocsStateCard>
+          <DocsStateCard label="Photo">
+            <Avatar name="Alex Rivera" size="lg" src="/favicon.svg" />
+          </DocsStateCard>
+          <DocsStateCard label="Icon">
+            <Avatar name="Alex Rivera" size="lg" icon={<DkPersonUserProfile strokeWidth={1.5} absoluteStrokeWidth />} />
+          </DocsStateCard>
+          <DocsStateCard label="Empty">
+            <Avatar size="lg" />
+          </DocsStateCard>
+          <DocsStateCard label="Loading">
+            <Avatar name="Alex Rivera" size="lg" loading />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <Avatar name="Alex Rivera" size="lg" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Single name">
+            <Avatar name="Alex" size="lg" />
+          </DocsStateCard>
+          <DocsStateCard label="Rounded, online">
+            <Avatar name="Sam Chen" size="lg" shape="rounded" status="online" />
+          </DocsStateCard>
+          <DocsStateCard label="Ghost, busy">
+            <Avatar name="Jordan Lee" size="lg" variant="ghost" status="busy" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Group">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Three faces" wide>
+            <AvatarGroup>
+              <Avatar name="Alex Rivera" />
+              <Avatar name="Sam Chen" />
+              <Avatar name="Jordan Lee" />
+            </AvatarGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Overflow" wide>
+            <AvatarGroup max={3}>
+              <Avatar name="Alex Rivera" />
+              <Avatar name="Sam Chen" />
+              <Avatar name="Jordan Lee" />
+              <Avatar name="Riley Patel" />
+              <Avatar name="Morgan Diaz" />
+            </AvatarGroup>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function ProfileButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {PROFILE_BUTTON_VARIANTS.map((variant) => (
+        <ProfileButton key={variant} name="Alex Rivera" variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function ProfileButtonStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={3}>
+          {PROFILE_BUTTON_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={PROFILE_BUTTON_VARIANT_LABEL[variant]}>
+              <ProfileButton name="Alex Rivera" variant={variant} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <DocsStateGrid columns={2}>
+          {PROFILE_BUTTON_LAYOUTS.map((layout) => (
+            <DocsStateCard key={layout} label={PROFILE_BUTTON_LAYOUT_LABEL[layout]} wide>
+              <ProfileButton
+                name="Alex Rivera"
+                subtitle="alex@roboticela.com"
+                layout={layout}
+                variant={layout === 'avatar' ? 'fill' : layout === 'identity' ? 'ghost' : 'subtle'}
+                size={layout === 'identity' ? 'md' : 'sm'}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {PROFILE_BUTTON_SIZES.map((size) => (
+            <DocsStateCard key={size} label={PROFILE_BUTTON_SIZE_LABEL[size]}>
+              <ProfileButton name="Alex Rivera" size={size} layout="menu" variant="subtle" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Presence">
+        <DocsStateGrid columns={2}>
+          {AVATAR_STATUSES.filter((status) => status !== 'none').map((status) => (
+            <DocsStateCard key={status} label={AVATAR_STATUS_LABEL[status]}>
+              <ProfileButton name="Alex Rivera" status={status} size="md" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Shape">
+        <DocsStateGrid columns={2}>
+          {AVATAR_SHAPES.map((shape) => (
+            <DocsStateCard key={shape} label={AVATAR_SHAPE_LABEL[shape]}>
+              <ProfileButton name="Alex Rivera" shape={shape} size="md" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={3}>
+          {AVATAR_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={AVATAR_TONE_LABEL[tone]}>
+              <ProfileButton name="Alex Rivera" tone={tone} variant="ghost" size="md" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Face">
+        <DocsStateGrid columns={3}>
+          <DocsStateCard label="Initials">
+            <ProfileButton name="Alex Rivera" size="md" />
+          </DocsStateCard>
+          <DocsStateCard label="Photo">
+            <ProfileButton name="Alex Rivera" src="/favicon.svg" size="md" />
+          </DocsStateCard>
+          <DocsStateCard label="Icon">
+            <ProfileButton
+              name="Alex Rivera"
+              size="md"
+              icon={<DkPersonUserProfile strokeWidth={1.5} absoluteStrokeWidth />}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Empty">
+            <ProfileButton size="md" />
+          </DocsStateCard>
+          <DocsStateCard label="Single name">
+            <ProfileButton name="Alex" size="md" />
+          </DocsStateCard>
+          <DocsStateCard label="Badge">
+            <ProfileButton name="Alex Rivera" size="md" badge={3} />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={3}>
+          <DocsStateCard label="Rest">
+            <ProfileButton name="Alex Rivera" size="md" />
+          </DocsStateCard>
+          <DocsStateCard label="Hover">
+            <ProfileButton name="Alex Rivera" size="md" preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus">
+            <ProfileButton name="Alex Rivera" size="md" preview="focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Active">
+            <ProfileButton name="Alex Rivera" size="md" preview="active" />
+          </DocsStateCard>
+          <DocsStateCard label="Open">
+            <ProfileButton name="Alex Rivera" layout="menu" variant="subtle" open />
+          </DocsStateCard>
+          <DocsStateCard label="Loading">
+            <ProfileButton name="Alex Rivera" size="md" loading />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <ProfileButton name="Alex Rivera" size="md" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Identity, open">
+            <ProfileButton
+              name="Alex Rivera"
+              subtitle="alex@roboticela.com"
+              layout="identity"
+              variant="ghost"
+              size="md"
+              status="online"
+              open
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Menu, hover">
+            <ProfileButton name="Alex Rivera" layout="menu" variant="pill" size="md" preview="hover" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
   )
 }
 
@@ -4314,25 +7298,22 @@ function AlertAction({
   const color =
     solid || tone === 'neutral'
       ? solid
-        ? 'text-text-on-brand hover:text-text-on-brand'
+        ? 'text-text-on-brand hover:text-text-on-brand hover:decoration-current'
         : 'text-text-primary'
       : tone === 'success'
-        ? 'text-success'
+        ? 'text-success hover:text-success'
         : tone === 'warning'
-          ? 'text-warning'
-          : tone === 'danger'
-            ? 'text-danger'
-            : 'text-brand-primary'
+          ? 'text-warning hover:text-warning'
+          : undefined
 
   return (
-    <Button
-      variant="ghost"
+    <Anchor
       size="sm"
-      fullWidth={false}
-      className={`h-auto px-0 hover:underline ${color}`}
+      tone={tone === 'danger' ? 'danger' : 'brand'}
+      className={color}
     >
       {children}
-    </Button>
+    </Anchor>
   )
 }
 
@@ -4481,6 +7462,243 @@ function AlertStates() {
             >
               The workspace will pause from 01:00 to 03:00 UTC.
             </Alert>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function SheetNavFrame({
+  children,
+  onDark = false,
+  body = true,
+}: {
+  children: ReactNode
+  onDark?: boolean
+  body?: boolean
+}) {
+  return (
+    <div
+      className={cn(
+        'w-full overflow-hidden rounded-[18px] border',
+        onDark ? 'border-[#38383a] bg-black' : 'border-border-default bg-bg-elevated',
+      )}
+    >
+      {children}
+      {body ? <div className={cn('h-14', onDark ? 'bg-black' : 'bg-bg-elevated')} /> : null}
+    </div>
+  )
+}
+
+function SheetNavPreview({
+  variant = 'fill',
+  layout = 'plain',
+  size = 'md',
+  tone = 'brand',
+  title = 'Edit profile',
+  subtitle,
+  onDark,
+  body,
+  ...rest
+}: {
+  variant?: SheetNavVariant
+  layout?: SheetNavLayout
+  size?: SheetNavSize
+  tone?: SheetNavTone
+  title?: string
+  subtitle?: string
+  onDark?: boolean
+  body?: boolean
+  cancelDisabled?: boolean
+  doneDisabled?: boolean
+  loading?: boolean
+  loadingText?: string
+  preview?: 'hover' | 'active' | 'disabled'
+  doneLabel?: ReactNode
+  cancelLabel?: string
+  onDone?: () => void
+}) {
+  return (
+    <SheetNavFrame onDark={onDark} body={body}>
+      <SheetNav
+        title={title}
+        subtitle={subtitle}
+        variant={variant}
+        layout={layout}
+        size={size}
+        tone={tone}
+        onDark={onDark}
+        onCancel={() => undefined}
+        onDone={rest.onDone ?? (() => undefined)}
+        {...rest}
+      />
+    </SheetNavFrame>
+  )
+}
+
+function SheetNavDemo() {
+  return (
+    <div className="flex w-full flex-col gap-4">
+      {SHEET_NAV_VARIANTS.map((variant) => (
+        <SheetNavPreview key={variant} variant={variant} title={SHEET_NAV_VARIANT_LABEL[variant]} />
+      ))}
+    </div>
+  )
+}
+
+function SheetNavStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {SHEET_NAV_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={SHEET_NAV_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SheetNavPreview variant={variant} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <DocsStateGrid columns={2}>
+          {SHEET_NAV_LAYOUTS.map((layout) => (
+            <DocsStateCard
+              key={layout}
+              label={SHEET_NAV_LAYOUT_LABEL[layout]}
+              align="stretch"
+              wide
+              size="lg"
+              className="bg-bg-primary"
+            >
+              <SheetNavPreview
+                layout={layout}
+                title={layout === 'back' ? 'Photo' : layout === 'large' ? 'Settings' : 'Edit profile'}
+                subtitle={layout === 'large' ? 'Name, photo, and username' : undefined}
+                cancelLabel={layout === 'back' ? 'Library' : undefined}
+                doneLabel={layout === 'prominent' ? 'Add' : undefined}
+                body={layout !== 'large'}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {SHEET_NAV_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={SHEET_NAV_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SheetNavPreview size={size} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {SHEET_NAV_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={SHEET_NAV_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SheetNavPreview
+                tone={tone}
+                title={tone === 'danger' ? 'This photo' : 'Edit profile'}
+                doneLabel={tone === 'danger' ? 'Delete' : 'Done'}
+              />
+            </DocsStateCard>
+          ))}
+          <DocsStateCard
+            label="Prominent, brand"
+            align="stretch"
+            wide
+            className="bg-bg-primary"
+          >
+            <SheetNavPreview layout="prominent" doneLabel="Add" />
+          </DocsStateCard>
+          <DocsStateCard
+            label="Prominent, danger"
+            align="stretch"
+            wide
+            className="bg-bg-primary"
+          >
+            <SheetNavPreview layout="prominent" tone="danger" title="This photo" doneLabel="Delete" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid columns={2}>
+          {SHEET_NAV_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`dark-${variant}`}
+              label={SHEET_NAV_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <SheetNavPreview variant={variant} onDark title="Move and Scale" />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Default" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview />
+          </DocsStateCard>
+          <DocsStateCard label="Subtitle" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview subtitle="Name, photo, and username" />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled Done" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview doneDisabled />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled Cancel" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview cancelDisabled />
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview loading loadingText="Saving" />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Pressed" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview preview="active" />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview preview="disabled" />
+          </DocsStateCard>
+          <DocsStateCard label="No trailing" align="stretch" wide className="bg-bg-primary">
+            <SheetNavFrame>
+              <SheetNav title="Filters" onCancel={() => undefined} />
+            </SheetNavFrame>
+          </DocsStateCard>
+          <DocsStateCard label="Long title" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview title="Edit your public profile and username" />
+          </DocsStateCard>
+          <DocsStateCard label="Close, no Done" align="stretch" wide className="bg-bg-primary">
+            <SheetNavFrame>
+              <SheetNav title="Info" layout="close" onCancel={() => undefined} />
+            </SheetNavFrame>
+          </DocsStateCard>
+          <DocsStateCard label="Back, nested" align="stretch" wide className="bg-bg-primary">
+            <SheetNavPreview layout="back" title="Details" cancelLabel="Album" doneLabel="Select" />
           </DocsStateCard>
         </DocsStateGrid>
       </DocsStateGroup>
@@ -5473,7 +8691,7 @@ const DOCS: Record<string, DocDef> = {
 <Alert variant="solid" tone="danger" title="Payment failed">Update the card on file.</Alert>
 <Alert variant="ghost" tone="success" title="Saved">Your changes are live.</Alert>
 <Alert tone="neutral" title="Maintenance tonight" onDismiss={hide}>The workspace will pause.</Alert>
-<Alert title="Invite expired" action={<Button variant="ghost">Resend</Button>}>Send a new link.</Alert>
+<Alert title="Invite expired" action={<Anchor>Resend</Anchor>}>Send a new link.</Alert>
 `,
     statesContent: <AlertStates />,
     props: [
@@ -5483,7 +8701,7 @@ const DOCS: Record<string, DocDef> = {
       p('title', 'ReactNode', 'undefined', 'Headline. Omit for a body-only note.'),
       p('children', 'ReactNode', 'undefined', 'Supporting line under the title.'),
       p('icon', 'ReactNode | false', 'tone icon', 'Leading icon. Pass false to hide it.'),
-      p('action', 'ReactNode', 'undefined', 'A Button under the body, such as Resend or Try again.'),
+      p('action', 'ReactNode', 'undefined', 'An Anchor under the body, such as Resend or Try again.'),
       p('onDismiss', '() => void', 'undefined', 'Shows a Dismiss icon button.'),
     ],
   },
@@ -5522,30 +8740,34 @@ const DOCS: Record<string, DocDef> = {
   skeleton: {
     title: 'Skeleton',
     description:
-      'A placeholder while content loads. Subtle, outline, ghost, and pill, as a line, heading, circle, rect, or square.',
+      'Wrap any component to show its exact skeleton. The CSS is compiled at build. If it is missing, the same sheet is inserted once at runtime.',
     ...skeletonGuide,
     Demo: SkeletonDemo,
     wide: true,
-    code: `<Skeleton />
+    code: `<Skeleton loading>
+  <StatCard label="Revenue" value="$48,290" />
+</Skeleton>
+
+<Skeleton loading={false}>
+  <StatCard label="Revenue" value="$48,290" />
+</Skeleton>
+
+<Skeleton />
 <Skeleton variant="outline" lines={3} />
-<Skeleton variant="ghost" lines={3} />
-<Skeleton variant="pill" className="h-11 w-[140px]" />
 <Skeleton shape="circle" />
-<Skeleton shape="heading" />
-<Skeleton shape="rect" />
 <Skeleton lines={3} label="Loading article" />
-<Skeleton motion="pulse" lines={3} />
-<Skeleton motion="none" lines={3} />
 `,
     statesContent: <SkeletonStates />,
     props: [
+      p('children', 'ReactNode', 'undefined', 'The real component to stand in for. When set, Skeleton is a parent. No manual bones.'),
+      p('loading', 'boolean', 'true when wrapping', 'When false, children render as themselves. Ignored when there are no children.'),
       p("variant", "'subtle' | 'outline' | 'ghost' | 'pill'", "'subtle'", 'Chrome. Subtle is the default fill. Outline is a wireframe. Ghost is fainter. Pill is a button or badge.'),
-      p("shape", "'line' | 'heading' | 'circle' | 'rect' | 'square'", "'line'", 'What the placeholder stands in for. Circle matches Avatar. Rect matches a card image.'),
-      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Height for a line or heading. Diameter for a circle. Matches Avatar at circle size.'),
+      p("shape", "'line' | 'heading' | 'circle' | 'rect' | 'square'", "'line'", 'Bone only, when there are no children. Circle matches Avatar. Rect matches a card image.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Bone only. Height for a line or heading. Diameter for a circle. Matches Avatar at circle size.'),
       p("motion", "'shimmer' | 'pulse' | 'none'", "'shimmer'", 'Shimmer is the default sweep. Pulse is an opacity breath. None is static.'),
-      p('lines', 'number', '1', 'Stacked text lines. Last line is shorter. Ignored when shape is not line.'),
-      p('width', 'string | number', 'undefined', 'Override width on a single bone.'),
-      p('label', 'string', 'undefined', 'Accessible name. Sets role status and aria-busy, such as Loading profile.'),
+      p('lines', 'number', '1', 'Bone only. Stacked text lines. Last line is shorter. Ignored when shape is not line.'),
+      p('width', 'string | number', 'undefined', 'Bone only. Override width on a single bone.'),
+      p('label', 'string', "'Loading' when wrapping", 'Accessible name. Sets role status and aria-busy.'),
     ],
   },
   'empty-state': {
@@ -5580,48 +8802,250 @@ const DOCS: Record<string, DocDef> = {
       p('onDark', 'boolean', 'false', 'Type and chrome for a black surface.'),
     ],
   },
+  'empty-popup': {
+    title: 'Empty Popup',
+    description: 'A compact empty view for a menu, palette, or notification popup. Use this when a list inside a popup has nothing to show.',
+    ...emptyPopupGuide,
+    Demo: EmptyPopupDemo,
+    wide: true,
+    code: `<EmptyPopup
+  icon={<SearchIcon />}
+  title="No results"
+  body="Try a different search."
+/>
+<EmptyPopup variant="subtle" title="No notifications" body="You are all caught up." />
+<EmptyPopup variant="outline" title="No results" body="Try a different search." />
+<EmptyPopup variant="ghost" title="No results" body="Try a different search." />
+<EmptyPopup variant="pill" title="No results" body="Try a different search." />
+<EmptyPopup surface="plain" size="sm" title="No results" />
+<EmptyPopup tone="danger" title="Could not load" body="Check the connection, then try again." />
+`,
+    statesContent: <EmptyPopupStates />,
+    props: [
+      p('title', 'string', 'required', 'Headline. Also the accessible name of the status.'),
+      p('body', 'ReactNode', 'undefined', 'One supporting line under the title.'),
+      p('icon', 'ReactNode', 'undefined', 'A kit icon. Size follows the popup size.'),
+      p('action', 'ReactNode', 'undefined', 'Primary button. Keep the label a short verb.'),
+      p('secondary', 'ReactNode', 'undefined', 'A quieter second action under the primary.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Panel chrome. Fill is the default popup. Subtle, outline, and pill sit as a card.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Padding, icon, and type. Small is for a Select.'),
+      p("tone", "'default' | 'success' | 'warning' | 'danger'", "'default'", 'Icon color. Default is tertiary gray. Danger is a failure.'),
+      p("surface", "'plain' | 'panel'", "'panel'", 'Panel is a standalone popup. Plain sits inside an existing menu.'),
+    ],
+  },
   'loading-screen': {
     title: 'Loading Screen',
-    description: 'A branded wait state.',
-    Demo: () => <LoadingScreen embedded status="Setting things up…" delayMs={12000} />,
-    code: `<LoadingScreen status="Setting things up…" />\n`,
+    description: 'Hold the view while work finishes. Use this for boot, sign in, and a panel that is not ready yet.',
+    ...loadingScreenGuide,
+    Demo: LoadingScreenDemo,
+    wide: true,
+    code: `<LoadingScreen status="Setting things up…" />
+<LoadingScreen variant="subtle" embedded status="Setting things up…" />
+<LoadingScreen variant="outline" embedded status="Setting things up…" />
+<LoadingScreen variant="ghost" embedded status="Setting things up…" />
+<LoadingScreen variant="pill" embedded status="Setting things up…" />
+<LoadingScreen indicator="bar" embedded status="Setting things up…" />
+<LoadingScreen preview="delayed" delayedStatus="This is taking longer than usual…" />
+`,
+    statesContent: <LoadingScreenStates />,
     props: [
-      p('status', 'string', "'Setting things up…'", 'Initial caption.'),
-      p('embedded', 'boolean', 'false', 'Use inside a panel instead of a full viewport.'),
+      p('status', 'string', "'Setting things up…'", 'First caption. Also the accessible name until the delayed line.'),
+      p('delayedStatus', 'string', "'This is taking longer than usual…'", 'Caption after delayMs. Quieter type.'),
+      p('delayMs', 'number', '5000', 'Wait before the delayed line. Several seconds, not the first frame.'),
+      p('embedded', 'boolean', 'false', 'Fit a panel instead of the full viewport.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the page. Subtle, outline, and pill sit in a panel.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Mark, spinner, and padding. Small is for a card. Large is a full page boot.'),
+      p("indicator", "'spinner' | 'bar' | 'none'", "'spinner'", 'Spinner is the branded boot. Bar matches Progress. None is the mark alone.'),
+      p("preview", "'initial' | 'delayed'", 'undefined', 'Forced visual for docs tiles. Skips the timer.'),
+      p('showLogo', 'boolean', 'true', 'Show the brand mark above the indicator.'),
+      p('showStatus', 'boolean', 'true', 'Show the caption. The accessible name becomes Loading when hidden.'),
+      p('onDark', 'boolean', 'false', 'Type and chrome for a black surface.'),
+    ],
+  },
+  loader: {
+    title: 'Loader',
+    description: 'A spinning ring for an inline wait. Use this next to a label, in a toolbar, or on a card. Use Loading Screen when the whole view is not ready.',
+    ...loaderGuide,
+    Demo: LoaderDemo,
+    wide: true,
+    code: `<Loader />
+<Loader variant="subtle" />
+<Loader variant="outline" />
+<Loader variant="ghost" />
+<Loader variant="pill" />
+<Loader label="Saving" />
+<Loader layout="inline" label="Loading messages" />
+<Loader tone="default" />
+`,
+    statesContent: <LoaderStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the ring alone. Subtle, outline, and pill sit in a circular well.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Ring diameter. Small is 16px, matching a button. Large is 36px, matching a system activity indicator.'),
+      p("tone", "'brand' | 'default' | 'success' | 'warning' | 'danger'", "'brand'", 'Tick color. Brand is the default. Default is the gray Apple ring.'),
+      p("layout", "'stack' | 'inline'", "'stack'", 'Label under the ring, or beside it.'),
+      p('label', 'string', 'undefined', 'Caption. Also the accessible name.'),
+      p('spinning', 'boolean', 'true', 'False keeps a static arc. Reduced motion also stops the spin.'),
+      p('onDark', 'boolean', 'false', 'Track and tick for a black surface.'),
+      p('disabled', 'boolean', 'false', 'Dims the loader. The loader is never operable.'),
+      p('decorative', 'boolean', 'false', 'Hide from assistive tech when a parent already names the wait.'),
     ],
   },
   'score-ring': {
     title: 'Score Ring',
-    description: 'A circular completion indicator.',
-    Demo: () => <ScoreRing score={72} />,
-    code: `<ScoreRing score={72} />\n`,
-    states: [
-      { label: 'Low', node: <ScoreRing score={24} /> },
-      { label: 'Mid', node: <ScoreRing score={72} /> },
-      { label: 'Complete', node: <ScoreRing score={100} /> },
+    description:
+      'Show a score or how far a circular task has gone. Fill is the default. Subtle, outline, ghost, and pill match the rest of the kit. The arc fills from zero to complete.',
+    ...scoreRingGuide,
+    Demo: ScoreRingDemo,
+    wide: true,
+    code: `<ScoreRing score={72} label="Profile" />
+<ScoreRing variant="subtle" score={72} label="Health" />
+<ScoreRing variant="outline" score={72} label="Storage" />
+<ScoreRing variant="ghost" score={48} label="Quiet" />
+<ScoreRing variant="pill" score={72} label="Setup" />
+<ScoreRing tone="success" score={100} label="Done" showCheck />
+<ScoreRing indeterminate label="Preparing" />
+<ScoreRing variant="subtle" indeterminate label="Preparing" />
+<ScoreRing variant="outline" indeterminate label="Preparing" />
+<ScoreRing variant="ghost" indeterminate label="Preparing" />
+<ScoreRing variant="pill" indeterminate label="Preparing" />
+`,
+    statesContent: <ScoreRingStates />,
+    props: [
+      p('score', 'number', '0', 'How far the metric has gone, from 0 to 100. Ignored when indeterminate.'),
+      p('label', 'string', 'undefined', 'Caption under the ring. Also the accessible name.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Track chrome. Fill is the default. Subtle tints the track. Pill is the thicker ring.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Diameter and type. Small is 48px. Large is 96px.'),
+      p("tone", "'brand' | 'success' | 'warning' | 'danger'", "'brand'", 'Arc color. Success when the work is done. Danger when it failed.'),
+      p('indeterminate', 'boolean', 'false', 'Unknown amount. The arc travels until you know the value.'),
+      p('onDark', 'boolean', 'false', 'Track and type for a black surface.'),
+      p('showValue', 'boolean', 'true', 'Show the percent in the center.'),
+      p('showCheck', 'boolean', 'false', 'Replace the percent with a checkmark at 100.'),
+      p('formatValue', '(value: number) => string', 'rounded percent', 'How the percent is written.'),
+      p('disabled', 'boolean', 'false', 'Dims the ring. The ring is never operable.'),
+      p('children', 'ReactNode', 'undefined', 'Custom center content. Replaces the percent and the check.'),
     ],
-    props: [p('score', 'number', '—', '0–100.')],
   },
   modal: {
     title: 'Modal',
-    description: 'A focused dialog above the page.',
+    description:
+      'A focused overlay. Dialog for a form. Alert for a short decision. Sheet from the bottom. Action for a list of choices.',
+    ...modalGuide,
     Demo: ModalDemo,
-    code: `<Modal open={open} onClose={close} title="Invite teammate">{children}</Modal>\n`,
+    wide: true,
+    code: `<Modal
+  open={open}
+  onClose={close}
+  title="Invite teammate"
+  description="They’ll get a link to join this workspace."
+  actions={[
+    { label: 'Send invite', tone: 'primary', onClick: send },
+    { label: 'Cancel', tone: 'cancel', onClick: close },
+  ]}
+>
+  {children}
+</Modal>
+`,
+    statesContent: <ModalStates />,
     props: [
-      p('open', 'boolean', '—', 'Whether the dialog is shown.'),
-      p('onClose', '() => void', '—', 'Backdrop, Escape, and close button.'),
-      p('title', 'string', '—', 'Dialog heading.'),
+      p('open', 'boolean', '—', 'Whether the overlay is shown.'),
+      p('onClose', '() => void', '—', 'Backdrop, Escape, and the close button. Ignored when dismissible is false.'),
+      p("variant", "'dialog' | 'alert' | 'sheet' | 'action'", "'dialog'", 'Dialog is a form. Alert is a decision. Sheet rises from the bottom. Action is a list of choices.'),
+      p("size", "'sm' | 'md' | 'lg' | 'full'", "'md'", 'Width of the panel. Alert stays compact. Full is for a long editor.'),
+      p("tone", "'default' | 'danger' | 'success' | 'warning'", "'default'", 'Color of the optional icon. Danger is for a destructive alert.'),
+      p('title', 'ReactNode', 'undefined', 'Heading. Names the dialog for assistive tech.'),
+      p('description', 'ReactNode', 'undefined', 'One supporting line under the title.'),
+      p('icon', 'boolean | ReactNode', 'undefined', 'True uses the tone glyph. Pass a node for a custom mark.'),
+      p('actions', 'ModalAction[]', 'undefined', 'Footer or system rows. Tone is primary, danger, cancel, or default.'),
+      p('footer', 'ReactNode', 'undefined', 'Custom footer. Wins over actions on dialog and sheet.'),
+      p('showClose', 'boolean', 'true on dialog and sheet', 'Trailing close on dialog and sheet. Off on alert and action.'),
+      p('showHandle', 'boolean', 'true on sheet', 'The grabber on a sheet.'),
+      p('dismissible', 'boolean', 'true', 'Backdrop and Escape close the overlay. Off while saving.'),
+      p('loading', 'boolean', 'false', 'Sets aria-busy and blocks dismiss. Mark the busy action with loading too.'),
+      p('embedded', 'boolean', 'false', 'Render in place for docs. No portal, no scroll lock, no focus trap.'),
+    ],
+  },
+  'command-palette': {
+    title: 'Command Palette',
+    description:
+      'Search and run a command. Spotlight is a floating field. Command is a panel with keyboard hints. Nav replaces the site header. Sheet rises from the bottom.',
+    ...commandPaletteGuide,
+    Demo: CommandPaletteDemo,
+    wide: true,
+    code: `<CommandSearch placeholder="Search commands…" onClick={open} />
+<CommandPalette
+  open={open}
+  onClose={close}
+  items={items}
+  onSelect={run}
+/>
+<CommandPalette variant="spotlight" open={open} onClose={close} items={items} />
+<CommandPalette variant="nav" open={open} onClose={close} items={quickLinks} />
+<CommandPalette variant="sheet" open={open} onClose={close} items={items} />
+`,
+    statesContent: <CommandPaletteStates />,
+    props: [
+      p('open', 'boolean', '—', 'Whether the overlay is shown.'),
+      p('onClose', '() => void', '—', 'Backdrop, Escape, Cancel, and a completed select.'),
+      p('items', 'CommandItem[]', 'undefined', 'Flat list. Filtered by the query and grouped by item.group. If omitted with groups, the docs catalog is searched.'),
+      p('groups', 'CommandGroup[]', 'undefined', 'Pre-grouped results. Shown as-is. Wins over items.'),
+      p('query', 'string', 'uncontrolled', 'The field value. Pass with onQueryChange to control it.'),
+      p('onQueryChange', '(value: string) => void', 'undefined', 'Called as the person types.'),
+      p('onSelect', '(item: CommandItem) => void', 'undefined', 'Called after close. If omitted and the item has href, the kit routes there.'),
+      p('placeholder', 'string', "'Search'", 'Hint in the field. Docs catalog default is Search documentation…'),
+      p("variant", "'spotlight' | 'command' | 'nav' | 'sheet'", "'command'", 'Spotlight is a floating field. Command is the panel. Nav is site search. Sheet rises from the bottom.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Width of the panel. Nav uses the marketing content widths.'),
+      p('loading', 'boolean', 'false', 'Replaces results with a loader. Sets aria-busy.'),
+      p('emptyTitle', 'string', 'Start typing / No results', 'Headline when the list is empty.'),
+      p('emptyBody', 'ReactNode', 'undefined', 'One supporting line under the empty title.'),
+      p('footer', 'ReactNode', 'undefined', 'Custom footer. Command shows keyboard hints by default.'),
+      p('showFooter', 'boolean', 'true on command', 'Keyboard hint row. Off on spotlight, nav, and sheet.'),
+      p('cancelLabel', 'string', "'Cancel'", 'Trailing dismiss on nav. Anchor without href, brand blue.'),
+      p('index', 'number', 'uncontrolled', 'Active result. Pass for a docs tile.'),
+      p('embedded', 'boolean', 'false', 'Render in place for docs. No portal and no scroll lock.'),
+      p('CommandSearch.variant', "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Trigger chrome. Pill matches Nav Search. Icon is the marketing glass.'),
+      p("CommandSearch.size", "'sm' | 'md' | 'lg'", "'md'", 'Trigger height. Small is a 52px bar.'),
+      p('CommandSearch.icon', 'boolean', 'false', 'Collapse to a magnifying glass, as in Site Nav.'),
+      p('CommandSearch.shortcut', "string | false", "'⌘K'", 'Keyboard hint on the trigger. Hidden on small screens.'),
     ],
   },
   'confirm-dialog': {
     title: 'Confirm Dialog',
-    description: 'A destructive or irreversible confirm.',
+    description:
+      'Ask before a change that is hard to reverse. Alert is the default. Dialog, sheet, and action change the chrome. Tone is the risk.',
+    ...confirmDialogGuide,
     Demo: ConfirmDialogDemo,
-    code: `<ConfirmDialog open={open} onClose={close} title="Delete?" onConfirm={remove} />\n`,
+    wide: true,
+    code: `<ConfirmDialog
+  open={open}
+  onClose={close}
+  title="Delete this project?"
+  body="This cannot be undone."
+  confirmLabel="Delete"
+  onConfirm={remove}
+/>
+`,
+    statesContent: <ConfirmDialogStates />,
     props: [
-      p('open', 'boolean', '—', 'Whether the dialog is shown.'),
-      p('onConfirm', '() => void', '—', 'Primary action.'),
-      p('confirmLabel', 'string', "'Confirm'", 'Primary button label.'),
+      p('open', 'boolean', '—', 'Whether the overlay is shown.'),
+      p('onClose', '() => void', '—', 'Cancel, backdrop, and Escape when dismissible.'),
+      p('onConfirm', '() => void', '—', 'The confirm action.'),
+      p("variant", "'alert' | 'dialog' | 'sheet' | 'action'", "'alert'", 'Alert is iOS. Dialog is a longer explanation. Sheet rises from the bottom. Action is a list with Cancel on its own row.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Width of the panel. Alert stays compact.'),
+      p("tone", "'danger' | 'brand' | 'warning' | 'success' | 'neutral'", "'danger'", 'Meaning of the confirm. Danger is delete. Brand is publish. Warning is leave. Neutral is archive.'),
+      p('title', 'string', '—', 'The question. Names the dialog for assistive tech.'),
+      p('body', 'ReactNode', 'undefined', 'One supporting line under the title.'),
+      p('confirmLabel', 'string', "'Confirm'", 'The verb on the confirm action, such as Delete or Publish.'),
+      p('cancelLabel', 'string', "'Cancel'", 'The dismiss action. Hidden when showCancel is false.'),
+      p('secondaryLabel', 'string', 'undefined', 'A third action, such as Don’t save. Stacks the buttons.'),
+      p('onSecondary', '() => void', 'undefined', 'Called when the third action is pressed.'),
+      p('icon', 'boolean | ReactNode', 'undefined', 'True uses the tone glyph. Pass a node for a custom mark.'),
+      p('showCancel', 'boolean', 'true', 'Show Cancel. Off for a single OK-style confirm.'),
+      p('showClose', 'boolean', 'false', 'Trailing close on dialog and sheet. Off by default so the person must choose.'),
+      p('dismissible', 'boolean', 'true', 'Backdrop and Escape close the overlay. Off while saving.'),
+      p('loading', 'boolean', 'false', 'Spinner on the confirm. Blocks dismiss. Cancel is disabled.'),
+      p('loadingText', 'string', "'Working…'", 'Accessible name while the confirm is busy.'),
+      p('confirmDisabled', 'boolean', 'false', 'Dims the confirm until a condition is met.'),
+      p('embedded', 'boolean', 'false', 'Render in place for docs. No portal, no scroll lock, no focus trap.'),
     ],
   },
   'avatar-editor': {
@@ -5637,61 +9061,183 @@ const DOCS: Record<string, DocDef> = {
   },
   tabs: {
     title: 'Tabs',
-    description: 'Switch between peer views.',
+    description:
+      'Switch between peer views. Underline is the default. Subtle, outline, and pill sit in a well. Ghost is type only.',
+    ...tabsGuide,
     Demo: TabsDemo,
-    code: `<Tabs value={tab} onChange={setTab} items={[{ id: 'all', label: 'All' }]} />\n`,
+    wide: true,
+    code: `<Tabs
+  value={tab}
+  onChange={setTab}
+  items={[
+    { id: 'all', label: 'All' },
+    { id: 'live', label: 'Live' },
+    { id: 'review', label: 'In review', badge: 1 },
+  ]}
+/>
+<Tabs variant="subtle" value={tab} onChange={setTab} items={items} />
+<Tabs variant="outline" value={tab} onChange={setTab} items={items} />
+<Tabs variant="ghost" value={tab} onChange={setTab} items={items} />
+<Tabs variant="pill" value={tab} onChange={setTab} items={items} />
+`,
+    statesContent: <TabsStates />,
     props: [
-      p('items', 'TabItem[]', '—', 'Tab ids and labels.'),
-      p('variant', "'underline' | 'pill'", "'underline'", 'Visual style.'),
-      p('size', "'sm' | 'md'", "'md'", 'Control height.'),
+      p('items', 'TabItem[]', '—', 'Tabs. Each has an id and a label. Icon, badge, and disabled are optional.'),
+      p('value', 'string', '—', 'The selected tab id.'),
+      p('onChange', '(id: string) => void', '—', 'Called when a tab is selected.'),
+      p("variant", "'underline' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'underline'", 'Underline is the page default. Subtle, outline, and pill sit in a well. Ghost is type only.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Height and type. Medium is 44px, matching Button.'),
+      p("align", "'start' | 'stretch'", "'start'", 'Start hugs the labels. Stretch shares the row equally.'),
+      p('fullWidth', 'boolean', 'false', 'Stretch the well to the row. Underline is already full width.'),
+      p('disabled', 'boolean', 'false', 'Dims the whole list. Arrow keys do not move.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles. Skips the pointer.'),
+      p('aria-label', 'string', 'undefined', 'Accessible name when there is no nearby heading.'),
     ],
   },
   'icon-tab': {
     title: 'Icon Tab',
-    description: 'A compact tab with an icon and label.',
-    Demo: () => (
-      <div className="flex w-full gap-1">
-        <IconTab icon={<DkAppDashboardLayoutTiles size={18} />} label="Home" active />
-        <IconTab icon={<DkMessageInboxTray size={18} />} label="Inbox" />
-      </div>
-    ),
-    code: `<IconTab icon={<Home />} label="Home" active />\n`,
+    description:
+      'A compact destination bar with an icon and label. Ghost is the default. Subtle, outline, and pill sit in a well. Fill paints the selected item.',
+    ...iconTabGuide,
+    Demo: IconTabDemo,
+    wide: true,
+    code: `<IconTabBar
+  value={tab}
+  onChange={setTab}
+  items={[
+    { id: 'home', label: 'Home', icon: <DkAppDashboardLayoutTiles /> },
+    { id: 'inbox', label: 'Inbox', icon: <DkMessageInboxTray />, badge: 3 },
+    { id: 'profile', label: 'Profile', icon: <DkPersonUserProfile /> },
+  ]}
+/>
+<IconTabBar variant="subtle" value={tab} onChange={setTab} items={items} />
+<IconTabBar variant="outline" value={tab} onChange={setTab} items={items} />
+<IconTabBar variant="fill" value={tab} onChange={setTab} items={items} />
+<IconTabBar variant="pill" value={tab} onChange={setTab} items={items} />
+<IconTabBar layout="inline" variant="pill" value={tab} onChange={setTab} items={items} />
+<IconTab icon={<Home />} label="Home" active />
+`,
+    statesContent: <IconTabStates />,
     props: [
-      p('icon', 'ReactNode', '—', 'Glyph above the label.'),
-      p('label', 'string', '—', 'Caption.'),
-      p('active', 'boolean', 'false', 'Selected appearance.'),
+      p('items', 'IconTabItem[]', '—', 'On IconTabBar. Each has an id, label, and icon. Badge, disabled, and tone are optional.'),
+      p('value', 'string', '—', 'On IconTabBar. The selected item id.'),
+      p('onChange', '(id: string) => void', '—', 'On IconTabBar. Called when a destination is selected.'),
+      p("variant", "'ghost' | 'subtle' | 'outline' | 'fill' | 'pill'", "'ghost'", 'Ghost is the phone bar. Subtle, outline, and pill sit in a well. Fill paints the selected item.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Height and type. Medium stacked is 56px, matching an iOS tab bar.'),
+      p("layout", "'stacked' | 'inline' | 'icon'", "'stacked'", 'Stacked is icon over caption. Inline is a toolbar. Icon hides the label.'),
+      p('fullWidth', 'boolean', 'true except icon', 'Share the row equally. Icon layout hugs the glyphs unless this is set.'),
+      p('disabled', 'boolean', 'false', 'Dims the bar or a single IconTab. Arrow keys do not move on a disabled bar.'),
+      p('icon', 'ReactNode', '—', 'On IconTab. Glyph above or beside the label.'),
+      p('label', 'string', '—', 'On IconTab. Caption. Also the accessible name for icon layout.'),
+      p('active', 'boolean', 'false', 'On IconTab. Selected appearance.'),
+      p('badge', 'number | string', 'undefined', 'Count on the icon, or after the label when inline.'),
+      p("tone", "'default' | 'danger'", "'default'", 'Danger is a destructive destination such as Log out.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p('aria-label', 'string', 'undefined', 'On IconTabBar. Accessible name when there is no nearby heading.'),
     ],
   },
   breadcrumb: {
     title: 'Breadcrumb',
-    description: 'The path back through the hierarchy.',
-    Demo: () => (
-      <Breadcrumbs
-        items={[{ label: 'Projects' }, { label: 'Atlas' }, { label: 'Settings' }]}
-      />
-    ),
-    code: `<Breadcrumbs items={[{ label: 'Projects' }, { label: 'Atlas' }]} />\n`,
-    props: [p('items', 'BreadcrumbItem[]', '—', 'Crumbs from root to current.')],
+    description: 'The path back through the hierarchy. Ghost is the default. Subtle, outline, fill, and pill change the chrome. Chevron, slash, or dot separate the pages.',
+    ...breadcrumbGuide,
+    Demo: BreadcrumbDemo,
+    wide: true,
+    code: `<Breadcrumbs items={[{ label: 'Projects', onClick: go }, { label: 'Atlas' }]} />
+<Breadcrumbs variant="subtle" items={items} />
+<Breadcrumbs variant="outline" items={items} />
+<Breadcrumbs variant="fill" items={items} />
+<Breadcrumbs variant="pill" items={items} />
+<Breadcrumbs separator="slash" items={items} />
+<Breadcrumbs maxItems={4} items={items} />
+`,
+    statesContent: <BreadcrumbStates />,
+    props: [
+      p('items', 'BreadcrumbItem[]', '—', 'Crumbs from root to current. Last item is the page. Each item may have href, onClick, icon, iconOnly, and disabled.'),
+      p("variant", "'ghost' | 'subtle' | 'outline' | 'fill' | 'pill'", "'ghost'", 'Chrome. Ghost is the page trail. Subtle, outline, and fill sit on a surface. Pill is a chip trail.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Type, icon, and crumb height.'),
+      p("separator", "'chevron' | 'slash' | 'dot'", "'chevron'", 'Mark between crumbs. Chevron is the default.'),
+      p('maxItems', 'number', 'undefined', 'Collapse the middle into an overflow when the path is longer. Minimum 3.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual on previewIndex for docs tiles.'),
+      p('previewIndex', 'number', '0', 'Which crumb receives preview. Use -1 for the overflow.'),
+      p('aria-label', 'string', "'Breadcrumb'", 'Accessible name of the navigation.'),
+    ],
   },
   pagination: {
     title: 'Pagination',
-    description: 'Move through a paged list.',
+    description:
+      'Move through a paged list. Primary is the default. Subtle, outline, ghost, and pill change the chrome. When the set is long, the numbers collapse to 1 … 12 13 14 … 48.',
+    ...paginationGuide,
     Demo: PaginationDemo,
-    code: `<Pagination page={page} pageCount={5} onChange={setPage} />\n`,
+    wide: true,
+    code: `<Pagination page={page} pageCount={5} onChange={setPage} />
+<Pagination variant="ghost" page={page} pageCount={5} onChange={setPage} />
+<Pagination variant="subtle" page={page} pageCount={5} onChange={setPage} />
+<Pagination variant="outline" page={page} pageCount={5} onChange={setPage} />
+<Pagination variant="pill" page={page} pageCount={5} onChange={setPage} />
+<Pagination page={page} pageCount={48} onChange={setPage} />
+<Pagination layout="compact" page={page} pageCount={48} onChange={setPage} />
+<Pagination layout="simple" page={page} pageCount={48} onChange={setPage} />
+<Pagination showFirstLast page={page} pageCount={48} onChange={setPage} />
+`,
+    statesContent: <PaginationStates />,
     props: [
       p('page', 'number', '—', 'Current 1-based page.'),
       p('pageCount', 'number', '—', 'Total pages.'),
+      p('onChange', '(page: number) => void', '—', 'Called with the next page.'),
+      p("variant", "'ghost' | 'subtle' | 'outline' | 'primary' | 'pill'", "'primary'", 'Chrome. Primary fills the current page. Ghost is type on a quiet mark. Subtle, outline, and pill sit in a well.'),
+      p("size", "'sm' | 'md' | 'lg'", "'sm'", 'Control height. Small is 32px, matching compact table footers. Medium is 36px. Large is 44px.'),
+      p("layout", "'numbers' | 'compact' | 'simple'", "'numbers'", 'Numbers with ellipsis, a page line, or previous and next only.'),
+      p("align", "'start' | 'center' | 'end'", "'center'", 'Where the control sits when it is not full width.'),
+      p('siblingCount', 'number', '1', 'How many numbers sit on each side of the current page. 0 is 1 … 12 … 48.'),
+      p('boundaryCount', 'number', '1', 'How many numbers stay at each end.'),
+      p('showFirstLast', 'boolean', 'false', 'First and last page controls beside previous and next.'),
+      p('showPrevNext', 'boolean', 'true', 'Previous and next controls.'),
+      p('disabled', 'boolean', 'false', 'Dims the control and prevents press.'),
+      p('loading', 'boolean', 'false', 'Disables every control. The current mark shows a spinner.'),
+      p('previousLabel', 'string', "'Previous'", 'Accessible name for previous.'),
+      p('nextLabel', 'string', "'Next'", 'Accessible name for next.'),
+      p('firstLabel', 'string', "'First page'", 'Accessible name for first.'),
+      p('lastLabel', 'string', "'Last page'", 'Accessible name for last.'),
+      p('formatCompact', '(page, pageCount) => string', "'3 of 12'", 'Compact layout copy.'),
+      p('fullWidth', 'boolean', 'false', 'Previous on the start edge, next on the end edge.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("previewTarget", "'page' | 'previous' | 'next' | 'first' | 'last'", "'page'", 'Which control receives preview.'),
+      p('aria-label', 'string', "'Pagination'", 'Accessible name of the navigation.'),
     ],
   },
   'sidebar-nav': {
     title: 'Sidebar Nav',
-    description: 'Primary navigation for an app shell.',
+    description:
+      'Primary navigation for an app shell. Full height with the brand at the top. Fill is the default. Subtle, outline, ghost, and pill change the chrome. Collapse it to a rail.',
+    ...sidebarNavGuide,
     Demo: SidebarDemo,
     wide: true,
-    code: `<DashboardSidebar sections={sections} activeId={id} onSelect={setId} />\n`,
+    code: `<DashboardSidebar
+  brand
+  collapsible
+  variant="fill"
+  sections={sections}
+  activeId={id}
+  onSelect={setId}
+  account={{ name: 'Alex Rivera', detail: 'Workspace owner' }}
+/>
+`,
+    statesContent: <SidebarStates />,
     props: [
-      p('sections', 'SidebarSection[]', '—', 'Grouped nav items.'),
-      p('activeId', 'string', 'undefined', 'The current item.'),
+      p('sections', 'SidebarSection[]', '—', 'Grouped nav items. Optional label, collapsible, and defaultOpen.'),
+      p('activeId', 'string', 'undefined', 'The current item. Sets aria-current="page".'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the default column. Pill floats inside the shell.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Width and item height. Medium is 260px.'),
+      p('brand', 'boolean | SidebarBrand', 'true', 'Brand mark in the 52px header. Pass href to link it.'),
+      p('header', 'ReactNode', 'undefined', 'Replaces the brand header.'),
+      p('collapsed', 'boolean', 'undefined', 'Controlled rail. Icons only, 68px wide at medium.'),
+      p('defaultCollapsed', 'boolean', 'false', 'Uncontrolled rail.'),
+      p('collapsible', 'boolean', 'false', 'Shows the control that collapses to a rail.'),
+      p('onCollapsedChange', '(collapsed: boolean) => void', 'undefined', 'Called when the rail toggles.'),
+      p('search', '{ value, onChange, placeholder }', 'undefined', 'Optional search field under the brand.'),
+      p('account', 'SidebarAccount', 'undefined', 'Signed-in person at the foot.'),
+      p('footer', 'ReactNode', 'undefined', 'Slot under the account, such as Theme Toggle.'),
+      p('onSelect', '(id: string) => void', 'undefined', 'Called when an enabled item is pressed.'),
     ],
   },
   'dashboard-nav': {
@@ -5707,38 +9253,123 @@ const DOCS: Record<string, DocDef> = {
   },
   'sheet-nav': {
     title: 'Sheet Nav',
-    description: 'A mobile navigation sheet.',
-    Demo: () => (
-      <div className="overflow-hidden rounded-[12px] border border-border-default">
-        <SheetNav title="Edit profile" onCancel={() => undefined} onDone={() => undefined} />
-      </div>
-    ),
+    description:
+      'The bar at the top of a sheet. Cancel and Done in blue. Close, back, large title, and a filled Done. Fill, subtle, outline, ghost, and pill.',
+    ...sheetNavGuide,
+    Demo: SheetNavDemo,
     wide: true,
-    code: `<SheetNav title="Edit profile" onCancel={close} onDone={save} />\n`,
+    code: `<SheetNav title="Edit profile" onCancel={close} onDone={save} />
+<SheetNav variant="subtle" title="Edit profile" onCancel={close} onDone={save} />
+<SheetNav variant="outline" title="Edit profile" onCancel={close} onDone={save} />
+<SheetNav variant="ghost" title="Edit profile" onCancel={close} onDone={save} />
+<SheetNav variant="pill" title="Edit profile" onCancel={close} onDone={save} />
+<SheetNav layout="close" title="Info" onCancel={close} />
+<SheetNav layout="back" title="Photo" cancelLabel="Library" onCancel={back} onDone={save} />
+<SheetNav layout="large" title="Settings" subtitle="Name, photo, and username" onCancel={close} onDone={save} />
+<SheetNav layout="prominent" title="New album" doneLabel="Add" onCancel={close} onDone={save} />
+<SheetNav tone="danger" title="This photo" doneLabel="Delete" onCancel={close} onDone={remove} />
+<SheetNav variant="ghost" onDark title="Move and Scale" onCancel={close} onDone={save} />
+`,
+    statesContent: <SheetNavStates />,
     props: [
-      p('title', 'string', '—', 'Sheet heading.'),
-      p('onCancel', '() => void', '—', 'Leading action.'),
-      p('onDone', '() => void', 'undefined', 'Trailing action.'),
+      p('title', 'string', 'required', 'Sheet heading. Centered on plain, close, back, and prominent. Start-aligned on large.'),
+      p('subtitle', 'string', 'undefined', 'One supporting line under the title.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the default bar with a hairline. Ghost sits on media. Pill is a nested well.'),
+      p("layout", "'plain' | 'close' | 'back' | 'large' | 'prominent'", "'plain'", 'Plain is Cancel and Done. Close is a quiet dismiss. Back is nested. Large drops the title. Prominent fills Done in blue.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Bar height and type. Small is 44px, matching a compact iOS bar.'),
+      p("tone", "'brand' | 'danger'", "'brand'", 'Trailing action color. Brand is blue. Danger is Delete.'),
+      p('cancelLabel', 'string', "'Cancel'", 'Leading label. Ignored on close. On back, a custom label sits after the chevron.'),
+      p('doneLabel', 'ReactNode', "'Done'", 'Trailing label. Pass a custom node for a spinner.'),
+      p('onCancel', '() => void', 'required', 'Cancel, Close, and Back.'),
+      p('onDone', '() => void', 'undefined', 'Trailing action. Hidden when omitted, unless doneLabel is custom.'),
+      p('cancelDisabled', 'boolean', 'false', 'Dims Cancel, Close, or Back.'),
+      p('doneDisabled', 'boolean', 'false', 'Dims Done.'),
+      p('loading', 'boolean', 'false', 'Busy Done. Disables both actions and keeps a text name.'),
+      p('loadingText', 'string', 'undefined', 'Done label while loading. Falls back to the current Done word.'),
+      p('leading', 'ReactNode', 'undefined', 'Replace the leading action.'),
+      p('trailing', 'ReactNode', 'undefined', 'Replace the trailing action.'),
+      p('onDark', 'boolean', 'false', 'Type and chrome for a black surface.'),
+      p("preview", "'hover' | 'active' | 'disabled'", 'undefined', 'Forced visual for docs tiles.'),
     ],
   },
   'nav-search': {
     title: 'Nav Search',
-    description: 'A compact search field for a top bar.',
+    description:
+      'A compact find field for a top bar. Pill, subtle, outline, ghost, and icon, with a clear mark, a shortcut hint, and a loading spinner.',
+    ...navSearchGuide,
     Demo: NavSearchDemo,
-    code: `<NavSearch value={query} onChange={setQuery} />\n`,
+    wide: true,
+    code: `<NavSearch value={query} onChange={setQuery} />
+<NavSearch variant="subtle" value={query} onChange={setQuery} />
+<NavSearch variant="outline" value={query} onChange={setQuery} />
+<NavSearch variant="ghost" value={query} onChange={setQuery} />
+<NavSearch variant="icon" value={query} onChange={setQuery} />
+<NavSearch size="lg" shortcut="⌘K" value={query} onChange={setQuery} />
+`,
+    statesContent: <NavSearchStates />,
     props: [
       p('value', 'string', '—', 'Query text.'),
       p('onChange', '(value: string) => void', '—', 'Called as the user types.'),
+      p('placeholder', 'string', "'Search'", 'Hint inside the field. Also the accessible name unless label is set.'),
+      p('label', 'string', 'undefined', 'Accessible name. Use this when the placeholder is a longer hint.'),
+      p("variant", "'pill' | 'subtle' | 'outline' | 'ghost' | 'icon'", "'pill'", 'Chrome. Pill is the default in a toolbar. Icon collapses to a glass and opens on focus.'),
+      p("size", "'sm' | 'md' | 'lg'", "'sm'", 'Height. Small is a 52px bar. Large is a 44px touch target.'),
+      p('shortcut', 'string', 'undefined', 'Keyboard hint on the trailing edge, such as ⌘K. Hidden when focused, filled, or loading.'),
+      p('loading', 'boolean', 'false', 'Replaces the glass with a spinner. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the field. It is not operable.'),
+      p('expanded', 'boolean', 'undefined', 'On icon, force the field open. Uncontrolled when omitted.'),
+      p('defaultExpanded', 'boolean', 'false', 'On icon, open on the first paint.'),
+      p('onExpandedChange', '(expanded: boolean) => void', 'undefined', 'Called when the icon field opens or closes.'),
+      p('onClear', '() => void', 'undefined', 'Called from the clear mark. Defaults to emptying the query.'),
+      p('onSubmit', '(value: string) => void', 'undefined', 'Called when the user presses Enter.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced hover or focus for docs tiles.'),
+      p('name', 'string', 'undefined', 'Native input name.'),
+      p('id', 'string', 'undefined', 'Native input id. Generated when omitted.'),
+      p('className', 'string', 'undefined', 'Extra classes on the field.'),
     ],
   },
   'profile-button': {
     title: 'Profile Button',
-    description: 'Opens the account menu from an avatar.',
-    Demo: () => <ProfileButton name="Alex Rivera" />,
-    code: `<ProfileButton name="Alex Rivera" />\n`,
+    description:
+      'Opens the account menu from an avatar. Fill is the toolbar ring. Ghost is the photo alone. Labeled, menu, and identity add a name, a caret, and an email.',
+    ...profileButtonGuide,
+    Demo: ProfileButtonDemo,
+    wide: true,
+    code: `<ProfileButton name="Alex Rivera" />
+<ProfileButton name="Alex Rivera" variant="subtle" />
+<ProfileButton name="Alex Rivera" variant="outline" />
+<ProfileButton name="Alex Rivera" variant="ghost" />
+<ProfileButton name="Alex Rivera" variant="pill" />
+<ProfileButton name="Alex Rivera" layout="labeled" variant="subtle" />
+<ProfileButton name="Alex Rivera" layout="menu" variant="pill" />
+<ProfileButton
+  name="Alex Rivera"
+  subtitle="alex@roboticela.com"
+  layout="identity"
+  status="online"
+/>
+<ProfileButton name="Alex Rivera" size="md" badge={3} />
+<ProfileButton name="Alex Rivera" loading />
+`,
+    statesContent: <ProfileButtonStates />,
     props: [
       p('name', 'string', 'undefined', 'Used for initials and the accessible label.'),
-      p('src', 'string | null', 'undefined', 'Photo URL.'),
+      p('src', 'string | null', 'undefined', 'Photo URL. Replaces initials and icon.'),
+      p('subtitle', 'string', 'undefined', 'Second line on identity, such as an email. Included in the accessible name.'),
+      p('icon', 'ReactNode', 'undefined', 'A kit icon when there is no photo. Wins over initials.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the toolbar ring. Ghost is the photo alone. Pill is a capsule when labeled.'),
+      p("size", "'sm' | 'md' | 'lg'", "'sm'", 'Small is 32px in a nav. Medium is 44px. Large is a settings row.'),
+      p("layout", "'avatar' | 'labeled' | 'menu' | 'identity'", "'avatar'", 'Avatar is the face. Labeled adds the name. Menu adds a caret. Identity adds an email.'),
+      p("shape", "'circle' | 'rounded'", "'circle'", 'Circle is the default. Rounded is a squircle on the face and on avatar layout.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Ink on initials when there is no photo.'),
+      p("status", "'none' | 'online' | 'away' | 'busy' | 'offline'", "'none'", 'Presence dot. Included in the accessible name.'),
+      p('badge', 'number | string', 'undefined', 'Count on the face. Hidden at zero.'),
+      p('chevron', 'boolean', 'true on identity', 'Show a caret. Menu always shows one. Identity shows one unless this is false.'),
+      p('open', 'boolean', 'false', 'Menu is visible. Rotates the caret and sets aria-expanded.'),
+      p('loading', 'boolean', 'false', 'Replaces the face with a spinner. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the control and blocks press.'),
+      p('fullWidth', 'boolean', 'false', 'Stretch labeled, menu, and identity to the container.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
     ],
   },
   badge: {
@@ -5756,19 +9387,42 @@ const DOCS: Record<string, DocDef> = {
   },
   avatar: {
     title: 'Avatar',
-    description: 'A photo or initials for a person.',
-    Demo: () => <Avatar name="Alex Rivera" size="lg" />,
-    code: `<Avatar name="Alex Rivera" size="lg" />\n`,
-    states: [
-      { label: 'Small', node: <Avatar name="Alex Rivera" size="sm" /> },
-      { label: 'Medium', node: <Avatar name="Alex Rivera" size="md" /> },
-      { label: 'Large', node: <Avatar name="Alex Rivera" size="lg" /> },
-      { label: 'Empty', node: <Avatar size="lg" /> },
-    ],
+    description: 'A photo, initials, or mark for a person. Fill, subtle, outline, ghost, and pill, with presence and a stacked group.',
+    ...avatarGuide,
+    Demo: AvatarDemo,
+    wide: true,
+    code: `<Avatar name="Alex Rivera" />
+<Avatar name="Alex Rivera" variant="subtle" />
+<Avatar name="Alex Rivera" variant="outline" />
+<Avatar name="Alex Rivera" variant="ghost" />
+<Avatar name="Alex Rivera" variant="pill" />
+<Avatar name="Alex Rivera" size="lg" status="online" />
+<Avatar name="Alex Rivera" tone="brand" />
+<Avatar name="Alex Rivera" shape="rounded" />
+<Avatar name="Alex Rivera" src="/photo.jpg" />
+<Avatar name="Alex Rivera" loading />
+<AvatarGroup max={3}>
+  <Avatar name="Alex Rivera" />
+  <Avatar name="Sam Chen" />
+  <Avatar name="Jordan Lee" />
+  <Avatar name="Riley Patel" />
+</AvatarGroup>
+`,
+    statesContent: <AvatarStates />,
     props: [
-      p('name', 'string', 'undefined', 'Used for initials.'),
-      p('src', 'string | null', 'undefined', 'Photo URL.'),
-      p('size', "'sm' | 'md' | 'lg' | 'xl'", "'md'", 'Diameter.'),
+      p('name', 'string', 'undefined', 'Used for initials and the accessible label.'),
+      p('src', 'string | null', 'undefined', 'Photo URL. Replaces initials and icon.'),
+      p('icon', 'ReactNode', 'undefined', 'A kit icon when there is no photo. Wins over initials.'),
+      p('faceLabel', 'string', 'undefined', 'Custom face text, such as +3 on a group overflow.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the default. Ghost is for a dense list.'),
+      p("size", "'xs' | 'sm' | 'md' | 'lg' | 'xl'", "'md'", 'Diameter. Small is a table. Extra large is the picker.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Ink and fill when there is no photo.'),
+      p("status", "'none' | 'online' | 'away' | 'busy' | 'offline'", "'none'", 'Presence dot. Included in the accessible name.'),
+      p("shape", "'circle' | 'rounded'", "'circle'", 'Circle is the default. Rounded is a squircle.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholder. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the face. Avatar is never a control.'),
+      p('children', 'ReactNode', '—', 'On Avatar Group, the faces to stack.'),
+      p('max', 'number', '3', 'On Avatar Group, how many faces stay visible. The rest become a count.'),
     ],
   },
   'avatar-picker': {
@@ -5805,7 +9459,12 @@ const DOCS: Record<string, DocDef> = {
           { id: '2', name: 'Northstar Auth', status: 'In review' },
         ]}
         columns={[
-          { key: 'name', header: 'Name', render: (row) => row.name },
+          { key: 'name', header: 'Name', render: (row) => (
+            <span className="inline-flex items-center gap-2">
+              <Avatar name={row.name} size="sm" />
+              {row.name}
+            </span>
+          ) },
           { key: 'status', header: 'Status', render: (row) => row.status },
         ]}
       />
@@ -5846,14 +9505,19 @@ const DOCS: Record<string, DocDef> = {
     description: 'A tappable row inside a grouped list.',
     Demo: () => (
       <ListGroup className="w-full">
-        <ListRow title="Email" meta="alex@roboticela.com" />
-        <ListRow title="Phone" meta="+1 (415) 555-2671" />
+        <ListRow leading={<Avatar name="Alex Rivera" size="md" />} title="Email" meta="alex@roboticela.com" />
+        <ListRow leading={<Avatar name="Sam Chen" size="md" status="online" />} title="Phone" meta="+1 (415) 555-2671" />
       </ListGroup>
     ),
-    code: `<ListGroup>\n  <ListRow title="Email" meta="alex@roboticela.com" />\n</ListGroup>\n`,
+    code: `<ListGroup>
+  <ListRow leading={<Avatar name="Alex Rivera" />} title="Email" meta="alex@roboticela.com" />
+</ListGroup>
+`,
     props: [
       p('title', 'ReactNode', '—', 'Primary line.'),
       p('meta', 'ReactNode', 'undefined', 'Secondary line.'),
+      p('leading', 'ReactNode', 'undefined', 'Leading mark. Pass an Avatar for a person.'),
+      p('trailing', 'ReactNode', 'undefined', 'Trailing control or badge.'),
     ],
   },
   'settings-row': {
@@ -6064,13 +9728,16 @@ const DOCS: Record<string, DocDef> = {
   },
   'dashboard-shell': {
     title: 'Dashboard Shell',
-    description: 'Sidebar, top bar, and main canvas.',
+    description: 'Full-height sidebar with the brand, a top bar, and the main canvas.',
     Demo: ShellDemo,
     wide: true,
-    code: `<DashboardShell title="Overview" sections={sections} activeId="overview" sidebarOpen={open} onSidebarOpenChange={setOpen}>{children}</DashboardShell>\n`,
+    code: `<DashboardShell title="Overview" sections={sections} activeId="overview" sidebarOpen={open} onSidebarOpenChange={setOpen} brandHref="/">{children}</DashboardShell>\n`,
     props: [
       p('sections', 'SidebarSection[]', '—', 'Sidebar groups.'),
       p('sidebarOpen', 'boolean', '—', 'Mobile drawer open state.'),
+      p('sidebarCollapsed', 'boolean', 'undefined', 'Controlled sidebar rail.'),
+      p('collapsible', 'boolean', 'true', 'Shows the control that collapses the sidebar.'),
+      p('brandHref', 'string', 'undefined', 'Brand link in the sidebar header.'),
       p('children', 'ReactNode', '—', 'Main canvas.'),
     ],
   },

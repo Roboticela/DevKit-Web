@@ -1,8 +1,5 @@
-import Link from 'next/link'
-import {
-  DkArrowUpRightLaunch
-} from '@/icons'
 import { cn } from '@/lib/cn'
+import { Anchor } from './Anchor'
 
 export function BrowserChrome({
   url,
@@ -29,15 +26,14 @@ export function BrowserChrome({
         {url}
       </span>
       {href ? (
-        <Link
+        <Anchor
           href={href}
           target="_blank"
-          rel="noreferrer"
-          className="inline-flex shrink-0 items-center gap-1 text-[13px] font-medium text-brand-primary no-underline hover:underline max-[734px]:sr-only"
+          size="sm"
+          className="shrink-0 max-[734px]:sr-only"
         >
           Open Full Preview
-          <DkArrowUpRightLaunch size={12} strokeWidth={2} absoluteStrokeWidth />
-        </Link>
+        </Anchor>
       ) : (
         <span className="w-8 shrink-0" />
       )}

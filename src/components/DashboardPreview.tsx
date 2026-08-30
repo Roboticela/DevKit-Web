@@ -15,6 +15,7 @@ import {
   DkPencilWriteEdit
 } from '@/icons'
 import { Alert } from './Alert'
+import { Avatar } from './Avatar'
 import { Badge } from './Badge'
 import { Breadcrumbs } from './Breadcrumbs'
 import { Button } from './Button'
@@ -51,6 +52,7 @@ function statusTone(status: string) {
 
 export function DashboardPreview({ full = false }: { full?: boolean }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [page, setPage] = useState('overview')
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState('all')
@@ -110,6 +112,8 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
       onNavigate={navigate}
       sidebarOpen={sidebarOpen}
       onSidebarOpenChange={setSidebarOpen}
+      sidebarCollapsed={sidebarCollapsed}
+      onSidebarCollapsedChange={setSidebarCollapsed}
       search={{ value: search, onChange: setSearch, placeholder: 'Search' }}
       userName="Alex Rivera"
       onUserClick={() => navigate('settings')}
@@ -119,7 +123,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
           <DkNotificationBellAlert size={16} strokeWidth={1.6} absoluteStrokeWidth />
         </IconButton>
       }
-      footer={<ThemeToggle />}
+      footer={<ThemeToggle variant={sidebarCollapsed ? 'switch' : 'default'} />}
     >
       <div className="mx-auto w-full max-w-[980px] px-4 py-8 min-[735px]:px-8 min-[735px]:py-12">
         {page === 'overview' ? (
@@ -165,7 +169,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
               items={[
                 { id: 'all', label: 'All' },
                 { id: 'live', label: 'Live' },
-                { id: 'review', label: 'In review' },
+                { id: 'review', label: 'In review', badge: 1 },
               ]}
             />
             <DataTable
@@ -189,7 +193,17 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
                   header: 'Status',
                   render: (row) => <Badge tone={statusTone(row.status)}>{row.status}</Badge>,
                 },
-                { key: 'owner', header: 'Owner', hideOnMobile: true },
+                {
+                  key: 'owner',
+                  header: 'Owner',
+                  hideOnMobile: true,
+                  render: (row) => (
+                    <span className="inline-flex items-center gap-2">
+                      <Avatar name={row.owner} size="sm" />
+                      <span>{row.owner}</span>
+                    </span>
+                  ),
+                },
                 { key: 'updated', header: 'Updated' },
               ]}
             />
@@ -222,7 +236,17 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
                   header: 'Status',
                   render: (row) => <Badge tone={statusTone(row.status)}>{row.status}</Badge>,
                 },
-                { key: 'owner', header: 'Owner', hideOnMobile: true },
+                {
+                  key: 'owner',
+                  header: 'Owner',
+                  hideOnMobile: true,
+                  render: (row) => (
+                    <span className="inline-flex items-center gap-2">
+                      <Avatar name={row.owner} size="sm" />
+                      <span>{row.owner}</span>
+                    </span>
+                  ),
+                },
                 { key: 'updated', header: 'Updated' },
               ]}
             />
@@ -236,13 +260,15 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
             <div className="rounded-[18px] border border-border-default bg-bg-elevated p-6 dark:bg-bg-secondary">
               <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }, (_, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <Skeleton shape="circle" size="lg" />
-                    <div className="min-w-0 flex-1">
-                      <Skeleton lines={2} />
+                  <Skeleton key={index} loading label="Loading customer">
+                    <div className="flex items-center gap-4">
+                      <Avatar name="Alex Rivera" size="lg" />
+                      <div className="min-w-0 flex-1">
+                        <span className="block text-[15px] text-text-primary">Alex Rivera</span>
+                        <span className="block text-[12px] text-text-tertiary">Workspace owner</span>
+                      </div>
                     </div>
-                    <Skeleton variant="pill" className="h-6 w-16" />
-                  </div>
+                  </Skeleton>
                 ))}
               </div>
             </div>
@@ -302,16 +328,12 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
         open={inviteOpen}
         onClose={() => setInviteOpen(false)}
         title="Invite a teammate"
-        footer={
-          <>
-            <Button onClick={() => setInviteOpen(false)}>Send invite</Button>
-            <Button variant="ghost" onClick={() => setInviteOpen(false)}>
-              Cancel
-            </Button>
-          </>
-        }
+        description="They’ll get a link to join this workspace."
+        actions={[
+          { label: 'Send invite', tone: 'primary', onClick: () => setInviteOpen(false) },
+          { label: 'Cancel', tone: 'cancel', onClick: () => setInviteOpen(false) },
+        ]}
       >
-        <p className="m-0 mb-4">They’ll get a link to join this workspace.</p>
         <TextField
           icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
           placeholder="Email"

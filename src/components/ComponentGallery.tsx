@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import Link from 'next/link'
 import {
   DkNotificationBellAlert,
   DkChevronCaretRight,
@@ -29,13 +28,15 @@ import {
 } from '@/icons'
 import { AVAILABLE_COUNTRY_ISOS } from '@/lib/languages'
 import { Alert } from './Alert'
+import { Anchor } from './Anchor'
 import { AuthBrand, AuthLayout, AuthSuccess } from './AuthLayout'
 import { AuthProviderStack } from './AuthProviderButton'
+import { Avatar, AvatarGroup } from './Avatar'
 import { AvatarEditor } from './AvatarEditor'
 import { AvatarPicker, type AvatarPickerHandle } from './AvatarPicker'
 import { Badge } from './Badge'
 import { Button } from './Button'
-import { ButtonLabel, ButtonSpinner } from './ButtonLabel'
+import { ButtonLabel } from './ButtonLabel'
 import { Checkbox } from './Checkbox'
 import { ConfirmAction } from './ConfirmAction'
 import { ConfirmDialog } from './ConfirmDialog'
@@ -44,6 +45,7 @@ import { DashboardPreview } from './DashboardPreview'
 import { DatePicker, DATE_PICKER_SIZES, DATE_PICKER_VARIANTS, type DateRange } from './DatePicker'
 import { Divider } from './Divider'
 import { Dropdown, type DropdownOption } from './Dropdown'
+import { EmptyPopup } from './EmptyPopup'
 import { EmptyState } from './EmptyState'
 import { FieldRow, FormField } from './FieldLabel'
 import { GitHubButton } from './GitHubButton'
@@ -61,14 +63,22 @@ import {
 } from './ProviderButtons'
 import { RoboticelaButton } from './RoboticelaButton'
 import { IconButton } from './IconButton'
-import { IconTab } from './IconTab'
+import { IconTab, IconTabBar } from './IconTab'
 import { KeyValueRow } from './KeyValueRow'
 import { LanguageSelect } from './LanguageSelect'
 import { ListGroup, ListRow, TextAction } from './ListRow'
+import { Loader, LOADER_VARIANTS } from './Loader'
 import { LoadingScreen } from './LoadingScreen'
 import { NavSearch } from './NavSearch'
+import { CommandSearch } from './CommandPalette'
 import { OtpBoxes } from './OtpBoxes'
-import { Pagination } from './Pagination'
+import {
+  Pagination,
+  PAGINATION_LAYOUTS,
+  PAGINATION_LAYOUT_LABEL,
+  PAGINATION_VARIANT_LABEL,
+  PAGINATION_VARIANTS,
+} from './Pagination'
 import { PasswordField } from './PasswordField'
 import { PhoneInput } from './PhoneInput'
 import { CitySelect, CountySelect, StateSelect } from './PlaceSelect'
@@ -77,8 +87,14 @@ import { Progress } from './Progress'
 import { Radio } from './Radio'
 import { RecoveryCodesList, RecoveryInput } from './RecoveryInput'
 import { SegmentedControl, SegmentedToolbar } from './SegmentedControl'
-import { CheckItem, ScoreRing } from './ScoreRing'
+import {
+  CheckItem,
+  ScoreRing,
+  SCORE_RING_VARIANTS,
+  SCORE_RING_VARIANT_LABEL,
+} from './ScoreRing'
 import { SettingsList, SettingsRow } from './SettingsRow'
+import { SheetNav } from './SheetNav'
 import { SidebarNavItem } from './DashboardSidebar'
 import { NumberField, NUMBER_FIELD_VARIANT_LABEL, NUMBER_FIELD_VARIANTS } from './NumberField'
 import { RangeSlider, Slider, SLIDER_VARIANT_LABEL, SLIDER_VARIANTS } from './Slider'
@@ -88,10 +104,10 @@ import { Skeleton } from './Skeleton'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
-import { AuthLegal, ErrorText, StatusText, TextLink } from './TextLink'
+import { Tabs, TABS_VARIANT_LABEL, TABS_VARIANTS } from './Tabs'
 import { ThemeIconToggle } from './ThemeIconToggle'
 import { ThemeToggle } from './ThemeToggle'
-import { Body, Caption, Eyebrow, Heading, Subhead } from './Text'
+import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
 import { TotpManualKey } from './TotpManualKey'
 import { VerificationMethodCard } from './VerificationMethodCard'
 
@@ -238,6 +254,45 @@ function SegmentedPreview() {
   )
 }
 
+function PaginationPreview() {
+  const [page, setPage] = useState(2)
+  const [longPage, setLongPage] = useState(12)
+  const [compactPage, setCompactPage] = useState(3)
+
+  return (
+    <div className="flex flex-col gap-6">
+      {PAGINATION_VARIANTS.map((variant) => (
+        <div key={variant} className="flex flex-col gap-2">
+          <Caption>{PAGINATION_VARIANT_LABEL[variant]}</Caption>
+          <Pagination
+            variant={variant}
+            page={page}
+            pageCount={5}
+            onChange={setPage}
+            aria-label={PAGINATION_VARIANT_LABEL[variant]}
+          />
+        </div>
+      ))}
+      <div className="flex flex-col gap-2">
+        <Caption>Many pages</Caption>
+        <Pagination page={longPage} pageCount={48} onChange={setLongPage} aria-label="Many pages" />
+      </div>
+      {PAGINATION_LAYOUTS.filter((layout) => layout !== 'numbers').map((layout) => (
+        <div key={layout} className="flex flex-col gap-2">
+          <Caption>{PAGINATION_LAYOUT_LABEL[layout]}</Caption>
+          <Pagination
+            layout={layout}
+            page={compactPage}
+            pageCount={48}
+            onChange={setCompactPage}
+            aria-label={PAGINATION_LAYOUT_LABEL[layout]}
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function DemoCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
     <div className={`rounded-[16px] bg-bg-secondary p-8 max-[734px]:p-4 ${className}`}>
@@ -287,13 +342,13 @@ export function ComponentGallery() {
   const [method, setMethod] = useState<'email' | 'passkey' | 'authenticator'>('email')
   const [notify, setNotify] = useState(true)
   const [digest, setDigest] = useState(true)
-  const [page, setPage] = useState(1)
   const pickerRef = useRef<AvatarPickerHandle>(null)
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null)
   const [editorSrc, setEditorSrc] = useState<string | null>(null)
   const [editorOpen, setEditorOpen] = useState(false)
   const [logoutOpen, setLogoutOpen] = useState(false)
   const [iconTab, setIconTab] = useState('profile')
+  const [galleryTab, setGalleryTab] = useState('all')
   const [navQuery, setNavQuery] = useState('')
   const [sidebarPiece, setSidebarPiece] = useState('profile')
   const [radioPlan, setRadioPlan] = useState('pro')
@@ -309,13 +364,15 @@ export function ComponentGallery() {
           <p className="m-0 text-xs font-semibold tracking-[-0.01em]">Components</p>
           <nav className="hidden min-w-0 items-center gap-5 overflow-x-auto min-[735px]:flex">
             {SECTIONS.map((section) => (
-              <a
+              <Anchor
                 key={section.id}
                 href={`#${section.id}`}
-                className="whitespace-nowrap text-xs font-normal text-[color-mix(in_srgb,var(--text-primary)_80%,transparent)] no-underline hover:text-brand-primary"
+                variant="plain"
+                size="sm"
+                className="whitespace-nowrap text-[color-mix(in_srgb,var(--text-primary)_80%,transparent)]"
               >
                 {section.label}
-              </a>
+              </Anchor>
             ))}
           </nav>
           <ThemeToggle compact />
@@ -457,10 +514,10 @@ export function ComponentGallery() {
                 <Button variant="ghost">Set up later</Button>
                 <Button variant="danger">Delete account</Button>
                 <div className="flex items-center gap-3">
-                  <ButtonSpinner />
-                  <ButtonSpinner light />
+                  <Loader decorative size="sm" />
+                  <Loader decorative size="sm" onDark />
                   <span className="inline-flex size-8 items-center justify-center rounded-full bg-brand-primary">
-                    <ButtonSpinner light />
+                    <Loader decorative size="sm" onDark />
                   </span>
                 </div>
               </div>
@@ -1006,10 +1063,21 @@ export function ComponentGallery() {
               <Divider />
               <AuthLegal className="mt-0" />
             </DemoCard>
-            <DemoCard className="min-h-[280px] min-[735px]:col-span-2">
-              <StateLabel>Loading — full and delayed copy</StateLabel>
+            <DemoCard>
+              <StateLabel>Loader</StateLabel>
+              <div className="flex flex-wrap items-center justify-center gap-6">
+                {LOADER_VARIANTS.map((variant) => (
+                  <Loader key={variant} variant={variant} />
+                ))}
+              </div>
+              <div className="mt-6 flex justify-center">
+                <Loader layout="inline" label="Saving" />
+              </div>
+            </DemoCard>
+            <DemoCard className="min-h-[280px]">
+              <StateLabel>Loading</StateLabel>
               <div className="h-[220px] overflow-hidden rounded-[12px] bg-bg-primary">
-                <LoadingScreen embedded status="Setting things up…" delayMs={2500} />
+                <LoadingScreen embedded preview="initial" status="Setting things up…" />
               </div>
             </DemoCard>
           </div>
@@ -1021,6 +1089,24 @@ export function ComponentGallery() {
           intro="Small settings controls, not a whole page. Rows, avatar, crop editor, list items, sidebar item, and the other atoms from account settings."
         >
           <div className="grid gap-4 min-[735px]:grid-cols-2">
+            <DemoCard>
+              <StateLabel>Avatar</StateLabel>
+              <div className="flex flex-wrap items-center gap-3">
+                <Avatar name="Alex Rivera" size="sm" />
+                <Avatar name="Sam Chen" size="md" status="online" />
+                <Avatar name="Jordan Lee" size="lg" variant="subtle" tone="brand" />
+                <Avatar size="md" />
+              </div>
+              <div className="mt-4">
+                <AvatarGroup size="md">
+                  <Avatar name="Alex Rivera" />
+                  <Avatar name="Sam Chen" />
+                  <Avatar name="Jordan Lee" />
+                  <Avatar name="Riley Patel" />
+                </AvatarGroup>
+              </div>
+            </DemoCard>
+
             <DemoCard>
               <StateLabel>Avatar picker</StateLabel>
               <AvatarPicker
@@ -1038,11 +1124,9 @@ export function ComponentGallery() {
                   setEditorOpen(true)
                 }}
               />
-              <Button
-                variant="ghost"
+              <Anchor
                 size="sm"
-                fullWidth={false}
-                className="mt-4 h-auto px-0 text-brand-primary hover:underline"
+                className="mt-4"
                 onClick={() => {
                   const canvas = document.createElement('canvas')
                   canvas.width = 640
@@ -1062,7 +1146,7 @@ export function ComponentGallery() {
                 }}
               >
                 Open editor with sample
-              </Button>
+              </Anchor>
             </DemoCard>
 
             <DemoCard>
@@ -1138,6 +1222,7 @@ export function ComponentGallery() {
               <StateLabel>List row</StateLabel>
               <ListGroup>
                 <ListRow
+                  leading={<Avatar name="Alex Rivera" size="md" />}
                   title="alex@roboticela.com"
                   meta="Primary · Verified"
                   trailing={
@@ -1148,6 +1233,7 @@ export function ComponentGallery() {
                   }
                 />
                 <ListRow
+                  leading={<Avatar name="Alex Work" size="md" status="away" />}
                   title="alex.work@example.com"
                   meta="Unverified"
                   trailing={
@@ -1180,8 +1266,17 @@ export function ComponentGallery() {
 
             <DemoCard>
               <StateLabel>Score ring and check item</StateLabel>
-              <div className="flex items-center gap-6">
-                <ScoreRing score={72} />
+              <div className="flex flex-col items-center gap-8">
+                <div className="flex flex-wrap items-end justify-center gap-6">
+                  {SCORE_RING_VARIANTS.map((variant) => (
+                    <ScoreRing
+                      key={variant}
+                      variant={variant}
+                      score={variant === 'ghost' ? 48 : 72}
+                      label={SCORE_RING_VARIANT_LABEL[variant]}
+                    />
+                  ))}
+                </div>
                 <div className="flex flex-col">
                   <CheckItem done>Password</CheckItem>
                   <CheckItem done>Two-factor</CheckItem>
@@ -1244,27 +1339,33 @@ export function ComponentGallery() {
 
             <DemoCard>
               <StateLabel>Icon tab</StateLabel>
-              <div className="flex gap-0.5">
-                <IconTab
-                  icon={<DkPersonUserProfile size={16} strokeWidth={1.6} absoluteStrokeWidth />}
-                  label="Profile"
-                  active={iconTab === 'profile'}
-                  onClick={() => setIconTab('profile')}
+              <div className="flex items-stretch gap-1">
+                <IconTabBar
+                  className="min-w-0 flex-1"
+                  value={iconTab}
+                  onChange={setIconTab}
+                  items={[
+                    {
+                      id: 'profile',
+                      label: 'Profile',
+                      icon: <DkPersonUserProfile />,
+                    },
+                    {
+                      id: 'security',
+                      label: 'Security',
+                      icon: <DkSecurityShieldProtect />,
+                    },
+                    {
+                      id: 'alerts',
+                      label: 'Alerts',
+                      icon: <DkNotificationBellAlert />,
+                      badge: 3,
+                    },
+                  ]}
+                  aria-label="Account"
                 />
                 <IconTab
-                  icon={<DkSecurityShieldProtect size={16} strokeWidth={1.6} absoluteStrokeWidth />}
-                  label="Security"
-                  active={iconTab === 'security'}
-                  onClick={() => setIconTab('security')}
-                />
-                <IconTab
-                  icon={<DkNotificationBellAlert size={16} strokeWidth={1.6} absoluteStrokeWidth />}
-                  label="Alerts"
-                  active={iconTab === 'alerts'}
-                  onClick={() => setIconTab('alerts')}
-                />
-                <IconTab
-                  icon={<DkLogoutExitSession size={16} strokeWidth={1.6} absoluteStrokeWidth />}
+                  icon={<DkLogoutExitSession />}
                   label="Logout"
                   tone="danger"
                   onClick={() => setLogoutOpen(true)}
@@ -1276,7 +1377,16 @@ export function ComponentGallery() {
               <StateLabel>Nav search and profile button</StateLabel>
               <div className="flex items-center gap-3">
                 <NavSearch value={navQuery} onChange={setNavQuery} />
+                <CommandSearch variant="pill" placeholder="Search" shortcut="⌘K" onClick={() => undefined} />
                 <ProfileButton name="Alex Rivera" src={avatarSrc} onClick={() => undefined} />
+              </div>
+            </DemoCard>
+
+            <DemoCard>
+              <StateLabel>Sheet nav</StateLabel>
+              <div className="overflow-hidden rounded-[18px] border border-border-default bg-bg-elevated">
+                <SheetNav title="Edit profile" onCancel={() => undefined} onDone={() => undefined} />
+                <div className="h-12" />
               </div>
             </DemoCard>
 
@@ -1360,17 +1470,14 @@ export function ComponentGallery() {
         <Section
           id="dashboard"
           title="Dashboard"
-          intro="App chrome: top bar, collapsible sidebar, and the pieces that sit inside — stats, tables, tabs, alerts, empty, and progress. Open the full layout on small screens to use the drawer."
+          intro="App chrome: a full-height sidebar with the brand, a top bar, and the pieces that sit inside — stats, tables, tabs, alerts, empty, and progress. Open the full layout on small screens to use the drawer."
         >
           <DemoCard className="overflow-hidden p-0">
             <div className="flex items-center justify-between gap-4 px-8 pt-8 pb-3 max-[734px]:px-4">
               <StateLabel>Shell — navbar and sidebar</StateLabel>
-              <Link
-                href="/dashboard"
-                className="text-xs font-medium text-brand-primary no-underline hover:underline"
-              >
+              <Anchor href="/dashboard" size="sm" className="font-medium">
                 Open full layout
-              </Link>
+              </Anchor>
             </div>
             <div className="h-[720px] border-t border-border-subtle bg-bg-primary max-[734px]:h-[560px]">
               <DashboardPreview />
@@ -1418,11 +1525,24 @@ export function ComponentGallery() {
                 title="No messages"
                 body="Mentions and reviews will show up here."
               />
-              <div className="mt-6 flex items-center gap-4">
-                <Skeleton shape="circle" size="lg" />
-                <div className="flex-1">
-                  <Skeleton lines={2} />
-                </div>
+              <div className="mt-6 flex justify-center">
+                <EmptyPopup
+                  size="sm"
+                  icon={<DkMagnifyingGlassFind strokeWidth={1.5} absoluteStrokeWidth />}
+                  title="No results"
+                  body="Try a different search."
+                />
+              </div>
+              <div className="mt-6">
+                <Skeleton loading label="Loading profile">
+                  <div className="flex items-center gap-4">
+                    <Avatar name="Maya Chen" size="lg" />
+                    <div className="flex-1">
+                      <Label as="p">Maya Chen</Label>
+                      <Caption>Workspace owner</Caption>
+                    </div>
+                  </div>
+                </Skeleton>
               </div>
               <div className="mt-6 flex flex-col gap-3">
                 <Skeleton variant="outline" lines={3} />
@@ -1447,8 +1567,30 @@ export function ComponentGallery() {
               </div>
             </DemoCard>
             <DemoCard>
+              <StateLabel>Tabs</StateLabel>
+              <div className="flex flex-col gap-6">
+                {TABS_VARIANTS.map((variant) => (
+                  <div key={variant} className="flex flex-col gap-2">
+                    <Caption>{TABS_VARIANT_LABEL[variant]}</Caption>
+                    <Tabs
+                      variant={variant}
+                      value={galleryTab}
+                      onChange={setGalleryTab}
+                      fullWidth={variant !== 'underline' && variant !== 'ghost'}
+                      items={[
+                        { id: 'all', label: 'All' },
+                        { id: 'live', label: 'Live' },
+                        { id: 'review', label: 'In review', badge: 1 },
+                      ]}
+                      aria-label={TABS_VARIANT_LABEL[variant]}
+                    />
+                  </div>
+                ))}
+              </div>
+            </DemoCard>
+            <DemoCard>
               <StateLabel>Pagination</StateLabel>
-              <Pagination page={page} pageCount={5} onChange={setPage} />
+              <PaginationPreview />
             </DemoCard>
           </div>
         </Section>

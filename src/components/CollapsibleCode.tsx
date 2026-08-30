@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
-import { Button } from './Button'
+import { Anchor } from './Anchor'
 import { CodeBlock } from './CodeBlock'
 
 export function CollapsibleCode({
@@ -33,27 +33,15 @@ export function CollapsibleCode({
         </div>
         {!expanded && extra > 0 ? (
           <div className="absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black from-25% to-transparent pt-16 pb-5">
-            <Button
-              variant="ghost"
-              size="sm"
-              fullWidth={false}
-              className="h-auto px-0 text-brand-primary"
-              onClick={() => setExpanded(true)}
-            >
+            <Anchor size="sm" onClick={() => setExpanded(true)}>
               Show {extra} more lines
-            </Button>
+            </Anchor>
           </div>
         ) : extra > 0 ? (
           <div className="flex justify-center border-t border-white/10 bg-black py-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              fullWidth={false}
-              className="h-auto px-0 text-brand-primary"
-              onClick={() => setExpanded(false)}
-            >
+            <Anchor size="sm" onClick={() => setExpanded(false)}>
               Collapse source
-            </Button>
+            </Anchor>
           </div>
         ) : null}
       </div>

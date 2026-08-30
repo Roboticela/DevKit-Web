@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
+import { AnchorDocs } from '@/components/AnchorDocs'
 import { ButtonDocs } from '@/components/ButtonDocs'
 import { DocsPrimitivesDocs } from '@/components/DocsPrimitivesDocs'
 import { FlagsDocs } from '@/components/FlagsDocs'
@@ -50,6 +51,7 @@ export default async function ComponentDocPage({
   if (!ctx) notFound()
 
   if (raw === 'button') return <ButtonDocs />
+  if (raw === 'anchor') return <AnchorDocs />
   if (raw === 'text') return <TextDocs />
   if (raw === 'icons') return <IconsDocs />
   if (raw === 'country-flag') return <FlagsDocs />

@@ -1,0 +1,335 @@
+/* Auto Skeleton — compiled with the app (imported from globals.css).
+   Mirrored into skeletonAutoCss.ts for the runtime <style> tag.
+   Toggle [data-dk-skeleton] at runtime. No layout measurement.
+   Bones keep each child's box, radius, and gap. */
+
+@keyframes dk-skeleton-shift {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+[data-dk-skeleton] {
+  --dk-skeleton-engine: 1;
+  --dk-skeleton-fill: var(--bg-tertiary);
+  --dk-skeleton-shine: color-mix(in srgb, var(--bg-tertiary) 48%, white);
+  --dk-skeleton-line: transparent;
+  --dk-skeleton-shimmer: 1.4s;
+  --dk-skeleton-pulse: 1.6s;
+}
+
+[data-dk-skeleton][data-dk-skeleton-variant='outline'] {
+  --dk-skeleton-fill: color-mix(in srgb, var(--bg-tertiary) 55%, transparent);
+  --dk-skeleton-shine: color-mix(in srgb, var(--bg-tertiary) 35%, white);
+  --dk-skeleton-line: var(--border-default);
+}
+
+[data-dk-skeleton][data-dk-skeleton-variant='ghost'] {
+  --dk-skeleton-fill: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  --dk-skeleton-shine: color-mix(in srgb, var(--text-primary) 12%, transparent);
+}
+
+[data-theme='dark'] [data-dk-skeleton],
+[data-dk-skeleton]:where([data-theme='dark'] *) {
+  --dk-skeleton-fill: var(--bg-active);
+  --dk-skeleton-shine: color-mix(in srgb, var(--bg-active) 78%, white);
+}
+
+[data-theme='dark'] [data-dk-skeleton][data-dk-skeleton-variant='outline'],
+[data-dk-skeleton][data-dk-skeleton-variant='outline']:where([data-theme='dark'] *) {
+  --dk-skeleton-fill: color-mix(in srgb, var(--bg-active) 55%, transparent);
+  --dk-skeleton-shine: color-mix(in srgb, var(--bg-active) 70%, white);
+  --dk-skeleton-line: var(--border-default);
+}
+
+[data-theme='dark'] [data-dk-skeleton][data-dk-skeleton-variant='ghost'],
+[data-dk-skeleton][data-dk-skeleton-variant='ghost']:where([data-theme='dark'] *) {
+  --dk-skeleton-fill: color-mix(in srgb, var(--text-primary) 8%, transparent);
+  --dk-skeleton-shine: color-mix(in srgb, var(--text-primary) 14%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-dk-skeleton] {
+    --dk-skeleton-shimmer: 0s;
+    --dk-skeleton-pulse: 0s;
+  }
+}
+
+[data-dk-skeleton] * {
+  pointer-events: none !important;
+  user-select: none !important;
+  caret-color: transparent !important;
+  transition: none !important;
+}
+
+[data-dk-skeleton][data-dk-skeleton-motion='pulse'] > * {
+  animation: skeleton-pulse var(--dk-skeleton-pulse) cubic-bezier(0.28, 0.11, 0.32, 1) infinite;
+}
+
+[data-dk-skeleton] :is(
+    button,
+    a,
+    input:not([type='hidden']),
+    textarea,
+    select,
+    progress,
+    meter,
+    img,
+    video,
+    canvas,
+    iframe,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label,
+    li,
+    td,
+    th,
+    small,
+    time,
+    code,
+    pre,
+    figcaption,
+    legend,
+    dt,
+    dd,
+    blockquote,
+    [role='img'],
+    [role='button'],
+    [role='link'],
+    [role='switch'],
+    [role='checkbox'],
+    [role='radio'],
+    [role='slider'],
+    [role='progressbar'],
+    [data-dk-skeleton-bone]
+  ),
+[data-dk-skeleton] :has(> svg),
+[data-dk-skeleton] :has(> img),
+[data-dk-skeleton] [class~='rounded-full'],
+[data-dk-skeleton]
+  div:not(
+    :has(
+      :is(
+        div,
+        article,
+        section,
+        header,
+        footer,
+        nav,
+        aside,
+        ul,
+        ol,
+        table,
+        form,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        a,
+        input,
+        textarea,
+        select,
+        label
+      )
+    )
+  ) {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background-color: var(--dk-skeleton-fill) !important;
+  border-color: var(--dk-skeleton-line) !important;
+  outline: 1px solid var(--dk-skeleton-line);
+  outline-offset: -1px;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  caret-color: transparent !important;
+  overflow: hidden;
+}
+
+[data-dk-skeleton] :is(p, h1, h2, h3, h4, h5, h6, label, li, small, figcaption, legend, dt, dd, blockquote) {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  border-radius: 8px;
+}
+
+[data-dk-skeleton][data-dk-skeleton-variant='pill'] :is(
+    button,
+    a,
+    input:not([type='hidden']),
+    textarea,
+    select,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label,
+    li,
+    [role='button'],
+    [data-dk-skeleton-bone]
+  ) {
+  border-radius: 980px !important;
+}
+
+[data-dk-skeleton] [class~='rounded-full'] {
+  border-radius: 9999px !important;
+}
+
+[data-dk-skeleton][data-dk-skeleton-motion='shimmer'] :is(
+    button,
+    a,
+    input:not([type='hidden']),
+    textarea,
+    select,
+    progress,
+    meter,
+    img,
+    video,
+    canvas,
+    iframe,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label,
+    li,
+    td,
+    th,
+    small,
+    time,
+    code,
+    pre,
+    figcaption,
+    legend,
+    dt,
+    dd,
+    blockquote,
+    [role='img'],
+    [role='button'],
+    [role='link'],
+    [role='switch'],
+    [role='checkbox'],
+    [role='radio'],
+    [role='slider'],
+    [role='progressbar'],
+    [data-dk-skeleton-bone]
+  ),
+[data-dk-skeleton][data-dk-skeleton-motion='shimmer'] :has(> svg),
+[data-dk-skeleton][data-dk-skeleton-motion='shimmer'] :has(> img),
+[data-dk-skeleton][data-dk-skeleton-motion='shimmer'] [class~='rounded-full'],
+[data-dk-skeleton][data-dk-skeleton-motion='shimmer']
+  div:not(
+    :has(
+      :is(
+        div,
+        article,
+        section,
+        header,
+        footer,
+        nav,
+        aside,
+        ul,
+        ol,
+        table,
+        form,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        a,
+        input,
+        textarea,
+        select,
+        label
+      )
+    )
+  ) {
+  background-image: linear-gradient(
+    90deg,
+    var(--dk-skeleton-fill) 0%,
+    var(--dk-skeleton-shine) 46%,
+    var(--dk-skeleton-fill) 92%
+  ) !important;
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  animation: dk-skeleton-shift var(--dk-skeleton-shimmer) cubic-bezier(0.28, 0.11, 0.32, 1) infinite;
+}
+
+[data-dk-skeleton] :is(button, a, [role='button'], input, textarea, select, label, p, h1, h2, h3, h4, h5, h6) * {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  animation: none !important;
+  filter: none !important;
+}
+
+[data-dk-skeleton] svg {
+  visibility: hidden !important;
+}
+
+[data-dk-skeleton] :is(img, video, canvas, iframe) {
+  opacity: 0 !important;
+}
+
+[data-dk-skeleton] :has(> img),
+[data-dk-skeleton] :has(> video) {
+  background-color: var(--dk-skeleton-fill) !important;
+}
+
+[data-dk-skeleton] ::placeholder {
+  color: transparent !important;
+  opacity: 0 !important;
+}
+
+[data-dk-skeleton] ::selection {
+  background: transparent !important;
+  color: transparent !important;
+}
+
+[data-dk-skeleton] [data-dk-skeleton-ignore],
+[data-dk-skeleton] [data-dk-skeleton-ignore] * {
+  pointer-events: auto !important;
+  user-select: auto !important;
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  background-color: revert !important;
+  background-image: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  outline: none !important;
+  caret-color: auto !important;
+  box-shadow: revert !important;
+  filter: none !important;
+}

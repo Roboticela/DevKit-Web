@@ -488,7 +488,7 @@ export const confirmActionGuide = {
       />
       <DocsDoDont
         doItems={[
-          'Use text or ghost in a list row, solid when the action is the focus of the screen.',
+          'Use text or ghost in a list row. Text is Anchor until the confirm tap. Solid when the action is the focus of the screen.',
           'Name the first label as the verb: Remove, Sign out, Disconnect.',
           'Use loading on the second tap when the request is in flight.',
         ]}
@@ -1521,7 +1521,7 @@ export const emptyStateGuide = {
       />
       <DocsDoDont
         doItems={[
-          'Use fill on a page. Use subtle or outline when the empty sits in a card or table slot.',
+          'Use fill on a page. Use subtle or outline when the empty sits in a card or table slot. Use Empty Popup inside a menu or palette.',
           'Use small in a table or sidebar. Use large only when the empty is the whole view.',
           'Name the action as a verb the person can do now, such as New project or Try again.',
         ]}
@@ -1546,6 +1546,96 @@ export const emptyStateGuide = {
       keys={[
         { keys: ['Tab'], action: 'Move to the action' },
         { keys: ['Enter', 'Space'], action: 'Activate the action' },
+      ]}
+    />
+  ),
+}
+
+export const loaderGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Loader is the activity indicator. Fill is the default, the same quiet spinning ring Apple uses on a
+          page. Subtle, outline, and pill sit in a circular well. Ghost is a fainter ring. Use this for an inline
+          wait. Use Loading Screen when the whole view is not ready.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Unknown amount', body: 'The ring travels because you do not know how far along the work is. If you do, use Progress.' },
+          { title: 'One accent', body: 'Brand is the default tick. Default is the gray Apple ring. Success, warning, and danger are for a wait that already has meaning.' },
+          { title: 'Name it', body: 'A short label is the accessible name. If there is no label, the name is Loading.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use fill next to a line of copy or in a toolbar. Use pill or subtle when the wait sits on a card.',
+          'Use small in a button row or a table. Use large only when the loader is the focus of the view.',
+          'Keep the label one calm word or a short phrase, such as Saving or Loading messages.',
+        ]}
+        dontItems={[
+          'Do not use Loader for a branded boot. That is Loading Screen.',
+          'Do not stack three loaders. One wait per view.',
+          'Do not leave a loader after the work is done. Replace it with the content, or with Empty State if nothing arrived.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Loader is a status. It is busy until you replace it. It is not operable."
+      items={[
+        'role="status" with aria-busy and aria-live polite. The label is the accessible name.',
+        'If there is no label, the name is Loading.',
+        'decorative hides the loader from assistive tech. Use that only when a parent already names the wait, such as Loading Screen.',
+        'The ring is hidden from assistive tech. The text carries the meaning.',
+        'prefers-reduced-motion stops the spin. The ring stays as a static arc.',
+      ]}
+    />
+  ),
+}
+
+export const loadingScreenGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Loading Screen holds the view while work finishes. Fill is the default, the same branded wait Apple uses
+          at boot and sign in. Subtle, outline, and pill sit inside a panel. Ghost is the mark and spinner with no
+          chrome.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Unknown amount', body: 'This is a wait, not a percent. If you know how far along the work is, use Progress.' },
+          { title: 'One line', body: 'The status is one calm sentence. After a real wait, swap to the delayed line.' },
+          { title: 'Brand, then motion', body: 'The mark identifies the product. The spinner or bar is extra proof that work is still going.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use fill for a full page boot. Use subtle or outline when the wait is a card or a pane.',
+          'Pass delayedStatus and a delay of several seconds. Do not show the delayed line on the first frame.',
+          'Use the bar when the wait sits with other progress in the same view. Use the spinner for a branded boot.',
+        ]}
+        dontItems={[
+          'Do not fake a percent. If the amount is unknown, keep the bar traveling or use the spinner.',
+          'Do not put a retry button on this screen. When the wait fails, that is Empty State or Alert.',
+          'Do not use Loading Screen for a list that is arriving. That is Skeleton.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Loading Screen is a status. It is busy until you replace it. It is not operable."
+      items={[
+        'role="status" with aria-busy and aria-live polite. The status line is the accessible name.',
+        'When the delayed line replaces the first, the live region announces the new copy.',
+        'The mark is decorative. The status, or Loading if there is no status, is the name.',
+        'The spinner and bar are hidden from assistive tech. The text carries the meaning.',
+        'prefers-reduced-motion stops the spin and the traveling bar.',
       ]}
     />
   ),
@@ -1596,46 +1686,746 @@ export const progressGuide = {
   ),
 }
 
-export const skeletonGuide = {
+export const scoreRingGuide = {
   usage: (
     <DocsUsage>
       <DocsProse>
         <Body>
-          Skeleton is a placeholder while content loads. Subtle is the default, the same quiet fill as a disabled
-          field. Outline is a wireframe. Ghost is fainter on any surface. Pill is for a button or badge. Match the
-          shape of what will appear: a line of text, a heading, a circle for an avatar, a rect for an image.
+          Score Ring shows a score or how far a circular task has gone. Fill is the default, the same quiet ring
+          Apple uses for downloads and Screen Time. Subtle tints the track. Outline, ghost, and pill match the rest
+          of the kit. Mark success when the work is done, danger when it failed.
         </Body>
       </DocsProse>
       <DocsPrinciples
         items={[
-          { title: 'Same shape', body: 'The placeholder should occupy the same space as the loaded content so the layout does not jump.' },
-          { title: 'Quiet motion', body: 'Shimmer is the default. Pulse is an opacity breath. Static is for prefers-reduced-motion or a paused load.' },
-          { title: 'Not a spinner', body: 'A skeleton stands in for structure. Use Loading Screen or a Progress bar when the wait has no layout yet.' },
+          { title: 'Known amount', body: 'Pass a score from 0 to 100 when you know the value. The arc fills from the top, clockwise.' },
+          { title: 'Unknown amount', body: 'Pass indeterminate while you wait. The arc travels. Do not fake a percent.' },
+          { title: 'Name it', body: 'A label is the accessible name. The percent in the center is extra, not the only signal.' },
         ]}
       />
       <DocsDoDont
         doItems={[
-          'Use lines for a paragraph, circle plus lines for a list row, rect for an image.',
-          'Pass a label on a group so assistive tech hears Loading.',
-          'Keep one motion on a screen. Do not mix shimmer and pulse in the same view.',
+          'Use fill for a profile score, a quota, or a setup checklist. Use pill when the ring should feel like a control on a card.',
+          'Switch tone to success at 100 percent, or danger after a failed check. Pass showCheck when a mark should replace the number.',
+          'Keep one ring per metric. A set of scores is a row of rings, not concentric rings unless that is the story.',
         ]}
         dontItems={[
-          'Do not use a skeleton after the content is ready. Swap it out.',
-          'Do not brand the fill with success or danger. A placeholder has no status.',
-          'Do not animate if the user asked for reduced motion. Motion none is the rest state.',
+          'Do not use Score Ring for a value the person sets. That is Slider or Number Field.',
+          'Do not use it as a page spinner. That is Loading Screen.',
+          'Do not leave an indeterminate ring after you know the value. Swap to a determinate ring.',
         ]}
       />
     </DocsUsage>
   ),
   accessibility: (
     <A11ySection
-      intro="Each bone is hidden from assistive tech. A labeled group is a status that stays busy until you replace it."
+      intro="Score Ring is a progressbar. It is not operable. The label is the name. The percent is the value."
       items={[
-        'Individual placeholders are aria-hidden. They are not names or values.',
-        'Pass label to set role status, aria-busy, and the accessible name, such as Loading profile.',
-        'The parent that will receive the content should be aria-busy while skeletons are showing.',
+        'role="progressbar" with aria-valuemin 0, aria-valuemax 100, and aria-valuenow when the value is known.',
+        'indeterminate omits aria-valuenow, sets aria-busy, and uses aria-valuetext Loading.',
+        'If there is no visible label, the ring still has an accessible name.',
+        'Disabled is visual only. The ring is never a tab stop.',
+        'The traveling arc respects prefers-reduced-motion and stops.',
+      ]}
+    />
+  ),
+}
+
+export const skeletonGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Wrap the real component in Skeleton. The child tree still mounts, so the bones keep its size, radius, and
+          gaps. The stylesheet is compiled with the app. If that sheet is not in the document yet, the same CSS is
+          inserted once at runtime. There is no layout measurement on load. Bones without children remain for a
+          line, heading, circle, rect, or square.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Wrap the real tree', body: 'Pass the component that will appear. Placeholder props are enough. The layout is the skeleton.' },
+          { title: 'Compiled CSS', body: 'Rules are built with the stylesheet. Runtime only toggles an attribute, or inserts the same sheet once if it was missing.' },
+          { title: 'Quiet motion', body: 'Shimmer is the default. Pulse is an opacity breath. Static is for prefers-reduced-motion or a paused load.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Wrap the loaded view. Set loading false when the data is ready.',
+          'Pass a label so assistive tech hears Loading.',
+          'Keep one motion on a screen. Do not mix shimmer and pulse in the same view.',
+        ]}
+        dontItems={[
+          'Do not measure the DOM to build a skeleton. The CSS already knows the boxes.',
+          'Do not brand the fill with success or danger. A placeholder has no status.',
+          'Do not wrap an empty tree. If the data is missing, still pass a shell with placeholder props.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="A wrapped tree is a status that stays busy. The children are hidden from assistive tech until loading is false."
+      items={[
+        'Auto mode sets role status, aria-busy, and a label on the wrapper. Children are aria-hidden and inert.',
+        'Bone placeholders without children are aria-hidden. Pass label on a group for Loading profile.',
+        'Set loading false to restore the live tree to the accessibility map.',
         'Shimmer and pulse stop when prefers-reduced-motion is set. Use motion none to match that by default.',
       ]}
     />
   ),
 }
+
+export const modalGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Modal is the overlay above the page. Dialog is a form or a longer task. Alert is a short decision, like
+          iOS. Sheet rises from the bottom. Action is a list of choices with Cancel on its own row. One overlay at a
+          time. The page behind it does not scroll.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One job', body: 'A title names the task. Description is one supporting line. Actions finish it.' },
+          { title: 'Pick the chrome', body: 'Alert for two choices. Dialog for a field or a list. Sheet for a longer editor. Action for Share, Copy, Delete.' },
+          { title: 'Dismiss is a choice', body: 'Backdrop and Escape close a casual dialog. Lock them while work is saving, or when the person must pick an action.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use alert for Delete, Log out, and Discard. Two actions, short labels.',
+          'Put the primary action first in a dialog footer. Cancel is the quieter control under it.',
+          'Pass icon when the tone is danger, success, or warning and the title does not already say that.',
+        ]}
+        dontItems={[
+          'Do not nest a modal in a modal. Close the first, then open the next.',
+          'Do not use a dialog when an inline Alert on the page is enough.',
+          'Do not put a second accent color on actions. Primary is blue. Destructive is red. Nothing else.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Modal is a dialog. It takes focus, names itself from the title, and returns focus when it closes."
+      items={[
+        'The overlay uses role dialog and aria-modal. The title is the accessible name.',
+        'Description, when present, is aria-describedby. Body copy is supporting content, not a second heading.',
+        'Focus moves into the panel when it opens and restores to the control that opened it.',
+        'Tab cycles inside the panel. Escape and the close button dismiss when dismissible is true.',
+        'Loading sets aria-busy and blocks dismiss. The busy action keeps a text name, such as Sending.',
+        'Do not rely on icon color. The title restates a destructive or successful action.',
+      ]}
+      keys={[
+        { keys: ['Esc'], action: 'Close when dismissible' },
+        { keys: ['Tab'], action: 'Move through controls in the panel' },
+        { keys: ['Shift', 'Tab'], action: 'Move backward' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused action' },
+      ]}
+    />
+  ),
+}
+
+export const commandPaletteGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Command Palette is search that runs a command. Spotlight is a floating field, like macOS. Command is a
+          panel with grouped results and keyboard hints. Nav is the site search that replaces the bar, like the
+          marketing header. Sheet rises from the bottom on a phone. Command Search is the control that opens it.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One field', body: 'The person types, arrows through results, and presses Return. Nothing else competes.' },
+          { title: 'Match the chrome', body: 'Nav for a marketing header. Command for docs and an app. Spotlight for a system-wide jump. Sheet on a small screen.' },
+          { title: 'Stay quiet', body: 'Selected is a gray row, not a second accent. Cancel in nav is Anchor — brand blue. That is the only color besides the results.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Put ⌘K on the Command Search trigger in an app or docs header.',
+          'Show Quick Links when the nav field is empty. Filter as soon as the person types.',
+          'Keep result labels short. Put the group or a shortcut on the trailing side.',
+        ]}
+        dontItems={[
+          'Do not use Nav Search for this. That field filters a list in place. This overlay jumps somewhere.',
+          'Do not stack a second search inside the palette. The top field is the only input.',
+          'Do not highlight a row in brand blue. Selected is the hover surface.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Command Palette is a dialog that holds a combobox. Focus stays in the field. Arrows change the active option."
+      items={[
+        'The overlay uses role dialog. The search field is a combobox with aria-expanded, aria-controls, and aria-activedescendant.',
+        'Results use listbox and option. The active row is aria-selected.',
+        'Focus moves into the field when it opens and restores to the control that opened it.',
+        'Escape and the backdrop, or Cancel in nav, dismiss the overlay. Cancel is Anchor without an href, so it is a button.',
+        'Do not rely on the shortcut hint. The trigger still has a text name such as Search.',
+      ]}
+      keys={[
+        { keys: ['⌘', 'K'], action: 'Open from a page that listens for the shortcut' },
+        { keys: ['↑', '↓'], action: 'Move the active result' },
+        { keys: ['Home', 'End'], action: 'First or last result' },
+        { keys: ['Enter'], action: 'Run the active result' },
+        { keys: ['Esc'], action: 'Close' },
+      ]}
+    />
+  ),
+}
+
+export const confirmDialogGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Confirm Dialog asks the person to choose before a change that cannot be undone, or that is hard to reverse.
+          Alert is the default, like iOS. Dialog is a longer explanation. Sheet rises from the bottom. Action is a
+          list with Cancel on its own row. Tone is the meaning of the confirm: danger, brand, warning, success, or
+          a quiet archive.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Ask once', body: 'The title is the question. The body is one supporting line. The confirm label is the verb.' },
+          { title: 'Tone is the risk', body: 'Danger is delete. Brand is publish or send. Warning is leave without saving. Neutral is archive.' },
+          { title: 'Two actions, short labels', body: 'Cancel and Confirm. Add a third action only for Don’t save. Never a fourth.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use alert for Delete, Log out, and Discard. Two short labels, stacked or split.',
+          'Name the confirm as the verb the person is about to do, such as Delete or Publish.',
+          'Lock dismiss while the confirm is saving. The busy action keeps a text name.',
+        ]}
+        dontItems={[
+          'Do not use a confirm for a change that is easy to undo. That is a toast, not a dialog.',
+          'Do not put a form in a confirm. That is Modal as a dialog.',
+          'Do not label the confirm OK when the action is Delete. The word must match the risk.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Confirm Dialog is a dialog. It takes focus, names itself from the title, and returns focus when it closes."
+      items={[
+        'The title is the question and the accessible name. The body is supporting copy, not a second heading.',
+        'Confirm and Cancel are buttons. The confirm label is the verb, such as Delete or Publish.',
+        'Loading sets aria-busy and blocks dismiss. Cancel is disabled until the work finishes.',
+        'Do not rely on icon color. The title restates a destructive or successful action.',
+        'A third action, if present, is Don’t save or an equivalent. Keep it a short verb.',
+      ]}
+      keys={[
+        { keys: ['Esc'], action: 'Close when dismissible' },
+        { keys: ['Tab'], action: 'Move through Confirm, the secondary action, and Cancel' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused action' },
+      ]}
+    />
+  ),
+}
+
+export const emptyPopupGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Empty Popup is the compact empty view inside a menu, command palette, or notification panel. Empty State
+          is the page. This is the overlay. Fill is the default panel. Subtle, outline, and pill sit as a card.
+          Ghost is type and a glyph. Plain surface drops the panel so the empty can live inside an existing menu.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Stay small', body: 'A popup is a glance. One title, one line, one action if needed.' },
+          { title: 'Match the menu', body: 'Use surface plain inside Select, a palette, or a sheet that already has chrome.' },
+          { title: 'One reason', body: 'No results, an empty inbox, or a failure. Do not mix those stories.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use small in a Select. Use medium in a palette or notification popup.',
+          'Name the title as what is missing, such as No results or No notifications.',
+          'Use danger only when the popup failed to load.',
+        ]}
+        dontItems={[
+          'Do not use Empty Popup as a full page. That is Empty State.',
+          'Do not stack two sentences. The body is one line.',
+          'Do not put a form in the popup empty. That is a Modal.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Empty Popup is a status region named by its title. It is not a live alert unless the tone is danger."
+      items={[
+        'The title is the accessible name. The body is supporting copy.',
+        'If there is an action, it is a Button. Keep the label a short verb.',
+        'Plain surface does not add a dialog role. The parent menu already has one.',
+        'Do not rely on icon color. The title restates a failure such as Could not load.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move to the action' },
+        { keys: ['Enter', 'Space'], action: 'Activate the action' },
+      ]}
+    />
+  ),
+}
+
+export const avatarGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Avatar is a person in the interface. A photo when you have one, initials from the name, a kit icon, or the
+          brand mark when nothing else is known. Fill is the default. Subtle, outline, ghost, and pill change the
+          chrome. Presence sits on the corner. Avatar Group stacks faces and folds the rest into a count.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One person', body: 'The name is the accessible label. Initials come from the first and last word.' },
+          { title: 'Photo first', body: 'A photo replaces initials. If the file is missing, initials remain.' },
+          { title: 'Quiet chrome', body: 'Fill on a page. Ghost in a dense list. Presence is optional, not decoration.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use small in a table or a Select option. Use large in a profile header. Extra large is the picker.',
+          'Pass name even when you have a photo so the label stays correct.',
+          'Use Avatar Group for a short set of people. Cap the visible faces and let the rest become a count.',
+        ]}
+        dontItems={[
+          'Do not invent a second accent for presence. Online is success. Away is warning. Busy is danger.',
+          'Do not use Avatar as a button. Profile Button wraps it when it opens a menu.',
+          'Do not crop a logo into an Avatar. That is Brand Logo.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Avatar is an image of a person. The name is the accessible label. Presence is included in that name when it is set."
+      items={[
+        'The photo is decorative. The name on aria-label is what assistive tech reads.',
+        'If there is no name, the avatar is hidden from assistive tech.',
+        'Loading sets aria-busy. Disabled is visual only; do not make Avatar the only control.',
+        'The group is a list. Each face is a list item. The overflow face is named as N more.',
+        'Do not rely on the presence color alone. The label restates online, away, busy, or offline.',
+      ]}
+    />
+  ),
+}
+
+export const breadcrumbGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Breadcrumb is the path back through the hierarchy. Ghost is the default, the same quiet trail Apple uses in
+          Settings and Finder. Subtle, outline, and fill sit on a surface. Pill is a compact chip trail. The last item
+          is the current page. Everything before it is a way back.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'The last item is here', body: 'Current is primary and medium. It is not a link. Ancestors are tertiary until they are hovered or focused.' },
+          { title: 'One accent', body: 'Hover and focus use brand blue. Do not underline, and do not paint the current page as a filled button.' },
+          { title: 'Collapse, don’t wrap forever', body: 'If the path is long, pass maxItems. The ellipsis holds the middle pages in a menu. Keep the first and last in view.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use ghost on a page. Use subtle or outline in a toolbar or card. Use pill when the trail sits next to other chips.',
+          'Pass href or onClick on ancestors so the path is a real way back. Keep the current item as text.',
+          'Use a home icon on the first crumb when the root has no useful label. Keep the accessible name.',
+        ]}
+        dontItems={[
+          'Do not use Breadcrumb for peer views. That is Tabs.',
+          'Do not put a primary Button in the trail. The current page is already the destination.',
+          'Do not show more than one current item. The last crumb is the page.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Breadcrumb is a navigation landmark. The list is an ordered path. The last item is the current page."
+      items={[
+        'nav with an accessible name, default Breadcrumb. ol holds the crumbs in order.',
+        'Ancestors with href render as links. Ancestors with onClick render as buttons. The current page is a span with aria-current="page".',
+        'Disabled crumbs are not in the keyboard cycle. They stay visible so the path does not jump.',
+        'The ellipsis is a button named Show more pages. It opens a list of the hidden ancestors.',
+        'An icon-only crumb still has a text label. The icon is decorative.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move through ancestor links or buttons' },
+        { keys: ['Enter', 'Space'], action: 'Follow the focused crumb, or open the overflow' },
+        { keys: ['Escape'], action: 'Close the overflow menu' },
+      ]}
+    />
+  ),
+}
+
+export const paginationGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Pagination moves through a paged list. Primary is the default — the current page is a filled mark, the
+          neighbors stay quiet. When the set is long, the numbers collapse to first, last, and a window around here:
+          1 … 12 13 14 … 48. Compact writes the page as a line. Simple is previous and next only.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Keep first and last', body: 'The ends stay visible. The ellipsis is not a control. It only means pages are hidden.' },
+          { title: 'One current', body: 'The selected number uses brand fill. Neighbors are secondary until they are hovered.' },
+          { title: 'Collapse, don’t wrap', body: 'If there are too many pages, hide the middle. Do not show every number in a wrapping grid.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use numbers under a table or a search result. Use compact in a tight footer. Use simple when the page is already named nearby.',
+          'Pass showFirstLast when jumping to the ends matters, such as a long export log.',
+          'Disable the control while the next page loads. The current mark can show a spinner.',
+        ]}
+        dontItems={[
+          'Do not use Pagination for peer views. That is Tabs.',
+          'Do not list every page when the count is large. The ellipsis is the design.',
+          'Do not paint previous and next as primary Buttons. They sit beside the numbers, quiet until pressed.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Pagination is a navigation landmark. Each page is a button. The current page is marked. The ellipsis is not operable."
+      items={[
+        'nav with an accessible name, default Pagination.',
+        'The current page has aria-current="page". Previous, next, first, and last have aria-label.',
+        'The ellipsis is a visual gap. It is hidden from assistive tech.',
+        'Disabled previous and next stay visible so the control does not jump at the ends.',
+        'loading sets aria-busy and disables every control. The current mark shows a spinner.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move through previous, page numbers, and next' },
+        { keys: ['Enter', 'Space'], action: 'Go to the focused page' },
+      ]}
+    />
+  ),
+}
+
+export const sheetNavGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Sheet Nav is the bar at the top of a sheet. Cancel, Back, and Done are Anchor — brand blue, underline on
+          hover. Close is a quiet dismiss. Back is a nested sheet. Large drops the title below the bar. Prominent fills
+          Done as a blue pill.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Blue is the action', body: 'Cancel, Back, and Done are Anchor in brand primary. Close is a gray mark so it does not compete with Done.' },
+          { title: 'Title stays centered', body: 'The heading sits in the middle regardless of how wide the actions are. It truncates before it collides.' },
+          { title: 'Done is the emphasis', body: 'Done is semibold. Cancel is regular. Prominent fills Done when the sheet is a short create flow.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use plain for Edit, New, and any form that can be cancelled or saved.',
+          'Use close when dismiss is the only leading action. Use back when the sheet is nested.',
+          'Pass onDark when the sheet sits on black, such as Move and Scale.',
+        ]}
+        dontItems={[
+          'Do not restyle Done as teal or a second accent. Brand blue is the only action color.',
+          'Do not put a second title in the sheet body. The bar already names the task.',
+          'Do not hide Cancel while work is saving. Disable it. The person still needs a way out after the wait.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Sheet Nav is the heading row of a dialog. The title names the sheet. Each action has a text name."
+      items={[
+        'The title is visible text in the header. Use it as the accessible name of the sheet.',
+        'Cancel, Close, and Back are Anchor without an href, so they render as buttons. All three call onCancel.',
+        'Done sets aria-busy while loading. The label stays a word, such as Saving.',
+        'Disabled actions stay in the tree. They are not removed while the sheet is busy.',
+        'The title truncates visually. Keep the heading short so it is not cut off.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move between Cancel and Done' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused action' },
+        { keys: ['Esc'], action: 'Dismiss the sheet when the parent allows it' },
+      ]}
+    />
+  ),
+}
+
+export const profileButtonGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Profile Button is the account control. Avatar is the default — a face that opens a menu. Fill is the
+          toolbar ring. Ghost is the photo alone. Labeled adds the name. Menu adds a caret. Identity is the
+          Settings row: name, email, and a caret. Presence and a badge sit on the face.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One person', body: 'The name is the accessible label. A photo replaces initials. Presence is optional.' },
+          { title: 'Avatar in chrome', body: 'Use avatar in a top bar. Use labeled or menu in a header. Identity is a row.' },
+          { title: 'The caret means a menu', body: 'Menu and identity set aria-haspopup. Pass open while the menu is visible.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use small in a 52px nav. Use medium when the control stands alone. Large is a settings row.',
+          'Pass name even when you have a photo so the label stays correct.',
+          'Use a badge for unread account notices. Keep the number short.',
+        ]}
+        dontItems={[
+          'Do not use Avatar as the button. Profile Button owns the hit target and the name.',
+          'Do not put a second accent on the face. Tone is for initials. Presence is status.',
+          'Do not hide the caret on a menu trigger. The caret is how the menu is announced visually.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Profile Button is a native button. The name is the accessible label. Presence and email are included in that name when they are set."
+      items={[
+        'aria-label is built from the name, subtitle, and presence. Override it only when the action is not “open profile”.',
+        'Menu and identity set aria-haspopup="menu". Pass open to set aria-expanded while the menu is visible.',
+        'Loading sets aria-busy and replaces the face with a spinner. Disabled is not focusable.',
+        'The photo, initials, caret, and badge are decorative. The button name still makes sense if they are empty.',
+        'Tab to focus, Space or Enter to press. Do not nest another control inside the button.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move focus to the control' },
+        { keys: ['Space'], action: 'Activate' },
+        { keys: ['Enter'], action: 'Activate' },
+      ]}
+    />
+  ),
+}
+
+export const tabsGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Tabs switch between peer views. Underline is the default, the same sliding bar Apple uses in Safari and
+          Finder. Subtle, outline, and pill sit in a well. Ghost is type only. Keep the row to a sidebar column when
+          it sits beside a list. Use Segmented Control when the set is a filter of two to five options, not a change
+          of view.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Peer views', body: 'Each tab is a whole view. The selected label names what is on screen.' },
+          { title: 'One row', body: 'Tabs stay on one row. If the row is tight, labels truncate. Keep the set short enough to scan.' },
+          { title: 'The bar follows', body: 'The indicator moves with the selected tab. Do not restyle it as a second accent.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use underline on a page. Use subtle or pill in a card or a toolbar.',
+          'Use a badge for a count, such as unread. Keep the number short.',
+          'Disable a tab rather than hiding it, so the set stays stable.',
+        ]}
+        dontItems={[
+          'Do not use Tabs for two to five filters that stay on one view. That is Segmented Control.',
+          'Do not put a primary Button inside the tab list.',
+          'Do not use Icon Tab here. That is the compact bar at the bottom of an app shell.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Tabs is a tablist. One tab is selected. Arrow keys move to the next enabled tab. The page owns the panel."
+      items={[
+        'role="tablist" on the row, role="tab" on each tab, aria-selected on the selected id.',
+        'Only the selected tab is in the tab order. Arrow keys, Home, and End move selection.',
+        'Disabled tabs are not in the keyboard cycle. The list can also be disabled as a whole.',
+        'Pass aria-label when there is no visible heading that names the set.',
+        'A badge is a count. The tab label still names the view.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Focus the selected tab' },
+        { keys: ['ArrowLeft', 'ArrowRight'], action: 'Move to the next enabled tab' },
+        { keys: ['Home', 'End'], action: 'First or last enabled tab' },
+        { keys: ['Enter', 'Space'], action: 'Select the focused tab' },
+      ]}
+    />
+  ),
+}
+
+export const sidebarNavGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Sidebar Nav is the primary wayfinding for an app shell. It is full height, from the brand at the top to
+          the account or appearance control at the foot. Fill is the default, the same gray column Apple uses in
+          Mail and Settings. Subtle, outline, ghost, and pill change the chrome. Collapse it to a rail of icons
+          when the canvas needs the width.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'The brand lives here', body: 'The mark sits in the sidebar, not in the top bar. The two edges meet at 52px so the shell reads as one frame.' },
+          { title: 'One selected place', body: 'The current item uses the brand tint. Hover and press stay gray. Danger is only for a destination such as Log out.' },
+          { title: 'Groups, not a pile', body: 'Section labels make a long list scannable. Collapse a group only when the person asked for it.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use fill on a page. Use subtle when the sidebar should sit on white. Use pill when it should float inside the shell.',
+          'Keep labels short. A badge is a count, not a status sentence.',
+          'Put Theme Toggle or the signed-in person at the foot. Do not duplicate the brand in the top bar.',
+        ]}
+        dontItems={[
+          'Do not put the brand in both the sidebar and the top bar.',
+          'Do not use Sidebar Nav for peer views of one page. That is Tabs.',
+          'Do not paint the selected row in a second accent. Brand is the only tint.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Sidebar Nav is a navigation landmark. The selected item is the current page. Collapse is a separate control."
+      items={[
+        'The aside is labeled Sidebar. Each item is a button. aria-current="page" marks the selected id.',
+        'Disabled items stay visible and are not in the click cycle.',
+        'The collapse control is an icon button. Expanded announces Collapse sidebar. Collapsed announces Expand sidebar.',
+        'A badge is a count. The item label still names the destination.',
+        'In the rail, the visible label is hidden. The button title and accessible name remain the same string.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move through items, search, and collapse' },
+        { keys: ['Enter', 'Space'], action: 'Select the focused item, or toggle collapse' },
+        { keys: ['Escape'], action: 'Close the mobile drawer' },
+      ]}
+    />
+  ),
+}
+
+export const navSearchGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Nav Search is the compact field in a top bar. Pill is the default, the same capsule as Finder and Safari.
+          Subtle sits on a card. Outline holds an edge on a busy chrome. Ghost stays quiet until hover. Icon collapses
+          to a magnifying glass and opens on focus. Pair it with Dashboard Nav or a custom toolbar — not with a form
+          label.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Toolbar, not form', body: 'This is a find control in chrome. Use Text Field with the pill variant when search lives in a page or a modal.' },
+          { title: 'Clear in place', body: 'A filled query shows the gray clear mark. Escape clears, then blurs. Do not add a second Cancel beside it.' },
+          { title: 'One width', body: 'Small fits a 52px bar. Medium is the standard toolbar. Large is a touch target. Do not stretch it across the nav.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use pill in Dashboard Nav. Use icon in a marketing header where space is the constraint.',
+          'Pass shortcut when a command palette is bound to the same query, such as ⌘K.',
+          'Show loading by replacing the glass with the spinner while results resolve.',
+        ]}
+        dontItems={[
+          'Do not use Nav Search as the only field on a settings page. That is Text Field.',
+          'Do not hide the glass. The glyph is how the control reads as search at a glance.',
+          'Do not mix a custom height. Small, medium, and large already match the bar.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Nav Search is a labeled search input. The placeholder is a hint. The accessible name is the label, or the placeholder when no label is passed."
+      items={[
+        'Native type="search" input. The wrapping label points at it with htmlFor.',
+        'Focus is a 2px brand ring on the field. Icon variant expands on focus and collapses on blur when empty.',
+        'Clear is a button with the name “Clear search”. It is out of the tab order so typing is not interrupted. Escape clears first.',
+        'Loading sets aria-busy on the field. The spinner is decorative.',
+        'Disabled is not operable. Shortcut text is hidden from assistive tech — it is a visual hint only.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Focus the field. Icon variant expands.' },
+        { keys: ['Escape'], action: 'Clear the query, then collapse or blur' },
+        { keys: ['Enter'], action: 'Submit the current query' },
+      ]}
+    />
+  ),
+}
+
+export const iconTabGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Icon Tab is the compact destination bar at the bottom of an app shell. Ghost is the default — icon over a
+          short label, selected in brand. Subtle, outline, and pill sit in a well with a sliding thumb. Fill paints
+          the selected item. Use Tabs when the views are peers of one page, not places in the app.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Places, not filters', body: 'Each item is a destination. Home, Inbox, Profile — not All, Live, Review.' },
+          { title: 'Stacked first', body: 'Icon above a 10–12px caption is the phone bar. Inline and icon are for a toolbar.' },
+          { title: 'One tint', body: 'Selected is brand. Danger is only for a destructive destination such as Log out.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use IconTabBar for a set. Keep three to five items so each label stays readable.',
+          'Pass a badge for a count on the icon. Keep the number short.',
+          'Use inline in a compact toolbar. Use icon when the label would repeat a nearby heading.',
+        ]}
+        dontItems={[
+          'Do not use Icon Tab for peer views of one list. That is Tabs.',
+          'Do not mix a primary Button into the bar.',
+          'Do not leave the selected item in gray. The tint is the wayfinding.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="IconTabBar is a tablist. One destination is selected. Arrow keys move to the next enabled item. The page owns the panel."
+      items={[
+        'role="tablist" on the bar, role="tab" on each item, aria-selected on the selected id.',
+        'Only the selected tab is in the tab order. Arrow keys, Home, and End move selection.',
+        'Stacked and inline show the label. Icon layout uses aria-label from the same string.',
+        'A badge is a count. The tab label still names the destination.',
+        'Standalone IconTab is a button. Use it for a single control, such as Log out beside the bar.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Focus the selected destination' },
+        { keys: ['ArrowLeft', 'ArrowRight'], action: 'Move to the next enabled item' },
+        { keys: ['Home', 'End'], action: 'First or last enabled item' },
+        { keys: ['Enter', 'Space'], action: 'Select the focused item' },
+      ]}
+    />
+  ),
+}
+
+

@@ -1,21 +1,19 @@
 'use client'
 
-/* eslint-disable react-hooks/set-state-in-effect */
-
 import { useServerInsertedHTML } from 'next/navigation'
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useRef,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from 'react'
 
 export type Theme = 'light' | 'dark'
 
 const THEME_STORAGE_KEY = 'theme'
+const THEME_EVENT = 'devkit-theme'
 
 const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);document.documentElement.classList.toggle('dark',t==='dark');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`
 
@@ -42,6 +40,23 @@ function applyTheme(theme: Theme) {
   }
 }
 
+function subscribeTheme(onChange: () => void) {
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === THEME_STORAGE_KEY || event.key === null) onChange()
+  }
+  window.addEventListener('storage', onStorage)
+  window.addEventListener(THEME_EVENT, onChange)
+  return () => {
+    window.removeEventListener('storage', onStorage)
+    window.removeEventListener(THEME_EVENT, onChange)
+  }
+}
+
+function writeTheme(next: Theme) {
+  applyTheme(next)
+  window.dispatchEvent(new Event(THEME_EVENT))
+}
+
 type ThemeContextValue = {
   theme: Theme
   setTheme: (theme: Theme) => void
@@ -51,9 +66,8 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light')
-  const [mounted, setMounted] = useState(false)
   const inserted = useRef(false)
+  const theme = useSyncExternalStore(subscribeTheme, readStoredTheme, () => 'light' as Theme)
 
   useServerInsertedHTML(() => {
     if (inserted.current) return null
@@ -66,22 +80,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     )
   })
 
-  useEffect(() => {
-    setThemeState(readStoredTheme())
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-    applyTheme(theme)
-  }, [mounted, theme])
-
   const value = useMemo<ThemeContextValue>(
     () => ({
       theme,
-      setTheme: setThemeState,
-      toggleTheme: () =>
-        setThemeState((current) => (current === 'light' ? 'dark' : 'light')),
+      setTheme: writeTheme,
+      toggleTheme: () => writeTheme(theme === 'light' ? 'dark' : 'light'),
     }),
     [theme],
   )

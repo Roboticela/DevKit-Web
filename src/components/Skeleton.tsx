@@ -1,4 +1,6 @@
+import { type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { SKELETON_AUTO_CSS } from './skeletonAutoCss'
 
 export type SkeletonVariant = 'subtle' | 'outline' | 'ghost' | 'pill'
 export type SkeletonSize = 'sm' | 'md' | 'lg'
@@ -66,6 +68,29 @@ const stackGap: Record<SkeletonSize, string> = {
   lg: 'gap-3',
 }
 
+type SkeletonChrome = {
+  variant?: SkeletonVariant
+  motion?: SkeletonMotion
+  label?: string
+  className?: string
+}
+
+export type SkeletonBoneProps = SkeletonChrome & {
+  children?: undefined
+  loading?: never
+  size?: SkeletonSize
+  shape?: SkeletonShape
+  lines?: number
+  width?: string | number
+}
+
+export type SkeletonAutoProps = SkeletonChrome & {
+  children: ReactNode
+  loading?: boolean
+}
+
+export type SkeletonProps = SkeletonBoneProps | SkeletonAutoProps
+
 function lineWidth(index: number, count: number) {
   if (count <= 1) return undefined
   if (index === count - 1) return '62%'
@@ -118,7 +143,11 @@ function Bone({
   )
 }
 
-export function Skeleton({
+function isAutoSkeleton(props: SkeletonProps): props is SkeletonAutoProps {
+  return props.children != null && typeof props.children !== 'boolean'
+}
+
+function SkeletonBones({
   variant = 'subtle',
   size = 'md',
   shape = 'line',
@@ -127,16 +156,7 @@ export function Skeleton({
   width,
   label,
   className,
-}: {
-  variant?: SkeletonVariant
-  size?: SkeletonSize
-  shape?: SkeletonShape
-  motion?: SkeletonMotion
-  lines?: number
-  width?: string | number
-  label?: string
-  className?: string
-}) {
+}: SkeletonBoneProps) {
   const count = shape === 'line' ? Math.max(1, Math.round(lines)) : 1
   const stack = count > 1
 
@@ -171,4 +191,47 @@ export function Skeleton({
       {bones}
     </div>
   )
+}
+
+function SkeletonFrame({
+  children,
+  loading = true,
+  variant = 'subtle',
+  motion = 'shimmer',
+  label = 'Loading',
+  className,
+}: SkeletonAutoProps) {
+  if (!loading) return children
+
+  return (
+    <div
+      className={cn('contents', className)}
+      role="status"
+      aria-busy="true"
+      aria-label={label}
+    >
+      <style href="dk-skeleton-auto" precedence="medium">
+        {SKELETON_AUTO_CSS}
+      </style>
+      <div
+        className="contents"
+        data-dk-skeleton=""
+        data-dk-skeleton-variant={variant}
+        data-dk-skeleton-motion={motion}
+        aria-hidden="true"
+        inert
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+
+export function Skeleton(props: SkeletonAutoProps): ReactNode
+export function Skeleton(props: SkeletonBoneProps): ReactNode
+export function Skeleton(props: SkeletonProps): ReactNode {
+  if (isAutoSkeleton(props)) {
+    return <SkeletonFrame {...props} />
+  }
+  return <SkeletonBones {...props} />
 }

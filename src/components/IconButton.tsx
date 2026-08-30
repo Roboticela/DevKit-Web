@@ -14,7 +14,7 @@ import {
 } from '@/icons'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
-import { ButtonSpinner } from './ButtonLabel'
+import { Loader } from './Loader'
 
 export type IconButtonVariant = 'ghost' | 'subtle' | 'outline' | 'primary' | 'danger'
 export type IconButtonSize = 'sm' | 'md'
@@ -129,7 +129,7 @@ export function IconButton({
       </span>
       {busy ? (
         <span className="absolute inset-0 inline-flex items-center justify-center">
-          <ButtonSpinner light={light} size={compact ? 14 : 16} />
+          <Loader decorative size={compact ? 14 : 16} onDark={light} />
         </span>
       ) : null}
       {status === 'success' ? (

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../components/skeleton-auto.css";
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
@@ -208,6 +209,10 @@ html[data-theme="dark"] {
   --animate-docs-demo-in: docs-demo-in 400ms var(--ease-apple) 100ms both;
   --animate-docs-crossfade: docs-crossfade 150ms var(--ease-apple) both;
   --animate-docs-palette-in: docs-palette-in 200ms var(--ease-apple) both;
+  --animate-docs-nav-search-in: docs-nav-search-in 300ms var(--ease-apple) both;
+  --animate-modal-overlay-in: modal-overlay-in 300ms var(--ease-apple) both;
+  --animate-modal-panel-in: modal-panel-in 300ms var(--ease-apple) both;
+  --animate-modal-sheet-in: modal-sheet-in 360ms var(--ease-apple) both;
 }
 
 @keyframes btn-spin {
@@ -277,6 +282,37 @@ html[data-theme="dark"] {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-panel-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modal-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -358,6 +394,17 @@ html[data-theme="dark"] {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes docs-nav-search-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -463,13 +510,34 @@ body {
   .animate-progress-indeterminate,
   .animate-skeleton-shimmer,
   .animate-skeleton-pulse,
+  [data-dk-skeleton][data-dk-skeleton-motion='shimmer'] :is(
+      button,
+      a,
+      input,
+      textarea,
+      select,
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      label,
+      [role='button']
+    ),
+  [data-dk-skeleton][data-dk-skeleton-motion='pulse'] > *,
   .animate-select-in,
   .animate-date-picker-crossfade,
   .animate-date-picker-select,
   .animate-docs-header-in,
   .animate-docs-demo-in,
   .animate-docs-crossfade,
-  .animate-docs-palette-in {
+  .animate-docs-palette-in,
+  .animate-docs-nav-search-in,
+  .animate-modal-overlay-in,
+  .animate-modal-panel-in,
+  .animate-modal-sheet-in {
     animation: none;
   }
 }

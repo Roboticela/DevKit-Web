@@ -1,26 +1,24 @@
 import type { AnchorHTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { Anchor } from './Anchor'
 import { Body, Caption } from './Text'
 
 type TextLinkProps = {
   children: ReactNode
   muted?: boolean
-} & AnchorHTMLAttributes<HTMLAnchorElement>
+  href: string
+} & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>
 
-export function TextLink({ children, muted = false, className, ...rest }: TextLinkProps) {
+export function TextLink({ children, muted = false, className, href, ...rest }: TextLinkProps) {
   return (
-    <a
-      className={cn(
-        'font-sans no-underline',
-        muted
-          ? 'text-text-tertiary hover:text-brand-primary'
-          : 'text-brand-primary hover:underline',
-        className,
-      )}
+    <Anchor
+      href={href}
+      variant={muted ? 'subtle' : 'inline'}
+      className={className}
       {...rest}
     >
       {children}
-    </a>
+    </Anchor>
   )
 }
 
