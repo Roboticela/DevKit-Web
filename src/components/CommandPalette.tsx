@@ -19,18 +19,26 @@ import {
 } from '@/icons'
 import { cn } from '@/lib/cn'
 import { searchDocs } from '@/lib/docs-catalog'
-import { EASE, FOCUS_VISIBLE_RING } from '@/lib/styles'
 import { Anchor } from './Anchor'
 import { EmptyPopup } from './EmptyPopup'
 import { IconButton } from './IconButton'
 import { Kbd } from './Kbd'
 import { Loader } from './Loader'
+import {
+  NavSearch,
+  NAV_SEARCH_SIZES,
+  NAV_SEARCH_SIZE_LABEL,
+  NAV_SEARCH_VARIANTS,
+  NAV_SEARCH_VARIANT_LABEL,
+  type NavSearchSize,
+  type NavSearchVariant,
+} from './NavSearch'
 import { Caption } from './Text'
 
 export type CommandPaletteVariant = 'spotlight' | 'command' | 'nav' | 'sheet'
 export type CommandPaletteSize = 'sm' | 'md' | 'lg'
-export type CommandSearchVariant = 'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'
-export type CommandSearchSize = 'sm' | 'md' | 'lg'
+export type CommandSearchVariant = NavSearchVariant | 'fill'
+export type CommandSearchSize = NavSearchSize
 export type CommandItemKind = 'item' | 'link'
 
 export type CommandItem = {
@@ -55,8 +63,8 @@ export type CommandGroup = {
 
 export const COMMAND_PALETTE_VARIANTS: CommandPaletteVariant[] = ['spotlight', 'command', 'nav', 'sheet']
 export const COMMAND_PALETTE_SIZES: CommandPaletteSize[] = ['sm', 'md', 'lg']
-export const COMMAND_SEARCH_VARIANTS: CommandSearchVariant[] = ['fill', 'subtle', 'outline', 'ghost', 'pill']
-export const COMMAND_SEARCH_SIZES: CommandSearchSize[] = ['sm', 'md', 'lg']
+export const COMMAND_SEARCH_VARIANTS: NavSearchVariant[] = NAV_SEARCH_VARIANTS
+export const COMMAND_SEARCH_SIZES: CommandSearchSize[] = NAV_SEARCH_SIZES
 
 export const COMMAND_PALETTE_VARIANT_LABEL: Record<CommandPaletteVariant, string> = {
   spotlight: 'Spotlight',
@@ -71,19 +79,8 @@ export const COMMAND_PALETTE_SIZE_LABEL: Record<CommandPaletteSize, string> = {
   lg: 'Large',
 }
 
-export const COMMAND_SEARCH_VARIANT_LABEL: Record<CommandSearchVariant, string> = {
-  fill: 'Fill',
-  subtle: 'Subtle',
-  outline: 'Outline',
-  ghost: 'Ghost',
-  pill: 'Pill',
-}
-
-export const COMMAND_SEARCH_SIZE_LABEL: Record<CommandSearchSize, string> = {
-  sm: 'Small',
-  md: 'Medium',
-  lg: 'Large',
-}
+export const COMMAND_SEARCH_VARIANT_LABEL: Record<NavSearchVariant, string> = NAV_SEARCH_VARIANT_LABEL
+export const COMMAND_SEARCH_SIZE_LABEL: Record<CommandSearchSize, string> = NAV_SEARCH_SIZE_LABEL
 
 const GLASS = cn(
   'border border-border-default',
@@ -102,32 +99,6 @@ const NAV_WIDTH: Record<CommandPaletteSize, string> = {
   sm: 'max-w-[560px]',
   md: 'max-w-[692px]',
   lg: 'max-w-[980px]',
-}
-
-const SEARCH_HEIGHT: Record<CommandSearchSize, string> = {
-  sm: 'h-8 text-[13px]',
-  md: 'h-9 text-[13px]',
-  lg: 'h-11 text-[15px]',
-}
-
-const SEARCH_ICON: Record<CommandSearchSize, number> = {
-  sm: 14,
-  md: 15,
-  lg: 16,
-}
-
-const SEARCH_CHROME: Record<CommandSearchVariant, string> = {
-  fill: 'rounded-[10px] border border-border-default bg-bg-tertiary',
-  subtle: 'rounded-[10px] border border-transparent bg-bg-secondary',
-  outline: 'rounded-[10px] border border-border-default bg-transparent',
-  ghost: 'rounded-[10px] border border-transparent bg-transparent',
-  pill: 'rounded-[980px] border border-transparent bg-bg-secondary',
-}
-
-const SEARCH_WIDTH: Record<CommandSearchSize, string> = {
-  sm: 'w-[180px]',
-  md: 'w-[240px]',
-  lg: 'w-[280px]',
 }
 
 export function groupCommandItems(items: CommandItem[]): CommandGroup[] {
@@ -172,8 +143,8 @@ function docsGroups(query: string): CommandGroup[] {
 
 export function CommandSearch({
   onClick,
-  variant = 'fill',
-  size = 'md',
+  variant = 'outline',
+  size = 'sm',
   placeholder = 'Search',
   shortcut = '⌘K',
   icon = false,
@@ -193,58 +164,22 @@ export function CommandSearch({
   fullWidth?: boolean
   className?: string
 }) {
-  const glyph = SEARCH_ICON[size]
+  const look: NavSearchVariant = icon ? 'icon' : variant === 'fill' ? 'outline' : variant
   const hint = shortcut === false ? undefined : shortcut
 
-  if (icon) {
-    return (
-      <IconButton
-        label={placeholder}
-        size={size === 'lg' ? 'md' : 'sm'}
-        disabled={disabled}
-        className={cn(
-          'text-text-tertiary hover:text-text-primary',
-          active && 'bg-bg-hover text-text-primary',
-          className,
-        )}
-        onClick={onClick}
-      >
-        <DkMagnifyingGlassFind size={glyph + 2} strokeWidth={1.6} absoluteStrokeWidth />
-      </IconButton>
-    )
-  }
-
   return (
-    <button
-      type="button"
+    <NavSearch
+      value=""
+      onChange={() => undefined}
+      variant={look}
+      size={size}
+      placeholder={placeholder}
+      shortcut={hint}
       disabled={disabled}
-      onClick={onClick}
-      aria-haspopup="dialog"
-      aria-expanded={active || undefined}
-      className={cn(
-        'inline-flex cursor-pointer items-center gap-2 px-3 text-left font-sans',
-        SEARCH_HEIGHT[size],
-        SEARCH_CHROME[variant],
-        fullWidth ? 'w-full' : SEARCH_WIDTH[size],
-        'transition-[border-color,background-color] duration-150',
-        EASE,
-        FOCUS_VISIBLE_RING,
-        active && 'border-border-focus',
-        'disabled:cursor-not-allowed disabled:opacity-55',
-        className,
-      )}
-    >
-      <DkMagnifyingGlassFind
-        size={glyph}
-        strokeWidth={1.75}
-        absoluteStrokeWidth
-        className="shrink-0 text-text-tertiary"
-      />
-      <span className="min-w-0 flex-1 truncate font-normal text-text-tertiary">{placeholder}</span>
-      {hint ? (
-        <Kbd className="hidden shrink-0 min-[735px]:inline-flex">{hint}</Kbd>
-      ) : null}
-    </button>
+      active={active}
+      onActivate={onClick}
+      className={cn(fullWidth && 'w-full', className)}
+    />
   )
 }
 
@@ -409,6 +344,8 @@ export function CommandPalette({
   const isClient = useIsClient()
   const [innerQuery, setInnerQuery] = useState(defaultQuery)
   const [innerIndex, setInnerIndex] = useState(0)
+  const prevOpenRef = useRef(open)
+  const prevQueryRef = useRef(queryProp ?? defaultQuery)
 
   const usingDocs = !items && !groups
   const query = queryProp ?? innerQuery
@@ -436,17 +373,24 @@ export function CommandPalette({
   }
 
   useEffect(() => {
+    const justOpened = open && !prevOpenRef.current
+    prevOpenRef.current = open
     if (!open) return
-    if (queryProp === undefined) setInnerQuery(defaultQuery)
-    setInnerIndex(0)
-    const frame = window.requestAnimationFrame(() => inputRef.current?.focus())
+    if (justOpened && queryProp === undefined) setInnerQuery(defaultQuery)
+    if (justOpened && indexProp === undefined) setInnerIndex(0)
+    if (!justOpened || embedded) return
+    const frame = window.requestAnimationFrame(() => {
+      inputRef.current?.focus({ preventScroll: true })
+    })
     return () => window.cancelAnimationFrame(frame)
-  }, [open, defaultQuery, queryProp])
+  }, [open, defaultQuery, queryProp, indexProp, embedded])
 
   useEffect(() => {
-    if (!open) return
+    if (!open || indexProp !== undefined) return
+    if (prevQueryRef.current === query) return
+    prevQueryRef.current = query
     setInnerIndex(0)
-  }, [query, open])
+  }, [query, open, indexProp])
 
   useEffect(() => {
     if (!open || embedded) return

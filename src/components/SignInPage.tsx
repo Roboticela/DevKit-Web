@@ -7,8 +7,9 @@ import {
 import { brand } from '@/lib/devkit'
 import type { SignInPreviewState } from '@/lib/pages-catalog'
 import { AppleButton } from './ProviderButtons'
+import { Anchor } from './Anchor'
 import { AuthBrand, AuthLayout } from './AuthLayout'
-import { AuthLegal, ErrorText, TextLink } from './TextLink'
+import { AuthLegal, ErrorText } from './TextLink'
 import { AuthProviderStack } from './AuthProviderButton'
 import { Button } from './Button'
 import { Divider } from './Divider'
@@ -33,7 +34,7 @@ export function SignInPage({
   const disabled = loading || locked
 
   return (
-    <AuthLayout navLinkTo="/pages/create-account" navLinkLabel="Create account">
+    <AuthLayout navLinkTo="/pages/create-account" navLinkLabel="Create one">
       <AuthBrand title="Welcome back" subhead={brand.taglineSignIn} />
       <form
         className="mt-8 flex flex-col"
@@ -64,9 +65,9 @@ export function SignInPage({
           />
         </div>
         <div className="mt-3 flex justify-end">
-          <TextLink href="/pages/forgot-password" className="text-sm">
+          <Anchor href="/pages/forgot-password" className="text-sm">
             Forgot password?
-          </TextLink>
+          </Anchor>
         </div>
         {invalid ? <ErrorText>Incorrect email or password.</ErrorText> : null}
         {locked ? (
@@ -89,7 +90,7 @@ export function SignInPage({
         </AuthProviderStack>
         <p className="mt-6 mb-0 text-center text-sm text-text-secondary">
           Don&apos;t have an account?{' '}
-          <TextLink href="/pages/create-account">Create account</TextLink>
+          <Anchor href="/pages/create-account">Create account</Anchor>
         </p>
         <AuthLegal />
       </form>

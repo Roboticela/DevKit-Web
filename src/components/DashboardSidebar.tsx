@@ -204,7 +204,6 @@ export function SidebarNavItem({
   const danger = item.tone === 'danger'
   const disabled = Boolean(item.disabled)
   const showBadge = item.badge !== undefined && item.badge !== 0 && item.badge !== '0'
-  const count = typeof item.badge === 'number' ? item.badge : Number(item.badge)
 
   return (
     <button
@@ -243,23 +242,21 @@ export function SidebarNavItem({
       >
         {sizedIcon(item.icon, density.icon)}
         {collapsed && showBadge ? (
-          <span
-            className={cn(
-              'absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-[980px] px-1 text-[9px] font-medium leading-none text-white',
-              danger ? 'bg-danger' : 'bg-brand-primary',
-            )}
-          >
-            {typeof count === 'number' && count > 9 ? '9+' : item.badge}
-          </span>
+          <Badge
+            variant="fill"
+            tone={danger ? 'danger' : 'brand'}
+            size="sm"
+            count={item.badge}
+            max={9}
+            className="absolute -top-0.5 -right-0.5"
+          />
         ) : null}
       </span>
       {collapsed ? null : (
         <>
           <span className={cn('min-w-0 flex-1 truncate', density.itemType)}>{item.label}</span>
           {showBadge ? (
-            <Badge tone={danger ? 'unverified' : 'neutral'} className="px-1.5">
-              {item.badge}
-            </Badge>
+            <Badge tone={danger ? 'danger' : 'neutral'} size="sm" count={item.badge} max={9} />
           ) : null}
         </>
       )}

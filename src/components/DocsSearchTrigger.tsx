@@ -16,7 +16,7 @@ export function DocsSearchTrigger({
   return (
     <CommandSearch
       onClick={onClick}
-      variant="fill"
+      variant={compact ? 'icon' : 'outline'}
       size="sm"
       icon={compact}
       placeholder={placeholder}

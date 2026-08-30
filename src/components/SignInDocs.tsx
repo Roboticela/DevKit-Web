@@ -1,9 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  DkTaskCompleteCheckmark
-} from '@/icons'
+import { DkSuccessCircleCheckmark } from '@/icons'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { brand } from '@/lib/devkit'
 import { PAGES_ITEMS, SIGN_IN_STATES, type SignInPreviewState } from '@/lib/pages-catalog'
@@ -13,7 +11,7 @@ import { Badge } from './Badge'
 import { BuiltWithChips } from './BuiltWithChips'
 import { CollapsibleCode } from './CollapsibleCode'
 import { CompositionTree, type CompositionNode } from './CompositionTree'
-import { DocsSectionTitle } from './DocsCopy'
+import { DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PageStateThumb } from './PageStateThumb'
 import { PropsTable, type PropRow } from './PropsTable'
@@ -27,22 +25,19 @@ const TREE: CompositionNode[] = [
     label: 'Sign In Page',
     children: [
       {
-        label: 'Auth Layout',
-        href: '/components/auth-layout',
-        note: '(centered, max-width 460px)',
-        children: [
-          { label: 'Logo' },
-          { label: 'Headline + Subhead' },
-          { label: 'Text Field', href: '/components/text-field', note: '(Email)' },
-          { label: 'Password Field', href: '/components/password-field' },
-          { label: 'Password Reveal', href: '/components/password-reveal' },
-          { label: 'Inline Link', note: '(Forgot password?)' },
-          { label: 'Button', href: '/components/button', note: '(Primary, full width)' },
-          { label: 'Divider', href: '/components/divider', note: '("or continue with")' },
-          { label: 'Social Login Buttons', href: '/components/social-login', note: '(Google, Apple, GitHub)' },
-          { label: 'Inline Link', href: '/pages/create-account', note: '(Create account)' },
-        ],
+        label: 'Auth Nav',
+        href: '/components/auth-nav',
+        note: '(logo, theme, Create one)',
       },
+      { label: 'Auth Brand', note: '(logo, headline, subhead)' },
+      { label: 'Text Field', href: '/components/text-field', note: '(Email)' },
+      { label: 'Password Field', href: '/components/password-field' },
+      { label: 'Password Reveal', href: '/components/password-reveal' },
+      { label: 'Anchor', href: '/components/anchor', note: '(Forgot password?)' },
+      { label: 'Button', href: '/components/button', note: '(Primary, full width)' },
+      { label: 'Divider', href: '/components/divider', note: '("or continue with")' },
+      { label: 'Social Login Buttons', href: '/components/social-login', note: '(Google, Apple, GitHub)' },
+      { label: 'Anchor', href: '/components/anchor', note: '(Create account)' },
     ],
   },
 ]
@@ -85,8 +80,9 @@ const DATA: PropRow[] = [
   },
 ]
 
-const REACT_SOURCE = `import { AuthBrand, AuthLayout } from '@/components/AuthLayout'
-import { AuthLegal, TextLink } from '@/components/TextLink'
+const REACT_SOURCE = `import { Anchor } from '@/components/Anchor'
+import { AuthBrand, AuthLayout } from '@/components/AuthLayout'
+import { AuthLegal } from '@/components/TextLink'
 import { AuthProviderStack } from '@/components/AuthProviderButton'
 import { Button } from '@/components/Button'
 import { Divider } from '@/components/Divider'
@@ -104,7 +100,7 @@ export default function SignInPage({
   ssoProviders = ['google', 'apple', 'github'],
 }) {
   return (
-    <AuthLayout navLinkTo="/create-account" navLinkLabel="Create account">
+    <AuthLayout navLinkTo="/create-account" navLinkLabel="Create one">
       <AuthBrand title="Welcome back" subhead="Use your DevKit Account" />
       <form
         className="mt-8 flex flex-col"
@@ -122,9 +118,9 @@ export default function SignInPage({
           />
           <PasswordField name="password" placeholder="Password" />
         </div>
-        <TextLink href="/forgot-password" className="mt-3 self-end text-sm">
+        <Anchor href="/forgot-password" className="mt-3 self-end text-sm">
           Forgot password?
-        </TextLink>
+        </Anchor>
         {errorMessage ? <p className="text-danger">{errorMessage}</p> : null}
         <Button className="mt-6" type="submit" loading={isLoading}>
           Sign In
@@ -136,7 +132,7 @@ export default function SignInPage({
           {ssoProviders.includes('github') ? <GitHubButton /> : null}
         </AuthProviderStack>
         <p className="mt-6 text-center text-sm">
-          Don't have an account? <TextLink href="/create-account">Create account</TextLink>
+          Don't have an account? <Anchor href="/create-account">Create account</Anchor>
         </p>
         <AuthLegal />
       </form>
@@ -146,6 +142,8 @@ export default function SignInPage({
 `
 
 const BUILT_WITH = [
+  { label: 'Auth Nav', href: '/components/auth-nav' },
+  { label: 'Anchor', href: '/components/anchor' },
   { label: 'Text Field', href: '/components/text-field' },
   { label: 'Password Field', href: '/components/password-field' },
   { label: 'Button', href: '/components/button' },
@@ -172,23 +170,18 @@ export function SignInDocs() {
         <Caption>Pages / Auth / Sign In</Caption>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <Heading>Sign In</Heading>
-          <Badge tone="verified">
-            <DkTaskCompleteCheckmark size={10} strokeWidth={2.5} absoluteStrokeWidth />
+          <Badge tone="verified" icon={<DkSuccessCircleCheckmark strokeWidth={2.5} absoluteStrokeWidth />}>
             Stable
           </Badge>
         </div>
         <Subhead className="mt-2">
           A minimal authentication page with email/password and social login.
         </Subhead>
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <Badge tone="muted">Web</Badge>
-          <Badge tone="muted">iOS</Badge>
-          <Badge tone="muted">Android</Badge>
-        </div>
+        <DocsMetaBadges showStatus={false} />
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <span className="rounded-[8px] border border-border-default bg-bg-tertiary px-2 py-1 font-mono text-[11px] text-text-secondary">
+          <Badge variant="outline" shape="rounded" tone="neutral">
             v1.2.0
-          </span>
+          </Badge>
           <Caption as="span">Last updated Aug 29, 2026</Caption>
         </div>
         <BuiltWithChips className="mt-3" items={BUILT_WITH} />
@@ -242,7 +235,7 @@ export function SignInDocs() {
           <RelatedCard
             href="/pages/create-account"
             title="Create Account"
-            description="New-user registration with the same auth layout."
+            description="New-user registration with the same auth nav."
           />
           <RelatedCard
             href="/pages/forgot-password"

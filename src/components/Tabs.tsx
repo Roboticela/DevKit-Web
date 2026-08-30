@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
+import { Badge } from './Badge'
 
 export type TabsVariant = 'underline' | 'subtle' | 'outline' | 'ghost' | 'pill'
 export type TabsSize = 'sm' | 'md' | 'lg'
@@ -119,11 +120,6 @@ function indicatorChrome(variant: TabsVariant, metric: (typeof sizes)[TabsSize])
   const radius = variant === 'pill' ? 'rounded-[980px]' : metric.thumb
   if (variant === 'outline') return cn(radius, 'bg-bg-tertiary dark:bg-bg-active')
   return cn(radius, 'bg-bg-primary dark:bg-bg-active')
-}
-
-function formatBadge(badge: number | string) {
-  if (typeof badge === 'number') return badge > 99 ? '99+' : String(badge)
-  return badge
 }
 
 function tabRing(on: boolean) {
@@ -336,18 +332,13 @@ export function Tabs({
               </span>
             ) : null}
             <span className="min-w-0 truncate">{item.label}</span>
-            {item.badge != null ? (
-              <span
-                className={cn(
-                  'inline-flex shrink-0 items-center justify-center rounded-[980px] px-1.5 font-medium leading-none',
-                  size === 'sm' ? 'h-4 min-w-4 text-[10px]' : 'h-[18px] min-w-[18px] text-[11px]',
-                  selected
-                    ? 'bg-brand-primary text-text-on-brand'
-                    : 'bg-bg-tertiary text-text-secondary dark:bg-bg-active',
-                )}
-              >
-                {formatBadge(item.badge)}
-              </span>
+            {item.badge != null && item.badge !== 0 && item.badge !== '0' ? (
+              <Badge
+                variant={selected ? 'fill' : 'subtle'}
+                tone={selected ? 'brand' : 'neutral'}
+                size={size === 'lg' ? 'md' : 'sm'}
+                count={item.badge}
+              />
             ) : null}
           </button>
         )

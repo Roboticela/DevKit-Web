@@ -16,7 +16,7 @@ import {
   DocsUsage,
 } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
-import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { Anchor } from './Anchor'
 import { Body, Caption, Heading, Subhead, type TextVariant } from './Text'
@@ -135,7 +135,9 @@ function FoundationFrame({
 }) {
   return (
     <article>
-      <DocsHeader crumb={`Components / Foundations / ${title}`} title={title} description={description} />
+      <DocsHeader crumb={`Components / Foundations / ${title}`} title={title} description={description}>
+        <DocsMetaBadges />
+      </DocsHeader>
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
         {usage}

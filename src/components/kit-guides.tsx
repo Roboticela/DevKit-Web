@@ -108,7 +108,7 @@ export const bodyGuide = {
       items={[
         'Body is a paragraph. Do not use it as a fake heading.',
         '17px / 19px meets reading size. Do not shrink it to fit more copy.',
-        'Link tone is for inline TextLink, not for whole paragraphs.',
+        'Link tone is for an inline Anchor, not for whole paragraphs.',
         'Disabled tone is for inert UI copy, not for de-emphasizing a message.',
       ]}
     />
@@ -925,6 +925,51 @@ export const datePickerGuide = {
   ),
 }
 
+export const dividerGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Divider is a hairline between sections. Solid is the default, the same quiet rule Apple uses in Settings and
+          on sign-in. Subtle is quieter inside a card. Dashed and dotted mark a softer break. Fade dissolves at the
+          edges. Pass children for a centered label such as “or continue with.”
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Separate, don’t decorate', body: 'A divider marks a change of topic or a choice between two paths. If spacing already does that work, omit it.' },
+          { title: 'Hairline first', body: 'Solid and subtle are 1px. Large is 2px for a major section, not a second accent.' },
+          { title: 'Name the choice', body: 'A label is for a fork, such as password or a provider. A plain rule is for a list or a page break.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use a labeled divider on sign-in between the form and social buttons.',
+          'Use inset on a grouped list so the rule lines up with the row title.',
+          'Use vertical in a toolbar between peer actions. Keep it flush so it sits on the type.',
+        ]}
+        dontItems={[
+          'Do not stack dividers as a substitute for spacing. Use the spacing scale.',
+          'Do not paint a divider in a second accent. Brand is only for a branded break, such as a selected section.',
+          'Do not put essential instructions only in the label. The layout must still read without it.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="An unlabeled divider is decorative. A labeled divider is a separator with an accessible name."
+      items={[
+        'Unlabeled rules are aria-hidden so they do not appear in the accessibility tree.',
+        'A label or icon sets role="separator" and aria-orientation. String children become aria-label.',
+        'Pass decorative when a labeled rule should stay silent, such as a repeated visual in a gallery.',
+        'Disabled is visual only. The divider is never a tab stop.',
+        'Do not rely on tone color alone. The words in the label carry the meaning.',
+      ]}
+    />
+  ),
+}
+
 export const textFieldGuide = {
   usage: (
     <DocsUsage>
@@ -1403,6 +1448,108 @@ export const languageSelectGuide = {
   ),
 }
 
+export const listRowGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          List Row is one cell in a grouped list. Put rows in a{' '}
+          <DocsInlineCode>ListGroup</DocsInlineCode>. Fill is the default inset group, the same white
+          card Settings uses on a gray page. Subtle tints the group. Outline holds an edge on a busy
+          surface. Ghost is a plain list with hairline rules. Pill is a nested well with capsule
+          rows.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Group first', body: 'A row never sits alone on the page. The group is the surface. The row is the cell.' },
+          { title: 'One job', body: 'A row either drills in, toggles, or shows a value. Do not mix a switch and a chevron.' },
+          { title: 'Inset rules', body: 'The hairline starts at the title, not under the leading mark. Last row has no rule.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use fill on a page. Use ghost inside an existing card. Use pill in a compact sheet.',
+          'Pass chevron or href when the row opens another view. Pass a Switch as trailing when the row is a setting.',
+          'Use danger tone for Delete and Sign out. Use brand tone for Add account and other constructive actions.',
+        ]}
+        dontItems={[
+          'Do not nest a Button in a tappable row. Trailing actions belong on a static row.',
+          'Do not paint a second accent on the selected row. Brand is the only tint.',
+          'Do not use List Row for a labeled control with a long description. That is Settings Row.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="A List Group is a list. Each row is a list item. A tappable row is a button or a link. A static row is not in the tab order."
+      items={[
+        'href renders a link. onClick renders a button. A row with only trailing controls stays a static item.',
+        'selected sets aria-current. The checkmark is decorative. The title still names the row.',
+        'disabled dims the row and removes it from the click cycle. The title remains readable.',
+        'Do not rely on tone color. Danger rows still say Delete or Sign out in the title.',
+        'A Switch or Text Action in trailing is its own control. Do not also make that row a button.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move to a tappable row, or to a trailing control' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused row or control' },
+      ]}
+    />
+  ),
+}
+
+export const settingsRowGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Settings Row is one cell in a preference list. Put rows in a{' '}
+          <DocsInlineCode>SettingsList</DocsInlineCode>. Fill is the default inset group, the same
+          white card Settings uses on a gray page. Subtle tints the group. Outline holds an edge on
+          a busy surface. Ghost is a plain list with hairline rules. Pill is a nested well with
+          capsule rows.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Group first', body: 'The list is the surface. The row is the cell. Header names the section. Footer explains it.' },
+          { title: 'One job', body: 'A row either flips a switch, drills in, shows a value, picks from a set, or runs an action. Do not mix a switch and a chevron.' },
+          { title: 'The mark is the category', body: 'A colored well names the setting at a glance. Brand is the default. Teal is verified. Danger is destructive. Muted is system.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use fill on a settings page. Use ghost inside an existing card. Use pill in a compact sheet.',
+          'Pass a Switch as control. Pass value plus onClick for Language and similar. Pass selected for a choice set.',
+          'Use danger tone for Delete and Sign out. Use brand tone for Add account. Keep the title a short verb.',
+        ]}
+        dontItems={[
+          'Do not nest a Button in a tappable row. The switch or the row is the control, not both as buttons.',
+          'Do not put two settings in one row. Split them.',
+          'Do not use Settings Row for a person in a list. That is List Row.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="A Settings List is a group. A tappable row is a button or a link. A row with a switch stays static so the switch keeps the keyboard."
+      items={[
+        'href renders a link. onClick without a nested control renders a button. A switch row stays a static item.',
+        'Selection rows set aria-pressed. The checkmark is decorative. The title still names the choice.',
+        'disabled and loading dim the row. Loading replaces the trailing control with a spinner and sets aria-busy.',
+        'Do not rely on tone or icon color. Danger rows still say Delete or Sign out in the title.',
+        'The icon well is hidden from assistive tech. The label is the name.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move to a tappable row, or to a switch' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused row or flip the switch' },
+      ]}
+    />
+  ),
+}
+
 export const phoneInputGuide = {
   usage: (
     <DocsUsage>
@@ -1835,7 +1982,8 @@ export const commandPaletteGuide = {
         <Body>
           Command Palette is search that runs a command. Spotlight is a floating field, like macOS. Command is a
           panel with grouped results and keyboard hints. Nav is the site search that replaces the bar, like the
-          marketing header. Sheet rises from the bottom on a phone. Command Search is the control that opens it.
+          marketing header. Sheet rises from the bottom on a phone. The trigger is Nav Search — outline in a toolbar,
+          icon in a marketing header.
         </Body>
       </DocsProse>
       <DocsPrinciples
@@ -1847,12 +1995,12 @@ export const commandPaletteGuide = {
       />
       <DocsDoDont
         doItems={[
-          'Put ⌘K on the Command Search trigger in an app or docs header.',
+          'Put bordered Nav Search in the bar with shortcut ⌘K. Command Search is that field used as the trigger.',
           'Show Quick Links when the nav field is empty. Filter as soon as the person types.',
           'Keep result labels short. Put the group or a shortcut on the trailing side.',
         ]}
         dontItems={[
-          'Do not use Nav Search for this. That field filters a list in place. This overlay jumps somewhere.',
+          'Do not restyle the trigger. Outline is the default. Use pill, subtle, ghost, or icon when the bar needs them.',
           'Do not stack a second search inside the palette. The top field is the only input.',
           'Do not highlight a row in brand blue. Selected is the hover surface.',
         ]}
@@ -2024,6 +2172,243 @@ export const avatarGuide = {
   ),
 }
 
+export const avatarPickerGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Avatar Picker is how a person adds or changes a profile photo. An empty face is Add photo. A photo with
+          onEdit is Edit photo, which should open Avatar Editor. Without onEdit, a second press replaces the file.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One face', body: 'The name is the accessible label of the avatar. The camera button is Add photo or Edit photo.' },
+          { title: 'Pick, then crop', body: 'onFile receives the file. Open Avatar Editor with that image. Save writes the crop back to src.' },
+          { title: 'Stay on the face', body: 'The control sits on the extra-large avatar. Do not add a second Choose file button beside it.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Pass name even when there is a photo so initials remain if the file fails.',
+          'Pass onEdit once a photo exists so the next press opens the cropper, not a new file dialog.',
+          'Keep accept to jpeg, png, webp, and gif unless the product needs another type.',
+        ]}
+        dontItems={[
+          'Do not use Avatar alone as the picker. Avatar is not a control.',
+          'Do not hide the camera. It is how the person finds Add and Edit.',
+          'Do not leave the picker enabled while the editor is saving. Pass disabled.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="The face is an Avatar named from the person. The camera is an Icon Button named Add photo or Edit photo."
+      items={[
+        'Add photo opens the file dialog. Edit photo calls onEdit when a photo exists.',
+        'The file input is visually hidden. The camera button is the only tab stop besides the page.',
+        'Disabled dims the camera. It is not operable.',
+        'Pass name so the avatar still has a label when there is no photo.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Focus the camera button' },
+        { keys: ['Enter', 'Space'], action: 'Add or edit the photo' },
+      ]}
+    />
+  ),
+}
+
+export const avatarEditorGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Avatar Editor is the crop sheet. The person moves, zooms, and rotates a photo, then presses Done. Cancel
+          and Done sit in Sheet Nav on black. Choose a Different Photo returns to the file dialog. Remove Photo
+          clears the face.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One crop', body: 'The circle is the saved face. Pinch or the zoom slider. Drag to reposition. Rotate in 90 degree steps or with the slider.' },
+          { title: 'Done writes the file', body: 'onSave receives a jpeg blob at 512px. Close the sheet after it resolves. Keep saving true while you upload.' },
+          { title: 'Lock while saving', body: 'Cancel, rotate, and the sliders disable. Done shows Saving. Escape does not dismiss.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Open from Avatar Picker onEdit after a file is chosen, or from Edit photo on an existing src.',
+          'Pass onChooseAnother to return to the file dialog. Pass canRemove and onRemove only when a photo already exists.',
+          'Keep the sheet on black. Sheet Nav is ghost and onDark.',
+        ]}
+        dontItems={[
+          'Do not nest this sheet in a Modal. It is already a dialog.',
+          'Do not leave the overlay open after a failed save without the error line. The editor already shows the message.',
+          'Do not crop to a square file and then round it again in Avatar. The editor already exports the circle.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Avatar Editor is a modal dialog named Move and Scale. Focus stays in the sheet until Cancel or Done."
+      items={[
+        'role dialog and aria-modal. The title is Move and Scale. The subtitle explains pinch and drag.',
+        'Cancel, Done, rotate, zoom, and rotation are named controls. Done sets aria-busy while saving.',
+        'Escape calls onCancel when the sheet is not busy. The page behind does not scroll.',
+        'Choose a Different Photo and Remove Photo are Anchors. Remove uses the danger tone.',
+        'The crop canvas is visual. Zoom and Rotation sliders are the accessible way to adjust the crop.',
+      ]}
+      keys={[
+        { keys: ['Esc'], action: 'Close when not saving' },
+        { keys: ['Tab'], action: 'Move through Cancel, Done, zoom, rotate, and footer actions' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused action' },
+      ]}
+    />
+  ),
+}
+
+export const keyValueRowGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Key Value Row is a label on the left and a value on the right, the same quiet pair Apple uses in Settings
+          and About. Fill is the default hairline list. Subtle, outline, and pill sit as a card. Ghost is type with
+          no chrome. Wrap a set in Key Value Group so the last row drops its divider.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Read left to right', body: 'The label names the field. The value is the current answer, quieter, and truncates if it is long.' },
+          { title: 'One action', body: 'Copyable turns the value blue. A chevron means the row opens something. Do not do both.' },
+          { title: 'Group the set', body: 'An account card is a group. A single spec line can stand alone. Do not mix variants inside one group.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use fill in a settings card. Use pill for a single fact on a page. Use stacked when the value is an address or a long id.',
+          'Pass copyable for an email, a key, or an id the person is meant to take with them.',
+          'Use Not set when the value is missing. Keep the label. Do not hide the row.',
+        ]}
+        dontItems={[
+          'Do not use a row as a form field. That is Text Field or Settings Row.',
+          'Do not put a primary button in the trailing slot. A chevron, a badge, or a check is enough.',
+          'Do not mark every value in brand blue. Blue is for copy and links.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="A static row is read as label, then value. A copyable or linked row is a control named from both."
+      items={[
+        'Copyable is a button. The name is Copy, then the label, then the value. After a copy it becomes Copied.',
+        'href renders a link. onClick renders a button. Both include a chevron unless you pass chevron false.',
+        'Loading sets aria-busy and replaces the value with a placeholder bone.',
+        'Disabled is visual and not operable. Invalid sets aria-invalid and danger type on the value.',
+        'Do not rely on color. Not set, Copied, and an error hint restate the state in words.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move to the next copyable or linked row' },
+        { keys: ['Enter', 'Space'], action: 'Copy, or activate the row' },
+      ]}
+    />
+  ),
+}
+
+export const badgeGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Badge is a compact status, count, or category label. Subtle is the default, the same quiet tint Apple uses in
+          Settings and lists. Fill is solid. Outline is a wireframe. Ghost is ink only. Pill is a slightly taller chip.
+          Teal is verified. Green is success. Orange is a review. Red is a problem or a count.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One word', body: 'New, Live, Beta, Pro. A badge is a status, not a sentence. The row or heading carries the rest.' },
+          { title: 'Teal is verified', body: 'Verified and active use accent teal. Success green is for a completed action. Do not mix them on the same row.' },
+          { title: 'Count is a number', body: 'Pass count for a notification. Zero hides it. Overflow becomes 99+.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use subtle in a table or a settings row. Use fill for New or a notification count. Use ghost in a dense list.',
+          'Add a leading dot for Live or Active. Use pulse only when the status is happening now.',
+          'Keep small in a table. Medium is the default. Large sits next to a heading.',
+        ]}
+        dontItems={[
+          'Do not use teal as a second call to action. It is only for verified, active, and success badges.',
+          'Do not put a badge on every row. Reserve it for a state that is not already in the copy.',
+          'Do not use danger fill for a category. Danger is an error, a destructive tag, or a notification count.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Badge is a label. The words are the name. A count and a dot-only mark still need a name."
+      items={[
+        'The label text is the accessible name when it is visible.',
+        'A count-only badge uses the formatted number as the name. Zero is hidden, not announced as zero.',
+        'A dot-only badge uses the tone as the name, such as verified status. Prefer a visible word when the status matters.',
+        'Loading sets aria-busy. Disabled is visual only unless the badge is a control.',
+        'onClick turns the badge into a button. onDismiss is a separate remove control with its own label.',
+        'Do not rely on color alone. Pair danger with Failed, warning with In review, teal with Verified.',
+      ]}
+    />
+  ),
+}
+
+export const statCardGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Stat Card is a headline metric. Fill is the default, the same quiet tile Apple uses for Fitness and Health.
+          Subtle, outline, ghost, and pill match the rest of the kit. The number is the story. Delta, hint, icon, and
+          sparkline are optional support — never decoration.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One number', body: 'The value is already formatted. A unit sits beside it when the number needs a scale, such as hrs or /mo.' },
+          { title: 'Delta is the change', body: 'Up is success. Down is danger. Invert when a drop is the win, such as open tickets. Neutral is unchanged.' },
+          { title: 'Quiet chrome', body: 'Fill on a dashboard. Ghost in a dense row. Tone tints the tile only when the metric itself is semantic.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use a grid of fill cards for an overview. Use small in a sidebar. Use large for a single featured number.',
+          'Pass invert on a delta when fewer is better. Keep the hint as the period, such as vs last month.',
+          'Add an icon or a sparkline when they help scan a set. Keep both optional.',
+        ]}
+        dontItems={[
+          'Do not use Stat Card as a button for a primary action. href and onClick are for opening the detail behind the number.',
+          'Do not invent a second accent. Brand is the only interactive color. Success and danger belong to the delta.',
+          'Do not leave a loading card after you know the value. Swap loading off. Empty is an em dash, not a zero.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Stat Card is a named metric. The label is the accessible name. The value, delta, and hint are visible support."
+      items={[
+        'The label is referenced with aria-labelledby. The value is not a heading.',
+        'A sparkline is decorative. The delta chip restates the change in text.',
+        'href renders a link. onClick renders a button. Disabled and loading are not operable.',
+        'Loading sets aria-busy. Empty shows an em dash and keeps the label.',
+        'Do not rely on delta color alone. The value string includes the sign or the word unchanged.',
+      ]}
+    />
+  ),
+}
+
 export const breadcrumbGuide = {
   usage: (
     <DocsUsage>
@@ -2074,6 +2459,112 @@ export const breadcrumbGuide = {
   ),
 }
 
+export const tableGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Table is a structured list of records. Fill is the default — a quiet card with a tinted header, the same
+          treatment Apple uses for Music playlists and Admin lists. Subtle and pill sit on a secondary surface.
+          Outline is a wireframe. Ghost is rows and hairlines with no chrome.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One object', body: 'Caption, rows, and footer share one frame. Do not float a title above a disconnected table.' },
+          { title: 'Hairlines, not boxes', body: 'Rows divide with a subtle line. Selection is a brand-tinted fill. Nothing casts a shadow.' },
+          { title: 'Edit in place', body: 'Double-click a cell, or Return or F2 on the focused row. Escape cancels. Tab commits and moves. The value stays in the cell — no dialog.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use fill on a page. Use subtle or pill inside a card. Use ghost when the table sits under a page header that already names the list.',
+          'Use small in a dense log. Use medium for product lists. Use large when each row is a person with an avatar.',
+          'Pass editable for inline edits. Mark a Badge or action column editable={false}.',
+        ]}
+        dontItems={[
+          'Do not paint selected rows in teal or a second accent. Brand primary subtle is the only selected fill.',
+          'Do not wrap every cell in a card. The row is the unit.',
+          'Do not open a modal to rename a cell. Double-click and type.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Table is a region that contains a real table. Headers are column headers. Selected rows are marked. Sortable headers expose aria-sort."
+      items={[
+        'A caption string becomes the accessible name. Otherwise pass aria-label.',
+        'Selectable rows set aria-selected. The header checkbox is mixed when the page is partly selected.',
+        'Sortable headers are buttons. aria-sort is ascending, descending, or none.',
+        'Disabled rows stay visible and are skipped by arrow keys.',
+        'loading sets aria-busy. Empty is a single cell that names the blank view.',
+        'Arrow keys move row focus. Left and right move the active cell when the table is editable.',
+        'Return or F2 edits the active cell. Double-click does the same. Escape cancels. Tab commits and moves.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move to the table, then through sortable headers and checkboxes' },
+        { keys: ['ArrowUp', 'ArrowDown'], action: 'Move between enabled rows' },
+        { keys: ['ArrowLeft', 'ArrowRight'], action: 'Move the active cell when editing is on' },
+        { keys: ['Home', 'End'], action: 'First or last enabled row' },
+        { keys: ['Enter', 'F2'], action: 'Edit the active cell' },
+        { keys: ['Escape'], action: 'Cancel the edit' },
+        { keys: ['Tab'], action: 'While editing, commit and move to the next cell' },
+        { keys: ['Space'], action: 'Select the focused row' },
+      ]}
+    />
+  ),
+}
+
+export const pageHeaderGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Page Header is the title of a view. Ghost is the default, the same quiet start Apple uses on Settings and
+          Files — type on the page, actions on the trailing edge. Subtle, outline, fill, and pill sit as a card.
+          Split puts actions beside the title from tablet up. Stack keeps them under the copy. Center is a hero.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'One title', body: 'The heading names the view. The description is one supporting line. Actions are verbs for this page.' },
+          { title: 'Deference', body: 'Ghost has no chrome. Use a surface only when the header sits inside a card, not on the page itself.' },
+          { title: 'Actions stay few', body: 'One primary button is enough. A secondary action is quieter. Icon buttons are for tools, not a second CTA.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use ghost on a page. Use subtle or outline when the header sits in a card. Use pill for a nested well.',
+          'Use small in a nested view or a compact list. Use large only for a hero or a first-run page.',
+          'Keep the title short. Put the rest in the description, a badge, or the first row of the page.',
+        ]}
+        dontItems={[
+          'Do not put a second heading in the header. Breadcrumbs, an eyebrow, and the title are enough.',
+          'Do not stretch a primary button across the row on desktop. Compact pills sit on the trailing edge.',
+          'Do not restyle the title in teal. Brand blue is for the action, not the heading.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Page Header is the heading of the view. The title is a real heading. Actions are buttons the person can reach next."
+      items={[
+        'The title is an h1 by default. Pass as when the visual size and the document outline disagree.',
+        'Eyebrow and description are supporting copy, not headings.',
+        'Back is a button named Back. Pass leading for a custom control with its own name.',
+        'Loading sets aria-busy. The title stays available to assistive tech as a visually hidden name.',
+        'Disabled dims the actions. They stay in the tree.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move to Back, then to each action' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused action' },
+      ]}
+    />
+  ),
+}
+
 export const paginationGuide = {
   usage: (
     <DocsUsage>
@@ -2118,6 +2609,54 @@ export const paginationGuide = {
       keys={[
         { keys: ['Tab'], action: 'Move through previous, page numbers, and next' },
         { keys: ['Enter', 'Space'], action: 'Go to the focused page' },
+      ]}
+    />
+  ),
+}
+
+export const authNavGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          Auth Nav is the 44px bar on sign-in and related flows. The mark is Brand Logo. Appearance is Theme Toggle
+          compact. The trailing action is Anchor — brand blue, underline on hover. Auth Layout places this bar on the
+          page; do not rebuild the row by hand.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Three pieces', body: 'Logo home, theme, optional link. Nothing else belongs in this bar.' },
+          { title: 'Use the kit', body: 'Brand Logo, Theme Toggle, and Anchor. Do not restyle a raw header to look like this bar.' },
+          { title: 'One destination', body: 'The trailing Anchor is the peer flow: Create one on sign-in, Sign in on create account.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Pass navLinkTo and navLinkLabel for the peer auth page.',
+          'Omit both when the flow has no alternate, such as setup.',
+          'Keep the bar on the page background. Do not frost it like Site Nav.',
+        ]}
+        dontItems={[
+          'Do not put search, bag, or marketing links here. That is Site Nav.',
+          'Do not replace Anchor with a button or a second accent color.',
+          'Do not rebuild the row with raw links and a custom switch.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="Auth Nav is the header of an auth page. The logo names the product. Theme Toggle names appearance. The trailing Anchor names the peer flow."
+      items={[
+        'The logo link uses the product name as its accessible label. The mark inside it is decorative.',
+        'Theme Toggle compact exposes Light, Dark, and a switch. Do not add a second appearance control in the same header.',
+        'The trailing Anchor is a real link with visible text. Do not replace it with an icon-only control.',
+        'The bar is 44px tall. Keep hit targets inside that height.',
+      ]}
+      keys={[
+        { keys: ['Tab'], action: 'Move from the logo to Theme Toggle, then the trailing link' },
+        { keys: ['Enter', 'Space'], action: 'Activate the focused control' },
       ]}
     />
   ),
@@ -2333,8 +2872,7 @@ export const navSearchGuide = {
         <Body>
           Nav Search is the compact field in a top bar. Pill is the default, the same capsule as Finder and Safari.
           Subtle sits on a card. Outline holds an edge on a busy chrome. Ghost stays quiet until hover. Icon collapses
-          to a magnifying glass and opens on focus. Pair it with Dashboard Nav or a custom toolbar — not with a form
-          label.
+          to a magnifying glass and opens on focus. Pair it with a toolbar — not with a form label.
         </Body>
       </DocsProse>
       <DocsPrinciples
@@ -2346,7 +2884,7 @@ export const navSearchGuide = {
       />
       <DocsDoDont
         doItems={[
-          'Use pill in Dashboard Nav. Use icon in a marketing header where space is the constraint.',
+          'Use pill in a compact top bar. Use icon in a marketing header where space is the constraint.',
           'Pass shortcut when a command palette is bound to the same query, such as ⌘K.',
           'Show loading by replacing the glass with the spinner while results resolve.',
         ]}

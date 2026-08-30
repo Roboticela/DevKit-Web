@@ -19,8 +19,9 @@ import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { cn } from '@/lib/cn'
 import { EASE, FOCUS_RING } from '@/lib/styles'
 import { Button } from './Button'
+import { Badge } from './Badge'
 import { CodeBlock } from './CodeBlock'
-import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsInlineCode, DocsSnippet, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -165,7 +166,9 @@ export function IconsDocs() {
         crumb="Components / Foundations / Icons"
         title="Icons"
         description={`${ALL_ICONS.length.toLocaleString()} local icons you can search by name or meaning. Use these glyphs in buttons, fields, and empty states.`}
-      />
+      >
+        <DocsMetaBadges />
+      </DocsHeader>
 
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
@@ -261,12 +264,9 @@ export function IconsDocs() {
                   {item.tags.length > 0 ? (
                     <span className="flex max-w-full justify-center gap-1 overflow-hidden">
                       {item.tags.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="max-w-[4.5rem] truncate rounded-[980px] bg-bg-tertiary px-1.5 py-0.5 text-[9px] leading-none text-text-tertiary"
-                        >
+                        <Badge key={tag} size="sm" tone="neutral" className="max-w-[4.5rem]">
                           {labelTag(tag)}
-                        </span>
+                        </Badge>
                       ))}
                     </span>
                   ) : null}

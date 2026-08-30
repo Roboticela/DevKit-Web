@@ -38,16 +38,32 @@ import {
   DkLogoutExitSession,
   DkResidentialHouseHome,
   DkFileFolderDirectory,
-  DkFileFolderDirectoryOpened
+  DkFileFolderDirectoryOpened,
+  DkSparkleHighlightBurst,
+  DkPaperBanknoteCurrency,
+  DkPeopleUsersGroup,
+  DkChartLine,
+  DkSuccessCircleCheckmark,
+  DkWarningTriangleAlert,
 } from '@/icons'
 import { Alert, ALERT_SIZES, ALERT_TONES, ALERT_VARIANTS, type AlertSize, type AlertTone, type AlertVariant } from './Alert'
 import { Anchor } from './Anchor'
-import { AuthBrand, AuthLayout } from './AuthLayout'
+import { AuthNav } from './AuthNav'
 import { AuthProviderStack } from './AuthProviderButton'
 import { Avatar, AvatarGroup, AVATAR_SHAPES, AVATAR_SIZES, AVATAR_STATUSES, AVATAR_TONES, AVATAR_VARIANTS, AVATAR_SHAPE_LABEL, AVATAR_SIZE_LABEL, AVATAR_STATUS_LABEL, AVATAR_TONE_LABEL, AVATAR_VARIANT_LABEL } from './Avatar'
 import { AvatarEditor } from './AvatarEditor'
 import { AvatarPicker } from './AvatarPicker'
-import { Badge } from './Badge'
+import {
+  Badge,
+  BADGE_SHAPES,
+  BADGE_SIZES,
+  BADGE_TONES,
+  BADGE_VARIANTS,
+  BADGE_SHAPE_LABEL,
+  BADGE_SIZE_LABEL,
+  BADGE_TONE_LABEL,
+  BADGE_VARIANT_LABEL,
+} from './Badge'
 import { BrandLogo } from './BrandLogo'
 import {
   Breadcrumbs,
@@ -95,7 +111,7 @@ import {
   type SidebarSize,
   type SidebarVariant,
 } from './DashboardSidebar'
-import { DataTable } from './DataTable'
+import { TableDemo, TableStates } from './TableDocs'
 import {
   DatePicker,
   DATE_PICKER_SIZES,
@@ -105,7 +121,19 @@ import {
   type DatePickerVariant,
   type DateRange,
 } from './DatePicker'
-import { Divider } from './Divider'
+import {
+  Divider,
+  DIVIDER_ALIGNS,
+  DIVIDER_ORIENTATIONS,
+  DIVIDER_SIZES,
+  DIVIDER_TONES,
+  DIVIDER_VARIANTS,
+  DIVIDER_ALIGN_LABEL,
+  DIVIDER_ORIENTATION_LABEL,
+  DIVIDER_SIZE_LABEL,
+  DIVIDER_TONE_LABEL,
+  DIVIDER_VARIANT_LABEL,
+} from './Divider'
 import { Dropdown, SELECT_SIZES, SELECT_VARIANTS, type DropdownOption, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
 import {
   EmptyPopup,
@@ -153,7 +181,18 @@ import {
   ICON_TAB_SIZE_LABEL,
   ICON_TAB_VARIANT_LABEL,
 } from './IconTab'
-import { KeyValueRow } from './KeyValueRow'
+import {
+  KeyValueGroup,
+  KeyValueRow,
+  KEY_VALUE_LAYOUTS,
+  KEY_VALUE_SIZES,
+  KEY_VALUE_TONES,
+  KEY_VALUE_VARIANTS,
+  KEY_VALUE_LAYOUT_LABEL,
+  KEY_VALUE_SIZE_LABEL,
+  KEY_VALUE_TONE_LABEL,
+  KEY_VALUE_VARIANT_LABEL,
+} from './KeyValueRow'
 import { KitDocArticle } from './KitDocArticle'
 import { DocsStateCard, DocsStateGrid, DocsStateGroup, DocsStack } from './DocsCard'
 import {
@@ -169,16 +208,23 @@ import {
   countrySelectGuide,
   countySelectGuide,
   datePickerGuide,
+  dividerGuide,
   emptyPopupGuide,
   emptyStateGuide,
   avatarGuide,
+  avatarEditorGuide,
+  avatarPickerGuide,
+  authNavGuide,
+  badgeGuide,
   eyebrowGuide,
   fieldLabelGuide,
   headingGuide,
   iconButtonGuide,
   iconTabGuide,
+  keyValueRowGuide,
   labelGuide,
   languageSelectGuide,
+  listRowGuide,
   loadingScreenGuide,
   loaderGuide,
   modalGuide,
@@ -186,6 +232,7 @@ import {
   navSearchGuide,
   numberFieldGuide,
   otpGuide,
+  pageHeaderGuide,
   paginationGuide,
   passwordFieldGuide,
   passwordRevealGuide,
@@ -197,13 +244,16 @@ import {
   scoreRingGuide,
   segmentedGuide,
   selectGuide,
+  settingsRowGuide,
   sheetNavGuide,
   sidebarNavGuide,
   skeletonGuide,
   sliderGuide,
   stateSelectGuide,
+  statCardGuide,
   subheadGuide,
   switchGuide,
+  tableGuide,
   tabsGuide,
   textareaGuide,
   textFieldGuide,
@@ -211,7 +261,21 @@ import {
   themeToggleGuide,
 } from './kit-guides'
 import { LanguageSelect } from './LanguageSelect'
-import { ListGroup, ListRow } from './ListRow'
+import {
+  ListGroup,
+  ListMark,
+  ListRow,
+  TextAction,
+  LIST_ROW_SIZES,
+  LIST_ROW_TONES,
+  LIST_ROW_VARIANTS,
+  LIST_ROW_SIZE_LABEL,
+  LIST_ROW_TONE_LABEL,
+  LIST_ROW_VARIANT_LABEL,
+  type ListRowPreview,
+  type ListRowSize,
+  type ListRowVariant,
+} from './ListRow'
 import {
   Loader,
   LOADER_SIZES,
@@ -287,7 +351,7 @@ import {
 } from './NavSearch'
 import { OtpBoxes, OTP_BOXES_SIZES, OTP_BOXES_VARIANTS, type OtpBoxesSize, type OtpBoxesVariant } from './OtpBoxes'
 import { OtherWaysButton } from './OtherWaysButton'
-import { PageHeader } from './PageHeader'
+import { PageHeaderDemo, PageHeaderStates } from './PageHeaderDocs'
 import {
   Pagination,
   PAGINATION_ALIGNS,
@@ -343,7 +407,21 @@ import {
 } from './ScoreRing'
 import { SelectTrigger } from './SelectTrigger'
 import { SegmentedControl, SegmentedToolbar, SEGMENTED_VARIANTS, type SegmentedVariant } from './SegmentedControl'
-import { SettingsList, SettingsRow } from './SettingsRow'
+import {
+  SettingsList,
+  SettingsRow,
+  SETTINGS_ROW_ICON_TONES,
+  SETTINGS_ROW_SIZES,
+  SETTINGS_ROW_TONES,
+  SETTINGS_ROW_VARIANTS,
+  SETTINGS_ROW_ICON_TONE_LABEL,
+  SETTINGS_ROW_SIZE_LABEL,
+  SETTINGS_ROW_TONE_LABEL,
+  SETTINGS_ROW_VARIANT_LABEL,
+  type SettingsRowPreview,
+  type SettingsRowSize,
+  type SettingsRowVariant,
+} from './SettingsRow'
 import {
   SheetNav,
   SHEET_NAV_LAYOUTS,
@@ -374,7 +452,19 @@ import {
   type SliderSize,
   type SliderVariant,
 } from './Slider'
-import { StatCard } from './StatCard'
+import {
+  StatCard,
+  STAT_CARD_ALIGNS,
+  STAT_CARD_ALIGN_LABEL,
+  STAT_CARD_DELTA_LABEL,
+  STAT_CARD_DELTA_TONES,
+  STAT_CARD_SIZES,
+  STAT_CARD_SIZE_LABEL,
+  STAT_CARD_TONES,
+  STAT_CARD_TONE_LABEL,
+  STAT_CARD_VARIANTS,
+  STAT_CARD_VARIANT_LABEL,
+} from './StatCard'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { Tabs, TABS_ALIGNS, TABS_SIZES, TABS_VARIANTS, TABS_ALIGN_LABEL, TABS_SIZE_LABEL, TABS_VARIANT_LABEL } from './Tabs'
 import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
@@ -386,7 +476,6 @@ import {
   type TextFieldSize,
   type TextFieldVariant,
 } from './TextField'
-import { AuthLegal, ErrorText, TextLink } from './TextLink'
 import { ThemeIconToggle } from './ThemeIconToggle'
 import { ThemeToggle } from './ThemeToggle'
 import { TotpManualKey } from './TotpManualKey'
@@ -5837,8 +5926,8 @@ function CommandPaletteDemo() {
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
         <CommandSearch placeholder="Search commands…" onClick={() => setOpen('command')} active={open === 'command'} />
-        <CommandSearch variant="pill" placeholder="Search" shortcut={false} onClick={() => setOpen('spotlight')} active={open === 'spotlight'} />
-        <CommandSearch icon placeholder="Search" onClick={() => setOpen('nav')} active={open === 'nav'} />
+        <CommandSearch variant="subtle" placeholder="Search" shortcut={false} onClick={() => setOpen('spotlight')} active={open === 'spotlight'} />
+        <CommandSearch variant="icon" placeholder="Search" shortcut={false} onClick={() => setOpen('nav')} active={open === 'nav'} />
       </div>
       <div className="flex w-full flex-wrap gap-2">
         {COMMAND_PALETTE_VARIANTS.map((variant) => (
@@ -5969,14 +6058,11 @@ function CommandPaletteStates() {
               <CommandSearch
                 variant={variant}
                 placeholder="Search"
-                shortcut={variant === 'fill' || variant === 'subtle' ? '⌘K' : false}
+                shortcut={variant === 'outline' || variant === 'pill' ? '⌘K' : false}
                 onClick={() => undefined}
               />
             </DocsStateCard>
           ))}
-          <DocsStateCard label="Icon">
-            <CommandSearch icon placeholder="Search" onClick={() => undefined} />
-          </DocsStateCard>
           <DocsStateCard label="Disabled">
             <CommandSearch placeholder="Search" disabled onClick={() => undefined} />
           </DocsStateCard>
@@ -6519,12 +6605,15 @@ function NavSearchPlay({
   expanded?: boolean
   defaultExpanded?: boolean
   preview?: 'hover' | 'focus'
+  active?: boolean
+  onActivate?: () => void
 }) {
   const [value, setValue] = useState(initial)
   return <NavSearch value={value} onChange={setValue} {...rest} />
 }
 
 function NavSearchDemo() {
+  const [open, setOpen] = useState(false)
   return (
     <div className="flex w-full max-w-[280px] flex-col items-center gap-4">
       {NAV_SEARCH_VARIANTS.map((variant) => (
@@ -6533,20 +6622,35 @@ function NavSearchDemo() {
           variant={variant}
           placeholder={NAV_SEARCH_VARIANT_LABEL[variant]}
           shortcut={variant === 'pill' ? '⌘K' : undefined}
+          onActivate={variant === 'icon' ? () => setOpen(true) : undefined}
+          active={variant === 'icon' ? open : undefined}
         />
       ))}
+      <CommandPalette
+        open={open}
+        onClose={() => setOpen(false)}
+        items={COMMAND_ITEMS}
+        placeholder="Search commands…"
+        onSelect={() => setOpen(false)}
+      />
     </div>
   )
 }
 
 function NavSearchStates() {
+  const [iconOpen, setIconOpen] = useState(false)
   return (
     <DocsStack gap={10}>
       <DocsStateGroup title="Appearance">
         <DocsStateGrid>
           {NAV_SEARCH_VARIANTS.map((variant) => (
             <DocsStateCard key={variant} label={NAV_SEARCH_VARIANT_LABEL[variant]}>
-              <NavSearchPlay variant={variant} placeholder="Search" />
+              <NavSearchPlay
+                variant={variant}
+                placeholder="Search"
+                onActivate={variant === 'icon' ? () => setIconOpen(true) : undefined}
+                active={variant === 'icon' ? iconOpen : undefined}
+              />
             </DocsStateCard>
           ))}
         </DocsStateGrid>
@@ -6593,6 +6697,13 @@ function NavSearchStates() {
           </DocsStateCard>
         </DocsStateGrid>
       </DocsStateGroup>
+      <CommandPalette
+        open={iconOpen}
+        onClose={() => setIconOpen(false)}
+        items={COMMAND_ITEMS}
+        placeholder="Search commands…"
+        onSelect={() => setIconOpen(false)}
+      />
     </DocsStack>
   )
 }
@@ -6885,6 +6996,44 @@ function SidebarStates() {
   )
 }
 
+function AuthNavPreview({
+  navLinkTo,
+  navLinkLabel,
+}: {
+  navLinkTo?: string
+  navLinkLabel?: string
+}) {
+  return (
+    <div className="overflow-hidden rounded-[12px] border border-border-default bg-bg-primary">
+      <AuthNav contained navLinkTo={navLinkTo} navLinkLabel={navLinkLabel} />
+    </div>
+  )
+}
+
+function AuthNavDemo() {
+  return <AuthNavPreview navLinkTo="/pages/create-account" navLinkLabel="Create one" />
+}
+
+function AuthNavStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Trailing link">
+        <div className="flex flex-col gap-4">
+          <DocsStateCard label="Create one" align="stretch" wide>
+            <AuthNavPreview navLinkTo="/pages/create-account" navLinkLabel="Create one" />
+          </DocsStateCard>
+          <DocsStateCard label="Sign in" align="stretch" wide>
+            <AuthNavPreview navLinkTo="/pages/sign-in" navLinkLabel="Sign in" />
+          </DocsStateCard>
+          <DocsStateCard label="Theme only" align="stretch" wide>
+            <AuthNavPreview />
+          </DocsStateCard>
+        </div>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
 function DashboardNavDemo() {
   const [search, setSearch] = useState('')
   return (
@@ -6916,6 +7065,542 @@ function ShellDemo() {
         <p className="m-0 p-6 text-sm text-text-secondary">Main canvas</p>
       </DashboardShell>
     </div>
+  )
+}
+
+const BADGE_GLYPH = { strokeWidth: 2.25, absoluteStrokeWidth: true } as const
+
+function BadgeDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-2">
+      <Badge variant="fill">New</Badge>
+      <Badge variant="subtle" tone="verified" dot pulse>
+        Live
+      </Badge>
+      <Badge variant="outline" tone="warning">
+        In review
+      </Badge>
+      <Badge variant="ghost" tone="neutral">
+        Beta
+      </Badge>
+      <Badge variant="pill" tone="neutral">
+        Pro
+      </Badge>
+      <Badge variant="fill" tone="danger" count={3} />
+    </div>
+  )
+}
+
+function RemovableBadgePlay() {
+  const [gone, setGone] = useState(false)
+  if (gone) {
+    return (
+      <button
+        type="button"
+        className="cursor-pointer border-0 bg-transparent p-0 text-[12px] text-brand-primary"
+        onClick={() => setGone(false)}
+      >
+        Restore
+      </button>
+    )
+  }
+  return (
+    <Badge tone="neutral" onDismiss={() => setGone(true)}>
+      Filters
+    </Badge>
+  )
+}
+
+function BadgeStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {BADGE_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={BADGE_VARIANT_LABEL[variant]}>
+              <Badge variant={variant}>New</Badge>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {BADGE_SIZES.map((size) => (
+            <DocsStateCard key={size} label={BADGE_SIZE_LABEL[size]}>
+              <Badge size={size}>New</Badge>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={3}>
+          {BADGE_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={BADGE_TONE_LABEL[tone]}>
+              <Badge tone={tone}>{BADGE_TONE_LABEL[tone]}</Badge>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Fill">
+        <DocsStateGrid columns={3}>
+          {BADGE_TONES.map((tone) => (
+            <DocsStateCard key={`fill-${tone}`} label={BADGE_TONE_LABEL[tone]}>
+              <Badge variant="fill" tone={tone}>
+                {BADGE_TONE_LABEL[tone]}
+              </Badge>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Outline">
+        <DocsStateGrid columns={3}>
+          {BADGE_TONES.map((tone) => (
+            <DocsStateCard key={`outline-${tone}`} label={BADGE_TONE_LABEL[tone]}>
+              <Badge variant="outline" tone={tone}>
+                {BADGE_TONE_LABEL[tone]}
+              </Badge>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Ghost">
+        <DocsStateGrid columns={3}>
+          {BADGE_TONES.map((tone) => (
+            <DocsStateCard key={`ghost-${tone}`} label={BADGE_TONE_LABEL[tone]}>
+              <Badge variant="ghost" tone={tone} dot>
+                {BADGE_TONE_LABEL[tone]}
+              </Badge>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Shape">
+        <DocsStateGrid columns={2}>
+          {BADGE_SHAPES.map((shape) => (
+            <DocsStateCard key={shape} label={BADGE_SHAPE_LABEL[shape]}>
+              <Badge shape={shape} tone="neutral">
+                Category
+              </Badge>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Default">
+            <Badge>New</Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Dot">
+            <Badge tone="verified" dot>
+              Live
+            </Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Pulse">
+            <Badge tone="verified" dot pulse>
+              Live
+            </Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Icon">
+            <Badge tone="success" icon={<DkSuccessCircleCheckmark {...BADGE_GLYPH} />}>
+              Verified
+            </Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Warning icon">
+            <Badge tone="warning" icon={<DkWarningTriangleAlert {...BADGE_GLYPH} />}>
+              Review
+            </Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Count">
+            <Badge variant="fill" tone="danger" count={3} />
+          </DocsStateCard>
+          <DocsStateCard label="Overflow">
+            <Badge variant="fill" tone="danger" count={128} />
+          </DocsStateCard>
+          <DocsStateCard label="Count, brand">
+            <Badge variant="fill" count={12} />
+          </DocsStateCard>
+          <DocsStateCard label="Dot only">
+            <Badge tone="success" dot />
+          </DocsStateCard>
+          <DocsStateCard label="Loading">
+            <Badge loading>Saving</Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <Badge disabled>Paused</Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Removable">
+            <RemovableBadgePlay />
+          </DocsStateCard>
+          <DocsStateCard label="Pill, large">
+            <Badge variant="pill" size="lg" tone="neutral">
+              Pro
+            </Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Ghost, small">
+            <Badge variant="ghost" size="sm" tone="warning" dot>
+              Away
+            </Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Rounded">
+            <Badge shape="rounded" tone="brand">
+              Docs
+            </Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Long label">
+            <Badge tone="neutral">In review · waiting</Badge>
+          </DocsStateCard>
+          <DocsStateCard label="Fill, verified">
+            <Badge variant="fill" tone="verified">
+              Active
+            </Badge>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const STAT_SPARK = [18, 22, 19, 26, 24, 31, 28, 36]
+const STAT_SPARK_DOWN = [36, 32, 34, 28, 24, 22, 18, 16]
+
+function StatIcon({ name = 'revenue' }: { name?: 'revenue' | 'people' | 'inbox' | 'chart' }) {
+  const node =
+    name === 'people' ? (
+      <DkPeopleUsersGroup strokeWidth={1.75} absoluteStrokeWidth />
+    ) : name === 'inbox' ? (
+      <DkMessageInboxTray strokeWidth={1.75} absoluteStrokeWidth />
+    ) : name === 'chart' ? (
+      <DkChartLine strokeWidth={1.75} absoluteStrokeWidth />
+    ) : (
+      <DkPaperBanknoteCurrency strokeWidth={1.75} absoluteStrokeWidth />
+    )
+  return node
+}
+
+function StatCardDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {STAT_CARD_VARIANTS.map((variant) => (
+        <StatCard
+          key={variant}
+          variant={variant}
+          label="Revenue"
+          value="$48,290"
+          delta={{ value: '+12%', tone: 'up' }}
+          hint="vs last month"
+          icon={<StatIcon />}
+          sparkline={STAT_SPARK}
+        />
+      ))}
+    </div>
+  )
+}
+
+function StatCardStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {STAT_CARD_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={STAT_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StatCard
+                variant={variant}
+                label="Revenue"
+                value="$48,290"
+                delta={{ value: '+12%', tone: 'up' }}
+                hint="vs last month"
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {STAT_CARD_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={STAT_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StatCard
+                size={size}
+                label="Revenue"
+                value="$48,290"
+                delta={{ value: '+12%', tone: 'up' }}
+                hint="vs last month"
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Pill size">
+        <DocsStateGrid columns={2}>
+          {STAT_CARD_SIZES.map((size) => (
+            <DocsStateCard
+              key={`pill-${size}`}
+              label={STAT_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StatCard
+                variant="pill"
+                size={size}
+                label="Revenue"
+                value="$48,290"
+                delta={{ value: '+12%', tone: 'up' }}
+                hint="vs last month"
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {STAT_CARD_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={STAT_CARD_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StatCard
+                tone={tone}
+                icon={<StatIcon name={tone === 'danger' ? 'inbox' : tone === 'success' ? 'people' : 'revenue'} />}
+                label={
+                  tone === 'success'
+                    ? 'Active users'
+                    : tone === 'warning'
+                      ? 'Quota used'
+                      : tone === 'danger'
+                        ? 'Failed jobs'
+                        : tone === 'brand'
+                          ? 'Pipeline'
+                          : 'Revenue'
+                }
+                value={
+                  tone === 'success'
+                    ? '2,841'
+                    : tone === 'warning'
+                      ? '88%'
+                      : tone === 'danger'
+                        ? '12'
+                        : '$48,290'
+                }
+                delta={{
+                  value: tone === 'danger' ? '+3' : tone === 'warning' ? '+6%' : '+12%',
+                  tone: tone === 'danger' ? 'down' : tone === 'warning' ? 'warning' : 'up',
+                }}
+                hint="vs last month"
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid columns={2}>
+          {STAT_CARD_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`dark-${variant}`}
+              label={STAT_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <StatCard
+                variant={variant}
+                onDark
+                icon={<StatIcon />}
+                label="Revenue"
+                value="$48,290"
+                delta={{ value: '+12%', tone: 'up' }}
+                hint="vs last month"
+                sparkline={STAT_SPARK}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Delta">
+        <DocsStateGrid columns={2}>
+          {STAT_CARD_DELTA_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={STAT_CARD_DELTA_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StatCard
+                label={
+                  tone === 'down'
+                    ? 'Churn'
+                    : tone === 'warning'
+                      ? 'Error rate'
+                      : tone === 'neutral'
+                        ? 'Conversion'
+                        : 'Revenue'
+                }
+                value={tone === 'down' ? '1.8%' : tone === 'warning' ? '4.2%' : tone === 'neutral' ? '3.2%' : '$48,290'}
+                delta={{
+                  value: tone === 'up' ? '+12%' : tone === 'down' ? '+0.4%' : tone === 'warning' ? '+1.1%' : '0.0%',
+                  tone,
+                }}
+                hint="vs last month"
+                sparkline={tone === 'down' || tone === 'warning' ? STAT_SPARK_DOWN : STAT_SPARK}
+              />
+            </DocsStateCard>
+          ))}
+          <DocsStateCard label="Inverted down" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              icon={<StatIcon name="inbox" />}
+              label="Open tickets"
+              value="18"
+              delta={{ value: '−2', tone: 'down', invert: true }}
+              hint="this week"
+              sparkline={STAT_SPARK_DOWN}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Inverted up" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              icon={<StatIcon name="inbox" />}
+              label="Open tickets"
+              value="24"
+              delta={{ value: '+6', tone: 'up', invert: true }}
+              hint="this week"
+              sparkline={[12, 14, 13, 16, 18, 20, 22, 24]}
+            />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <DocsStateGrid columns={2}>
+          {STAT_CARD_ALIGNS.map((align) => (
+            <DocsStateCard
+              key={align}
+              label={STAT_CARD_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StatCard
+                align={align}
+                icon={<StatIcon />}
+                label="Revenue"
+                value="$48,290"
+                unit="/mo"
+                delta={{ value: '+12%', tone: 'up' }}
+                hint="vs last month"
+                sparkline={STAT_SPARK}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Value only" align="stretch" wide className="bg-bg-primary">
+            <StatCard label="Revenue" value="$48,290" />
+          </DocsStateCard>
+          <DocsStateCard label="Delta only" align="stretch" wide className="bg-bg-primary">
+            <StatCard label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} />
+          </DocsStateCard>
+          <DocsStateCard label="Hint only" align="stretch" wide className="bg-bg-primary">
+            <StatCard label="Revenue" value="$48,290" hint="Month to date" />
+          </DocsStateCard>
+          <DocsStateCard label="Unit" align="stretch" wide className="bg-bg-primary">
+            <StatCard label="Session length" value="12.4" unit="min" delta={{ value: '+0.8', tone: 'up' }} hint="vs last week" />
+          </DocsStateCard>
+          <DocsStateCard label="Icon" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              icon={<StatIcon name="people" />}
+              label="Active users"
+              value="2,841"
+              delta={{ value: '+4%', tone: 'up' }}
+              hint="vs last week"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Sparkline" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              label="Revenue"
+              value="$48,290"
+              delta={{ value: '+12%', tone: 'up' }}
+              hint="vs last month"
+              sparkline={STAT_SPARK}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Icon and sparkline" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              icon={<StatIcon />}
+              label="Revenue"
+              value="$48,290"
+              unit="/mo"
+              delta={{ value: '+12%', tone: 'up' }}
+              hint="vs last month"
+              sparkline={STAT_SPARK}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <StatCard label="Revenue" empty hint="No data yet" />
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
+            <StatCard label="Revenue" loading hint="vs last month" delta={{ value: '+12%', tone: 'up' }} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              label="Revenue"
+              value="$48,290"
+              delta={{ value: '+12%', tone: 'up' }}
+              hint="vs last month"
+              disabled
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              icon={<StatIcon name="chart" />}
+              label="Revenue"
+              value="$48,290"
+              delta={{ value: '+12%', tone: 'up' }}
+              hint="Open report"
+              href="#stat-card"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <StatCard
+              icon={<StatIcon name="people" />}
+              label="Active users"
+              value="2,841"
+              delta={{ value: '+4%', tone: 'up' }}
+              hint="Open list"
+              onClick={() => undefined}
+            />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
   )
 }
 
@@ -7031,6 +7716,894 @@ function AvatarStates() {
               <Avatar name="Riley Patel" />
               <Avatar name="Morgan Diaz" />
             </AvatarGroup>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const LIST_MARK_GLYPH = { strokeWidth: 1.85, absoluteStrokeWidth: true } as const
+
+function ListFace({ size = 'md' }: { size?: ListRowSize }) {
+  return <Avatar name="Alex Rivera" size={size === 'lg' ? 'lg' : size} />
+}
+
+function ListSample({
+  variant = 'fill',
+  size = 'md',
+  header,
+  footer,
+  children,
+}: {
+  variant?: ListRowVariant
+  size?: ListRowSize
+  header?: string
+  footer?: string
+  children: ReactNode
+}) {
+  return (
+    <ListGroup variant={variant} size={size} header={header} footer={footer}>
+      {children}
+    </ListGroup>
+  )
+}
+
+function ListRowDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {LIST_ROW_VARIANTS.map((variant) => (
+        <ListSample key={variant} variant={variant} header={LIST_ROW_VARIANT_LABEL[variant]}>
+          <ListRow
+            leading={
+              <ListMark>
+                <DkGearSettingsPreferences {...LIST_MARK_GLYPH} />
+              </ListMark>
+            }
+            title="General"
+            chevron
+            onClick={() => undefined}
+          />
+          <ListRow
+            leading={<ListFace />}
+            title="Alex Rivera"
+            meta="alex@roboticela.com"
+            chevron
+            onClick={() => undefined}
+          />
+        </ListSample>
+      ))}
+    </div>
+  )
+}
+
+function ListRowStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {LIST_ROW_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={LIST_ROW_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ListSample variant={variant}>
+                <ListRow
+                  leading={
+                    <ListMark>
+                      <DkGearSettingsPreferences {...LIST_MARK_GLYPH} />
+                    </ListMark>
+                  }
+                  title="General"
+                  chevron
+                  onClick={() => undefined}
+                />
+                <ListRow
+                  leading={<ListFace />}
+                  title="Alex Rivera"
+                  meta="Workspace owner"
+                  chevron
+                  onClick={() => undefined}
+                />
+              </ListSample>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {LIST_ROW_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={LIST_ROW_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ListSample size={size}>
+                <ListRow
+                  leading={<ListFace size={size} />}
+                  title="Alex Rivera"
+                  meta="alex@roboticela.com"
+                  chevron
+                  onClick={() => undefined}
+                />
+                <ListRow
+                  leading={
+                    <ListMark>
+                      <DkEnvelopeMessageMail {...LIST_MARK_GLYPH} />
+                    </ListMark>
+                  }
+                  title="Email"
+                  value="Primary"
+                  chevron
+                  onClick={() => undefined}
+                />
+              </ListSample>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {LIST_ROW_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={LIST_ROW_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ListSample>
+                <ListRow
+                  tone={tone}
+                  leading={
+                    <ListMark tone={tone === 'default' ? 'brand' : tone}>
+                      {tone === 'danger' ? (
+                        <DkWasteBinDelete {...LIST_MARK_GLYPH} />
+                      ) : tone === 'warning' ? (
+                        <DkNotificationBellAlert {...LIST_MARK_GLYPH} />
+                      ) : tone === 'success' ? (
+                        <DkPadlockSecureClosed {...LIST_MARK_GLYPH} />
+                      ) : (
+                        <DkAddPlusCreate {...LIST_MARK_GLYPH} />
+                      )}
+                    </ListMark>
+                  }
+                  title={
+                    tone === 'danger'
+                      ? 'Delete account'
+                      : tone === 'warning'
+                        ? 'Notifications'
+                        : tone === 'success'
+                          ? 'Two-factor'
+                          : tone === 'brand'
+                            ? 'Add account'
+                            : 'General'
+                  }
+                  chevron
+                  onClick={() => undefined}
+                />
+              </ListSample>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          {(
+            [
+              ['Default', undefined],
+              ['Hover', 'hover'],
+              ['Focus', 'focus'],
+              ['Active', 'active'],
+            ] as const
+          ).map(([label, preview]) => (
+            <DocsStateCard key={label} label={label} align="stretch" wide className="bg-bg-primary">
+              <ListSample>
+                <ListRow
+                  leading={<ListFace />}
+                  title="Alex Rivera"
+                  meta="alex@roboticela.com"
+                  chevron
+                  preview={preview as ListRowPreview | undefined}
+                  onClick={() => undefined}
+                />
+              </ListSample>
+            </DocsStateCard>
+          ))}
+          <DocsStateCard label="Selected" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow title="English" value="United States" selected onClick={() => undefined} />
+              <ListRow title="Español" value="España" onClick={() => undefined} />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow
+                leading={<ListFace />}
+                title="Alex Rivera"
+                meta="Unavailable"
+                chevron
+                disabled
+              />
+            </ListSample>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Title" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow title="About" chevron onClick={() => undefined} />
+              <ListRow title="Legal" chevron onClick={() => undefined} />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Subtitle" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow
+                leading={<ListFace />}
+                title="Alex Rivera"
+                meta="Workspace owner"
+                chevron
+                onClick={() => undefined}
+              />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Value" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow title="Language" value="English" chevron onClick={() => undefined} />
+              <ListRow title="Region" value="United States" chevron onClick={() => undefined} />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Mark" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow
+                leading={
+                  <ListMark>
+                    <DkGearSettingsPreferences {...LIST_MARK_GLYPH} />
+                  </ListMark>
+                }
+                title="General"
+                chevron
+                onClick={() => undefined}
+              />
+              <ListRow
+                leading={
+                  <ListMark tone="success">
+                    <DkPadlockSecureClosed {...LIST_MARK_GLYPH} />
+                  </ListMark>
+                }
+                title="Privacy"
+                chevron
+                onClick={() => undefined}
+              />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Switch" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow
+                title="Product alerts"
+                trailing={<Switch size="sm" checked onChange={() => undefined} label="Product alerts" />}
+              />
+              <ListRow
+                title="Weekly digest"
+                trailing={<Switch size="sm" checked={false} onChange={() => undefined} label="Weekly digest" />}
+              />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Badge" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow
+                leading={<ListFace />}
+                title="alex@roboticela.com"
+                meta="Primary"
+                trailing={<Badge tone="verified">Verified</Badge>}
+                chevron
+                onClick={() => undefined}
+              />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Actions" align="stretch" wide className="bg-bg-primary">
+            <ListSample>
+              <ListRow
+                leading={<Avatar name="Alex Work" size="md" status="away" />}
+                title="alex.work@example.com"
+                meta="Unverified"
+                trailing={
+                  <>
+                    <TextAction>Verify</TextAction>
+                    <TextAction danger>Remove</TextAction>
+                  </>
+                }
+              />
+            </ListSample>
+          </DocsStateCard>
+          <DocsStateCard label="Section" align="stretch" wide className="bg-bg-primary">
+            <ListSample header="Account" footer="Used to sign in and reset your password.">
+              <ListRow title="Email" value="alex@roboticela.com" chevron onClick={() => undefined} />
+              <ListRow title="Phone" value="+1 (415) 555-2671" chevron onClick={() => undefined} />
+            </ListSample>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const SETTINGS_GLYPH = { strokeWidth: 1.85, absoluteStrokeWidth: true } as const
+
+function SettingsSample({
+  variant = 'fill',
+  size = 'md',
+  header,
+  footer,
+  children,
+}: {
+  variant?: SettingsRowVariant
+  size?: SettingsRowSize
+  header?: string
+  footer?: string
+  children: ReactNode
+}) {
+  return (
+    <SettingsList variant={variant} size={size} header={header} footer={footer}>
+      {children}
+    </SettingsList>
+  )
+}
+
+function SettingsSwitch({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string
+  checked: boolean
+  onChange?: (next: boolean) => void
+}) {
+  return <Switch size="sm" checked={checked} onChange={onChange ?? (() => undefined)} label={label} />
+}
+
+function SettingsRowDemo() {
+  const [alerts, setAlerts] = useState(true)
+  const [digest, setDigest] = useState(false)
+  const [appearance, setAppearance] = useState('system')
+
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-8">
+      <SettingsList header="Notifications" footer="Alerts arrive as they happen.">
+        <SettingsRow
+          icon={<DkNotificationBellAlert {...SETTINGS_GLYPH} />}
+          iconTone="danger"
+          label="Product alerts"
+          description="Push and email"
+          control={<SettingsSwitch label="Product alerts" checked={alerts} onChange={setAlerts} />}
+        />
+        <SettingsRow
+          icon={<DkEnvelopeMessageMail {...SETTINGS_GLYPH} />}
+          iconTone="brand"
+          label="Weekly digest"
+          description="A summary every Monday"
+          control={<SettingsSwitch label="Weekly digest" checked={digest} onChange={setDigest} />}
+        />
+      </SettingsList>
+      <SettingsList header="Account">
+        <SettingsRow
+          icon={<DkPersonUserProfile {...SETTINGS_GLYPH} />}
+          iconTone="muted"
+          label="Name"
+          value="Alex Rivera"
+          onClick={() => undefined}
+        />
+        <SettingsRow
+          icon={<DkGlobeWorldEarth {...SETTINGS_GLYPH} />}
+          iconTone="teal"
+          label="Language"
+          value="English"
+          onClick={() => undefined}
+        />
+        <SettingsRow
+          icon={<DkPadlockSecureClosed {...SETTINGS_GLYPH} />}
+          iconTone="success"
+          label="Two-factor"
+          value="On"
+          onClick={() => undefined}
+        />
+      </SettingsList>
+      <SettingsList header="Appearance">
+        <SettingsRow
+          layout="selection"
+          label="System"
+          selected={appearance === 'system'}
+          onClick={() => setAppearance('system')}
+        />
+        <SettingsRow
+          layout="selection"
+          label="Light"
+          selected={appearance === 'light'}
+          onClick={() => setAppearance('light')}
+        />
+        <SettingsRow
+          layout="selection"
+          label="Dark"
+          selected={appearance === 'dark'}
+          onClick={() => setAppearance('dark')}
+        />
+      </SettingsList>
+      <SettingsList>
+        <SettingsRow layout="action" align="center" tone="danger" label="Sign out" onClick={() => undefined} />
+      </SettingsList>
+    </div>
+  )
+}
+
+function SettingsRowStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {SETTINGS_ROW_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={SETTINGS_ROW_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SettingsSample variant={variant}>
+                <SettingsRow
+                  icon={<DkGearSettingsPreferences {...SETTINGS_GLYPH} />}
+                  iconTone="muted"
+                  label="General"
+                  onClick={() => undefined}
+                />
+                <SettingsRow
+                  icon={<DkNotificationBellAlert {...SETTINGS_GLYPH} />}
+                  iconTone="danger"
+                  label="Alerts"
+                  control={<SettingsSwitch label="Alerts" checked />}
+                />
+              </SettingsSample>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Control" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow
+                label="Product alerts"
+                description="Push and email"
+                control={<SettingsSwitch label="Product alerts" checked />}
+              />
+              <SettingsRow
+                label="Weekly digest"
+                control={<SettingsSwitch label="Weekly digest" checked={false} />}
+              />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Navigation" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow label="General" onClick={() => undefined} />
+              <SettingsRow label="Privacy" onClick={() => undefined} />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Value" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow label="Language" value="English" onClick={() => undefined} />
+              <SettingsRow label="Region" value="United States" onClick={() => undefined} />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Selection" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow layout="selection" label="English" value="United States" selected onClick={() => undefined} />
+              <SettingsRow layout="selection" label="Español" value="España" onClick={() => undefined} />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Action" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow layout="action" tone="brand" label="Add account" onClick={() => undefined} />
+              <SettingsRow layout="action" tone="danger" label="Delete account" onClick={() => undefined} />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Action, centered" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow layout="action" align="center" tone="danger" label="Sign out" onClick={() => undefined} />
+            </SettingsSample>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {SETTINGS_ROW_SIZES.map((size) => (
+            <DocsStateCard
+              key={size}
+              label={SETTINGS_ROW_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SettingsSample size={size}>
+                <SettingsRow
+                  icon={<DkGlobeWorldEarth {...SETTINGS_GLYPH} />}
+                  iconTone="teal"
+                  label="Language"
+                  value="English"
+                  onClick={() => undefined}
+                />
+                <SettingsRow
+                  label="Product alerts"
+                  control={<SettingsSwitch label="Product alerts" checked />}
+                />
+              </SettingsSample>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Icon">
+        <DocsStateGrid columns={2}>
+          {SETTINGS_ROW_ICON_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={SETTINGS_ROW_ICON_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SettingsSample>
+                <SettingsRow
+                  icon={
+                    tone === 'danger' ? (
+                      <DkWasteBinDelete {...SETTINGS_GLYPH} />
+                    ) : tone === 'warning' ? (
+                      <DkNotificationBellAlert {...SETTINGS_GLYPH} />
+                    ) : tone === 'success' ? (
+                      <DkPadlockSecureClosed {...SETTINGS_GLYPH} />
+                    ) : tone === 'teal' ? (
+                      <DkGlobeWorldEarth {...SETTINGS_GLYPH} />
+                    ) : tone === 'muted' ? (
+                      <DkGearSettingsPreferences {...SETTINGS_GLYPH} />
+                    ) : (
+                      <DkPersonUserProfile {...SETTINGS_GLYPH} />
+                    )
+                  }
+                  iconTone={tone}
+                  label={SETTINGS_ROW_ICON_TONE_LABEL[tone]}
+                  onClick={() => undefined}
+                />
+              </SettingsSample>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {SETTINGS_ROW_TONES.map((tone) => (
+            <DocsStateCard
+              key={tone}
+              label={SETTINGS_ROW_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SettingsSample>
+                <SettingsRow
+                  layout="action"
+                  tone={tone}
+                  label={
+                    tone === 'danger' ? 'Delete account' : tone === 'brand' ? 'Add account' : 'Manage account'
+                  }
+                  onClick={() => undefined}
+                />
+              </SettingsSample>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          {(
+            [
+              ['Default', undefined],
+              ['Hover', 'hover'],
+              ['Focus', 'focus'],
+              ['Active', 'active'],
+            ] as const
+          ).map(([label, preview]) => (
+            <DocsStateCard key={label} label={label} align="stretch" wide className="bg-bg-primary">
+              <SettingsSample>
+                <SettingsRow
+                  icon={<DkPersonUserProfile {...SETTINGS_GLYPH} />}
+                  iconTone="muted"
+                  label="Name"
+                  value="Alex Rivera"
+                  preview={preview as SettingsRowPreview | undefined}
+                  onClick={() => undefined}
+                />
+              </SettingsSample>
+            </DocsStateCard>
+          ))}
+          <DocsStateCard label="Selected" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow layout="selection" label="English" value="United States" selected onClick={() => undefined} />
+              <SettingsRow layout="selection" label="Español" value="España" onClick={() => undefined} />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow
+                icon={<DkPadlockSecureClosed {...SETTINGS_GLYPH} />}
+                iconTone="muted"
+                label="Two-factor"
+                value="Unavailable"
+                disabled
+                onClick={() => undefined}
+              />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow
+                icon={<DkGlobeWorldEarth {...SETTINGS_GLYPH} />}
+                iconTone="teal"
+                label="Language"
+                value="English"
+                loading
+                onClick={() => undefined}
+              />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Description" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow
+                label="Email notifications"
+                description="Product updates and security alerts"
+                control={<SettingsSwitch label="Email notifications" checked />}
+              />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Badge" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample>
+              <SettingsRow
+                icon={<DkEnvelopeMessageMail {...SETTINGS_GLYPH} />}
+                label="Email"
+                value="alex@roboticela.com"
+                badge={<Badge tone="verified">Verified</Badge>}
+                onClick={() => undefined}
+              />
+            </SettingsSample>
+          </DocsStateCard>
+          <DocsStateCard label="Section" align="stretch" wide className="bg-bg-primary">
+            <SettingsSample header="Account" footer="Used to sign in and reset your password.">
+              <SettingsRow label="Email" value="alex@roboticela.com" onClick={() => undefined} />
+              <SettingsRow label="Phone" value="+1 (415) 555-2671" onClick={() => undefined} />
+            </SettingsSample>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function KeyValueRowDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-6">
+      {KEY_VALUE_VARIANTS.map((variant) => (
+        <KeyValueGroup key={variant} variant={variant} label={KEY_VALUE_VARIANT_LABEL[variant]}>
+          <KeyValueRow label="Plan" value={KEY_VALUE_VARIANT_LABEL[variant]} />
+          <KeyValueRow label="Seats" value="8" />
+        </KeyValueGroup>
+      ))}
+    </div>
+  )
+}
+
+function KeyValueRowStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {KEY_VALUE_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={KEY_VALUE_VARIANT_LABEL[variant]} align="stretch" wide>
+              <KeyValueGroup variant={variant}>
+                <KeyValueRow label="Plan" value="Studio" />
+                <KeyValueRow label="Seats" value="8" />
+              </KeyValueGroup>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {KEY_VALUE_SIZES.map((size) => (
+            <DocsStateCard key={size} label={KEY_VALUE_SIZE_LABEL[size]} align="stretch" wide>
+              <KeyValueGroup size={size}>
+                <KeyValueRow label="Plan" value="Studio" />
+                <KeyValueRow label="Seats" value="8" />
+              </KeyValueGroup>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <DocsStateGrid columns={2}>
+          {KEY_VALUE_LAYOUTS.map((layout) => (
+            <DocsStateCard key={layout} label={KEY_VALUE_LAYOUT_LABEL[layout]} align="stretch" wide>
+              <KeyValueGroup>
+                <KeyValueRow layout={layout} label="Address" value="1 Infinite Loop, Cupertino" />
+              </KeyValueGroup>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {KEY_VALUE_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={KEY_VALUE_TONE_LABEL[tone]} align="stretch" wide>
+              <KeyValueGroup>
+                <KeyValueRow
+                  tone={tone}
+                  label="Status"
+                  value={
+                    tone === 'success'
+                      ? 'Verified'
+                      : tone === 'warning'
+                        ? 'Review'
+                        : tone === 'danger'
+                          ? 'Failed'
+                          : tone === 'brand'
+                            ? 'alex@roboticela.com'
+                            : 'Studio'
+                  }
+                />
+              </KeyValueGroup>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid columns={2}>
+          {KEY_VALUE_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`dark-${variant}`}
+              label={KEY_VALUE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <KeyValueGroup variant={variant} onDark>
+                <KeyValueRow label="Plan" value="Studio" />
+                <KeyValueRow label="Seats" value="8" />
+              </KeyValueGroup>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Rest" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" />
+              <KeyValueRow label="Username" value="@alex" />
+              <KeyValueRow label="Plan" value="Studio" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Hover" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="hover" />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Active" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="active" />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Focus" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="focus" />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Selected" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" selected />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" disabled />
+              <KeyValueRow label="Username" value="@alex" disabled />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Loading" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" loading />
+              <KeyValueRow label="Username" loading />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Empty" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Website" empty />
+              <KeyValueRow label="Company" placeholder="Add a company" empty />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Copied" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="copied" />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Invalid" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex" invalid hint="Enter a valid email." />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Copyable" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" copyable />
+              <KeyValueRow label="Username" value="@alex" copyable />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Link" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Website" value="roboticela.com" href="#live-demo" />
+              <KeyValueRow label="Docs" value="Open" onClick={() => undefined} />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Hint" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alex@roboticela.com" hint="Used for receipts." />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Leading" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow
+                label="Email"
+                value="alex@roboticela.com"
+                leading={<DkEnvelopeMessageMail strokeWidth={1.75} absoluteStrokeWidth />}
+              />
+              <KeyValueRow
+                label="Username"
+                value="@alex"
+                leading={<DkAtSign strokeWidth={1.75} absoluteStrokeWidth />}
+              />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Badge" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Plan" value={<Badge tone="primary">Pro</Badge>} />
+              <KeyValueRow label="Status" value={<Badge tone="verified">Active</Badge>} />
+            </KeyValueGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Truncated" align="stretch" wide>
+            <KeyValueGroup>
+              <KeyValueRow label="Email" value="alexandra.rivera.workspace@roboticela.com" />
+              <KeyValueRow label="Username" value="@alex" />
+            </KeyValueGroup>
           </DocsStateCard>
         </DocsStateGrid>
       </DocsStateGroup>
@@ -7198,6 +8771,35 @@ function AvatarPickerDemo() {
   )
 }
 
+function AvatarPickerStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Add photo">
+            <AvatarPicker name="Alex Rivera" onFile={() => undefined} />
+          </DocsStateCard>
+          <DocsStateCard label="Edit photo">
+            <AvatarPicker name="Alex Rivera" src="/favicon.svg" onFile={() => undefined} onEdit={() => undefined} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <AvatarPicker name="Alex Rivera" disabled onFile={() => undefined} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled, photo">
+            <AvatarPicker
+              name="Alex Rivera"
+              src="/favicon.svg"
+              disabled
+              onFile={() => undefined}
+              onEdit={() => undefined}
+            />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
 function AvatarEditorDemo() {
   const [open, setOpen] = useState(false)
   return (
@@ -7211,6 +8813,8 @@ function AvatarEditorDemo() {
         onCancel={() => setOpen(false)}
         onSave={async () => setOpen(false)}
         onChooseAnother={() => setOpen(false)}
+        canRemove
+        onRemove={async () => setOpen(false)}
       />
     </>
   )
@@ -7699,6 +9303,175 @@ function SheetNavStates() {
           </DocsStateCard>
           <DocsStateCard label="Back, nested" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview layout="back" title="Details" cancelLabel="Album" doneLabel="Select" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function DividerDemo() {
+  return (
+    <div className="flex w-full max-w-[460px] flex-col">
+      <Caption align="center">Sign in with email</Caption>
+      <Divider>or continue with</Divider>
+      <Caption align="center">Roboticela, Apple, Google, GitHub</Caption>
+    </div>
+  )
+}
+
+function DividerStates() {
+  const sparkle = (
+    <DkSparkleHighlightBurst size={14} strokeWidth={1.75} absoluteStrokeWidth aria-hidden />
+  )
+
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {DIVIDER_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={DIVIDER_VARIANT_LABEL[variant]} align="stretch" wide>
+              <Divider variant={variant} flush />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Labeled">
+        <DocsStateGrid columns={2}>
+          {DIVIDER_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={DIVIDER_VARIANT_LABEL[variant]} align="stretch" wide>
+              <Divider variant={variant} flush>
+                or continue with
+              </Divider>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {DIVIDER_SIZES.map((size) => (
+            <DocsStateCard key={size} label={DIVIDER_SIZE_LABEL[size]} align="stretch" wide>
+              <Divider size={size} flush>
+                or continue with
+              </Divider>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {DIVIDER_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={DIVIDER_TONE_LABEL[tone]} align="stretch" wide>
+              <Divider tone={tone} flush>
+                {tone === 'success'
+                  ? 'Verified'
+                  : tone === 'warning'
+                    ? 'Review required'
+                    : tone === 'danger'
+                      ? 'Danger zone'
+                      : tone === 'brand'
+                        ? 'DevKit'
+                        : 'or continue with'}
+              </Divider>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Align">
+        <DocsStateGrid columns={2}>
+          {DIVIDER_ALIGNS.map((align) => (
+            <DocsStateCard key={align} label={DIVIDER_ALIGN_LABEL[align]} align="stretch" wide>
+              <Divider align={align} flush>
+                {align === 'start' ? 'Today' : align === 'end' ? 'Optional' : 'or continue with'}
+              </Divider>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Orientation">
+        <DocsStateGrid columns={2}>
+          {DIVIDER_ORIENTATIONS.map((orientation) => (
+            <DocsStateCard key={orientation} label={DIVIDER_ORIENTATION_LABEL[orientation]} align="stretch" wide>
+              {orientation === 'horizontal' ? (
+                <Divider flush>or continue with</Divider>
+              ) : (
+                <div className="flex h-16 items-center justify-center gap-3">
+                  <Caption>Today</Caption>
+                  <Divider orientation="vertical" flush />
+                  <Caption>This week</Caption>
+                  <Divider orientation="vertical" flush />
+                  <Caption>All</Caption>
+                </div>
+              )}
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Default" align="stretch" wide>
+            <Divider flush />
+          </DocsStateCard>
+          <DocsStateCard label="Labeled" align="stretch" wide>
+            <Divider flush>or continue with</Divider>
+          </DocsStateCard>
+          <DocsStateCard label="Icon" align="stretch" wide>
+            <Divider flush icon={sparkle} />
+          </DocsStateCard>
+          <DocsStateCard label="Icon and label" align="stretch" wide>
+            <Divider flush icon={sparkle}>
+              New
+            </Divider>
+          </DocsStateCard>
+          <DocsStateCard label="Inset" align="stretch" wide>
+            <div className="w-full overflow-hidden rounded-[12px] bg-bg-elevated dark:bg-bg-tertiary">
+              <p className="m-0 px-4 py-3 text-[15px] text-text-primary">Notifications</p>
+              <Divider inset flush />
+              <p className="m-0 px-4 py-3 text-[15px] text-text-primary">Sounds</p>
+              <Divider inset flush />
+              <p className="m-0 px-4 py-3 text-[15px] text-text-primary">Haptics</p>
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="Fade, labeled" align="stretch" wide>
+            <Divider variant="fade" flush>
+              or continue with
+            </Divider>
+          </DocsStateCard>
+          <DocsStateCard label="Start, section" align="stretch" wide>
+            <Divider align="start" flush>
+              Today
+            </Divider>
+          </DocsStateCard>
+          <DocsStateCard label="Dashed" align="stretch" wide>
+            <Divider variant="dashed" flush>
+              or
+            </Divider>
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide>
+            <Divider disabled flush>
+              or continue with
+            </Divider>
+          </DocsStateCard>
+          <DocsStateCard label="Long label" align="stretch" wide>
+            <Divider flush>or continue with email, passkey, or a provider</Divider>
+          </DocsStateCard>
+          <DocsStateCard label="Vertical, labeled" align="stretch" wide>
+            <div className="flex h-[140px] justify-center">
+              <Divider orientation="vertical" flush>
+                or
+              </Divider>
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="Danger zone" align="stretch" wide>
+            <Divider tone="danger" align="start" flush>
+              Danger zone
+            </Divider>
           </DocsStateCard>
         </DocsStateGrid>
       </DocsStateGroup>
@@ -8682,7 +10455,7 @@ const DOCS: Record<string, DocDef> = {
   alert: {
     title: 'Alert',
     description:
-      'An inline status message. Subtle, outline, solid, and ghost, with info, success, warning, danger, and a quiet neutral note.',
+      'Tell the person something that happened on this screen. Use it for a save, a warning, a failure, or a quiet note they can dismiss.',
     ...alertGuide,
     Demo: AlertDemo,
     wide: true,
@@ -8707,7 +10480,8 @@ const DOCS: Record<string, DocDef> = {
   },
   progress: {
     title: 'Progress',
-    description: 'Show how far a task has gone. Use this for uploads, quotas, and installs. The bar fills from zero to complete.',
+    description:
+      'Show how far a known task has gone, from empty to complete. Use it for an upload, a quota, or an install. If you do not know the amount yet, use the traveling bar.',
     ...progressGuide,
     Demo: ProgressDemo,
     wide: true,
@@ -8740,7 +10514,7 @@ const DOCS: Record<string, DocDef> = {
   skeleton: {
     title: 'Skeleton',
     description:
-      'Wrap any component to show its exact skeleton. The CSS is compiled at build. If it is missing, the same sheet is inserted once at runtime.',
+      'Hold the layout while data loads by wrapping the real component. Bones keep the same size and shape so the page does not jump.',
     ...skeletonGuide,
     Demo: SkeletonDemo,
     wide: true,
@@ -8772,7 +10546,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'empty-state': {
     title: 'Empty State',
-    description: 'Show a calm view when a list has nothing to show. Use this for first use, no results, and a blank canvas after an error.',
+    description:
+      'The page when a list has nothing to show. Use it for a first visit, no search results, or a failure that needs a retry.',
     ...emptyStateGuide,
     Demo: EmptyStateDemo,
     wide: true,
@@ -8804,7 +10579,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'empty-popup': {
     title: 'Empty Popup',
-    description: 'A compact empty view for a menu, palette, or notification popup. Use this when a list inside a popup has nothing to show.',
+    description:
+      'The compact empty view inside a menu or palette. Use it when a popup list has no results, not when the whole page is empty.',
     ...emptyPopupGuide,
     Demo: EmptyPopupDemo,
     wide: true,
@@ -8835,7 +10611,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'loading-screen': {
     title: 'Loading Screen',
-    description: 'Hold the view while work finishes. Use this for boot, sign in, and a panel that is not ready yet.',
+    description:
+      'Cover the view while boot or sign in finishes. Use Loader instead when only a control or a line of copy is waiting.',
     ...loadingScreenGuide,
     Demo: LoadingScreenDemo,
     wide: true,
@@ -8864,7 +10641,8 @@ const DOCS: Record<string, DocDef> = {
   },
   loader: {
     title: 'Loader',
-    description: 'A spinning ring for an inline wait. Use this next to a label, in a toolbar, or on a card. Use Loading Screen when the whole view is not ready.',
+    description:
+      'A spinning ring for a short wait next to a label, in a toolbar, or on a card. Use Loading Screen when the whole view is not ready.',
     ...loaderGuide,
     Demo: LoaderDemo,
     wide: true,
@@ -8893,7 +10671,7 @@ const DOCS: Record<string, DocDef> = {
   'score-ring': {
     title: 'Score Ring',
     description:
-      'Show a score or how far a circular task has gone. Fill is the default. Subtle, outline, ghost, and pill match the rest of the kit. The arc fills from zero to complete.',
+      'A circular score or completion mark, like Screen Time. Use it for a profile score, a quota, or a setup checklist.',
     ...scoreRingGuide,
     Demo: ScoreRingDemo,
     wide: true,
@@ -8928,7 +10706,7 @@ const DOCS: Record<string, DocDef> = {
   modal: {
     title: 'Modal',
     description:
-      'A focused overlay. Dialog for a form. Alert for a short decision. Sheet from the bottom. Action for a list of choices.',
+      'A panel above the page that takes focus until the person finishes. Use a dialog for a form, an alert for a short decision, a sheet from the bottom, or an action list for choices such as Share or Delete.',
     ...modalGuide,
     Demo: ModalDemo,
     wide: true,
@@ -8967,7 +10745,7 @@ const DOCS: Record<string, DocDef> = {
   'command-palette': {
     title: 'Command Palette',
     description:
-      'Search and run a command. Spotlight is a floating field. Command is a panel with keyboard hints. Nav replaces the site header. Sheet rises from the bottom.',
+      'Type to find and run a command without leaving the page. Use it for docs search, a marketing header, or a system jump with a keyboard shortcut.',
     ...commandPaletteGuide,
     Demo: CommandPaletteDemo,
     wide: true,
@@ -9002,16 +10780,16 @@ const DOCS: Record<string, DocDef> = {
       p('cancelLabel', 'string', "'Cancel'", 'Trailing dismiss on nav. Anchor without href, brand blue.'),
       p('index', 'number', 'uncontrolled', 'Active result. Pass for a docs tile.'),
       p('embedded', 'boolean', 'false', 'Render in place for docs. No portal and no scroll lock.'),
-      p('CommandSearch.variant', "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Trigger chrome. Pill matches Nav Search. Icon is the marketing glass.'),
-      p("CommandSearch.size", "'sm' | 'md' | 'lg'", "'md'", 'Trigger height. Small is a 52px bar.'),
-      p('CommandSearch.icon', 'boolean', 'false', 'Collapse to a magnifying glass, as in Site Nav.'),
-      p('CommandSearch.shortcut', "string | false", "'⌘K'", 'Keyboard hint on the trigger. Hidden on small screens.'),
+      p('CommandSearch.variant', "'pill' | 'subtle' | 'outline' | 'ghost' | 'icon'", "'outline'", 'Nav Search chrome. Outline is the default trigger. Icon is the marketing glass.'),
+      p("CommandSearch.size", "'sm' | 'md' | 'lg'", "'sm'", 'Trigger height. Small is a 52px bar.'),
+      p('CommandSearch.icon', 'boolean', 'false', 'Same as variant="icon". Marketing header glass.'),
+      p('CommandSearch.shortcut', "string | false", "'⌘K'", 'Keyboard hint on the trigger. False hides it.'),
     ],
   },
   'confirm-dialog': {
     title: 'Confirm Dialog',
     description:
-      'Ask before a change that is hard to reverse. Alert is the default. Dialog, sheet, and action change the chrome. Tone is the risk.',
+      'Ask once before a change that is hard to undo. Use it for delete, publish, leave without saving, or archive.',
     ...confirmDialogGuide,
     Demo: ConfirmDialogDemo,
     wide: true,
@@ -9050,19 +10828,48 @@ const DOCS: Record<string, DocDef> = {
   },
   'avatar-editor': {
     title: 'Avatar Editor',
-    description: 'Crop and save a profile photo.',
+    description:
+      'A full screen crop sheet for a profile photo. The person moves, zooms, and rotates, then saves a circular jpeg.',
+    ...avatarEditorGuide,
     Demo: AvatarEditorDemo,
-    code: `<AvatarEditor imageSrc={src} open={open} onSave={save} onCancel={close} />\n`,
+    wide: true,
+    code: `<AvatarEditor
+  imageSrc={src}
+  open={open}
+  onCancel={close}
+  onSave={save}
+  onChooseAnother={pickAnother}
+  canRemove
+  onRemove={remove}
+/>
+<AvatarEditor imageSrc={src} open={open} saving onCancel={close} onSave={save} />
+`,
+    states: [
+      { label: 'Closed', node: <Button fullWidth={false}>Edit photo</Button> },
+      {
+        label: 'Saving',
+        node: (
+          <Button fullWidth={false} disabled>
+            Saving…
+          </Button>
+        ),
+      },
+    ],
     props: [
-      p('imageSrc', 'string', '—', 'Image to crop.'),
-      p('open', 'boolean', '—', 'Whether the editor is shown.'),
-      p('onSave', '() => void | Promise<void>', '—', 'Called with the cropped result.'),
+      p('imageSrc', 'string', 'required', 'The photo to crop. Usually an object URL from Avatar Picker.'),
+      p('open', 'boolean', 'required', 'Whether the sheet is shown. False unmounts the portal.'),
+      p('onCancel', '() => void', 'required', 'Cancel, the backdrop, and Escape when not saving.'),
+      p('onSave', '(blob: Blob) => void | Promise<void>', 'required', 'Called with a 512px jpeg of the circle crop. Close the sheet when it resolves.'),
+      p('saving', 'boolean', 'false', 'Busy Done from the parent, such as an upload. Locks the sheet like a local save.'),
+      p('onChooseAnother', '() => void', 'undefined', 'Choose a Different Photo. Return to the file dialog.'),
+      p('canRemove', 'boolean', 'false', 'Show Remove Photo. Pair with onRemove.'),
+      p('onRemove', '() => void | Promise<void>', 'undefined', 'Clears the photo. Hidden unless canRemove is true.'),
     ],
   },
   tabs: {
     title: 'Tabs',
     description:
-      'Switch between peer views. Underline is the default. Subtle, outline, and pill sit in a well. Ghost is type only.',
+      'Switch between peer views of the same page, such as All and Live. Use Icon Tab when the items are destinations in the app, not filters of one list.',
     ...tabsGuide,
     Demo: TabsDemo,
     wide: true,
@@ -9097,7 +10904,7 @@ const DOCS: Record<string, DocDef> = {
   'icon-tab': {
     title: 'Icon Tab',
     description:
-      'A compact destination bar with an icon and label. Ghost is the default. Subtle, outline, and pill sit in a well. Fill paints the selected item.',
+      'The compact bar of destinations at the bottom of an app, with an icon and a short label. Use it for Home, Inbox, and Profile.',
     ...iconTabGuide,
     Demo: IconTabDemo,
     wide: true,
@@ -9138,7 +10945,8 @@ const DOCS: Record<string, DocDef> = {
   },
   breadcrumb: {
     title: 'Breadcrumb',
-    description: 'The path back through the hierarchy. Ghost is the default. Subtle, outline, fill, and pill change the chrome. Chevron, slash, or dot separate the pages.',
+    description:
+      'The path from the root to this page so the person can step back. The last crumb is the current page and is not a link.',
     ...breadcrumbGuide,
     Demo: BreadcrumbDemo,
     wide: true,
@@ -9165,7 +10973,7 @@ const DOCS: Record<string, DocDef> = {
   pagination: {
     title: 'Pagination',
     description:
-      'Move through a paged list. Primary is the default. Subtle, outline, ghost, and pill change the chrome. When the set is long, the numbers collapse to 1 … 12 13 14 … 48.',
+      'Move through a long list one page at a time. Extra page numbers collapse so the control stays short.',
     ...paginationGuide,
     Demo: PaginationDemo,
     wide: true,
@@ -9254,7 +11062,7 @@ const DOCS: Record<string, DocDef> = {
   'sheet-nav': {
     title: 'Sheet Nav',
     description:
-      'The bar at the top of a sheet. Cancel and Done in blue. Close, back, large title, and a filled Done. Fill, subtle, outline, ghost, and pill.',
+      'The header of a sheet with Cancel and Done. Use it at the top of a modal sheet so the person can dismiss or save.',
     ...sheetNavGuide,
     Demo: SheetNavDemo,
     wide: true,
@@ -9295,7 +11103,7 @@ const DOCS: Record<string, DocDef> = {
   'nav-search': {
     title: 'Nav Search',
     description:
-      'A compact find field for a top bar. Pill, subtle, outline, ghost, and icon, with a clear mark, a shortcut hint, and a loading spinner.',
+      'A compact search field for a top bar. Use it as the trigger for Command Palette, with a shortcut hint such as ⌘K.',
     ...navSearchGuide,
     Demo: NavSearchDemo,
     wide: true,
@@ -9322,6 +11130,9 @@ const DOCS: Record<string, DocDef> = {
       p('onExpandedChange', '(expanded: boolean) => void', 'undefined', 'Called when the icon field opens or closes.'),
       p('onClear', '() => void', 'undefined', 'Called from the clear mark. Defaults to emptying the query.'),
       p('onSubmit', '(value: string) => void', 'undefined', 'Called when the user presses Enter.'),
+      p('onActivate', '() => void', 'undefined', 'Turns the field into a trigger, such as opening Command Palette. Click, Enter, or Space.'),
+      p('active', 'boolean', 'false', 'Forced open chrome on a trigger, while the palette is shown.'),
+      p('readOnly', 'boolean', 'false', 'The field cannot be typed. Implied when onActivate is set.'),
       p("preview", "'hover' | 'focus'", 'undefined', 'Forced hover or focus for docs tiles.'),
       p('name', 'string', 'undefined', 'Native input name.'),
       p('id', 'string', 'undefined', 'Native input id. Generated when omitted.'),
@@ -9331,7 +11142,7 @@ const DOCS: Record<string, DocDef> = {
   'profile-button': {
     title: 'Profile Button',
     description:
-      'Opens the account menu from an avatar. Fill is the toolbar ring. Ghost is the photo alone. Labeled, menu, and identity add a name, a caret, and an email.',
+      'The account control in a header. Press it to open the account menu. Use a face in a toolbar, or add the name and email on a settings row.',
     ...profileButtonGuide,
     Demo: ProfileButtonDemo,
     wide: true,
@@ -9374,20 +11185,47 @@ const DOCS: Record<string, DocDef> = {
   },
   badge: {
     title: 'Badge',
-    description: 'A compact status or category label.',
-    Demo: () => <Badge tone="verified">Stable</Badge>,
-    code: `<Badge tone="verified">Stable</Badge>\n`,
-    states: [
-      { label: 'Primary', node: <Badge tone="primary">New</Badge> },
-      { label: 'Verified', node: <Badge tone="verified">Live</Badge> },
-      { label: 'Unverified', node: <Badge tone="unverified">Review</Badge> },
-      { label: 'Muted', node: <Badge tone="muted">Web</Badge> },
+    description:
+      'A short status, count, or category on a row or a heading. Use it for New, Live, a review, or a notification number. Do not put a sentence in a badge.',
+    ...badgeGuide,
+    Demo: BadgeDemo,
+    wide: true,
+    code: `<Badge>New</Badge>
+<Badge variant="fill">New</Badge>
+<Badge variant="outline" tone="warning">In review</Badge>
+<Badge variant="ghost" tone="neutral">Beta</Badge>
+<Badge variant="pill">Pro</Badge>
+<Badge variant="fill" tone="danger" count={3} />
+<Badge tone="verified" dot pulse>Live</Badge>
+<Badge tone="success">Verified</Badge>
+<Badge loading>Saving</Badge>
+<Badge disabled>Paused</Badge>
+<Badge onDismiss={remove}>Filters</Badge>
+`,
+    statesContent: <BadgeStates />,
+    props: [
+      p('children', 'ReactNode', 'undefined', 'The label. Hidden when count is set.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'subtle'", 'Chrome. Subtle is the default tint. Fill is solid. Outline is a wireframe. Ghost is ink only. Pill is a taller chip.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Small is a table. Medium is the default. Large sits next to a heading.'),
+      p("tone", "'brand' | 'verified' | 'success' | 'warning' | 'danger' | 'neutral'", "'brand'", 'Color. Teal is verified. Green is success. Orange is a review. Red is a problem. primary, unverified, and muted are aliases.'),
+      p("shape", "'pill' | 'rounded'", "'pill'", 'Pill is a capsule. Rounded is a squircle.'),
+      p('icon', 'ReactNode', 'undefined', 'A leading kit icon. Hidden when a dot is shown.'),
+      p('dot', 'boolean', 'false', 'A leading status mark. With no label, this is the whole badge.'),
+      p('pulse', 'boolean', 'false', 'Animates the dot. Use for a status that is happening now.'),
+      p('count', 'number | string', 'undefined', 'A notification number. Hidden at zero. Overflow becomes 99+.'),
+      p('max', 'number', '99', 'The highest count before overflow. Ignored when count is a string.'),
+      p('loading', 'boolean', 'false', 'Replaces the icon or dot with a spinner. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the badge. Blocks press and dismiss.'),
+      p('onDismiss', '() => void', 'undefined', 'Shows a remove mark. The control has its own label.'),
+      p('dismissLabel', 'string', "'Remove'", 'Accessible name for the remove mark.'),
+      p('onClick', '(event) => void', 'undefined', 'Turns the badge into a button, such as a filter chip.'),
+      p('label', 'string', 'undefined', 'Accessible name when the badge has no visible text, such as a count or a dot.'),
     ],
-    props: [p('tone', "'primary' | 'verified' | 'unverified' | 'neutral' | 'muted'", "'primary'", 'Color treatment.')],
   },
   avatar: {
     title: 'Avatar',
-    description: 'A photo, initials, or mark for a person. Fill, subtle, outline, ghost, and pill, with presence and a stacked group.',
+    description:
+      'The face of a person in the interface. A photo when you have one, otherwise initials from the name. Stack faces in a group when several people share a row.',
     ...avatarGuide,
     Demo: AvatarDemo,
     wide: true,
@@ -9427,136 +11265,381 @@ const DOCS: Record<string, DocDef> = {
   },
   'avatar-picker': {
     title: 'Avatar Picker',
-    description: 'Choose a profile photo from disk.',
+    description:
+      'Choose a profile photo from the device. An empty face is Add photo. A saved photo is Edit photo and should open the crop sheet.',
+    ...avatarPickerGuide,
     Demo: AvatarPickerDemo,
-    code: `<AvatarPicker name="Alex Rivera" src={src} onFile={onFile} />\n`,
+    wide: true,
+    code: `<AvatarPicker name="Alex Rivera" src={src} onFile={onFile} />
+<AvatarPicker name="Alex Rivera" src={src} onFile={onFile} onEdit={openEditor} />
+<AvatarPicker name="Alex Rivera" disabled onFile={onFile} />
+`,
+    statesContent: <AvatarPickerStates />,
     props: [
-      p('onFile', '(file: File) => void', '—', 'Called when a file is chosen.'),
-      p('onEdit', '() => void', 'undefined', 'Opens the editor when a photo exists.'),
+      p('name', 'string', 'undefined', 'Used for initials and the accessible label of the face.'),
+      p('src', 'string | null', 'undefined', 'Photo URL. When set, the camera is Edit photo if onEdit is passed.'),
+      p('onFile', '(file: File) => void', 'required', 'Called when a file is chosen. Open Avatar Editor with an object URL.'),
+      p('onEdit', '() => void', 'undefined', 'Opens the editor when a photo already exists. Without it, the camera picks a new file.'),
+      p('disabled', 'boolean', 'false', 'Dims the camera. Use this while the editor is saving.'),
+      p('accept', 'string', "'image/jpeg,image/png,image/webp,image/gif'", 'File types the dialog allows.'),
+      p('ref', 'Ref<AvatarPickerHandle>', 'undefined', 'Call ref.open() to show the file dialog from a parent.'),
     ],
   },
   'stat-card': {
     title: 'Stat Card',
-    description: 'A headline metric with optional delta.',
-    Demo: () => (
-      <StatCard label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} hint="vs last month" />
-    ),
-    code: `<StatCard label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} />\n`,
+    description:
+      'A headline number on a dashboard, with an optional change, unit, icon, and trend. Use one card per metric.',
+    ...statCardGuide,
+    Demo: StatCardDemo,
+    wide: true,
+    code: `<StatCard label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} hint="vs last month" />
+<StatCard variant="subtle" label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} />
+<StatCard variant="outline" label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} />
+<StatCard variant="ghost" label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} />
+<StatCard variant="pill" label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} />
+<StatCard
+  icon={<Banknote />}
+  label="Revenue"
+  value="$48,290"
+  unit="/mo"
+  delta={{ value: '+12%', tone: 'up' }}
+  hint="vs last month"
+  sparkline={[18, 22, 19, 26, 24, 31, 28, 36]}
+/>
+<StatCard label="Open tickets" value="18" delta={{ value: '−2', tone: 'down', invert: true }} />
+<StatCard label="Revenue" loading />
+<StatCard label="Revenue" empty hint="No data yet" />
+`,
+    statesContent: <StatCardStates />,
     props: [
-      p('label', 'string', '—', 'Metric name.'),
-      p('value', 'string', '—', 'Formatted number.'),
-      p('delta', '{ value, tone }', 'undefined', 'Change vs a prior period.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the default on a dashboard. Ghost in a dense row. Pill is the rounder tile.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Padding and type. Small is a sidebar. Large is a featured number.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Tile tint and icon color. Default stays neutral. Tone is for a semantic metric, not a second CTA.'),
+      p("align", "'start' | 'center'", "'start'", 'Start is a dashboard tile. Center is a featured number.'),
+      p('label', 'string', '—', 'Metric name. Also the accessible name.'),
+      p('value', 'string', 'undefined', 'Formatted number. Hidden while loading. Replaced by an em dash when empty.'),
+      p('unit', 'string', 'undefined', 'Scale beside the number, such as min or /mo.'),
+      p('delta', '{ value, tone, invert }', 'undefined', 'Change vs a prior period. Tone is up, down, warning, or neutral. Invert when a drop is the win.'),
+      p('hint', 'string', 'undefined', 'Period or supporting line, such as vs last month.'),
+      p('icon', 'ReactNode', 'undefined', 'Leading mark in a well. Ghost draws the glyph with no well.'),
+      p('sparkline', 'number[]', 'undefined', 'A decorative trend. Hidden while loading or empty. Needs two or more points.'),
+      p('onDark', 'boolean', 'false', 'Chrome and type for a black surface.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the value and delta. Sets aria-busy.'),
+      p('empty', 'boolean', 'false', 'Shows an em dash. Keeps the label and hint.'),
+      p('disabled', 'boolean', 'false', 'Dims the tile. The card is not operable.'),
+      p('href', 'string', 'undefined', 'Turns the card into a link to the detail behind the number.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the card into a button. Ignored when href is set.'),
     ],
   },
   table: {
     title: 'Table',
-    description: 'A structured list of records.',
-    Demo: () => (
-      <DataTable
-        rowKey={(row) => row.id}
-        data={[
-          { id: '1', name: 'Atlas Checkout', status: 'Live' },
-          { id: '2', name: 'Northstar Auth', status: 'In review' },
-        ]}
-        columns={[
-          { key: 'name', header: 'Name', render: (row) => (
-            <span className="inline-flex items-center gap-2">
-              <Avatar name={row.name} size="sm" />
-              {row.name}
-            </span>
-          ) },
-          { key: 'status', header: 'Status', render: (row) => row.status },
-        ]}
-      />
-    ),
+    description:
+      'A structured list of records with headers, sort, selection, and optional editing in a cell. Use it when each row is the same kind of item.',
+    ...tableGuide,
+    Demo: TableDemo,
     wide: true,
-    code: `<DataTable data={rows} columns={columns} rowKey={(row) => row.id} />\n`,
+    code: `<DataTable
+  caption="Projects"
+  selectable
+  data={rows}
+  columns={columns}
+  rowKey={(row) => row.id}
+/>
+<DataTable variant="subtle" data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable variant="outline" data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable variant="ghost" data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable variant="pill" data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable size="sm" data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable layout="striped" data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable selectable="single" data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable
+  editable
+  data={rows}
+  columns={columns}
+  rowKey={(row) => row.id}
+  onEdit={({ rowKey, column, value }) => save(rowKey, column, value)}
+/>
+<DataTable loading data={rows} columns={columns} rowKey={(row) => row.id} />
+<DataTable data={[]} columns={columns} rowKey={(row) => row.id} />
+`,
+    statesContent: <TableStates />,
     props: [
       p('data', 'T[]', '—', 'Rows.'),
-      p('columns', 'DataColumn<T>[]', '—', 'Headers and cell renderers.'),
-      p('empty', 'ReactNode', 'undefined', 'Shown when data is empty.'),
+      p('columns', 'DataColumn<T>[]', '—', 'Headers, alignment, sort, cell renderers, and editable / editValue.'),
+      p('rowKey', '(row: T) => string', '—', 'Stable id for each row.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the default card. Subtle and pill sit on a secondary surface. Ghost has no frame.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Row density. Small is a log. Medium is a product list. Large is a people list.'),
+      p("layout", "'divided' | 'striped'", "'divided'", 'Divided is a hairline between rows. Striped alternates a quiet fill.'),
+      p("selectable", "boolean | 'single' | 'multiple'", 'false', 'Row selection. True is multiple. Single keeps one row.'),
+      p('selectedKeys', 'string[]', 'undefined', 'Controlled selection. Omit for internal state.'),
+      p('defaultSelectedKeys', 'string[]', '[]', 'Initial selection when uncontrolled.'),
+      p('onSelectionChange', '(keys: string[]) => void', 'undefined', 'Fires when the selection changes.'),
+      p('sortKey', 'string', 'undefined', 'Active sortable column. Omit for internal sort.'),
+      p("sortDirection", "'asc' | 'desc'", "'asc'", 'Direction of the active sort.'),
+      p('onSort', '(key, direction) => void', 'undefined', 'Fires when a sortable header is pressed. If set with sortKey, the parent owns the order.'),
+      p('isRowDisabled', '(row: T) => boolean', 'undefined', 'Dims a row and skips it in select all and arrow keys.'),
+      p('onRowClick', '(row: T) => void', 'undefined', 'Fires when a row is pressed. Return edits when the table is editable.'),
+      p('editable', 'boolean', 'false', 'Double-click a cell, or Return / F2, to edit. Type to replace. Escape cancels. Tab commits and moves.'),
+      p('onEdit', '(edit: DataTableEdit<T>) => void', 'undefined', 'Fires after a commit. If omitted, the table keeps the new value locally.'),
+      p('caption', 'ReactNode', 'undefined', 'Title in the toolbar. A string is also the accessible name.'),
+      p('actions', 'ReactNode', 'undefined', 'Trailing controls in the toolbar, such as New.'),
+      p('footer', 'ReactNode', 'undefined', 'Quiet strip under the rows, for a count or Pagination.'),
+      p('empty', 'ReactNode', 'Empty State', 'Shown inside the frame when there are no rows.'),
+      p('loading', 'boolean', 'false', 'Replaces rows with skeleton lines. Sets aria-busy.'),
+      p('loadingRows', 'number', '4', 'How many skeleton rows to show.'),
+      p('stickyHeader', 'boolean', 'false', 'Pins the header while the body scrolls.'),
+      p('maxHeight', 'string', "'320px' when sticky", 'Scrollport height when the header is sticky.'),
+      p('minWidth', 'string', "'520px'", 'Minimum table width before horizontal scroll.'),
+      p("preview", "'hover' | 'selected' | 'focus' | 'active' | 'disabled' | 'loading' | 'empty' | 'editing'", 'undefined', 'Forced visual for docs tiles.'),
+      p('previewRow', 'number', '0', 'Which row the preview applies to.'),
+      p('previewColumn', 'string', 'first editable', 'Which column the editing preview applies to.'),
     ],
   },
   'page-header': {
     title: 'Page Header',
-    description: 'Title, description, and page actions.',
-    Demo: () => (
-      <PageHeader
-        eyebrow="Workspace"
-        title="Projects"
-        description="Everything currently in flight."
-        actions={
-          <Button fullWidth={false} className="w-auto">
-            New
-          </Button>
-        }
-      />
-    ),
+    description:
+      'The title of a view, with optional supporting copy and page actions. Use it at the top of a list, a settings screen, or a detail page.',
+    ...pageHeaderGuide,
+    Demo: PageHeaderDemo,
     wide: true,
-    code: `<PageHeader eyebrow="Workspace" title="Projects" description="Everything currently in flight." />\n`,
+    code: `<PageHeader eyebrow="Workspace" title="Projects" description="Everything currently in flight." />
+<PageHeader variant="subtle" title="Projects" description="Everything currently in flight." />
+<PageHeader variant="outline" title="Projects" description="Everything currently in flight." />
+<PageHeader variant="fill" title="Projects" description="Everything currently in flight." />
+<PageHeader variant="pill" title="Projects" description="Everything currently in flight." />
+<PageHeader layout="stack" title="Projects" actions={<Button>New</Button>} />
+<PageHeader align="center" size="lg" title="Projects" description="A calm place to ship." />
+<PageHeader onBack={back} title="Details" />
+<PageHeader loading title="Projects" description="Everything currently in flight." />
+`,
+    statesContent: <PageHeaderStates />,
     props: [
-      p('title', 'string', '—', 'Page title.'),
-      p('eyebrow', 'string', 'undefined', 'Small uppercase kicker.'),
-      p('actions', 'ReactNode', 'undefined', 'Trailing buttons.'),
+      p('title', 'string', 'required', 'Page heading. An h1 by default.'),
+      p('description', 'ReactNode', 'undefined', 'One supporting line under the title.'),
+      p('eyebrow', 'string', 'undefined', 'Short uppercase kicker above the title.'),
+      p('actions', 'ReactNode', 'undefined', 'Trailing buttons. Keep one primary verb.'),
+      p('leading', 'ReactNode', 'undefined', 'Avatar, icon, or a custom back control.'),
+      p('meta', 'ReactNode', 'undefined', 'A badge or quiet mark beside the title.'),
+      p('breadcrumbs', 'ReactNode', 'undefined', 'Path above the title. Pass Breadcrumbs.'),
+      p('extra', 'ReactNode', 'undefined', 'A row under the header, such as Tabs.'),
+      p("variant", "'ghost' | 'subtle' | 'outline' | 'fill' | 'pill'", "'ghost'", 'Chrome. Ghost is the page. Subtle, outline, fill, and pill sit in a card.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Type and padding. Small is a nested view. Large is a hero.'),
+      p("layout", "'split' | 'stack'", "'split'", 'Split puts actions on the trailing edge from tablet up. Stack keeps them under the copy.'),
+      p("align", "'start' | 'center'", "'start'", 'Start is a product page. Center is a hero.'),
+      p('loading', 'boolean', 'false', 'Replaces the title, description, and actions with a skeleton. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the actions. They stay in the tree.'),
+      p('onBack', '() => void', 'undefined', 'Renders a Back button when leading is omitted.'),
+      p('onDark', 'boolean', 'false', 'Type and chrome for a black surface.'),
+      p('as', 'ElementType', "'h1'", 'Heading tag. Pass as when the visual size and the outline disagree.'),
     ],
   },
   'list-row': {
     title: 'List Row',
-    description: 'A tappable row inside a grouped list.',
-    Demo: () => (
-      <ListGroup className="w-full">
-        <ListRow leading={<Avatar name="Alex Rivera" size="md" />} title="Email" meta="alex@roboticela.com" />
-        <ListRow leading={<Avatar name="Sam Chen" size="md" status="online" />} title="Phone" meta="+1 (415) 555-2671" />
-      </ListGroup>
-    ),
+    description:
+      'A tappable row inside a grouped list, with a title, optional meta, and a trailing control. Use it for people, files, or mail.',
+    ...listRowGuide,
+    Demo: ListRowDemo,
+    wide: true,
     code: `<ListGroup>
-  <ListRow leading={<Avatar name="Alex Rivera" />} title="Email" meta="alex@roboticela.com" />
+  <ListRow leading={<ListMark><GearIcon /></ListMark>} title="General" chevron />
+  <ListRow leading={<Avatar name="Alex Rivera" />} title="Alex Rivera" meta="alex@roboticela.com" chevron />
 </ListGroup>
+<ListGroup variant="subtle">
+  <ListRow title="Language" value="English" chevron />
+</ListGroup>
+<ListGroup variant="outline">
+  <ListRow title="Language" value="English" chevron />
+</ListGroup>
+<ListGroup variant="ghost">
+  <ListRow title="Language" value="English" chevron />
+</ListGroup>
+<ListGroup variant="pill">
+  <ListRow title="Language" value="English" chevron />
+</ListGroup>
+<ListRow tone="brand" title="Add account" chevron />
+<ListRow tone="danger" title="Delete account" chevron />
+<ListRow selected title="English" />
+<ListRow disabled title="Unavailable" chevron />
+<ListRow title="Product alerts" trailing={<Switch checked />} />
 `,
+    statesContent: <ListRowStates />,
     props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Group chrome. Fill is the default inset card. Ghost is a plain list. Pill is a nested well with capsule rows. Set it on ListGroup to paint every row.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Padding, type, and min height. Medium is 52px, matching a system grouped cell.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Title color. Brand is a constructive action. Danger is Delete or Sign out.'),
       p('title', 'ReactNode', '—', 'Primary line.'),
-      p('meta', 'ReactNode', 'undefined', 'Secondary line.'),
-      p('leading', 'ReactNode', 'undefined', 'Leading mark. Pass an Avatar for a person.'),
-      p('trailing', 'ReactNode', 'undefined', 'Trailing control or badge.'),
+      p('meta', 'ReactNode', 'undefined', 'Secondary line under the title.'),
+      p('value', 'ReactNode', 'undefined', 'Trailing detail, such as English or a phone number.'),
+      p('leading', 'ReactNode', 'undefined', 'Leading mark. Pass ListMark for a Settings glyph, or Avatar for a person.'),
+      p('trailing', 'ReactNode', 'undefined', 'Trailing control, badge, or action. Do not nest a button in a tappable row.'),
+      p('chevron', 'boolean', 'true when tappable', 'Disclosure chevron. Defaults on when href or onClick is set. Hidden when selected.'),
+      p('selected', 'boolean', 'false', 'Marks the current choice. Shows a check and a brand tint.'),
+      p('disabled', 'boolean', 'false', 'Dims the row and removes it from the click cycle.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p('href', 'string', 'undefined', 'Renders the row as a link.'),
+      p('onClick', '() => void', 'undefined', 'Renders the row as a button.'),
+      p('header', 'ReactNode', 'undefined', 'ListGroup only. Caption above the group.'),
+      p('footer', 'ReactNode', 'undefined', 'ListGroup only. Caption below the group.'),
     ],
   },
   'settings-row': {
     title: 'Settings Row',
-    description: 'A labeled row with a trailing control.',
-    Demo: () => (
-      <SettingsList className="w-full">
-        <SettingsRow label="Product alerts" control={<Switch checked onChange={() => undefined} />} />
-        <SettingsRow label="Weekly digest" control={<Switch checked={false} onChange={() => undefined} />} />
-      </SettingsList>
-    ),
-    code: `<SettingsRow label="Product alerts" control={<Switch checked />} />\n`,
+    description:
+      'A preference row with a label and a trailing control such as a switch. Use it in grouped settings, not as a form field.',
+    ...settingsRowGuide,
+    Demo: SettingsRowDemo,
+    wide: true,
+    code: `<SettingsList header="Notifications" footer="Alerts arrive as they happen.">
+  <SettingsRow
+    icon={<BellIcon />}
+    iconTone="danger"
+    label="Product alerts"
+    description="Push and email"
+    control={<Switch checked />}
+  />
+  <SettingsRow
+    icon={<MailIcon />}
+    label="Weekly digest"
+    control={<Switch />}
+  />
+</SettingsList>
+<SettingsList header="Account">
+  <SettingsRow icon={<UserIcon />} iconTone="muted" label="Name" value="Alex Rivera" />
+  <SettingsRow icon={<GlobeIcon />} iconTone="teal" label="Language" value="English" />
+</SettingsList>
+<SettingsList variant="subtle">
+  <SettingsRow layout="selection" label="English" selected />
+  <SettingsRow layout="selection" label="Español" />
+</SettingsList>
+<SettingsList variant="outline">
+  <SettingsRow label="Language" value="English" />
+</SettingsList>
+<SettingsList variant="ghost">
+  <SettingsRow label="Language" value="English" />
+</SettingsList>
+<SettingsList variant="pill">
+  <SettingsRow label="Language" value="English" />
+</SettingsList>
+<SettingsRow layout="action" tone="brand" label="Add account" />
+<SettingsRow layout="action" align="center" tone="danger" label="Sign out" />
+<SettingsRow loading label="Language" value="English" />
+<SettingsRow disabled label="Two-factor" value="Unavailable" />
+`,
+    statesContent: <SettingsRowStates />,
     props: [
-      p('label', 'string', '—', 'Row title.'),
-      p('control', 'ReactNode', '—', 'Trailing control.'),
-      p('danger', 'boolean', 'false', 'Destructive treatment.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Group chrome. Fill is the default inset card. Ghost is a plain list. Pill is a nested well with capsule rows. Set it on SettingsList to paint every row.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Padding, type, and min height. Medium is 52px, matching a system grouped cell.'),
+      p("layout", "'control' | 'navigation' | 'value' | 'selection' | 'action'", 'inferred', 'Control is a switch. Navigation is a chevron. Value is a trailing detail. Selection is a check. Action is a labeled verb.'),
+      p("tone", "'default' | 'brand' | 'danger'", "'default'", 'Title color. Brand is a constructive action. Danger is Delete or Sign out.'),
+      p("iconTone", "'brand' | 'teal' | 'success' | 'warning' | 'danger' | 'muted'", "'brand'", 'Color of the leading well. Teal is verified. Muted is system.'),
+      p('label', 'ReactNode', '—', 'Primary line.'),
+      p('description', 'ReactNode', 'undefined', 'Secondary line under the label.'),
+      p('value', 'ReactNode', 'undefined', 'Trailing detail, such as English or On.'),
+      p('control', 'ReactNode', 'undefined', 'Trailing switch or other control. Do not also make that row a button.'),
+      p('icon', 'ReactNode', 'undefined', 'Glyph inside the leading well. Hidden from assistive tech.'),
+      p('leading', 'ReactNode', 'undefined', 'Replace the well. Pass SettingsMark, or Avatar when the row is a person.'),
+      p('badge', 'ReactNode', 'undefined', 'Trailing badge before the value or chevron.'),
+      p('chevron', 'boolean', 'true when tappable', 'Disclosure chevron. Defaults on for navigation and tappable value rows. Hidden when selected.'),
+      p('selected', 'boolean', 'undefined', 'Marks the current choice. Shows a check and a brand tint.'),
+      p('disabled', 'boolean', 'false', 'Dims the row and removes it from the click cycle.'),
+      p('loading', 'boolean', 'false', 'Replaces the trailing control with a spinner and sets aria-busy.'),
+      p('danger', 'boolean', 'false', 'Alias for tone="danger".'),
+      p("align", "'start' | 'center'", "'start'", 'Action layout only. Center is Sign out.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p('href', 'string', 'undefined', 'Renders the row as a link.'),
+      p('onClick', '() => void', 'undefined', 'Renders the row as a button when there is no nested control.'),
+      p('header', 'ReactNode', 'undefined', 'SettingsList only. Caption above the group.'),
+      p('footer', 'ReactNode', 'undefined', 'SettingsList only. Caption below the group.'),
     ],
   },
   'key-value-row': {
     title: 'Key Value Row',
-    description: 'A label and value on one line.',
-    Demo: () => (
-      <div className="w-full">
-        <KeyValueRow label="Plan" value="Studio" />
-        <KeyValueRow label="Seats" value="8" />
-      </div>
-    ),
-    code: `<KeyValueRow label="Plan" value="Studio" />\n`,
+    description:
+      'A field name on the left and its current value on the right. Use it for account details. Make a value copyable when the person needs to take it with them.',
+    ...keyValueRowGuide,
+    Demo: KeyValueRowDemo,
+    wide: true,
+    code: `<KeyValueGroup>
+  <KeyValueRow label="Plan" value="Studio" />
+  <KeyValueRow label="Seats" value="8" />
+</KeyValueGroup>
+<KeyValueGroup variant="subtle">
+  <KeyValueRow label="Plan" value="Studio" />
+</KeyValueGroup>
+<KeyValueGroup variant="outline">
+  <KeyValueRow label="Plan" value="Studio" />
+</KeyValueGroup>
+<KeyValueGroup variant="ghost">
+  <KeyValueRow label="Plan" value="Studio" />
+</KeyValueGroup>
+<KeyValueGroup variant="pill">
+  <KeyValueRow label="Plan" value="Studio" />
+</KeyValueGroup>
+<KeyValueRow label="Email" value="alex@roboticela.com" copyable />
+<KeyValueRow label="Website" empty />
+<KeyValueRow label="Status" value="Verified" tone="success" />
+`,
+    statesContent: <KeyValueRowStates />,
     props: [
-      p('label', 'ReactNode', '—', 'Key.'),
-      p('value', 'ReactNode', '—', 'Value.'),
+      p('label', 'ReactNode', '—', 'The field name on the leading edge.'),
+      p('value', 'ReactNode', 'undefined', 'The current answer. Truncates on one line. A badge or other node is allowed.'),
+      p('hint', 'ReactNode', 'undefined', 'A caption under the label.'),
+      p('leading', 'ReactNode', 'undefined', 'A kit icon before the label.'),
+      p('trailing', 'ReactNode', 'undefined', 'Replaces the chevron or the copied check.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is a hairline list. Subtle, outline, and pill sit as a card. Inherited from the group.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Height and type. Medium is 44px, matching an iOS settings row. Inherited from the group.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Value color. Default is secondary gray. Copyable and links become brand.'),
+      p("layout", "'inline' | 'stacked' | 'responsive'", "'inline'", 'Inline is label left, value right. Stacked is label above. Responsive stacks until 735px.'),
+      p('placeholder', 'string', "'Not set'", 'Shown when the value is missing.'),
+      p('copyable', 'boolean', 'false', 'Copies the value. The control is a button named Copy, then the label.'),
+      p('copyText', 'string', 'the value, if a string', 'Override what is copied when the value is a node.'),
+      p('chevron', 'boolean', 'true on link and click', 'Trailing disclosure. Off for copyable. Pass true to force it.'),
+      p('href', 'string', 'undefined', 'Turns the row into a link. The value is brand blue.'),
+      p('onClick', '() => void', 'undefined', 'Turns the row into a button.'),
+      p('selected', 'boolean', 'false', 'Brand-tinted fill. Sets aria-current.'),
+      p('loading', 'boolean', 'false', 'Replaces the value with a bone. Sets aria-busy.'),
+      p('empty', 'boolean', 'false', 'Shows the placeholder even if a value is passed.'),
+      p('invalid', 'boolean', 'false', 'Danger type on the value. Sets aria-invalid. Pair with a hint.'),
+      p('disabled', 'boolean', 'false', 'Dims the row. It is not operable.'),
+      p('onDark', 'boolean', 'false', 'Type and chrome for a black surface. Inherited from the group.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'copied'", 'undefined', 'Forced visual for docs tiles.'),
+      p('KeyValueGroup.variant', 'same as row', "'fill'", 'Paints the card. Rows inside inherit it.'),
+      p('KeyValueGroup.size', 'same as row', "'md'", 'Default size for rows in the group.'),
+      p('KeyValueGroup.label', 'string', 'undefined', 'Accessible name of the group.'),
     ],
   },
   divider: {
     title: 'Divider',
-    description: 'A labeled rule between sections.',
-    Demo: () => <Divider>or continue with</Divider>,
-    code: `<Divider>or continue with</Divider>\n`,
-    props: [p('children', 'ReactNode', "'or'", 'Label in the center of the rule.')],
+    description:
+      'A quiet line between sections. Add a label when two groups need a word in the middle, such as or continue with.',
+    ...dividerGuide,
+    Demo: DividerDemo,
+    wide: true,
+    code: `<Divider />
+<Divider>or continue with</Divider>
+<Divider variant="subtle" />
+<Divider variant="dashed">or</Divider>
+<Divider variant="dotted" />
+<Divider variant="fade">or continue with</Divider>
+<Divider align="start">Today</Divider>
+<Divider orientation="vertical" />
+<Divider inset />
+<Divider tone="danger" align="start">Danger zone</Divider>
+`,
+    statesContent: <DividerStates />,
+    props: [
+      p("variant", "'solid' | 'subtle' | 'dashed' | 'dotted' | 'fade'", "'solid'", 'Rule style. Solid is the default hairline. Subtle is quieter. Fade dissolves at the edges.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Thickness, type, and outer spacing. Small and medium are 1px. Large is 2px.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Rule and label color. Default uses the border token.'),
+      p("align", "'start' | 'center' | 'end'", "'center'", 'Where the label sits. Center is the sign-in rule. Start is a section caption.'),
+      p("orientation", "'horizontal' | 'vertical'", "'horizontal'", 'Horizontal is a page or list break. Vertical sits in a toolbar.'),
+      p('children', 'ReactNode', 'undefined', 'Optional label. Omit for a plain rule.'),
+      p('icon', 'ReactNode', 'undefined', 'Optional mark beside the label, or alone on the rule.'),
+      p('inset', 'boolean', 'false', 'Indents a horizontal rule from the start, lining up with list titles.'),
+      p('flush', 'boolean', 'false', 'Removes the outer margin so the rule can sit in a list or toolbar.'),
+      p('disabled', 'boolean', 'false', 'Dims the rule. The divider is never operable.'),
+      p('decorative', 'boolean', 'true when unlabeled', 'Hides the rule from assistive tech. Labeled rules are separators by default.'),
+    ],
   },
   'brand-logo': {
     title: 'Brand Logo',
@@ -9636,35 +11719,24 @@ const DOCS: Record<string, DocDef> = {
       p('disabled', 'boolean', 'false', 'Prevents changing the theme.'),
     ],
   },
-  'auth-layout': {
-    title: 'Auth Layout',
-    description: 'Centered layout for sign-in and related flows.',
-    Demo: () => (
-      <div className="relative h-[280px] overflow-hidden rounded-[12px] border border-border-default">
-        <AuthLayout navLinkTo="/pages/create-account" navLinkLabel="Create account">
-          <AuthBrand title="Welcome back" subhead="Use your DevKit Account" />
-        </AuthLayout>
-      </div>
-    ),
+  'auth-nav': {
+    title: 'Auth Nav',
+    description:
+      'The bar on sign-in and related flows. Logo, theme toggle, and a trailing Anchor.',
+    ...authNavGuide,
+    Demo: AuthNavDemo,
     wide: true,
-    code: `<AuthLayout navLinkTo="/create-account" navLinkLabel="Create account">\n  <AuthBrand title="Welcome back" subhead="Use your DevKit Account" />\n</AuthLayout>\n`,
+    code: `<AuthNav navLinkTo="/create-account" navLinkLabel="Create one" />
+<AuthNav navLinkTo="/signin" navLinkLabel="Sign in" />
+<AuthNav />
+`,
+    statesContent: <AuthNavStates />,
     props: [
-      p('navLinkTo', 'string', 'undefined', 'Trailing nav destination.'),
-      p('navLinkLabel', 'string', 'undefined', 'Trailing nav label.'),
+      p('navLinkTo', 'string', 'undefined', 'Trailing Anchor href. Omit with navLinkLabel when the flow has no peer page.'),
+      p('navLinkLabel', 'string', 'undefined', 'Trailing Anchor label. Create one on sign-in. Sign in on create account.'),
+      p('brandHref', 'string', "'/'", 'Logo destination. The mark is Brand Logo icon at 18px.'),
+      p('contained', 'boolean', 'false', 'Relative positioning for a preview. Pages leave this off so the bar is fixed.'),
     ],
-  },
-  'text-link': {
-    title: 'Text Link',
-    description: 'Inline links, legal copy, and error text.',
-    Demo: () => (
-      <div className="flex flex-col items-start gap-3">
-        <TextLink href="#demo">Forgot password?</TextLink>
-        <ErrorText>Incorrect email or password.</ErrorText>
-        <AuthLegal />
-      </div>
-    ),
-    code: `<TextLink href="/forgot-password">Forgot password?</TextLink>\n<ErrorText>Incorrect email or password.</ErrorText>\n`,
-    props: [p('muted', 'boolean', 'false', 'Tertiary color until hover.')],
   },
   'social-login': {
     title: 'Social Login Button',

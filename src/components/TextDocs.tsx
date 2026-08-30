@@ -1,15 +1,11 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import {
-  DkTaskCompleteCheckmark
-} from '@/icons'
 import { cn } from '@/lib/cn'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
-import { Badge } from './Badge'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsCard, DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -153,15 +149,7 @@ export function TextDocs() {
         title="Text"
         description="The full type scale in one place. Heading, subhead, body, caption, eyebrow, and label share these sizes and tones."
       >
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <Badge tone="verified">
-            <DkTaskCompleteCheckmark size={10} strokeWidth={2.5} absoluteStrokeWidth />
-            Stable
-          </Badge>
-          <Badge tone="muted">Web</Badge>
-          <Badge tone="muted">iOS</Badge>
-          <Badge tone="muted">Android</Badge>
-        </div>
+        <DocsMetaBadges />
       </DocsHeader>
 
       <section id="usage" className="mt-10 scroll-mt-20">

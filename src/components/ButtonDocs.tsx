@@ -3,16 +3,14 @@
 import { useMemo, useState } from 'react'
 import {
   DkArrowDirectionLeft,
-  DkArrowDirectionRight,
-  DkTaskCompleteCheckmark
+  DkArrowDirectionRight
 } from '@/icons'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { brand } from '@/lib/devkit'
-import { Badge } from './Badge'
 import { Button, type ButtonSize, type ButtonVariant } from './Button'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -193,15 +191,7 @@ export function ButtonDocs() {
         title="Button"
         description="The main control for running an action. Use one primary button on a screen."
       >
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <Badge tone="verified">
-            <DkTaskCompleteCheckmark size={10} strokeWidth={2.5} absoluteStrokeWidth />
-            Stable
-          </Badge>
-          <Badge tone="muted">Web</Badge>
-          <Badge tone="muted">iOS</Badge>
-          <Badge tone="muted">Android</Badge>
-        </div>
+        <DocsMetaBadges />
       </DocsHeader>
 
       <section id="usage" className="mt-10 scroll-mt-20">

@@ -44,51 +44,71 @@ export const NAV_SEARCH_SIZE_LABEL: Record<NavSearchSize, string> = {
 const RING =
   'border-brand-primary shadow-[0_0_0_2px_var(--brand-primary-focus-ring)]'
 
+const MODIFIER = /^(⌘|⌃|⌥|⇧|Ctrl|Cmd|Alt|Option|Shift|Super)$/i
+
+function keysFromShortcut(shortcut: string): string[] {
+  const text = shortcut.trim()
+  if (!text) return []
+  const split = text.split(/\s*\+\s*|\s+/).filter(Boolean)
+  if (split.length > 1) return split.flatMap((part) => keysFromShortcut(part))
+  const chord = text.match(/^(⌘|⌃|⌥|⇧|Ctrl|Cmd|Alt|Option|Shift|Super)(.+)$/i)
+  if (chord?.[2]) return [chord[1], ...keysFromShortcut(chord[2])]
+  return [text]
+}
+
 const sizes: Record<
   NavSearchSize,
   {
     field: string
     pad: string
+    padClear: string
     type: string
     icon: number
     loader: number
     clear: number
     mark: number
     width: string
+    withShortcut: string
     collapsed: string
   }
 > = {
   sm: {
     field: 'h-8',
-    pad: 'gap-2 px-3',
+    pad: 'gap-2 pl-3 pr-3',
+    padClear: 'gap-1.5 pl-3 pr-2',
     type: 'text-[13px]',
     icon: 15,
     loader: 13,
     clear: 14,
-    mark: 8,
+    mark: 7,
     width: 'w-[160px] min-[735px]:w-[200px]',
+    withShortcut: 'w-[196px] min-[735px]:w-[236px]',
     collapsed: 'size-8',
   },
   md: {
     field: 'h-9',
-    pad: 'gap-2 px-3.5',
+    pad: 'gap-2 pl-3.5 pr-3.5',
+    padClear: 'gap-1.5 pl-3.5 pr-2',
     type: 'text-[13px]',
     icon: 16,
     loader: 14,
     clear: 14,
-    mark: 8,
+    mark: 7,
     width: 'w-[180px] min-[735px]:w-[240px]',
+    withShortcut: 'w-[216px] min-[735px]:w-[276px]',
     collapsed: 'size-9',
   },
   lg: {
     field: 'h-11',
-    pad: 'gap-2.5 px-4',
+    pad: 'gap-2.5 pl-4 pr-4',
+    padClear: 'gap-2 pl-4 pr-2.5',
     type: 'text-[15px]',
     icon: 17,
     loader: 16,
     clear: 16,
-    mark: 9,
+    mark: 8,
     width: 'w-[220px] min-[735px]:w-[280px]',
+    withShortcut: 'w-[256px] min-[735px]:w-[316px]',
     collapsed: 'size-11',
   },
 }
@@ -186,6 +206,9 @@ export function NavSearch({
   onClear,
   onSubmit,
   preview,
+  active = false,
+  readOnly = false,
+  onActivate,
   name,
   id,
   className,
@@ -205,6 +228,9 @@ export function NavSearch({
   onClear?: () => void
   onSubmit?: (value: string) => void
   preview?: NavSearchPreview
+  active?: boolean
+  readOnly?: boolean
+  onActivate?: () => void
   name?: string
   id?: string
   className?: string
@@ -218,16 +244,17 @@ export function NavSearch({
   const metric = sizes[size]
   const filled = value.length > 0
   const named = label ?? placeholder
-  const liveFocus = focused || preview === 'focus'
-  const open =
-    variant !== 'icon' ||
-    (expanded ?? innerOpen) ||
-    liveFocus ||
-    filled
-  const collapsed = variant === 'icon' && !open
+  const trigger = Boolean(onActivate)
+  const locked = readOnly || trigger
+  const liveFocus = focused || preview === 'focus' || active
+  const forcedHover = preview === 'hover'
+  const forcedFocus = preview === 'focus' || active
+  const iconOpen = (expanded ?? innerOpen) || liveFocus || filled
+  const collapsed = variant === 'icon' && (trigger || !iconOpen)
   const look = collapsed ? collapsedChrome : openChrome[variant]
-  const showShortcut = Boolean(shortcut) && !collapsed && !filled && !liveFocus && !loading
-  const showClear = filled && !collapsed && !loading && !disabled
+  const keys = shortcut ? keysFromShortcut(shortcut) : []
+  const showShortcut = keys.length > 0 && !collapsed && !filled && !liveFocus && !loading
+  const showClear = filled && !collapsed && !loading && !disabled && !trigger
   const busy = loading && !disabled
 
   function setOpen(next: boolean) {
@@ -245,6 +272,13 @@ export function NavSearch({
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (trigger) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault()
+        onActivate?.()
+      }
+      return
+    }
     if (event.key === 'Escape') {
       event.stopPropagation()
       if (filled) {
@@ -267,16 +301,28 @@ export function NavSearch({
         EASE,
         metric.field,
         look.radius,
-        collapsed ? cn('justify-center', metric.collapsed) : cn(metric.pad, metric.width),
+        collapsed
+          ? cn('justify-center', metric.collapsed)
+          : cn(showClear ? metric.padClear : metric.pad, showShortcut ? metric.withShortcut : metric.width),
         look.rest,
-        !disabled && preview !== 'hover' && preview !== 'focus' && look.hover,
-        !disabled && preview !== 'hover' && preview !== 'focus' && look.within,
-        preview === 'hover' && !disabled && (collapsed ? 'bg-bg-hover' : forcedOpenHover[variant]),
-        preview === 'focus' && !disabled && (collapsed ? cn('bg-bg-secondary', RING) : forcedOpenFocus[variant]),
+        trigger && 'cursor-pointer',
+        !disabled && !forcedHover && !forcedFocus && look.hover,
+        !disabled && !forcedHover && !forcedFocus && look.within,
+        forcedHover && !disabled && (collapsed ? 'bg-bg-hover' : forcedOpenHover[variant]),
+        forcedFocus && !disabled && (collapsed ? cn('bg-bg-secondary', RING) : forcedOpenFocus[variant]),
         disabled && 'pointer-events-none cursor-not-allowed opacity-55',
         className,
       )}
       aria-busy={busy || undefined}
+      onMouseDown={(event) => {
+        if (!trigger || disabled) return
+        event.preventDefault()
+      }}
+      onClick={(event) => {
+        if (!trigger || disabled) return
+        event.preventDefault()
+        onActivate?.()
+      }}
     >
       <span
         className={cn(
@@ -303,15 +349,22 @@ export function NavSearch({
         type="search"
         value={value}
         disabled={disabled}
+        readOnly={locked}
         placeholder={collapsed ? undefined : placeholder}
         aria-label={named}
+        aria-haspopup={trigger ? 'dialog' : undefined}
+        aria-expanded={trigger ? active || undefined : undefined}
         autoComplete="off"
         autoCorrect="off"
         spellCheck={false}
         enterKeyHint="search"
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => {
+          if (locked) return
+          onChange(event.target.value)
+        }}
         onFocus={() => {
           setFocused(true)
+          if (trigger) return
           setOpen(true)
         }}
         onBlur={() => {
@@ -325,16 +378,24 @@ export function NavSearch({
           '[&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden',
           metric.type,
           collapsed ? 'w-0 flex-none p-0 opacity-0' : 'w-full flex-1',
+          trigger && 'cursor-pointer',
         )}
       />
 
       {showShortcut ? (
-        <kbd
-          className="inline-flex shrink-0 items-center rounded-[4px] bg-bg-tertiary px-1.5 py-0.5 font-sans text-[10px] font-medium leading-none text-text-tertiary"
-          aria-hidden="true"
-        >
-          {shortcut}
-        </kbd>
+        <span className="inline-flex shrink-0 items-center gap-1" aria-hidden="true">
+          {keys.map((key) => (
+            <kbd
+              key={key}
+              className={cn(
+                'inline-flex h-[18px] items-center justify-center rounded-[4px] bg-bg-tertiary font-sans text-[11px] font-medium leading-none text-text-tertiary',
+                MODIFIER.test(key) || key.length > 1 ? 'min-w-[20px] px-1' : 'w-[18px]',
+              )}
+            >
+              {key}
+            </kbd>
+          ))}
+        </span>
       ) : null}
 
       {showClear ? (
@@ -343,21 +404,18 @@ export function NavSearch({
           tabIndex={-1}
           aria-label="Clear search"
           className={cn(
-            'inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0',
+            'relative inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-text-tertiary p-0 text-bg-primary',
             'transition-colors duration-150',
             EASE,
+            'hover:bg-text-secondary',
             'focus-visible:outline-none',
-            '[&>span]:bg-text-tertiary hover:[&>span]:bg-text-secondary',
+            'before:absolute before:-inset-1.5 before:content-[""]',
           )}
+          style={{ width: metric.clear, height: metric.clear }}
           onMouseDown={(event) => event.preventDefault()}
           onClick={clear}
         >
-          <span
-            className="inline-flex items-center justify-center rounded-full text-bg-primary transition-colors duration-150"
-            style={{ width: metric.clear, height: metric.clear }}
-          >
-            <DkCloseDismissCancel size={metric.mark} strokeWidth={3} absoluteStrokeWidth />
-          </span>
+          <DkCloseDismissCancel size={metric.mark} strokeWidth={2.75} absoluteStrokeWidth />
         </button>
       ) : null}
     </label>

@@ -13,7 +13,7 @@ import { EASE, FOCUS_RING } from '@/lib/styles'
 import { Button } from './Button'
 import { CodeBlock } from './CodeBlock'
 import { CountryFlag } from './CountryFlag'
-import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsInlineCode, DocsSnippet, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -136,7 +136,9 @@ export function FlagsDocs() {
         crumb="Components / Foundations / Country Flag"
         title="Country Flag"
         description={`${FLAGS.length.toLocaleString()} flag images, one for every ISO country code. Search by name, code, or dialing code.`}
-      />
+      >
+        <DocsMetaBadges />
+      </DocsHeader>
 
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>

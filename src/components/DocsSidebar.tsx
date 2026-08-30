@@ -8,6 +8,7 @@ import {
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { DOCS_NAV, type DocsNavSection } from '@/lib/docs-catalog'
+import { Badge } from './Badge'
 import { Caption, Label } from './Text'
 
 function SidebarSection({
@@ -79,9 +80,9 @@ function SidebarSection({
                   </Caption>
                 </span>
                 {item.isNew ? (
-                  <span className="rounded-[980px] bg-success-subtle px-1.5 py-0.5 text-[10px] font-medium leading-none text-success">
+                  <Badge size="sm" tone="brand">
                     New
-                  </span>
+                  </Badge>
                 ) : null}
               </Link>
             )

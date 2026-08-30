@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react'
 import { adjacentDocs, DOCS_ITEMS, findDocContext, DOCS_NAV } from '@/lib/docs-catalog'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PropsTable, type PropRow } from './PropsTable'
 import { DocsRelated, DocsStateCard, DocsStateGrid } from './DocsCard'
@@ -49,7 +49,9 @@ export function KitDocArticle({
         crumb={`Components / ${ctx?.section.label ?? 'Library'} / ${title}`}
         title={title}
         description={description}
-      />
+      >
+        <DocsMetaBadges />
+      </DocsHeader>
 
       {usage ? (
         <section id="usage" className="mt-10 scroll-mt-20">

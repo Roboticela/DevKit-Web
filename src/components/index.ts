@@ -16,7 +16,19 @@ export type { AvatarShape, AvatarSize, AvatarStatus, AvatarTone, AvatarVariant }
 export { AvatarEditor } from './AvatarEditor'
 export { AvatarPicker } from './AvatarPicker'
 export type { AvatarPickerHandle } from './AvatarPicker'
-export { Badge } from './Badge'
+export {
+  Badge,
+  BADGE_VARIANTS,
+  BADGE_SIZES,
+  BADGE_TONES,
+  BADGE_SHAPES,
+  BADGE_VARIANT_LABEL,
+  BADGE_SIZE_LABEL,
+  BADGE_TONE_LABEL,
+  BADGE_SHAPE_LABEL,
+  formatBadgeCount,
+} from './Badge'
+export type { BadgeShape, BadgeSize, BadgeTone, BadgeVariant } from './Badge'
 export { BrandLogo } from './BrandLogo'
 export type { BrandLogoVariant } from './BrandLogo'
 export {
@@ -60,7 +72,7 @@ export type {
   CommandSearchVariant,
 } from './CommandPalette'
 export { DocsArticleStub } from './DocsArticleStub'
-export { DocsHeader, DocsSectionTitle } from './DocsCopy'
+export { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 export {
   DocsCard,
   DocsCardGrid,
@@ -164,8 +176,8 @@ export type {
   SidebarSize,
   SidebarVariant,
 } from './DashboardSidebar'
-export { DataTable } from './DataTable'
-export type { DataColumn } from './DataTable'
+export { DataTable, DATA_TABLE_ALIGNS, DATA_TABLE_LAYOUTS, DATA_TABLE_SIZES, DATA_TABLE_VARIANTS, DATA_TABLE_ALIGN_LABEL, DATA_TABLE_LAYOUT_LABEL, DATA_TABLE_SIZE_LABEL, DATA_TABLE_VARIANT_LABEL } from './DataTable'
+export type { DataColumn, DataTableAlign, DataTableEdit, DataTableLayout, DataTablePreview, DataTableSelection, DataTableSize, DataTableSortDirection, DataTableVariant } from './DataTable'
 export { DatePicker, DATE_PICKER_SIZES, DATE_PICKER_VARIANTS } from './DatePicker'
 export type {
   DatePickerPreview,
@@ -174,7 +186,26 @@ export type {
   DateRange,
   DateValue,
 } from './DatePicker'
-export { Divider } from './Divider'
+export {
+  Divider,
+  DIVIDER_ALIGNS,
+  DIVIDER_ORIENTATIONS,
+  DIVIDER_SIZES,
+  DIVIDER_TONES,
+  DIVIDER_VARIANTS,
+  DIVIDER_ALIGN_LABEL,
+  DIVIDER_ORIENTATION_LABEL,
+  DIVIDER_SIZE_LABEL,
+  DIVIDER_TONE_LABEL,
+  DIVIDER_VARIANT_LABEL,
+} from './Divider'
+export type {
+  DividerAlign,
+  DividerOrientation,
+  DividerSize,
+  DividerTone,
+  DividerVariant,
+} from './Divider'
 export {
   EmptyState,
   EMPTY_STATE_ALIGNS,
@@ -263,9 +294,22 @@ export type {
   IconTabTone,
   IconTabVariant,
 } from './IconTab'
-export { KeyValueRow } from './KeyValueRow'
+export { KeyValueGroup, KeyValueRow, KEY_VALUE_LAYOUTS, KEY_VALUE_SIZES, KEY_VALUE_TONES, KEY_VALUE_VARIANTS, KEY_VALUE_LAYOUT_LABEL, KEY_VALUE_SIZE_LABEL, KEY_VALUE_TONE_LABEL, KEY_VALUE_VARIANT_LABEL } from './KeyValueRow'
+export type { KeyValueRowLayout, KeyValueRowPreview, KeyValueRowSize, KeyValueRowTone, KeyValueRowVariant } from './KeyValueRow'
 export { LanguageSelect, languageDisplayName } from './LanguageSelect'
-export { ListGroup, ListRow, TextAction } from './ListRow'
+export {
+  ListGroup,
+  ListMark,
+  ListRow,
+  TextAction,
+  LIST_ROW_SIZES,
+  LIST_ROW_TONES,
+  LIST_ROW_VARIANTS,
+  LIST_ROW_SIZE_LABEL,
+  LIST_ROW_TONE_LABEL,
+  LIST_ROW_VARIANT_LABEL,
+} from './ListRow'
+export type { ListRowPreview, ListRowSize, ListRowTone, ListRowVariant } from './ListRow'
 export { Loader, LOADER_LAYOUTS, LOADER_SIZES, LOADER_TONES, LOADER_VARIANTS, LOADER_SIZE_LABEL, LOADER_TONE_LABEL, LOADER_VARIANT_LABEL } from './Loader'
 export type { LoaderLayout, LoaderSize, LoaderTone, LoaderVariant } from './Loader'
 export { LoadingScreen, LOADING_SCREEN_INDICATORS, LOADING_SCREEN_SIZES, LOADING_SCREEN_VARIANTS, LOADING_SCREEN_INDICATOR_LABEL, LOADING_SCREEN_SIZE_LABEL, LOADING_SCREEN_VARIANT_LABEL } from './LoadingScreen'
@@ -290,7 +334,23 @@ export {
 export type { NavSearchPreview, NavSearchSize, NavSearchVariant } from './NavSearch'
 export { OtpBoxes, OTP_BOXES_SIZES, OTP_BOXES_VARIANTS } from './OtpBoxes'
 export type { OtpBoxesPreview, OtpBoxesSize, OtpBoxesVariant } from './OtpBoxes'
-export { PageHeader } from './PageHeader'
+export {
+  PageHeader,
+  PAGE_HEADER_ALIGNS,
+  PAGE_HEADER_LAYOUTS,
+  PAGE_HEADER_SIZES,
+  PAGE_HEADER_VARIANTS,
+  PAGE_HEADER_ALIGN_LABEL,
+  PAGE_HEADER_LAYOUT_LABEL,
+  PAGE_HEADER_SIZE_LABEL,
+  PAGE_HEADER_VARIANT_LABEL,
+} from './PageHeader'
+export type {
+  PageHeaderAlign,
+  PageHeaderLayout,
+  PageHeaderSize,
+  PageHeaderVariant,
+} from './PageHeader'
 export { Pagination, PAGINATION_ALIGNS, PAGINATION_LAYOUTS, PAGINATION_SIZES, PAGINATION_VARIANTS, PAGINATION_ALIGN_LABEL, PAGINATION_LAYOUT_LABEL, PAGINATION_SIZE_LABEL, PAGINATION_VARIANT_LABEL, getPaginationItems } from './Pagination'
 export type { PaginationAlign, PaginationLayout, PaginationPreview, PaginationPreviewTarget, PaginationSize, PaginationToken, PaginationVariant } from './Pagination'
 export { PasswordField, PASSWORD_FIELD_SIZES, PASSWORD_FIELD_VARIANTS } from './PasswordField'
@@ -349,7 +409,29 @@ export {
   SCORE_RING_VARIANT_LABEL,
 } from './ScoreRing'
 export type { ScoreRingSize, ScoreRingTone, ScoreRingVariant } from './ScoreRing'
-export { SettingsList, SettingsRow } from './SettingsRow'
+export {
+  SettingsList,
+  SettingsMark,
+  SettingsRow,
+  SETTINGS_ROW_ICON_TONES,
+  SETTINGS_ROW_LAYOUTS,
+  SETTINGS_ROW_SIZES,
+  SETTINGS_ROW_TONES,
+  SETTINGS_ROW_VARIANTS,
+  SETTINGS_ROW_ICON_TONE_LABEL,
+  SETTINGS_ROW_LAYOUT_LABEL,
+  SETTINGS_ROW_SIZE_LABEL,
+  SETTINGS_ROW_TONE_LABEL,
+  SETTINGS_ROW_VARIANT_LABEL,
+} from './SettingsRow'
+export type {
+  SettingsRowIconTone,
+  SettingsRowLayout,
+  SettingsRowPreview,
+  SettingsRowSize,
+  SettingsRowTone,
+  SettingsRowVariant,
+} from './SettingsRow'
 export {
   SheetNav,
   SHEET_NAV_LAYOUTS,
@@ -378,12 +460,34 @@ export { NumberField, NUMBER_FIELD_SIZES, NUMBER_FIELD_STEPPERS, NUMBER_FIELD_UN
 export type { NumberFieldAlign, NumberFieldPreview, NumberFieldProps, NumberFieldSize, NumberFieldStepper, NumberFieldUnit, NumberFieldVariant, NumberFieldWidth } from './NumberField'
 export { Slider, RangeSlider, SLIDER_SIZES, SLIDER_FIELDS, SLIDER_VARIANTS, SLIDER_VARIANT_LABEL, SLIDER_FIELD_LABEL } from './Slider'
 export type { RangeSliderProps, SliderField, SliderPreview, SliderProps, SliderSize, SliderTone, SliderVariant } from './Slider'
-export { StatCard } from './StatCard'
+export {
+  StatCard,
+  STAT_CARD_ALIGNS,
+  STAT_CARD_ALIGN_LABEL,
+  STAT_CARD_DELTA_LABEL,
+  STAT_CARD_DELTA_TONES,
+  STAT_CARD_SIZES,
+  STAT_CARD_SIZE_LABEL,
+  STAT_CARD_TONES,
+  STAT_CARD_TONE_LABEL,
+  STAT_CARD_VARIANTS,
+  STAT_CARD_VARIANT_LABEL,
+} from './StatCard'
+export type {
+  StatCardAlign,
+  StatCardDelta,
+  StatCardDeltaTone,
+  StatCardProps,
+  StatCardSize,
+  StatCardTone,
+  StatCardVariant,
+} from './StatCard'
 export { Switch, SwitchGroup, SwitchItem, SWITCH_SIZES, SWITCH_VARIANTS } from './Switch'
 export type { SwitchSize, SwitchVariant } from './Switch'
 export { Tabs, TABS_ALIGNS, TABS_SIZES, TABS_VARIANTS, TABS_ALIGN_LABEL, TABS_SIZE_LABEL, TABS_VARIANT_LABEL } from './Tabs'
 export type { TabItem, TabsAlign, TabsPreview, TabsSize, TabsVariant } from './Tabs'
-export { AuthBrand, AuthLayout, AuthNav, AuthSuccess } from './AuthLayout'
+export { AuthNav } from './AuthNav'
+export { AuthBrand, AuthLayout, AuthSuccess } from './AuthLayout'
 export {
   Textarea,
   TEXTAREA_SIZES,
@@ -407,7 +511,7 @@ export {
   Subhead,
   Text,
 } from './Text'
-export { AuthLegal, ErrorText, StatusText, TextLink } from './TextLink'
+export { AuthLegal, ErrorText, StatusText } from './TextLink'
 export { ThemeToggle, type ThemeToggleVariant } from './ThemeToggle'
 export { ThemeIconToggle, type ThemeIconToggleSize, type ThemeIconToggleVariant } from './ThemeIconToggle'
 export { TotpManualKey } from './TotpManualKey'

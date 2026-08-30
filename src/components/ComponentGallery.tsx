@@ -4,7 +4,6 @@ import { useRef, useState } from 'react'
 import {
   DkNotificationBellAlert,
   DkChevronCaretRight,
-  DkPaymentCreditCard,
   DkFingerprintBiometricScanPattern,
   DkMessageInboxTray,
   DkRoundKeyAccess,
@@ -31,6 +30,7 @@ import { Alert } from './Alert'
 import { Anchor } from './Anchor'
 import { AuthBrand, AuthLayout, AuthSuccess } from './AuthLayout'
 import { AuthProviderStack } from './AuthProviderButton'
+import { AuthLegal, ErrorText, StatusText } from './TextLink'
 import { Avatar, AvatarGroup } from './Avatar'
 import { AvatarEditor } from './AvatarEditor'
 import { AvatarPicker, type AvatarPickerHandle } from './AvatarPicker'
@@ -41,8 +41,8 @@ import { Checkbox } from './Checkbox'
 import { ConfirmAction } from './ConfirmAction'
 import { ConfirmDialog } from './ConfirmDialog'
 import { CountrySelect } from './CountrySelect'
-import { DashboardPreview } from './DashboardPreview'
 import { DatePicker, DATE_PICKER_SIZES, DATE_PICKER_VARIANTS, type DateRange } from './DatePicker'
+import { DataTable } from './DataTable'
 import { Divider } from './Divider'
 import { Dropdown, type DropdownOption } from './Dropdown'
 import { EmptyPopup } from './EmptyPopup'
@@ -64,14 +64,15 @@ import {
 import { RoboticelaButton } from './RoboticelaButton'
 import { IconButton } from './IconButton'
 import { IconTab, IconTabBar } from './IconTab'
-import { KeyValueRow } from './KeyValueRow'
+import { KeyValueGroup, KeyValueRow } from './KeyValueRow'
 import { LanguageSelect } from './LanguageSelect'
-import { ListGroup, ListRow, TextAction } from './ListRow'
+import { ListGroup, ListMark, ListRow, TextAction } from './ListRow'
 import { Loader, LOADER_VARIANTS } from './Loader'
 import { LoadingScreen } from './LoadingScreen'
 import { NavSearch } from './NavSearch'
 import { CommandSearch } from './CommandPalette'
 import { OtpBoxes } from './OtpBoxes'
+import { PageHeader } from './PageHeader'
 import {
   Pagination,
   PAGINATION_LAYOUTS,
@@ -95,7 +96,6 @@ import {
 } from './ScoreRing'
 import { SettingsList, SettingsRow } from './SettingsRow'
 import { SheetNav } from './SheetNav'
-import { SidebarNavItem } from './DashboardSidebar'
 import { NumberField, NUMBER_FIELD_VARIANT_LABEL, NUMBER_FIELD_VARIANTS } from './NumberField'
 import { RangeSlider, Slider, SLIDER_VARIANT_LABEL, SLIDER_VARIANTS } from './Slider'
 import { SiteFooter } from './SiteFooter'
@@ -350,7 +350,6 @@ export function ComponentGallery() {
   const [iconTab, setIconTab] = useState('profile')
   const [galleryTab, setGalleryTab] = useState('all')
   const [navQuery, setNavQuery] = useState('')
-  const [sidebarPiece, setSidebarPiece] = useState('profile')
   const [radioPlan, setRadioPlan] = useState('pro')
   const [sliderValue, setSliderValue] = useState(65)
   const [sliderRange, setSliderRange] = useState<[number, number]>([20, 72])
@@ -569,9 +568,9 @@ export function ComponentGallery() {
                 <PasswordField placeholder="Password" disabled defaultValue="password" />
                 <ErrorText className="mt-0">Incorrect email or password.</ErrorText>
                 <StatusText className="mt-0">Check your inbox for a code.</StatusText>
-                <TextLink href="#forgot" className="self-end text-sm">
+                <Anchor href="#forgot" className="self-end text-sm">
                   Forgot password?
-                </TextLink>
+                </Anchor>
               </div>
             </DemoCard>
             <DemoCard>
@@ -954,9 +953,9 @@ export function ComponentGallery() {
                 <div className="min-h-5">
                   <span className="text-sm text-text-secondary">Resend in 0:28</span>
                 </div>
-                <TextLink href="#resend" className="text-sm">
+                <Anchor href="#resend" className="text-sm">
                   Didn&apos;t receive a code? Resend
-                </TextLink>
+                </Anchor>
               </div>
             </DemoCard>
 
@@ -1054,11 +1053,20 @@ export function ComponentGallery() {
             </DemoCard>
             <DemoCard>
               <StateLabel>Badges, divider, legal</StateLabel>
-              <div className="flex flex-wrap gap-2">
-                <Badge>Primary</Badge>
-                <Badge tone="verified">Verified</Badge>
-                <Badge tone="unverified">Unverified</Badge>
-                <Badge tone="neutral">Active</Badge>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="fill">New</Badge>
+                <Badge tone="verified" dot pulse>
+                  Live
+                </Badge>
+                <Badge variant="outline" tone="warning">
+                  In review
+                </Badge>
+                <Badge variant="ghost" tone="neutral">
+                  Beta
+                </Badge>
+                <Badge tone="success">Verified</Badge>
+                <Badge tone="danger" count={3} variant="fill" />
+                <Badge tone="muted">Pro</Badge>
               </div>
               <Divider />
               <AuthLegal className="mt-0" />
@@ -1151,23 +1159,27 @@ export function ComponentGallery() {
 
             <DemoCard>
               <StateLabel>Settings row</StateLabel>
-              <SettingsList>
+              <SettingsList header="Account" footer="Used to sign in and reset your password.">
                 <SettingsRow
+                  icon={<DkNotificationBellAlert size={16} strokeWidth={1.85} absoluteStrokeWidth />}
+                  iconTone="danger"
                   label="Email notifications"
                   description="Product updates and security alerts"
                   control={<Switch checked={notify} onChange={setNotify} label="Email notifications" size="sm" />}
                 />
                 <SettingsRow
+                  icon={<DkGlobeWorldEarth size={16} strokeWidth={1.85} absoluteStrokeWidth />}
+                  iconTone="teal"
                   label="Language"
-                  description="English (US)"
-                  control={<DkChevronCaretRight size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  value="English (US)"
                   onClick={() => undefined}
                 />
                 <SettingsRow
+                  icon={<DkPadlockSecureClosed size={16} strokeWidth={1.85} absoluteStrokeWidth />}
+                  iconTone="danger"
                   label="Delete account"
                   description="Permanently remove this profile"
                   danger
-                  control={<DkChevronCaretRight size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   onClick={() => setLogoutOpen(true)}
                 />
               </SettingsList>
@@ -1219,31 +1231,86 @@ export function ComponentGallery() {
             </DemoCard>
 
             <DemoCard>
+              <StateLabel>Page header</StateLabel>
+              <div className="flex w-full flex-col gap-6">
+                <PageHeader
+                  eyebrow="Workspace"
+                  title="Projects"
+                  description="Everything currently in flight."
+                  actions={
+                    <Button fullWidth={false} className="w-auto" size="sm">
+                      New
+                    </Button>
+                  }
+                />
+                <PageHeader
+                  variant="outline"
+                  onBack={() => undefined}
+                  title="Details"
+                  description="Atlas Checkout and the people on it."
+                  meta={<Badge>Live</Badge>}
+                  actions={
+                    <Button fullWidth={false} className="w-auto" size="sm" variant="secondary">
+                      Share
+                    </Button>
+                  }
+                />
+              </div>
+            </DemoCard>
+
+            <DemoCard>
               <StateLabel>List row</StateLabel>
-              <ListGroup>
-                <ListRow
-                  leading={<Avatar name="Alex Rivera" size="md" />}
-                  title="alex@roboticela.com"
-                  meta="Primary · Verified"
-                  trailing={
-                    <>
-                      <Badge tone="verified">Verified</Badge>
-                      <ConfirmAction onConfirm={() => undefined} />
-                    </>
-                  }
-                />
-                <ListRow
-                  leading={<Avatar name="Alex Work" size="md" status="away" />}
-                  title="alex.work@example.com"
-                  meta="Unverified"
-                  trailing={
-                    <>
-                      <TextAction>Verify</TextAction>
-                      <TextAction danger>Remove</TextAction>
-                    </>
-                  }
-                />
-              </ListGroup>
+              <div className="flex w-full flex-col gap-6">
+                <ListGroup header="Account">
+                  <ListRow
+                    leading={
+                      <ListMark>
+                        <DkEnvelopeMessageMail strokeWidth={1.85} absoluteStrokeWidth />
+                      </ListMark>
+                    }
+                    title="Email"
+                    value="alex@roboticela.com"
+                    chevron
+                    onClick={() => undefined}
+                  />
+                  <ListRow
+                    leading={
+                      <ListMark tone="success">
+                        <DkPadlockSecureClosed strokeWidth={1.85} absoluteStrokeWidth />
+                      </ListMark>
+                    }
+                    title="Password"
+                    value="Updated"
+                    chevron
+                    onClick={() => undefined}
+                  />
+                  <ListRow
+                    title="Product alerts"
+                    trailing={<Switch size="sm" checked onChange={() => undefined} label="Product alerts" />}
+                  />
+                </ListGroup>
+                <ListGroup>
+                  <ListRow
+                    leading={<Avatar name="Alex Rivera" size="md" />}
+                    title="alex@roboticela.com"
+                    meta="Primary · Verified"
+                    trailing={<Badge tone="verified">Verified</Badge>}
+                    chevron
+                    onClick={() => undefined}
+                  />
+                  <ListRow
+                    leading={<Avatar name="Alex Work" size="md" status="away" />}
+                    title="alex.work@example.com"
+                    meta="Unverified"
+                    trailing={
+                      <>
+                        <TextAction>Verify</TextAction>
+                        <TextAction danger>Remove</TextAction>
+                      </>
+                    }
+                  />
+                </ListGroup>
+              </div>
             </DemoCard>
 
             <DemoCard>
@@ -1287,54 +1354,11 @@ export function ComponentGallery() {
 
             <DemoCard>
               <StateLabel>Key-value row</StateLabel>
-              <div className="border-t border-border-default">
-                <KeyValueRow label="Email" value="alex@roboticela.com" />
+              <KeyValueGroup variant="outline">
+                <KeyValueRow label="Email" value="alex@roboticela.com" copyable />
                 <KeyValueRow label="Username" value="@alex" />
                 <KeyValueRow label="Plan" value={<Badge tone="neutral">Pro</Badge>} />
-              </div>
-            </DemoCard>
-
-            <DemoCard>
-              <StateLabel>Sidebar item</StateLabel>
-              <div className="flex max-w-[260px] flex-col gap-1">
-                <SidebarNavItem
-                  item={{
-                    id: 'profile',
-                    label: 'Profile',
-                    icon: <DkPersonUserProfile size={16} strokeWidth={1.6} absoluteStrokeWidth />,
-                  }}
-                  active={sidebarPiece === 'profile'}
-                  onSelect={setSidebarPiece}
-                />
-                <SidebarNavItem
-                  item={{
-                    id: 'security',
-                    label: 'Security',
-                    icon: <DkSecurityShieldProtect size={16} strokeWidth={1.6} absoluteStrokeWidth />,
-                    badge: 2,
-                  }}
-                  active={sidebarPiece === 'security'}
-                  onSelect={setSidebarPiece}
-                />
-                <SidebarNavItem
-                  item={{
-                    id: 'billing',
-                    label: 'Billing',
-                    icon: <DkPaymentCreditCard size={16} strokeWidth={1.6} absoluteStrokeWidth />,
-                  }}
-                  active={sidebarPiece === 'billing'}
-                  onSelect={setSidebarPiece}
-                />
-                <SidebarNavItem
-                  item={{
-                    id: 'logout',
-                    label: 'Log out',
-                    icon: <DkLogoutExitSession size={16} strokeWidth={1.6} absoluteStrokeWidth />,
-                    tone: 'danger',
-                  }}
-                  onSelect={() => setLogoutOpen(true)}
-                />
-              </div>
+              </KeyValueGroup>
             </DemoCard>
 
             <DemoCard>
@@ -1377,7 +1401,7 @@ export function ComponentGallery() {
               <StateLabel>Nav search and profile button</StateLabel>
               <div className="flex items-center gap-3">
                 <NavSearch value={navQuery} onChange={setNavQuery} />
-                <CommandSearch variant="pill" placeholder="Search" shortcut="⌘K" onClick={() => undefined} />
+                <CommandSearch variant="outline" placeholder="Search" shortcut="⌘K" onClick={() => undefined} />
                 <ProfileButton name="Alex Rivera" src={avatarSrc} onClick={() => undefined} />
               </div>
             </DemoCard>
@@ -1470,21 +1494,58 @@ export function ComponentGallery() {
         <Section
           id="dashboard"
           title="Dashboard"
-          intro="App chrome: a full-height sidebar with the brand, a top bar, and the pieces that sit inside — stats, tables, tabs, alerts, empty, and progress. Open the full layout on small screens to use the drawer."
+          intro="Pieces that sit inside an app canvas — stats, tables, tabs, alerts, empty, and progress."
         >
-          <DemoCard className="overflow-hidden p-0">
-            <div className="flex items-center justify-between gap-4 px-8 pt-8 pb-3 max-[734px]:px-4">
-              <StateLabel>Shell — navbar and sidebar</StateLabel>
-              <Anchor href="/dashboard" size="sm" className="font-medium">
-                Open full layout
-              </Anchor>
-            </div>
-            <div className="h-[720px] border-t border-border-subtle bg-bg-primary max-[734px]:h-[560px]">
-              <DashboardPreview />
-            </div>
-          </DemoCard>
-
-          <div className="mt-4 grid gap-4 min-[735px]:grid-cols-2">
+          <div className="grid gap-4 min-[735px]:grid-cols-2">
+            <DemoCard className="min-[735px]:col-span-2">
+              <StateLabel>Table</StateLabel>
+              <DataTable
+                size="sm"
+                caption="Projects"
+                selectable
+                defaultSelectedKeys={['1']}
+                data={[
+                  { id: '1', name: 'Atlas Checkout', status: 'Live', owner: 'Alex Rivera' },
+                  { id: '2', name: 'Northstar Auth', status: 'In review', owner: 'Sam Chen' },
+                  { id: '3', name: 'Harbor Admin', status: 'Paused', owner: 'Jordan Lee' },
+                ]}
+                rowKey={(row) => row.id}
+                columns={[
+                  {
+                    key: 'name',
+                    header: 'Project',
+                    sortable: true,
+                    render: (row) => (
+                      <span className="inline-flex min-w-0 items-center gap-2">
+                        <Avatar name={row.owner} size="sm" />
+                        <span className="truncate">{row.name}</span>
+                      </span>
+                    ),
+                  },
+                  {
+                    key: 'status',
+                    header: 'Status',
+                    sortable: true,
+                    render: (row) => (
+                      <Badge
+                        tone={
+                          row.status === 'Live'
+                            ? 'verified'
+                            : row.status === 'In review'
+                              ? 'unverified'
+                              : 'muted'
+                        }
+                      >
+                        {row.status}
+                      </Badge>
+                    ),
+                  },
+                  { key: 'owner', header: 'Owner', hideOnMobile: true, sortable: true },
+                ]}
+                footer={<span>Showing 3 projects</span>}
+                minWidth="480px"
+              />
+            </DemoCard>
             <DemoCard>
               <StateLabel>Chrome</StateLabel>
               <div className="flex flex-col gap-3">
@@ -1597,7 +1658,7 @@ export function ComponentGallery() {
 
         <Section id="chrome" title="Chrome" intro="Auth frame, success, site nav, and footer. These compose the smaller controls above.">
           <DemoCard className="overflow-hidden p-0">
-            <StateLabel>Auth layout</StateLabel>
+            <StateLabel>Auth nav</StateLabel>
             <div className="relative h-[880px] overflow-auto bg-bg-primary max-[734px]:h-[720px]">
               <AuthLayout navLinkTo="#signin" navLinkLabel="Sign in">
                 <AuthBrand title="Create Account" subhead="One account. Everything DevKit." />
@@ -1618,7 +1679,7 @@ export function ComponentGallery() {
                   <Button className="mt-6" type="submit">
                     Continue
                   </Button>
-                  <Divider />
+                  <Divider>or continue with</Divider>
                   <AuthProviderStack className="gap-y-3">
                     <GoogleButton lastUsed />
                     <AppleButton />

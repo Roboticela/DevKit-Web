@@ -1,7 +1,6 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { DkTaskCompleteCheckmark } from '@/icons'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { brand } from '@/lib/devkit'
 import {
@@ -15,10 +14,9 @@ import {
   type AnchorTone,
   type AnchorVariant,
 } from './Anchor'
-import { Badge } from './Badge'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -205,17 +203,9 @@ export function AnchorDocs() {
       <DocsHeader
         crumb="Components / Navigation / Anchor"
         title="Anchor"
-        description="A text link for in-app routes and the open web. External destinations show a launch icon."
+        description="A text link to another screen or to the open web. Use it when the person is going somewhere. Use a Button when they are doing something. Links that leave the product show a launch icon."
       >
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <Badge tone="verified">
-            <DkTaskCompleteCheckmark size={10} strokeWidth={2.5} absoluteStrokeWidth />
-            Stable
-          </Badge>
-          <Badge tone="muted">Web</Badge>
-          <Badge tone="muted">iOS</Badge>
-          <Badge tone="muted">Android</Badge>
-        </div>
+        <DocsMetaBadges />
       </DocsHeader>
 
       <section id="usage" className="mt-10 scroll-mt-20">
@@ -451,14 +441,14 @@ export function AnchorDocs() {
             description="The main control for running an action."
           />
           <RelatedCard
-            href="/components/text-link"
-            title="Text Link"
-            description="Inline links, legal copy, and error text."
-          />
-          <RelatedCard
             href="/components/breadcrumb"
             title="Breadcrumb"
-            description="The path back through the hierarchy."
+            description="The path from the root to this page so the person can step back. The last crumb is the current page and is not a link."
+          />
+          <RelatedCard
+            href="/components/auth-nav"
+            title="Auth Nav"
+            description="The bar on sign-in. Trailing action is Anchor."
           />
         </DocsRelated>
       </section>

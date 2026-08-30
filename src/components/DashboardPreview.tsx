@@ -157,10 +157,37 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
               </Alert>
             ) : null}
             <div className="grid gap-4 min-[735px]:grid-cols-2 min-[1069px]:grid-cols-4">
-              <StatCard label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} hint="vs last month" />
-              <StatCard label="Active users" value="2,841" delta={{ value: '+4%', tone: 'up' }} hint="vs last week" />
-              <StatCard label="Open tickets" value="18" delta={{ value: '−2', tone: 'down' }} hint="this week" />
-              <StatCard label="Conversion" value="3.2%" delta={{ value: '0.0%', tone: 'neutral' }} hint="unchanged" />
+              <StatCard
+                icon={<DkChartColumnIncreasing {...ICON} />}
+                label="Revenue"
+                value="$48,290"
+                delta={{ value: '+12%', tone: 'up' }}
+                hint="vs last month"
+                sparkline={[22, 24, 21, 28, 32, 30, 38, 42]}
+              />
+              <StatCard
+                icon={<DkPeopleUsersGroup {...ICON} />}
+                label="Active users"
+                value="2,841"
+                delta={{ value: '+4%', tone: 'up' }}
+                hint="vs last week"
+                sparkline={[18, 20, 19, 22, 21, 24, 26, 28]}
+              />
+              <StatCard
+                icon={<DkMessageInboxTray {...ICON} />}
+                label="Open tickets"
+                value="18"
+                delta={{ value: '−2', tone: 'down', invert: true }}
+                hint="this week"
+                sparkline={[28, 26, 24, 25, 22, 21, 19, 18]}
+              />
+              <StatCard
+                label="Conversion"
+                value="3.2%"
+                delta={{ value: '0.0%', tone: 'neutral' }}
+                hint="unchanged"
+                sparkline={[32, 31, 33, 32, 32, 31, 32, 32]}
+              />
             </div>
             <Tabs
               aria-label="Projects"
@@ -256,7 +283,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
 
         {page === 'customers' ? (
           <div className="flex flex-col gap-8">
-            <PageHeader title="Customers" description="Loading the latest accounts." />
+            <PageHeader title="Customers" description="Loading the latest accounts." loading />
             <div className="rounded-[18px] border border-border-default bg-bg-elevated p-6 dark:bg-bg-secondary">
               <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }, (_, index) => (

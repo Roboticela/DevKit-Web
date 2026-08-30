@@ -1,41 +1,12 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import Link from 'next/link'
 import { cn } from '@/lib/cn'
-import { brand } from '@/lib/devkit'
-import { Anchor } from './Anchor'
+import { AuthNav } from './AuthNav'
 import { BrandLogo } from './BrandLogo'
-import { ThemeToggle } from './ThemeToggle'
 import { Body, Heading, Label, Subhead } from './Text'
 
-export function AuthNav({
-  navLinkTo,
-  navLinkLabel,
-}: {
-  navLinkTo?: string
-  navLinkLabel?: string
-}) {
-  return (
-    <header className="fixed top-0 right-0 left-0 z-[2] flex h-11 items-center justify-between bg-bg-primary px-[22px] min-[735px]:px-10 min-[1069px]:px-[min(5vw,80px)]">
-      <Link
-        className="inline-flex size-5 items-center justify-center text-text-primary leading-none"
-        href="/"
-        aria-label={brand.name}
-      >
-        <BrandLogo variant="icon" size={18} alt="" />
-      </Link>
-      <div className="flex items-center gap-4">
-        <ThemeToggle compact />
-        {navLinkTo && navLinkLabel ? (
-          <Anchor href={navLinkTo} size="sm" className="whitespace-nowrap">
-            {navLinkLabel}
-          </Anchor>
-        ) : null}
-      </div>
-    </header>
-  )
-}
+export { AuthNav } from './AuthNav'
 
 export function AuthBrand({
   title,

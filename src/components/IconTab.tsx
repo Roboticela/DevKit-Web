@@ -11,6 +11,7 @@ import {
 } from 'react'
 import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
+import { Badge, type BadgeSize } from './Badge'
 
 export type IconTabVariant = 'ghost' | 'subtle' | 'outline' | 'fill' | 'pill'
 export type IconTabSize = 'sm' | 'md' | 'lg'
@@ -153,12 +154,8 @@ function indicatorClass(variant: IconTabVariant, layout: IconTabLayout, metric: 
   return cn(radius, 'bg-bg-primary dark:bg-bg-active')
 }
 
-function formatBadge(badge: number | string, compact: boolean) {
-  if (typeof badge === 'number') {
-    const cap = compact ? 9 : 99
-    return badge > cap ? `${cap}+` : String(badge)
-  }
-  return badge
+function badgeSizeFor(size: IconTabSize): BadgeSize {
+  return size === 'lg' ? 'md' : 'sm'
 }
 
 function itemShape(variant: IconTabVariant, layout: IconTabLayout, metric: Metric, grouped: boolean) {
@@ -325,6 +322,7 @@ export function IconTab({
         metric={metric}
         badge={showBadge ? badge : undefined}
         compactBadge
+        badgeSize={badgeSizeFor(size)}
       />
     </button>
   )
@@ -337,6 +335,7 @@ function IconTabFace({
   metric,
   badge,
   compactBadge,
+  badgeSize,
 }: {
   icon: ReactNode
   label: string
@@ -344,6 +343,7 @@ function IconTabFace({
   metric: Metric
   badge?: number | string
   compactBadge: boolean
+  badgeSize: BadgeSize
 }) {
   const iconOnly = layout === 'icon'
   const stacked = layout === 'stacked'
@@ -361,14 +361,14 @@ function IconTabFace({
           {icon}
         </span>
         {badge != null && onGlyph ? (
-          <span
-            className={cn(
-              'absolute -top-1 -right-2 inline-flex items-center justify-center rounded-[980px] bg-danger font-medium leading-none text-white',
-              metric.badge,
-            )}
-          >
-            {formatBadge(badge, compactBadge)}
-          </span>
+          <Badge
+            variant="fill"
+            tone="danger"
+            size={badgeSize}
+            count={badge}
+            max={compactBadge ? 9 : 99}
+            className="absolute -top-1 -right-2"
+          />
         ) : null}
       </span>
       {showLabel ? (
@@ -377,14 +377,7 @@ function IconTabFace({
         <span className="sr-only">{label}</span>
       )}
       {badge != null && layout === 'inline' ? (
-        <span
-          className={cn(
-            'inline-flex shrink-0 items-center justify-center rounded-[980px] bg-danger px-1.5 font-medium leading-none text-white',
-            metric.badge,
-          )}
-        >
-          {formatBadge(badge, false)}
-        </span>
+        <Badge variant="fill" tone="danger" size={badgeSize} count={badge} />
       ) : null}
     </>
   )
@@ -565,6 +558,7 @@ export function IconTabBar({
               metric={metric}
               badge={item.badge != null && item.badge !== 0 && item.badge !== '0' ? item.badge : undefined}
               compactBadge={layout !== 'inline'}
+              badgeSize={badgeSizeFor(size)}
             />
           </button>
         )

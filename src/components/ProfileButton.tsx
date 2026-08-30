@@ -12,6 +12,7 @@ import {
   type AvatarTone,
   type AvatarVariant,
 } from './Avatar'
+import { Badge } from './Badge'
 import { Loader } from './Loader'
 
 export type ProfileButtonVariant = 'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'
@@ -191,11 +192,6 @@ function profileName(name?: string, subtitle?: string, status?: AvatarStatus) {
   return bits.join(', ')
 }
 
-function formatBadge(badge: number | string) {
-  if (typeof badge === 'number') return badge > 9 ? '9+' : String(badge)
-  return badge
-}
-
 export function ProfileButton({
   src,
   name,
@@ -310,9 +306,14 @@ export function ProfileButton({
           </span>
         ) : null}
         {showBadge && !busy ? (
-          <span className="absolute -top-0.5 -right-0.5 z-[1] inline-flex h-4 min-w-4 items-center justify-center rounded-[980px] bg-danger px-1 text-[10px] font-medium leading-none text-white">
-            {formatBadge(badge)}
-          </span>
+          <Badge
+            variant="fill"
+            tone="danger"
+            size="sm"
+            count={badge}
+            max={9}
+            className="absolute -top-0.5 -right-0.5 z-[1]"
+          />
         ) : null}
       </span>
 
