@@ -157,7 +157,7 @@ export function Alert({
             tone={solid ? 'on-brand' : 'secondary'}
             className={cn(
               metric.body,
-              title && (size === 'sm' ? 'mt-0.5' : 'mt-1'),
+              title ? (size === 'sm' ? 'mt-0.5' : 'mt-1') : undefined,
               solid && 'opacity-85',
             )}
           >

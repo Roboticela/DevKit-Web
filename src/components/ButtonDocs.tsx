@@ -7,6 +7,7 @@ import {
 } from '@/icons'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { brand } from '@/lib/devkit'
+import { cn } from '@/lib/cn'
 import { Button, type ButtonSize, type ButtonVariant } from './Button'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
@@ -17,6 +18,7 @@ import { DocsPager } from './DocsPager'
 import { Dropdown } from './Dropdown'
 import { PropsTable, type PropRow } from './PropsTable'
 import { RelatedCard } from './RelatedCard'
+import { PREVIEW_INSET } from './PreviewMode'
 import { SegmentedControl } from './SegmentedControl'
 import { Switch } from './Switch'
 import { Body, Caption } from './Text'
@@ -161,6 +163,53 @@ function DemoButton({
   )
 }
 
+export function ButtonStates() {
+  return (
+    <DocsStack gap={8}>
+      {VARIANTS.map((demoVariant) => (
+        <DocsStateGroup key={demoVariant} title={VARIANT_LABEL[demoVariant]}>
+          <DocsStateGrid columns={6}>
+            {STATES.map((item) => (
+              <DocsStateCard key={item.value} label={item.label} inert>
+                <DemoButton
+                  variant={demoVariant}
+                  size="md"
+                  state={item.value}
+                  icon="right"
+                  fullWidth={false}
+                />
+              </DocsStateCard>
+            ))}
+          </DocsStateGrid>
+        </DocsStateGroup>
+      ))}
+    </DocsStack>
+  )
+}
+
+export function ButtonPreview() {
+  return (
+    <DocsStack gap={10}>
+      <div
+        className={cn(
+          'flex min-h-[min(52dvh,480px)] items-center justify-center',
+          PREVIEW_INSET,
+        )}
+      >
+        <div className="w-fit max-w-none">
+          <DemoButton variant="primary" size="md" state="default" icon="right" fullWidth={false} />
+        </div>
+      </div>
+      <div>
+        <div className={PREVIEW_INSET}>
+          <DocsSectionTitle>States</DocsSectionTitle>
+        </div>
+        <ButtonStates />
+      </div>
+    </DocsStack>
+  )
+}
+
 export function ButtonDocs() {
   const [variant, setVariant] = useState<DemoVariant>(DEFAULTS.variant)
   const [size, setSize] = useState<ButtonSize>(DEFAULTS.size)
@@ -229,6 +278,7 @@ export function ButtonDocs() {
       <section id="live-demo" className="mt-8 scroll-mt-20 animate-docs-demo-in motion-reduce:animate-none">
         <DocsDemoPanel
           fadeKey={fadeKey}
+          previewHref="/preview/button"
           grid={grid}
           onCopy={() => navigator.clipboard.writeText(code)}
           onReplay={() => setReplay((current) => current + 1)}
@@ -296,25 +346,7 @@ export function ButtonDocs() {
 
       <section id="states" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>States</DocsSectionTitle>
-        <DocsStack gap={8}>
-          {VARIANTS.map((demoVariant) => (
-            <DocsStateGroup key={demoVariant} title={VARIANT_LABEL[demoVariant]}>
-              <DocsStateGrid columns={6}>
-                {STATES.map((item) => (
-                  <DocsStateCard key={item.value} label={item.label} inert>
-                    <DemoButton
-                      variant={demoVariant}
-                      size="md"
-                      state={item.value}
-                      icon="right"
-                      fullWidth={false}
-                    />
-                  </DocsStateCard>
-                ))}
-              </DocsStateGrid>
-            </DocsStateGroup>
-          ))}
-        </DocsStack>
+        <ButtonStates />
       </section>
 
       <section id="props" className="mt-12 scroll-mt-20">

@@ -1,6 +1,12 @@
 'use client'
 
-import { useEffect, useState, type ButtonHTMLAttributes, type MouseEvent } from 'react'
+import {
+  useEffect,
+  useState,
+  type ButtonHTMLAttributes,
+  type ComponentProps,
+  type MouseEvent,
+} from 'react'
 import { cn } from '@/lib/cn'
 import { PILL_BUTTON } from '@/lib/styles'
 import { Anchor } from './Anchor'
@@ -100,9 +106,9 @@ export function ConfirmAction({
     return () => window.clearTimeout(timer)
   }, [confirming, resetMs])
 
-  function handleClick(event: MouseEvent<HTMLButtonElement>) {
+  function handleClick(event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) {
     event.stopPropagation()
-    onClick?.(event)
+    onClick?.(event as MouseEvent<HTMLButtonElement>)
     if (event.defaultPrevented || loading || disabled) return
     if (confirming) {
       onConfirm()
@@ -115,7 +121,7 @@ export function ConfirmAction({
   if (compact) {
     return (
       <Anchor
-        {...rest}
+        {...(rest as Omit<ComponentProps<typeof Anchor>, 'children'>)}
         size={size === 'lg' ? 'lg' : size === 'md' ? 'md' : 'sm'}
         tone={tone === 'neutral' ? 'brand' : tone}
         variant={tone === 'neutral' ? 'plain' : 'inline'}

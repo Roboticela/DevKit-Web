@@ -237,7 +237,7 @@ export function OtpBoxes({
             isError && FIELD_INVALID,
             isOk && FIELD_VALID,
             pulseIndex === index && 'animate-otp-pulse',
-            Boolean(split) && index === split - 1 && 'mr-2 min-[480px]:mr-3',
+            split != null && index === split - 1 && 'mr-2 min-[480px]:mr-3',
             disabled && 'cursor-not-allowed',
             masked && '[-webkit-text-security:disc]',
           )}

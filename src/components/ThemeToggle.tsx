@@ -8,11 +8,9 @@ import { cn } from '@/lib/cn'
 import { EASE } from '@/lib/styles'
 import { useTheme, type Theme } from '@/lib/theme'
 import { Caption } from './Text'
+import './ThemeToggle.css'
 
 export type ThemeToggleVariant = 'default' | 'compact' | 'labels' | 'icons' | 'switch'
-
-const MOTION =
-  'duration-200 ease-[cubic-bezier(0.28,0.11,0.32,1)] motion-reduce:duration-0 motion-reduce:transition-none'
 
 export function ThemeToggle({
   variant = 'default',
@@ -107,9 +105,6 @@ function ThemeSwitch({
   disabled: boolean
   onToggle: () => void
 }) {
-  const inset = compact ? 3 : 4
-  const thumb = compact ? 22 : 26
-
   return (
     <button
       type="button"
@@ -119,30 +114,15 @@ function ThemeSwitch({
       disabled={disabled}
       onClick={onToggle}
       className={cn(
-        'relative cursor-pointer overflow-hidden rounded-[980px] border-0 p-0',
-        'bg-border-default dark:bg-bg-tertiary',
-        'transition-[background-color]',
-        MOTION,
-        on && 'bg-brand-primary dark:bg-brand-primary',
-        compact ? 'h-7 min-w-[52px]' : 'h-[34px] min-w-[72px]',
+        'theme-toggle__switch',
+        compact && 'theme-toggle__switch--compact',
+        on && 'is-on',
         stretch ? 'w-full' : compact ? 'w-16' : 'w-[72px]',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary',
         disabled && 'cursor-not-allowed opacity-55',
       )}
     >
-      <span
-        aria-hidden
-        className={cn(
-          'absolute rounded-full bg-white',
-          'transition-[left]',
-          MOTION,
-          compact ? 'size-[22px]' : 'size-[26px]',
-        )}
-        style={{
-          top: inset,
-          left: on ? `calc(100% - ${thumb + inset}px)` : inset,
-        }}
-      />
+      <span className="theme-toggle__knob" aria-hidden />
     </button>
   )
 }

@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   type ButtonHTMLAttributes,
+  type ComponentProps,
   type MouseEventHandler,
   type ReactNode,
 } from 'react'
@@ -232,7 +233,12 @@ export function TextAction({
   danger?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <Anchor size="sm" tone={danger ? 'danger' : 'brand'} className={className} {...rest}>
+    <Anchor
+      size="sm"
+      tone={danger ? 'danger' : 'brand'}
+      className={className}
+      {...(rest as Omit<ComponentProps<typeof Anchor>, 'children'>)}
+    >
       {children}
     </Anchor>
   )

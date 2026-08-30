@@ -7,8 +7,51 @@ import { DocsDemoPanel } from './DocsDemoPanel'
 import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PropsTable, type PropRow } from './PropsTable'
-import { DocsRelated, DocsStateCard, DocsStateGrid } from './DocsCard'
+import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid } from './DocsCard'
 import { RelatedCard } from './RelatedCard'
+import { PREVIEW_INSET } from './PreviewMode'
+import { cn } from '@/lib/cn'
+
+export function KitPreviewBody({
+  demo,
+  states,
+  statesContent,
+  wide = false,
+}: {
+  demo: ReactNode
+  states?: { label: string; node: ReactNode }[]
+  statesContent?: ReactNode
+  wide?: boolean
+}) {
+  return (
+    <DocsStack gap={10}>
+      <div
+        className={cn(
+          'w-full',
+          !wide && cn('flex min-h-[min(52dvh,480px)] items-center justify-center', PREVIEW_INSET),
+        )}
+      >
+        <div className={wide ? 'w-full' : 'w-fit max-w-none'}>{demo}</div>
+      </div>
+      {statesContent || states?.length ? (
+        <div>
+          <div className={PREVIEW_INSET}>
+            <DocsSectionTitle>States</DocsSectionTitle>
+          </div>
+          {statesContent ?? (
+            <DocsStateGrid>
+              {states!.map((item) => (
+                <DocsStateCard key={item.label} label={item.label}>
+                  {item.node}
+                </DocsStateCard>
+              ))}
+            </DocsStateGrid>
+          )}
+        </div>
+      ) : null}
+    </DocsStack>
+  )
+}
 
 export function KitDocArticle({
   slug,
@@ -63,6 +106,7 @@ export function KitDocArticle({
       <section id="live-demo" className="mt-8 scroll-mt-20 animate-docs-demo-in motion-reduce:animate-none">
         <DocsDemoPanel
           fadeKey={demoKey}
+          previewHref={`/preview/${slug}`}
           onCopy={() => navigator.clipboard.writeText(code)}
           onReplay={() => setReplay((current) => current + 1)}
         >

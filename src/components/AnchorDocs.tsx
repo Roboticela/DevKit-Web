@@ -3,13 +3,14 @@
 import { useMemo, useState } from 'react'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { brand } from '@/lib/devkit'
+import { cn } from '@/lib/cn'
 import {
   Anchor,
   ANCHOR_TONES,
   ANCHOR_TONE_LABEL,
   ANCHOR_VARIANTS,
   ANCHOR_VARIANT_LABEL,
-  type AnchorPreview,
+  type AnchorPreview as AnchorPreviewState,
   type AnchorSize,
   type AnchorTone,
   type AnchorVariant,
@@ -23,6 +24,7 @@ import { DocsPager } from './DocsPager'
 import { Dropdown } from './Dropdown'
 import { PropsTable, type PropRow } from './PropsTable'
 import { RelatedCard } from './RelatedCard'
+import { PREVIEW_INSET } from './PreviewMode'
 import { SegmentedControl } from './SegmentedControl'
 import { Switch } from './Switch'
 import { Body, Caption } from './Text'
@@ -106,7 +108,7 @@ const PROPS: PropRow[] = [
   },
 ]
 
-function previewOf(state: DemoState): AnchorPreview | undefined {
+function previewOf(state: DemoState): AnchorPreviewState | undefined {
   if (state === 'hover' || state === 'focus' || state === 'active' || state === 'visited') return state
   return undefined
 }
@@ -157,7 +159,7 @@ function DemoAnchor({
   state: DemoState
   tone: AnchorTone
   external: boolean
-  preview?: AnchorPreview
+  preview?: AnchorPreviewState
 }) {
   return (
     <Anchor
@@ -171,6 +173,115 @@ function DemoAnchor({
     >
       {labelOf(variant, external)}
     </Anchor>
+  )
+}
+
+export function AnchorStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {ANCHOR_VARIANTS.map((item) => (
+            <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
+              <DemoAnchor variant={item} size="md" state="default" tone="brand" external={false} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {SIZES.map((item) => (
+            <DocsStateCard key={item} label={item === 'sm' ? 'Small' : item === 'md' ? 'Medium' : 'Large'}>
+              <DemoAnchor variant="inline" size={item} state="default" tone="brand" external={false} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {ANCHOR_TONES.map((item) => (
+            <DocsStateCard key={item} label={ANCHOR_TONE_LABEL[item]}>
+              <DemoAnchor
+                variant="inline"
+                size="md"
+                state="default"
+                tone={item}
+                external={false}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      {ANCHOR_VARIANTS.map((item) => (
+        <DocsStateGroup key={item} title={ANCHOR_VARIANT_LABEL[item]}>
+          <DocsStateGrid columns={6}>
+            {STATES.map((entry) => (
+              <DocsStateCard key={entry.value} label={entry.label} inert>
+                <DemoAnchor
+                  variant={item}
+                  size="md"
+                  state={entry.value}
+                  tone="brand"
+                  external={false}
+                />
+              </DocsStateCard>
+            ))}
+          </DocsStateGrid>
+        </DocsStateGroup>
+      ))}
+
+      <DocsStateGroup title="External">
+        <DocsStateGrid columns={2}>
+          {ANCHOR_VARIANTS.map((item) => (
+            <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
+              <Anchor href={brand.supportUrl} variant={item} size="md" external>
+                {item === 'standalone' ? 'Visit the site' : brand.supportLabel}
+              </Anchor>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="In copy">
+        <DocsStateCard label="Inline in a paragraph" align="stretch" wide>
+          <Body>
+            By continuing, you agree to the{' '}
+            <Anchor href="#usage">Terms of Use</Anchor> and{' '}
+            <Anchor href="#usage" variant="subtle">
+              Privacy Policy
+            </Anchor>
+            . Support is on{' '}
+            <Anchor href={brand.supportUrl}>{brand.supportLabel}</Anchor>.
+          </Body>
+        </DocsStateCard>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+export function AnchorPreview() {
+  return (
+    <DocsStack gap={10}>
+      <div
+        className={cn(
+          'flex min-h-[min(52dvh,480px)] items-center justify-center',
+          PREVIEW_INSET,
+        )}
+      >
+        <div className="w-fit max-w-none">
+          <DemoAnchor variant="inline" size="md" state="default" tone="brand" external={false} />
+        </div>
+      </div>
+      <div>
+        <div className={PREVIEW_INSET}>
+          <DocsSectionTitle>States</DocsSectionTitle>
+        </div>
+        <AnchorStates />
+      </div>
+    </DocsStack>
   )
 }
 
@@ -252,6 +363,7 @@ export function AnchorDocs() {
       <section id="live-demo" className="mt-8 scroll-mt-20 animate-docs-demo-in motion-reduce:animate-none">
         <DocsDemoPanel
           fadeKey={fadeKey}
+          previewHref="/preview/anchor"
           grid={grid}
           onCopy={() => navigator.clipboard.writeText(code)}
           onReplay={() => setReplay((current) => current + 1)}
@@ -325,87 +437,7 @@ export function AnchorDocs() {
 
       <section id="states" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>States</DocsSectionTitle>
-        <DocsStack gap={10}>
-          <DocsStateGroup title="Appearance">
-            <DocsStateGrid columns={2}>
-              {ANCHOR_VARIANTS.map((item) => (
-                <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
-                  <DemoAnchor variant={item} size="md" state="default" tone="brand" external={false} />
-                </DocsStateCard>
-              ))}
-            </DocsStateGrid>
-          </DocsStateGroup>
-
-          <DocsStateGroup title="Size">
-            <DocsStateGrid columns={3}>
-              {SIZES.map((item) => (
-                <DocsStateCard key={item} label={item === 'sm' ? 'Small' : item === 'md' ? 'Medium' : 'Large'}>
-                  <DemoAnchor variant="inline" size={item} state="default" tone="brand" external={false} />
-                </DocsStateCard>
-              ))}
-            </DocsStateGrid>
-          </DocsStateGroup>
-
-          <DocsStateGroup title="Tone">
-            <DocsStateGrid columns={2}>
-              {ANCHOR_TONES.map((item) => (
-                <DocsStateCard key={item} label={ANCHOR_TONE_LABEL[item]}>
-                  <DemoAnchor
-                    variant="inline"
-                    size="md"
-                    state="default"
-                    tone={item}
-                    external={false}
-                  />
-                </DocsStateCard>
-              ))}
-            </DocsStateGrid>
-          </DocsStateGroup>
-
-          {ANCHOR_VARIANTS.map((item) => (
-            <DocsStateGroup key={item} title={ANCHOR_VARIANT_LABEL[item]}>
-              <DocsStateGrid columns={6}>
-                {STATES.map((entry) => (
-                  <DocsStateCard key={entry.value} label={entry.label} inert>
-                    <DemoAnchor
-                      variant={item}
-                      size="md"
-                      state={entry.value}
-                      tone="brand"
-                      external={false}
-                    />
-                  </DocsStateCard>
-                ))}
-              </DocsStateGrid>
-            </DocsStateGroup>
-          ))}
-
-          <DocsStateGroup title="External">
-            <DocsStateGrid columns={2}>
-              {ANCHOR_VARIANTS.map((item) => (
-                <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
-                  <Anchor href={brand.supportUrl} variant={item} size="md" external>
-                    {item === 'standalone' ? 'Visit the site' : brand.supportLabel}
-                  </Anchor>
-                </DocsStateCard>
-              ))}
-            </DocsStateGrid>
-          </DocsStateGroup>
-
-          <DocsStateGroup title="In copy">
-            <DocsStateCard label="Inline in a paragraph" align="stretch" wide>
-              <Body>
-                By continuing, you agree to the{' '}
-                <Anchor href="#usage">Terms of Use</Anchor> and{' '}
-                <Anchor href="#usage" variant="subtle">
-                  Privacy Policy
-                </Anchor>
-                . Support is on{' '}
-                <Anchor href={brand.supportUrl}>{brand.supportLabel}</Anchor>.
-              </Body>
-            </DocsStateCard>
-          </DocsStateGroup>
-        </DocsStack>
+        <AnchorStates />
       </section>
 
       <section id="props" className="mt-12 scroll-mt-20">

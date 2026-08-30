@@ -13,6 +13,7 @@ import { Dropdown } from './Dropdown'
 import { PropsTable, type PropRow } from './PropsTable'
 import { RelatedCard } from './RelatedCard'
 import { SegmentedControl } from './SegmentedControl'
+import { PREVIEW_INSET } from './PreviewMode'
 import { Body, Caption, Heading, Subhead, Text, type TextAlign, type TextTone, type TextVariant } from './Text'
 
 const VARIANTS: { value: TextVariant; label: string }[] = [
@@ -121,6 +122,72 @@ function snippet(variant: TextVariant, tone: TextTone, align: TextAlign) {
   return `<Label${align !== 'start' ? ` align="${align}"` : ''}${tone !== 'primary' ? ` tone="${tone}"` : ''}>\n  ${text}\n</Label>\n`
 }
 
+export function TextStates() {
+  return (
+    <>
+      <section id="states" className="mt-12 scroll-mt-20">
+        <DocsSectionTitle>Variants</DocsSectionTitle>
+        <DocsStack gap={4}>
+          {VARIANTS.map((item) => (
+            <DocsCard key={item.value} className="flex flex-col gap-2">
+              <Caption className="font-medium">{item.label}</Caption>
+              <Text variant={item.value}>{COPY[item.value]}</Text>
+            </DocsCard>
+          ))}
+        </DocsStack>
+      </section>
+
+      <section id="tones" className="mt-12 scroll-mt-20">
+        <DocsSectionTitle>Tones</DocsSectionTitle>
+        <DocsStateGrid>
+          {TONES.map((item) => (
+            <DocsStateCard
+              key={item.value}
+              label={item.label}
+              surface={item.value === 'on-brand' ? 'brand' : 'secondary'}
+            >
+              <Body tone={item.value}>{item.label} content</Body>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </section>
+
+      <section id="stack" className="mt-12 scroll-mt-20">
+        <DocsSectionTitle>Stack</DocsSectionTitle>
+        <DocsCard padding="lg" className="flex flex-col gap-3">
+          <Text variant="eyebrow">Components / Typography</Text>
+          <Heading>A pressable control that triggers an action.</Heading>
+          <Subhead>Use your DevKit Account to continue.</Subhead>
+          <Body>
+            Heading, subhead, and content share one type scale. Pair them in this order and keep one idea per
+            block.
+          </Body>
+        </DocsCard>
+      </section>
+    </>
+  )
+}
+
+export function TextPreview() {
+  return (
+    <>
+      <div
+        className={cn(
+          'flex min-h-[min(52dvh,480px)] items-center justify-center',
+          PREVIEW_INSET,
+        )}
+      >
+        <div className="w-fit max-w-none">
+          <Text variant="h1" align="center">
+            {COPY.h1}
+          </Text>
+        </div>
+      </div>
+      <TextStates />
+    </>
+  )
+}
+
 export function TextDocs() {
   const [variant, setVariant] = useState<TextVariant>('h1')
   const [tone, setTone] = useState<TextTone>('primary')
@@ -187,6 +254,7 @@ export function TextDocs() {
       <section id="live-demo" className="mt-8 scroll-mt-20 animate-docs-demo-in motion-reduce:animate-none">
         <DocsDemoPanel
           fadeKey={fadeKey}
+          previewHref="/preview/text"
           grid={grid}
           onCopy={() => navigator.clipboard.writeText(code)}
           onReplay={() => setReplay((current) => current + 1)}
@@ -220,45 +288,7 @@ export function TextDocs() {
         </div>
       </section>
 
-      <section id="states" className="mt-12 scroll-mt-20">
-        <DocsSectionTitle>Variants</DocsSectionTitle>
-        <DocsStack gap={4}>
-          {VARIANTS.map((item) => (
-            <DocsCard key={item.value} className="flex flex-col gap-2">
-              <Caption className="font-medium">{item.label}</Caption>
-              <Text variant={item.value}>{COPY[item.value]}</Text>
-            </DocsCard>
-          ))}
-        </DocsStack>
-      </section>
-
-      <section id="tones" className="mt-12 scroll-mt-20">
-        <DocsSectionTitle>Tones</DocsSectionTitle>
-        <DocsStateGrid>
-          {TONES.map((item) => (
-            <DocsStateCard
-              key={item.value}
-              label={item.label}
-              surface={item.value === 'on-brand' ? 'brand' : 'secondary'}
-            >
-              <Body tone={item.value}>{item.label} content</Body>
-            </DocsStateCard>
-          ))}
-        </DocsStateGrid>
-      </section>
-
-      <section id="stack" className="mt-12 scroll-mt-20">
-        <DocsSectionTitle>Stack</DocsSectionTitle>
-        <DocsCard padding="lg" className="flex flex-col gap-3">
-          <Text variant="eyebrow">Components / Typography</Text>
-          <Heading>A pressable control that triggers an action.</Heading>
-          <Subhead>Use your DevKit Account to continue.</Subhead>
-          <Body>
-            Heading, subhead, and content share one type scale. Pair them in this order and keep one idea per
-            block.
-          </Body>
-        </DocsCard>
-      </section>
+      <TextStates />
 
       <section id="props" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>Props</DocsSectionTitle>

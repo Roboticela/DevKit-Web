@@ -894,7 +894,6 @@ export function DataTable<T>({
                         pressed && !chosen && '[&>td]:bg-bg-active',
                         focused &&
                           !liveEdit &&
-                          preview !== 'editing' &&
                           'relative z-[1] shadow-[inset_0_0_0_2px_var(--brand-primary-focus-ring)]',
                       )}
                     >

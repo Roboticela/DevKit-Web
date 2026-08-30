@@ -193,7 +193,8 @@ import {
   KEY_VALUE_TONE_LABEL,
   KEY_VALUE_VARIANT_LABEL,
 } from './KeyValueRow'
-import { KitDocArticle } from './KitDocArticle'
+import { KitDocArticle, KitPreviewBody } from './KitDocArticle'
+import { PreviewFrame } from './PreviewMode'
 import { DocsStateCard, DocsStateGrid, DocsStateGroup, DocsStack } from './DocsCard'
 import {
   alertGuide,
@@ -4567,11 +4568,13 @@ const FIELD_LABEL_TONE_LABEL: Record<FieldLabelTone, string> = {
   disabled: 'Disabled',
 }
 
-const FIELD_HINT_TONE_LABEL: Record<Exclude<FieldHintTone, 'success' | 'danger'>, string> = {
+const FIELD_HINT_TONE_LABEL: Record<FieldHintTone, string> = {
   default: 'Default',
   ok: 'Success',
   error: 'Error',
   warning: 'Warning',
+  success: 'Success',
+  danger: 'Error',
 }
 
 const FORM_FIELD_LAYOUT_LABEL: Record<FormFieldLayout, string> = {
@@ -7004,9 +7007,9 @@ function AuthNavPreview({
   navLinkLabel?: string
 }) {
   return (
-    <div className="overflow-hidden rounded-[12px] border border-border-default bg-bg-primary">
+    <PreviewFrame className="bg-bg-primary">
       <AuthNav contained navLinkTo={navLinkTo} navLinkLabel={navLinkLabel} />
-    </div>
+    </PreviewFrame>
   )
 }
 
@@ -7037,9 +7040,9 @@ function AuthNavStates() {
 function DashboardNavDemo() {
   const [search, setSearch] = useState('')
   return (
-    <div className="overflow-hidden rounded-[12px] border border-border-default">
+    <PreviewFrame>
       <DashboardNav title="Projects" search={{ value: search, onChange: setSearch }} userName="Alex Rivera" />
-    </div>
+    </PreviewFrame>
   )
 }
 
@@ -7048,7 +7051,7 @@ function ShellDemo() {
   const [collapsed, setCollapsed] = useState(false)
   const [search, setSearch] = useState('')
   return (
-    <div className="h-[360px] overflow-hidden rounded-[12px] border border-border-default">
+    <PreviewFrame className="h-[360px]" previewClassName="h-[calc(100dvh-2.75rem)]">
       <DashboardShell
         title="Overview"
         sidebarOpen={open}
@@ -7064,7 +7067,7 @@ function ShellDemo() {
       >
         <p className="m-0 p-6 text-sm text-text-secondary">Main canvas</p>
       </DashboardShell>
-    </div>
+    </PreviewFrame>
   )
 }
 
@@ -11778,9 +11781,9 @@ const DOCS: Record<string, DocDef> = {
     title: 'Site Nav',
     description: 'Marketing site header and mobile menu.',
     Demo: () => (
-      <div className="overflow-hidden rounded-[12px] border border-border-default">
+      <PreviewFrame>
         <SiteNav />
-      </div>
+      </PreviewFrame>
     ),
     wide: true,
     code: `<SiteNav active="Products" />\n`,
@@ -11790,9 +11793,9 @@ const DOCS: Record<string, DocDef> = {
     title: 'Site Footer',
     description: 'Marketing site footer with language.',
     Demo: () => (
-      <div className="overflow-hidden rounded-[12px] border border-border-default">
+      <PreviewFrame>
         <SiteFooter />
-      </div>
+      </PreviewFrame>
     ),
     wide: true,
     code: `<SiteFooter />\n`,
@@ -11832,6 +11835,20 @@ export function KitComponentDocs({ slug }: { slug: string }) {
       wide={def.wide}
       usage={def.usage}
       accessibility={def.accessibility}
+    />
+  )
+}
+
+export function KitComponentPreview({ slug }: { slug: string }) {
+  const def = DOCS[slug]
+  if (!def) return null
+  const Demo = def.Demo
+  return (
+    <KitPreviewBody
+      demo={<Demo />}
+      states={def.states}
+      statesContent={def.statesContent}
+      wide={def.wide}
     />
   )
 }

@@ -25,7 +25,7 @@ import {
   DocsUsage,
 } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsKeys, DocsPrinciples, DocsProse } from './DocsGuide'
-import { KitDocArticle } from './KitDocArticle'
+import { KitDocArticle, KitPreviewBody } from './KitDocArticle'
 import type { PropRow } from './PropsTable'
 import { RelatedCard } from './RelatedCard'
 import { Body, Caption, Label } from './Text'
@@ -806,4 +806,15 @@ export function DocsPrimitivesDocs({ slug }: { slug: string }) {
       accessibility={def.accessibility}
     />
   )
+}
+
+export function PrimitivePreview({ slug }: { slug: string }) {
+  const def = PRIMITIVES[slug]
+  if (!def) return null
+  const Demo = def.Demo
+  return <KitPreviewBody demo={<Demo />} states={def.states} wide={def.wide} />
+}
+
+export function hasPrimitiveDoc(slug: string) {
+  return slug in PRIMITIVES
 }

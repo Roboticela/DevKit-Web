@@ -4,10 +4,12 @@ import type { ReactNode } from 'react'
 import {
   DkClipboardCopyDuplicate,
   DkLayoutGrid,
+  DkMaximizeWindowExpandAlternate,
   DkPlayMediaTriangle,
   DkUndoActionBack,
 } from '@/icons'
 import { cn } from '@/lib/cn'
+import { EASE } from '@/lib/styles'
 import { IconButton } from './IconButton'
 
 const TOOL = 'text-text-tertiary hover:text-text-primary'
@@ -16,6 +18,7 @@ export function DocsDemoPanel({
   children,
   fadeKey,
   grid = false,
+  previewHref,
   onCopy,
   onReplay,
   onReset,
@@ -26,6 +29,7 @@ export function DocsDemoPanel({
   children: ReactNode
   fadeKey?: string
   grid?: boolean
+  previewHref?: string
   onCopy?: () => void | Promise<void>
   onReplay?: () => void
   onReset?: () => void
@@ -56,6 +60,25 @@ export function DocsDemoPanel({
             <IconButton label="Toggle grid" size="sm" className={TOOL} onClick={onToggleGrid}>
               <DkLayoutGrid size={14} strokeWidth={1.75} absoluteStrokeWidth />
             </IconButton>
+          ) : null}
+          {previewHref ? (
+            <a
+              href={previewHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open full screen"
+              title="Open full screen"
+              className={cn(
+                'relative inline-flex size-8 shrink-0 items-center justify-center rounded-full',
+                TOOL,
+                'hover:bg-bg-hover',
+                'transition-colors duration-150',
+                EASE,
+                'focus-visible:bg-bg-hover focus-visible:outline-none',
+              )}
+            >
+              <DkMaximizeWindowExpandAlternate size={14} strokeWidth={1.75} absoluteStrokeWidth />
+            </a>
           ) : null}
         </div>
         <div

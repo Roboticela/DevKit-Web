@@ -221,6 +221,8 @@ export const DOCS_ITEMS: DocsNavItem[] = DOCS_NAV.flatMap((section) => section.i
 
 export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'radius', 'layout', 'icons'])
 
+export const PREVIEW_EXCLUDED_IDS = new Set([...FOUNDATION_IDS, 'country-flag'])
+
 export const DOCS_PRIMITIVE_IDS = new Set([
   'docs-card',
   'docs-card-grid',

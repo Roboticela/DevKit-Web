@@ -1,6 +1,9 @@
+'use client'
+
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Body, Caption, Label } from './Text'
+import { PREVIEW_INSET, usePreviewMode } from './PreviewMode'
 
 export function DocsCard({
   children,
@@ -11,15 +14,20 @@ export function DocsCard({
   className?: string
   padding?: 'none' | 'sm' | 'md' | 'lg'
 }) {
+  const preview = usePreviewMode()
   const pad =
-    padding === 'none'
+    padding === 'none' || preview
       ? ''
       : padding === 'sm'
         ? 'p-4'
         : padding === 'lg'
           ? 'px-5 py-8 min-[735px]:px-8 min-[735px]:py-12'
           : 'p-6'
-  return <div className={cn('rounded-[18px] bg-bg-secondary', pad, className)}>{children}</div>
+  return (
+    <div className={cn(!preview && 'rounded-[18px] bg-bg-secondary', pad, className)}>
+      {children}
+    </div>
+  )
 }
 
 export function DocsStack({
@@ -47,17 +55,27 @@ export function DocsCardGrid({
   className,
 }: {
   children: ReactNode
-  columns?: 2 | 3 | 4 | 6
+  columns?: 1 | 2 | 3 | 4 | 6
   className?: string
 }) {
+  const preview = usePreviewMode()
   const cols =
-    columns === 2
-      ? 'grid-cols-1 min-[735px]:grid-cols-2'
-      : columns === 4
-        ? 'grid-cols-2 min-[735px]:grid-cols-4'
-        : columns === 6
-          ? 'grid-cols-2 min-[480px]:grid-cols-3 min-[1068px]:grid-cols-6'
-          : 'grid-cols-1 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3'
+    columns === 1
+      ? 'grid-cols-1'
+      : columns === 2
+        ? 'grid-cols-1 min-[735px]:grid-cols-2'
+        : columns === 4
+          ? 'grid-cols-2 min-[735px]:grid-cols-4'
+          : columns === 6
+            ? 'grid-cols-2 min-[480px]:grid-cols-3 min-[1068px]:grid-cols-6'
+            : 'grid-cols-1 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3'
+  if (preview) {
+    return (
+      <div className={cn('flex flex-wrap items-start gap-x-10 gap-y-8', PREVIEW_INSET, className)}>
+        {children}
+      </div>
+    )
+  }
   return <div className={cn('grid gap-3', cols, className)}>{children}</div>
 }
 
@@ -114,27 +132,49 @@ export function DocsStateCard({
   wide?: boolean
   className?: string
 }) {
+  const preview = usePreviewMode()
+  const brand = surface === 'brand'
+
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className={cn(
+        'flex flex-col gap-2',
+        preview && (wide ? 'w-full' : 'w-fit max-w-none shrink-0'),
+      )}
+    >
       <div
         className={cn(
-          'flex rounded-[12px] px-4 py-6',
-          size === 'lg' ? 'min-h-[168px]' : 'min-h-[100px]',
-          align === 'center' && 'items-center justify-center',
-          align === 'start' && 'items-center',
-          align === 'stretch' && 'items-center justify-center',
-          surface === 'brand' ? 'bg-brand-primary' : 'bg-bg-secondary',
+          'flex',
+          preview
+            ? cn(
+                wide ? 'w-full' : 'w-fit min-h-11',
+                brand && 'rounded-[12px] bg-brand-primary px-4 py-6',
+              )
+            : cn(
+                'rounded-[12px] px-4 py-6',
+                size === 'lg' ? 'min-h-[168px]' : 'min-h-[100px]',
+                brand ? 'bg-brand-primary' : 'bg-bg-secondary',
+              ),
+          !preview && align === 'center' && 'items-center justify-center',
+          !preview && align === 'start' && 'items-center',
+          !preview && align === 'stretch' && 'items-center justify-center',
+          preview && !wide && 'items-center',
           inert && 'pointer-events-none',
           className,
         )}
       >
-        {align === 'stretch' ? (
+        {align === 'stretch' && !preview ? (
           <div className={cn('w-full', !wide && 'max-w-[320px]')}>{children}</div>
         ) : (
           children
         )}
       </div>
-      <Caption align="center">{label}</Caption>
+      <Caption
+        align={preview ? 'start' : 'center'}
+        className={preview && wide ? PREVIEW_INSET : undefined}
+      >
+        {label}
+      </Caption>
     </div>
   )
 }
@@ -145,9 +185,17 @@ export function DocsStateGrid({
   className,
 }: {
   children: ReactNode
-  columns?: 2 | 3 | 4 | 6
+  columns?: 1 | 2 | 3 | 4 | 6
   className?: string
 }) {
+  const preview = usePreviewMode()
+  if (preview) {
+    return (
+      <div className={cn('flex flex-wrap items-start gap-x-10 gap-y-8', PREVIEW_INSET, className)}>
+        {children}
+      </div>
+    )
+  }
   return (
     <DocsCardGrid columns={columns} className={cn('gap-4', className)}>
       {children}
@@ -162,9 +210,10 @@ export function DocsStateGroup({
   title: string
   children: ReactNode
 }) {
+  const preview = usePreviewMode()
   return (
     <div>
-      <Caption className="mb-3 font-medium" tone="secondary">
+      <Caption className={cn('mb-3 font-medium', preview && PREVIEW_INSET)} tone="secondary">
         {title}
       </Caption>
       {children}
