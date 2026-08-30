@@ -144,7 +144,7 @@ export function DocsStateCard({
     >
       <div
         className={cn(
-          'flex',
+          preview && wide ? 'block w-full' : 'flex',
           preview
             ? cn(
                 wide ? 'w-full' : 'w-fit min-h-11',
@@ -163,7 +163,9 @@ export function DocsStateCard({
           className,
         )}
       >
-        {align === 'stretch' && !preview ? (
+        {preview && wide ? (
+          <div className="w-full">{children}</div>
+        ) : align === 'stretch' && !preview ? (
           <div className={cn('w-full', !wide && 'max-w-[320px]')}>{children}</div>
         ) : (
           children

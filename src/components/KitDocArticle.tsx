@@ -39,13 +39,23 @@ export function KitPreviewBody({
             <DocsSectionTitle>States</DocsSectionTitle>
           </div>
           {statesContent ?? (
-            <DocsStateGrid>
-              {states!.map((item) => (
-                <DocsStateCard key={item.label} label={item.label}>
-                  {item.node}
-                </DocsStateCard>
-              ))}
-            </DocsStateGrid>
+            wide ? (
+              <div className="flex w-full flex-col gap-8">
+                {states!.map((item) => (
+                  <DocsStateCard key={item.label} label={item.label} wide>
+                    {item.node}
+                  </DocsStateCard>
+                ))}
+              </div>
+            ) : (
+              <DocsStateGrid>
+                {states!.map((item) => (
+                  <DocsStateCard key={item.label} label={item.label}>
+                    {item.node}
+                  </DocsStateCard>
+                ))}
+              </DocsStateGrid>
+            )
           )}
         </div>
       ) : null}

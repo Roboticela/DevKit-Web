@@ -7021,7 +7021,7 @@ function AuthNavStates() {
   return (
     <DocsStack gap={10}>
       <DocsStateGroup title="Trailing link">
-        <div className="flex flex-col gap-4">
+        <div className="flex w-full flex-col gap-8">
           <DocsStateCard label="Create one" align="stretch" wide>
             <AuthNavPreview navLinkTo="/pages/create-account" navLinkLabel="Create one" />
           </DocsStateCard>
