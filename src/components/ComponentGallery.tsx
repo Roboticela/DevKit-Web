@@ -41,7 +41,7 @@ import { ConfirmAction } from './ConfirmAction'
 import { ConfirmDialog } from './ConfirmDialog'
 import { CountrySelect } from './CountrySelect'
 import { DashboardPreview } from './DashboardPreview'
-import { DatePicker, type DateRange } from './DatePicker'
+import { DatePicker, DATE_PICKER_SIZES, DATE_PICKER_VARIANTS, type DateRange } from './DatePicker'
 import { Divider } from './Divider'
 import { Dropdown, type DropdownOption } from './Dropdown'
 import { EmptyState } from './EmptyState'
@@ -71,16 +71,17 @@ import { OtpBoxes } from './OtpBoxes'
 import { Pagination } from './Pagination'
 import { PasswordField } from './PasswordField'
 import { PhoneInput } from './PhoneInput'
+import { CitySelect, CountySelect, StateSelect } from './PlaceSelect'
 import { ProfileButton } from './ProfileButton'
 import { Progress } from './Progress'
 import { Radio } from './Radio'
 import { RecoveryCodesList, RecoveryInput } from './RecoveryInput'
-import { SearchSelect } from './SearchSelect'
 import { SegmentedControl, SegmentedToolbar } from './SegmentedControl'
 import { CheckItem, ScoreRing } from './ScoreRing'
 import { SettingsList, SettingsRow } from './SettingsRow'
 import { SidebarNavItem } from './DashboardSidebar'
-import { Slider } from './Slider'
+import { NumberField, NUMBER_FIELD_VARIANT_LABEL, NUMBER_FIELD_VARIANTS } from './NumberField'
+import { RangeSlider, Slider, SLIDER_VARIANT_LABEL, SLIDER_VARIANTS } from './Slider'
 import { SiteFooter } from './SiteFooter'
 import { SiteNav } from './SiteNav'
 import { Skeleton } from './Skeleton'
@@ -115,14 +116,6 @@ const PLANS: DropdownOption[] = [
     description: 'Unlimited seats',
     icon: <DkAppDashboardLayoutTiles {...SELECT_GLYPH} />,
   },
-]
-
-const CITIES = [
-  { value: 'khi', label: 'Karachi', meta: 'PK' },
-  { value: 'lhr', label: 'Lahore', meta: 'PK' },
-  { value: 'isb', label: 'Islamabad', meta: 'PK' },
-  { value: 'dxb', label: 'Dubai', meta: 'AE' },
-  { value: 'nyc', label: 'New York', meta: 'US' },
 ]
 
 const SECTIONS = [
@@ -276,10 +269,13 @@ function Section({
 export function ComponentGallery() {
   const [email, setEmail] = useState('alex@roboticela.com')
   const [password, setPassword] = useState('password')
-  const [city, setCity] = useState('khi')
   const [plan, setPlan] = useState('team')
   const [size, setSize] = useState('md')
   const [country, setCountry] = useState<string | null>('PK')
+  const [addrCountry, setAddrCountry] = useState<string | null>('PK')
+  const [addrState, setAddrState] = useState<string | null>('PK-SD')
+  const [addrCounty, setAddrCounty] = useState<string | null>('PK-SD:karachi-south')
+  const [addrCity, setAddrCity] = useState<string | null>('PK-SD:karachi')
   const [language, setLanguage] = useState<string | null>('en-US')
   const [phone, setPhone] = useState('+14155552671')
   const [phonePk, setPhonePk] = useState('+923001234567')
@@ -301,7 +297,10 @@ export function ComponentGallery() {
   const [navQuery, setNavQuery] = useState('')
   const [sidebarPiece, setSidebarPiece] = useState('profile')
   const [radioPlan, setRadioPlan] = useState('pro')
-  const [sliderValue, setSliderValue] = useState(0.65)
+  const [sliderValue, setSliderValue] = useState(65)
+  const [sliderRange, setSliderRange] = useState<[number, number]>([20, 72])
+  const [numberValue, setNumberValue] = useState<number | null>(48)
+  const [quantity, setQuantity] = useState<number | null>(2)
 
   return (
     <div className="min-h-dvh bg-bg-primary font-sans text-text-primary">
@@ -584,6 +583,39 @@ export function ComponentGallery() {
               </div>
             </DemoCard>
             <DemoCard>
+              <StateLabel>Number field</StateLabel>
+              <div className="flex flex-col gap-4">
+                {NUMBER_FIELD_VARIANTS.map((variant) => (
+                  <NumberField
+                    key={variant}
+                    variant={variant}
+                    unit="percent"
+                    value={numberValue}
+                    onValueChange={setNumberValue}
+                    min={0}
+                    max={100}
+                    aria-label={NUMBER_FIELD_VARIANT_LABEL[variant]}
+                  />
+                ))}
+                <NumberField
+                  unit="currency"
+                  value={numberValue}
+                  onValueChange={setNumberValue}
+                  min={0}
+                  step={1}
+                  aria-label="Price"
+                />
+                <NumberField
+                  stepper="split"
+                  value={quantity}
+                  onValueChange={setQuantity}
+                  min={1}
+                  max={99}
+                  aria-label="Quantity"
+                />
+              </div>
+            </DemoCard>
+            <DemoCard>
               <StateLabel>Textarea</StateLabel>
               <div className="flex flex-col gap-4">
                 <Textarea
@@ -635,7 +667,7 @@ export function ComponentGallery() {
           </div>
         </Section>
 
-        <Section id="selects" title="Selects" intro="The field and the popup share one width. Outline, subtle, ghost, underline, and pill. Options can carry an icon, a description, and a search field.">
+        <Section id="selects" title="Selects" intro="The field and the popup share one width. Address selects cascade: country, then state or province, then county, then city.">
           <div className="grid gap-4 min-[735px]:grid-cols-2">
             <DemoCard>
               <StateLabel>Chrome</StateLabel>
@@ -728,33 +760,6 @@ export function ComponentGallery() {
               </div>
             </DemoCard>
             <DemoCard>
-              <StateLabel>Search select</StateLabel>
-              <div className="flex flex-col gap-4">
-                <SearchSelect
-                  label="City"
-                  value={city}
-                  onChange={setCity}
-                  options={CITIES}
-                  placeholder="Select a city"
-                  icon={<DkMagnifyingGlassFind {...SELECT_GLYPH} />}
-                />
-                <SearchSelect
-                  label="City"
-                  value=""
-                  onChange={() => undefined}
-                  options={CITIES}
-                  placeholder="Placeholder"
-                />
-                <SearchSelect
-                  label="City"
-                  value="khi"
-                  onChange={() => undefined}
-                  options={CITIES}
-                  disabled
-                />
-              </div>
-            </DemoCard>
-            <DemoCard>
               <StateLabel>Country / language</StateLabel>
               <div className="flex flex-col gap-4">
                 <CountrySelect value={country} onChange={setCountry} />
@@ -769,22 +774,103 @@ export function ComponentGallery() {
                 <PhoneInput value="" onChange={() => undefined} disabled />
               </div>
             </DemoCard>
+            <DemoCard>
+              <StateLabel>Address</StateLabel>
+              <div className="flex flex-col gap-4">
+                <CountrySelect
+                  value={addrCountry}
+                  onChange={(next) => {
+                    setAddrCountry(next)
+                    setAddrState(null)
+                    setAddrCounty(null)
+                    setAddrCity(null)
+                  }}
+                  allowClear={false}
+                />
+                <StateSelect
+                  country={addrCountry}
+                  value={addrState}
+                  onChange={(next) => {
+                    setAddrState(next)
+                    setAddrCounty(null)
+                    setAddrCity(null)
+                  }}
+                />
+                <CountySelect
+                  state={addrState}
+                  value={addrCounty}
+                  onChange={(next) => {
+                    setAddrCounty(next)
+                    setAddrCity(null)
+                  }}
+                />
+                <CitySelect
+                  country={addrCountry}
+                  state={addrState}
+                  county={addrCounty}
+                  value={addrCity}
+                  onChange={setAddrCity}
+                />
+              </div>
+            </DemoCard>
           </div>
         </Section>
 
-        <Section id="date" title="Date picker" intro="Single and range. Open the calendar for today, selected, outside month, disabled, and sheet layout on small screens.">
+        <Section id="date" title="Date picker" intro="The field matches Select. Single or range. Open the calendar for today, selected, outside month, and disabled dates.">
           <div className="grid gap-4 min-[735px]:grid-cols-2">
             <DemoCard>
-              <StateLabel>Single</StateLabel>
+              <StateLabel>Chrome</StateLabel>
               <div className="flex flex-col gap-4">
-                <DatePicker value={date} onChange={setDate} />
+                {DATE_PICKER_VARIANTS.map((variant) => (
+                  <DatePicker
+                    key={variant}
+                    variant={variant}
+                    value={date}
+                    onChange={setDate}
+                  />
+                ))}
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>State</StateLabel>
+              <div className="flex flex-col gap-4">
                 <DatePicker value={null} onChange={() => undefined} placeholder="Select a date" />
+                <DatePicker value={date} onChange={setDate} />
+                <DatePicker value={date} onChange={() => undefined} invalid />
+                <DatePicker value={date} onChange={() => undefined} valid />
                 <DatePicker value={date} onChange={() => undefined} disabled />
               </div>
             </DemoCard>
             <DemoCard>
+              <StateLabel>Size</StateLabel>
+              <div className="flex flex-col gap-4">
+                {DATE_PICKER_SIZES.map((size) => (
+                  <DatePicker
+                    key={size}
+                    size={size}
+                    value={date}
+                    onChange={setDate}
+                  />
+                ))}
+              </div>
+            </DemoCard>
+            <DemoCard>
               <StateLabel>Range</StateLabel>
-              <DatePicker mode="range" rangeValue={range} onRangeChange={setRange} />
+              <div className="flex flex-col gap-4">
+                <DatePicker mode="range" rangeValue={range} onRangeChange={setRange} />
+                <DatePicker
+                  mode="range"
+                  variant="subtle"
+                  rangeValue={range}
+                  onRangeChange={setRange}
+                />
+                <DatePicker
+                  mode="range"
+                  rangeValue={range}
+                  onRangeChange={() => undefined}
+                  disabled
+                />
+              </div>
             </DemoCard>
           </div>
         </Section>
@@ -817,11 +903,35 @@ export function ComponentGallery() {
               </div>
             </DemoCard>
 
+            <DemoCard>
+              <StateLabel>Recovery — empty, filled, groups, error, disabled</StateLabel>
+              <div className="flex flex-col gap-8">
+                <RecoveryInput value={recovery} onChange={setRecovery} />
+                <RecoveryInput label="" value="XK4M-92QP" onChange={() => undefined} variant="subtle" />
+                <RecoveryInput label="" mode="groups" value={recovery} onChange={setRecovery} />
+                <RecoveryInput
+                  label=""
+                  value="XK4M-0000"
+                  onChange={() => undefined}
+                  invalid
+                  hint="Incorrect code, try again"
+                />
+                <RecoveryInput
+                  label=""
+                  value="XK4M-92QP"
+                  onChange={() => undefined}
+                  valid
+                  hint="Code accepted"
+                />
+                <RecoveryInput label="" value="XK4M-92QP" onChange={() => undefined} disabled />
+              </div>
+            </DemoCard>
+
             <div className="grid gap-4 min-[735px]:grid-cols-2">
               <DemoCard>
-                <StateLabel>Recovery</StateLabel>
-                <RecoveryInput value={recovery} onChange={setRecovery} />
+                <StateLabel>Recovery codes — copy</StateLabel>
                 <RecoveryCodesList
+                  copyable
                   codes={['XK4M-92QP', 'L7TN-3W8D', 'P0AV-61CK', 'H9QE-44BM']}
                 />
               </DemoCard>
@@ -981,23 +1091,43 @@ export function ComponentGallery() {
 
             <DemoCard>
               <StateLabel>Field label and hint</StateLabel>
-              <FormField label="Username" hint="Available" hintTone="ok">
+              <FormField htmlFor="gallery-user" label="Username" hint="Available" hintTone="ok" valid>
                 <TextField
+                  id="gallery-user"
                   icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                   defaultValue="alex"
+                  valid
+                />
+              </FormField>
+              <FormField
+                className="mt-4"
+                htmlFor="gallery-email"
+                label="Email"
+                required
+                invalid
+                hint="Enter a valid email."
+                hintTone="error"
+              >
+                <TextField
+                  id="gallery-email"
+                  icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+                  defaultValue="alex"
+                  invalid
                 />
               </FormField>
               <FieldRow className="mt-4">
-                <FormField label="City" optional>
+                <FormField htmlFor="gallery-city" label="City" optional>
                   <TextField
+                    id="gallery-city"
                     icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
                     placeholder="Karachi"
                   />
                 </FormField>
-                <FormField label="Postal" hint="Required" hintTone="error">
+                <FormField htmlFor="gallery-postal" label="Postal" size="sm">
                   <TextField
-                    icon={<DkPersonUserProfile size={18} strokeWidth={1.6} absoluteStrokeWidth />}
-                    invalid
+                    id="gallery-postal"
+                    size="sm"
+                    icon={<DkPersonUserProfile size={16} strokeWidth={1.6} absoluteStrokeWidth />}
                     placeholder="00000"
                   />
                 </FormField>
@@ -1152,14 +1282,26 @@ export function ComponentGallery() {
 
             <DemoCard>
               <StateLabel>Slider and radio</StateLabel>
-              <Slider
-                label="Zoom"
-                min={0}
-                max={1}
-                step={0.01}
-                value={sliderValue}
-                onValueChange={setSliderValue}
-              />
+              <div className="flex flex-col gap-5">
+                {SLIDER_VARIANTS.map((variant) => (
+                  <Slider
+                    key={variant}
+                    variant={variant}
+                    label={SLIDER_VARIANT_LABEL[variant]}
+                    value={sliderValue}
+                    onValueChange={setSliderValue}
+                    field="end"
+                    unit="percent"
+                  />
+                ))}
+                <RangeSlider
+                  label="Range"
+                  field="both"
+                  unit="none"
+                  value={sliderRange}
+                  onValueChange={setSliderRange}
+                />
+              </div>
               <div className="mt-5 flex flex-col gap-3">
                 <Radio
                   name="plan"
@@ -1173,7 +1315,7 @@ export function ComponentGallery() {
                   checked={radioPlan === 'team'}
                   onChange={() => setRadioPlan('team')}
                 />
-                <Radio name="plan" label="Disabled" disabled />
+                <Radio name="plan" label="Enterprise" disabled />
               </div>
             </DemoCard>
 
@@ -1237,7 +1379,22 @@ export function ComponentGallery() {
 
           <div className="mt-4 grid gap-4 min-[735px]:grid-cols-2">
             <DemoCard>
-              <StateLabel>Alerts</StateLabel>
+              <StateLabel>Chrome</StateLabel>
+              <div className="flex flex-col gap-3">
+                <Alert title="Invite sent">Sam can join this workspace for 7 days.</Alert>
+                <Alert variant="outline" title="Invite sent">
+                  Sam can join this workspace for 7 days.
+                </Alert>
+                <Alert variant="solid" title="Invite sent">
+                  Sam can join this workspace for 7 days.
+                </Alert>
+                <Alert variant="ghost" title="Invite sent">
+                  Sam can join this workspace for 7 days.
+                </Alert>
+              </div>
+            </DemoCard>
+            <DemoCard>
+              <StateLabel>Tone</StateLabel>
               <div className="flex flex-col gap-3">
                 <Alert tone="info" title="Invite sent">
                   Sam can join this workspace for 7 days.
@@ -1249,6 +1406,9 @@ export function ComponentGallery() {
                 <Alert tone="danger" title="Payment failed">
                   Update the card on file.
                 </Alert>
+                <Alert tone="neutral" title="Maintenance tonight" onDismiss={() => undefined}>
+                  The workspace will pause from 01:00 to 03:00 UTC.
+                </Alert>
               </div>
             </DemoCard>
             <DemoCard>
@@ -1259,13 +1419,18 @@ export function ComponentGallery() {
                 body="Mentions and reviews will show up here."
               />
               <div className="mt-6 flex items-center gap-4">
-                <Skeleton className="size-11 rounded-full" />
+                <Skeleton shape="circle" size="lg" />
                 <div className="flex-1">
-                  <Skeleton className="h-3.5 w-[55%]" />
-                  <Skeleton className="mt-2 h-3 w-[35%]" />
+                  <Skeleton lines={2} />
                 </div>
               </div>
+              <div className="mt-6 flex flex-col gap-3">
+                <Skeleton variant="outline" lines={3} />
+                <Skeleton variant="pill" className="h-8 w-[120px]" />
+              </div>
               <Progress className="mt-6" label="Seat usage" value={72} />
+              <Progress className="mt-5" variant="pill" tone="warning" label="Storage" value={88} />
+              <Progress className="mt-5" indeterminate label="Preparing" />
             </DemoCard>
             <DemoCard>
               <StateLabel>Checkbox</StateLabel>
@@ -1276,6 +1441,8 @@ export function ComponentGallery() {
                   onChange={(event) => setDigest(event.target.checked)}
                 />
                 <Checkbox label="Checked" defaultChecked />
+                <Checkbox label="Mixed" indeterminate />
+                <Checkbox label="Invalid" invalid />
                 <Checkbox label="Disabled" disabled />
               </div>
             </DemoCard>

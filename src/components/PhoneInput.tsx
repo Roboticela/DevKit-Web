@@ -3,9 +3,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
-import { createPortal } from 'react-dom'
 import {
-  DkTaskCompleteCheckmark,
   DkChevronCaretDown
 } from '@/icons'
 import { cn } from '@/lib/cn'
@@ -21,9 +19,8 @@ import {
   type Country,
 } from '@/lib/countries'
 import { AUTH_FIELD_SURFACE, EASE, FOCUS_RING, FOCUS_VISIBLE_RING, OPEN_RING } from '@/lib/styles'
-import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
 import { CountryFlag } from './CountryFlag'
-import { SelectEmpty, SelectList, SelectMenu, SelectOption, SelectSearch } from './SelectMenu'
+import { Select } from './Dropdown'
 
 type PhoneInputProps = {
   value: string
@@ -45,28 +42,26 @@ export function PhoneInput({
   const parsed = useMemo(() => parsePhoneValue(value), [value])
   const [country, setCountry] = useState<Country>(parsed.country)
   const [national, setNational] = useState(parsed.national.replace(/\D/g, ''))
-  const {
-    open,
-    setOpen,
-    query,
-    setQuery,
-    menuStyle,
-    openUp,
-    rootRef,
-    triggerRef,
-    menuRef,
-    searchRef,
-    listId,
-    close,
-  } = useAnchoredMenu([], {
-    from: 'root',
-    minWidth: 280,
-    maxWidth: 340,
-  })
-  const countries = useMemo(() => sortedCountriesForSearch(query), [query])
   const inputRef = useRef<HTMLInputElement>(null)
   const caretDigitsRef = useRef<number | null>(null)
   const display = formatNationalNumber(national, country.iso)
+
+  const options = useMemo(
+    () =>
+      sortedCountriesForSearch('').map((item) => ({
+        value: item.iso,
+        label: item.name,
+        icon: <CountryFlag iso={item.iso} size={20} />,
+        leadingFit: 'flag' as const,
+        meta: (
+          <span className="text-[13px] font-normal tabular-nums text-text-tertiary">
+            +{item.dial}
+          </span>
+        ),
+        keywords: `${item.iso} ${item.dial} +${item.dial}`,
+      })),
+    [],
+  )
 
   useEffect(() => {
     const next = parsePhoneValue(value, country.iso)
@@ -112,45 +107,56 @@ export function PhoneInput({
   }
 
   return (
-    <div
-      className={cn('flex w-full items-stretch gap-2 font-sans', className)}
-      ref={rootRef}
-    >
-      <button
-        type="button"
-        className={cn(
-          'inline-flex h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-[12px] border px-3 font-sans text-[15px] font-normal',
-          AUTH_FIELD_SURFACE,
-          'transition-[border-color,box-shadow] duration-150',
-          EASE,
-          FOCUS_VISIBLE_RING,
-          open && OPEN_RING,
-          'disabled:cursor-not-allowed disabled:opacity-55',
-        )}
-        ref={triggerRef}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={listId}
-        aria-label="Country code"
-        disabled={disabled}
-        onClick={() => setOpen((current) => !current)}
-      >
-        <span className="inline-flex h-4 w-[22px] items-center justify-center overflow-hidden rounded-[3px]">
-          <CountryFlag iso={country.iso} size={18} className="h-4 w-[22px] rounded-[3px]" />
-        </span>
-        <span className="tabular-nums">+{country.dial}</span>
-        <span
+    <Select
+      value={country.iso}
+      options={options}
+      onChange={(iso) => emit(getCountryByIso(iso), national)}
+      searchable
+      searchPlaceholder="Search countries"
+      emptyMessage="No countries found"
+      ariaLabel="Country code"
+      disabled={disabled}
+      matchWidth
+      menuFrom="root"
+      menuClassName="origin-top-left"
+      className={className}
+      renderTrigger={({ ref, open, listId, toggle }) => (
+        <button
+          type="button"
           className={cn(
-            'inline-flex text-text-tertiary transition-transform duration-200',
+            'inline-flex h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-[12px] border px-3 font-sans text-[15px] font-normal',
+            AUTH_FIELD_SURFACE,
+            'transition-[border-color,box-shadow] duration-150',
             EASE,
-            open && 'rotate-180',
+            FOCUS_VISIBLE_RING,
+            open && OPEN_RING,
+            'disabled:cursor-not-allowed disabled:opacity-55',
           )}
-          aria-hidden="true"
+          ref={ref}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={listId}
+          aria-label="Country code"
+          disabled={disabled}
+          onClick={toggle}
         >
-          <DkChevronCaretDown size={14} strokeWidth={2} absoluteStrokeWidth />
-        </span>
-      </button>
-
+          <span className="inline-flex h-4 w-[22px] items-center justify-center overflow-hidden rounded-[3px]">
+            <CountryFlag iso={country.iso} size={18} className="h-4 w-[22px] rounded-[3px]" />
+          </span>
+          <span className="tabular-nums">+{country.dial}</span>
+          <span
+            className={cn(
+              'inline-flex text-text-tertiary transition-transform duration-200',
+              EASE,
+              open && 'rotate-180',
+            )}
+            aria-hidden="true"
+          >
+            <DkChevronCaretDown size={14} strokeWidth={2} absoluteStrokeWidth />
+          </span>
+        </button>
+      )}
+    >
       <input
         ref={inputRef}
         type="tel"
@@ -175,74 +181,7 @@ export function PhoneInput({
         }}
         onKeyDown={handleNumberKeyDown}
       />
-
-      {open
-        ? createPortal(
-            <SelectMenu
-              id={listId}
-              label="Country code"
-              openUp={openUp}
-              style={menuStyle}
-              menuRef={menuRef}
-              className={openUp ? 'origin-bottom-left' : 'origin-top-left'}
-            >
-              <SelectSearch
-                searchRef={searchRef}
-                value={query}
-                onChange={setQuery}
-                placeholder="Search countries"
-              />
-              <SelectList>
-                {countries.length === 0 ? (
-                  <SelectEmpty>No countries found</SelectEmpty>
-                ) : (
-                  countries.map((item) => {
-                    const selected = item.iso === country.iso
-                    return (
-                      <SelectOption
-                        key={`${item.iso}-${item.dial}`}
-                        selected={selected}
-                        leading={<CountryFlag iso={item.iso} size={20} />}
-                        leadingFit="flag"
-                        name={
-                          <span className={selected ? 'text-brand-primary' : undefined}>
-                            {item.name}
-                          </span>
-                        }
-                        meta={
-                          <span
-                            className={cn(
-                              'text-[13px] font-normal tabular-nums',
-                              selected ? 'text-brand-primary' : 'text-text-tertiary',
-                            )}
-                          >
-                            +{item.dial}
-                          </span>
-                        }
-                        check={
-                          selected ? (
-                            <DkTaskCompleteCheckmark
-                              className="shrink-0 text-brand-primary"
-                              size={16}
-                              strokeWidth={2.25}
-                              absoluteStrokeWidth
-                            />
-                          ) : null
-                        }
-                        onClick={() => {
-                          emit(item, national)
-                          close()
-                        }}
-                      />
-                    )
-                  })
-                )}
-              </SelectList>
-            </SelectMenu>,
-            document.body,
-          )
-        : null}
-    </div>
+    </Select>
   )
 }
 

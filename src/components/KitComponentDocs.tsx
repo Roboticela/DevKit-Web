@@ -33,7 +33,7 @@ import {
   DkPencilWriteEdit,
   DkDocumentPageFold
 } from '@/icons'
-import { Alert } from './Alert'
+import { Alert, ALERT_SIZES, ALERT_TONES, ALERT_VARIANTS, type AlertSize, type AlertTone, type AlertVariant } from './Alert'
 import { AuthBrand, AuthLayout } from './AuthLayout'
 import { AuthProviderStack } from './AuthProviderButton'
 import { Avatar } from './Avatar'
@@ -43,7 +43,7 @@ import { Badge } from './Badge'
 import { BrandLogo } from './BrandLogo'
 import { Breadcrumbs } from './Breadcrumbs'
 import { Button } from './Button'
-import { Checkbox } from './Checkbox'
+import { Checkbox, CheckboxGroup, CHECKBOX_SIZES, CHECKBOX_TONES, CHECKBOX_VARIANTS, type CheckboxSize, type CheckboxTone, type CheckboxVariant } from './Checkbox'
 import {
   ConfirmAction,
   CONFIRM_ACTION_TONES,
@@ -57,11 +57,39 @@ import { DashboardNav } from './DashboardNav'
 import { DashboardShell } from './DashboardShell'
 import { DashboardSidebar } from './DashboardSidebar'
 import { DataTable } from './DataTable'
-import { DatePicker } from './DatePicker'
+import {
+  DatePicker,
+  DATE_PICKER_SIZES,
+  DATE_PICKER_VARIANTS,
+  type DatePickerPreview,
+  type DatePickerSize,
+  type DatePickerVariant,
+  type DateRange,
+} from './DatePicker'
 import { Divider } from './Divider'
 import { Dropdown, SELECT_SIZES, SELECT_VARIANTS, type DropdownOption, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
-import { EmptyState } from './EmptyState'
-import { FieldHint, FieldLabel, FormField } from './FieldLabel'
+import {
+  EmptyState,
+  EMPTY_STATE_SIZES,
+  EMPTY_STATE_TONES,
+  EMPTY_STATE_VARIANTS,
+  EMPTY_STATE_SIZE_LABEL,
+  EMPTY_STATE_TONE_LABEL,
+  EMPTY_STATE_VARIANT_LABEL,
+} from './EmptyState'
+import {
+  FieldLabel,
+  FieldRow,
+  FormField,
+  FIELD_HINT_TONES,
+  FIELD_LABEL_SIZES,
+  FIELD_LABEL_TONES,
+  FORM_FIELD_LAYOUTS,
+  type FieldHintTone,
+  type FieldLabelSize,
+  type FieldLabelTone,
+  type FormFieldLayout,
+} from './FieldLabel'
 import { GitHubButton } from './GitHubButton'
 import { GoogleButton } from './GoogleButton'
 import { IconButton } from './IconButton'
@@ -70,17 +98,40 @@ import { KeyValueRow } from './KeyValueRow'
 import { KitDocArticle } from './KitDocArticle'
 import { DocsStateCard, DocsStateGrid, DocsStateGroup, DocsStack } from './DocsCard'
 import {
+  alertGuide,
   bodyGuide,
   brandLogoGuide,
   captionGuide,
+  checkboxGuide,
+  citySelectGuide,
   confirmActionGuide,
+  countrySelectGuide,
+  countySelectGuide,
+  datePickerGuide,
+  emptyStateGuide,
   eyebrowGuide,
+  fieldLabelGuide,
   headingGuide,
   iconButtonGuide,
   labelGuide,
+  languageSelectGuide,
+  numberFieldGuide,
+  otpGuide,
+  passwordFieldGuide,
+  passwordRevealGuide,
+  phoneInputGuide,
+  progressGuide,
+  radioGuide,
+  recoveryGuide,
   segmentedGuide,
+  selectGuide,
+  skeletonGuide,
+  sliderGuide,
+  stateSelectGuide,
   subheadGuide,
   switchGuide,
+  textareaGuide,
+  textFieldGuide,
   themeIconToggleGuide,
   themeToggleGuide,
 } from './kit-guides'
@@ -88,8 +139,27 @@ import { LanguageSelect } from './LanguageSelect'
 import { ListGroup, ListRow } from './ListRow'
 import { LoadingScreen } from './LoadingScreen'
 import { Modal } from './Modal'
+import {
+  NumberField,
+  NUMBER_FIELD_ALIGN_LABEL,
+  NUMBER_FIELD_ALIGNS,
+  NUMBER_FIELD_SIZES,
+  NUMBER_FIELD_STEPPERS,
+  NUMBER_FIELD_UNIT_LABEL,
+  NUMBER_FIELD_WIDTH_LABEL,
+  NUMBER_FIELD_WIDTHS,
+  NUMBER_FIELD_UNITS,
+  NUMBER_FIELD_VARIANT_LABEL,
+  NUMBER_FIELD_VARIANTS,
+  type NumberFieldAlign,
+  type NumberFieldSize,
+  type NumberFieldStepper,
+  type NumberFieldUnit,
+  type NumberFieldVariant,
+  type NumberFieldWidth,
+} from './NumberField'
 import { NavSearch } from './NavSearch'
-import { OtpBoxes } from './OtpBoxes'
+import { OtpBoxes, OTP_BOXES_SIZES, OTP_BOXES_VARIANTS, type OtpBoxesSize, type OtpBoxesVariant } from './OtpBoxes'
 import { OtherWaysButton } from './OtherWaysButton'
 import { PageHeader } from './PageHeader'
 import { Pagination } from './Pagination'
@@ -102,22 +172,42 @@ import {
   type PasswordRevealVariant,
 } from './PasswordReveal'
 import { PhoneInput } from './PhoneInput'
+import { CitySelect, CountySelect, StateSelect } from './PlaceSelect'
 import { AppleButton } from './ProviderButtons'
 import { ProfileButton } from './ProfileButton'
-import { Progress } from './Progress'
+import { Progress, PROGRESS_SIZES, PROGRESS_TONES, PROGRESS_VARIANTS, PROGRESS_SIZE_LABEL, PROGRESS_TONE_LABEL, PROGRESS_VARIANT_LABEL } from './Progress'
 import { type PropRow } from './PropsTable'
-import { Radio } from './Radio'
-import { RecoveryCodesList, RecoveryInput } from './RecoveryInput'
+import { Radio, RadioGroup, RADIO_SIZES, RADIO_TONES, RADIO_VARIANTS, type RadioSize, type RadioTone, type RadioVariant } from './Radio'
+import {
+  RecoveryCodesList,
+  RecoveryInput,
+  RECOVERY_INPUT_MODES,
+  RECOVERY_INPUT_SIZES,
+  RECOVERY_INPUT_VARIANTS,
+  type RecoveryInputMode,
+  type RecoveryInputSize,
+  type RecoveryInputVariant,
+} from './RecoveryInput'
 import { ScoreRing } from './ScoreRing'
-import { SearchSelect } from './SearchSelect'
 import { SelectTrigger } from './SelectTrigger'
 import { SegmentedControl, SegmentedToolbar, SEGMENTED_VARIANTS, type SegmentedVariant } from './SegmentedControl'
 import { SettingsList, SettingsRow } from './SettingsRow'
 import { SheetNav } from './SheetNav'
 import { SiteFooter } from './SiteFooter'
 import { SiteNav } from './SiteNav'
-import { Skeleton } from './Skeleton'
-import { Slider } from './Slider'
+import { Skeleton, SKELETON_MOTIONS, SKELETON_MOTION_LABEL, SKELETON_SHAPES, SKELETON_SHAPE_LABEL, SKELETON_SIZES, SKELETON_SIZE_LABEL, SKELETON_VARIANTS, SKELETON_VARIANT_LABEL } from './Skeleton'
+import {
+  RangeSlider,
+  Slider,
+  SLIDER_FIELDS,
+  SLIDER_FIELD_LABEL,
+  SLIDER_SIZES,
+  SLIDER_VARIANT_LABEL,
+  SLIDER_VARIANTS,
+  type SliderField,
+  type SliderSize,
+  type SliderVariant,
+} from './Slider'
 import { StatCard } from './StatCard'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { Tabs } from './Tabs'
@@ -1618,25 +1708,75 @@ function SelectStates() {
   )
 }
 
-function SearchSelectDemo() {
-  const [value, setValue] = useState('team')
+function CountryDemo() {
+  const [value, setValue] = useState<string | null>('US')
+  return <CountrySelect value={value} onChange={setValue} />
+}
+
+function AddressStack({
+  showCounty = false,
+  showCity = false,
+}: {
+  showCounty?: boolean
+  showCity?: boolean
+}) {
+  const [country, setCountry] = useState<string | null>('PK')
+  const [state, setState] = useState<string | null>('PK-SD')
+  const [county, setCounty] = useState<string | null>('PK-SD:karachi-south')
+  const [city, setCity] = useState<string | null>('PK-SD:karachi')
+
+  function changeCountry(next: string | null) {
+    setCountry(next)
+    setState(null)
+    setCounty(null)
+    setCity(null)
+  }
+
+  function changeState(next: string | null) {
+    setState(next)
+    setCounty(null)
+    setCity(null)
+  }
+
+  function changeCounty(next: string | null) {
+    setCounty(next)
+    setCity(null)
+  }
+
   return (
-    <div className="w-full max-w-[400px]">
-      <SearchSelect
-        label="Plan"
-        value={value}
-        onChange={setValue}
-        placeholder="Choose a plan"
-        searchPlaceholder="Search plans"
-        options={SELECT_PLAN_OPTIONS.filter((option) => !option.disabled)}
+    <div className="flex w-full max-w-[400px] flex-col gap-4">
+      <CountrySelect
+        value={country}
+        onChange={changeCountry}
+        allowClear={false}
       />
+      <StateSelect country={country} value={state} onChange={changeState} />
+      {showCounty ? (
+        <CountySelect state={state} value={county} onChange={changeCounty} />
+      ) : null}
+      {showCity ? (
+        <CitySelect
+          country={country}
+          state={state}
+          county={county}
+          value={city}
+          onChange={setCity}
+        />
+      ) : null}
     </div>
   )
 }
 
-function CountryDemo() {
-  const [value, setValue] = useState<string | null>('US')
-  return <CountrySelect value={value} onChange={setValue} />
+function StateDemo() {
+  return <AddressStack />
+}
+
+function CountyDemo() {
+  return <AddressStack showCounty />
+}
+
+function CityDemo() {
+  return <AddressStack showCounty showCity />
 }
 
 function LanguageDemo() {
@@ -1649,39 +1789,2303 @@ function PhoneDemo() {
   return <PhoneInput value={value} onChange={setValue} />
 }
 
-function CheckboxDemo() {
-  const [on, setOn] = useState(true)
-  return <Checkbox label="Email me product updates" checked={on} onChange={() => setOn((v) => !v)} />
+function CountryPlay({
+  value: initial = 'US',
+  ...rest
+}: {
+  value?: string | null
+  variant?: SelectTriggerVariant
+  size?: SelectTriggerSize
+  disabled?: boolean
+  compact?: boolean
+  allowClear?: boolean
+  placeholder?: string
+}) {
+  const [value, setValue] = useState<string | null>(initial)
+  return <CountrySelect value={value} onChange={setValue} {...rest} />
 }
 
-function RadioDemo() {
-  const [value, setValue] = useState('card')
+function LanguagePlay({
+  value: initial = 'en-US',
+  ...rest
+}: {
+  value?: string | null
+  variant?: SelectTriggerVariant
+  size?: SelectTriggerSize
+  disabled?: boolean
+  compact?: boolean
+  placeholder?: string
+}) {
+  const [value, setValue] = useState(initial ?? 'en-US')
+  return <LanguageSelect value={value} onChange={setValue} {...rest} />
+}
+
+function PhonePlay({
+  value: initial = '+14155552671',
+  disabled,
+}: {
+  value?: string
+  disabled?: boolean
+}) {
+  const [value, setValue] = useState(initial)
+  return <PhoneInput value={value} onChange={setValue} disabled={disabled} />
+}
+
+function CountryStates() {
   return (
-    <div className="flex flex-col gap-3">
-      <Radio name="pay" label="Card" checked={value === 'card'} onChange={() => setValue('card')} />
-      <Radio name="pay" label="Bank" checked={value === 'bank'} onChange={() => setValue('bank')} />
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {SELECT_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
+              <CountryPlay variant={variant} />
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {SELECT_SIZES.map((size) => (
+            <FieldState key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
+              <CountryPlay size={size} />
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <FieldState label="Empty">
+            <CountryPlay value={null} />
+          </FieldState>
+          <FieldState label="Filled">
+            <CountryPlay />
+          </FieldState>
+          <FieldState label="Compact">
+            <CountryPlay compact />
+          </FieldState>
+          <FieldState label="Disabled">
+            <CountryPlay disabled />
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function StateStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Cascade">
+        <DocsStateGrid columns={2}>
+          <FieldState label="Country, then region">
+            <AddressStack />
+          </FieldState>
+          <FieldState label="Disabled">
+            <StateSelect country="US" value="US-CA" onChange={() => undefined} disabled />
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {SELECT_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
+              <StateSelect country="US" value="US-CA" onChange={() => undefined} variant={variant} />
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function CountyStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Cascade">
+        <DocsStateGrid columns={2}>
+          <FieldState label="Country, region, county">
+            <AddressStack showCounty />
+          </FieldState>
+          <FieldState label="Disabled">
+            <CountySelect state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} disabled />
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {SELECT_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
+              <CountySelect state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} variant={variant} />
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function CityStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Cascade">
+        <DocsStateGrid columns={2}>
+          <FieldState label="Full address stack">
+            <AddressStack showCounty showCity />
+          </FieldState>
+          <FieldState label="Disabled">
+            <CitySelect country="PK" state="PK-SD" value="PK-SD:karachi" onChange={() => undefined} disabled />
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {SELECT_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
+              <CitySelect country="PK" state="PK-SD" value="PK-SD:karachi" onChange={() => undefined} variant={variant} />
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function LanguageStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {SELECT_VARIANTS.map((variant) => (
+            <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
+              <LanguagePlay variant={variant} />
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {SELECT_SIZES.map((size) => (
+            <FieldState key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
+              <LanguagePlay size={size} />
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <FieldState label="Filled">
+            <LanguagePlay />
+          </FieldState>
+          <FieldState label="Compact">
+            <LanguagePlay compact />
+          </FieldState>
+          <FieldState label="Disabled">
+            <LanguagePlay disabled />
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function PhoneStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <FieldState label="United States">
+            <PhonePlay />
+          </FieldState>
+          <FieldState label="Pakistan">
+            <PhonePlay value="+923001234567" />
+          </FieldState>
+          <FieldState label="United Kingdom">
+            <PhonePlay value="+447911123456" />
+          </FieldState>
+          <FieldState label="Empty national">
+            <PhonePlay value="+1" />
+          </FieldState>
+          <FieldState label="Disabled">
+            <PhonePlay disabled />
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function ProgressDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-8">
+      <div className="flex flex-col gap-6">
+        {PROGRESS_VARIANTS.map((variant) => (
+          <Progress
+            key={variant}
+            variant={variant}
+            label={PROGRESS_VARIANT_LABEL[variant]}
+            value={variant === 'ghost' ? 48 : 64}
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-6">
+        {PROGRESS_VARIANTS.map((variant) => (
+          <Progress
+            key={`unknown-${variant}`}
+            variant={variant}
+            label={`${PROGRESS_VARIANT_LABEL[variant]} unknown`}
+            indeterminate
+          />
+        ))}
+      </div>
     </div>
   )
 }
 
+function ProgressStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {PROGRESS_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={PROGRESS_VARIANT_LABEL[variant]} align="stretch">
+              <Progress variant={variant} label={PROGRESS_VARIANT_LABEL[variant]} value={64} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {PROGRESS_SIZES.map((size) => (
+            <DocsStateCard key={size} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+              <Progress size={size} label={PROGRESS_SIZE_LABEL[size]} value={64} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Pill size">
+        <DocsStateGrid columns={3}>
+          {PROGRESS_SIZES.map((size) => (
+            <DocsStateCard key={`pill-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+              <Progress variant="pill" size={size} label={PROGRESS_SIZE_LABEL[size]} value={64} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid>
+          {PROGRESS_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={PROGRESS_TONE_LABEL[tone]} align="stretch">
+              <Progress tone={tone} label={PROGRESS_TONE_LABEL[tone]} value={tone === 'success' ? 100 : 64} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid>
+          {PROGRESS_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`dark-${variant}`}
+              label={PROGRESS_VARIANT_LABEL[variant]}
+              align="stretch"
+              className="bg-black"
+            >
+              <Progress variant={variant} label={PROGRESS_VARIANT_LABEL[variant]} value={64} onDark />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown">
+        <DocsStateGrid>
+          {PROGRESS_VARIANTS.map((variant) => (
+            <DocsStateCard key={`unknown-${variant}`} label={PROGRESS_VARIANT_LABEL[variant]} align="stretch">
+              <Progress variant={variant} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown size">
+        <DocsStateGrid columns={3}>
+          {PROGRESS_SIZES.map((size) => (
+            <DocsStateCard key={`unknown-size-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+              <Progress size={size} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown pill size">
+        <DocsStateGrid columns={3}>
+          {PROGRESS_SIZES.map((size) => (
+            <DocsStateCard key={`unknown-pill-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+              <Progress variant="pill" size={size} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown tone">
+        <DocsStateGrid>
+          {PROGRESS_TONES.map((tone) => (
+            <DocsStateCard key={`unknown-tone-${tone}`} label={PROGRESS_TONE_LABEL[tone]} align="stretch">
+              <Progress tone={tone} label="Preparing" indeterminate />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unknown on dark">
+        <DocsStateGrid>
+          {PROGRESS_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`unknown-dark-${variant}`}
+              label={PROGRESS_VARIANT_LABEL[variant]}
+              align="stretch"
+              className="bg-black"
+            >
+              <Progress variant={variant} label="Preparing" indeterminate onDark />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Empty" align="stretch">
+            <Progress label="Waiting" value={0} />
+          </DocsStateCard>
+          <DocsStateCard label="Partial" align="stretch">
+            <Progress label="Uploading" value={64} />
+          </DocsStateCard>
+          <DocsStateCard label="Complete" align="stretch">
+            <Progress label="Done" value={100} tone="success" />
+          </DocsStateCard>
+          <DocsStateCard label="Failed" align="stretch">
+            <Progress label="Upload failed" value={28} tone="danger" />
+          </DocsStateCard>
+          <DocsStateCard label="No percent" align="stretch">
+            <Progress label="Installing" value={38} showValue={false} />
+          </DocsStateCard>
+          <DocsStateCard label="Unlabeled" align="stretch">
+            <Progress value={72} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch">
+            <Progress label="Paused" value={41} disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Unknown unlabeled" align="stretch">
+            <Progress indeterminate />
+          </DocsStateCard>
+          <DocsStateCard label="Unknown disabled" align="stretch">
+            <Progress label="Preparing" indeterminate disabled />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function SkeletonDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-6">
+      {SKELETON_VARIANTS.map((variant) => (
+        <Skeleton key={variant} variant={variant} lines={3} label={`${SKELETON_VARIANT_LABEL[variant]} loading`} />
+      ))}
+    </div>
+  )
+}
+
+function SkeletonStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {SKELETON_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={SKELETON_VARIANT_LABEL[variant]} align="stretch" wide>
+              <Skeleton variant={variant} lines={3} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Shape">
+        <DocsStateGrid columns={2}>
+          {SKELETON_SHAPES.map((shape) => (
+            <DocsStateCard
+              key={shape}
+              label={SKELETON_SHAPE_LABEL[shape]}
+              align={shape === 'circle' || shape === 'square' ? 'center' : 'stretch'}
+              wide
+            >
+              <Skeleton shape={shape} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {SKELETON_SIZES.map((size) => (
+            <DocsStateCard key={size} label={SKELETON_SIZE_LABEL[size]} align="stretch">
+              <Skeleton size={size} lines={3} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Circle size">
+        <DocsStateGrid columns={3}>
+          {SKELETON_SIZES.map((size) => (
+            <DocsStateCard key={`circle-${size}`} label={SKELETON_SIZE_LABEL[size]}>
+              <Skeleton shape="circle" size={size} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Motion">
+        <DocsStateGrid columns={3}>
+          {SKELETON_MOTIONS.map((motion) => (
+            <DocsStateCard key={motion} label={SKELETON_MOTION_LABEL[motion]} align="stretch">
+              <Skeleton motion={motion} lines={3} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Line" align="stretch" wide>
+            <Skeleton />
+          </DocsStateCard>
+          <DocsStateCard label="Three lines" align="stretch" wide>
+            <Skeleton lines={3} label="Loading article" />
+          </DocsStateCard>
+          <DocsStateCard label="Heading and lines" align="stretch" wide>
+            <div className="flex w-full flex-col gap-3">
+              <Skeleton shape="heading" />
+              <Skeleton lines={3} />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="Avatar row" align="stretch" wide>
+            <div className="flex w-full items-center gap-3">
+              <Skeleton shape="circle" />
+              <div className="min-w-0 flex-1">
+                <Skeleton lines={2} />
+              </div>
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="Image and copy" align="stretch" wide>
+            <div className="flex w-full flex-col gap-3">
+              <Skeleton shape="rect" size="sm" />
+              <Skeleton shape="heading" size="sm" />
+              <Skeleton lines={2} size="sm" />
+            </div>
+          </DocsStateCard>
+          <DocsStateCard label="Pill button" align="stretch" wide>
+            <Skeleton variant="pill" className="h-11 w-[140px]" />
+          </DocsStateCard>
+          <DocsStateCard label="Outline circle">
+            <Skeleton variant="outline" shape="circle" size="lg" />
+          </DocsStateCard>
+          <DocsStateCard label="Static" align="stretch" wide>
+            <Skeleton motion="none" lines={3} />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function EmptyIcon({ name = 'inbox' }: { name?: 'inbox' | 'search' | 'lock' | 'grid' | 'refresh' }) {
+  const Icon =
+    name === 'search'
+      ? DkMagnifyingGlassFind
+      : name === 'lock'
+        ? DkPadlockSecureClosed
+        : name === 'grid'
+          ? DkLayoutGrid
+          : name === 'refresh'
+            ? DkRefreshClockwiseRotate
+            : DkMessageInboxTray
+  return <Icon strokeWidth={1.5} absoluteStrokeWidth />
+}
+
+function EmptyAction({
+  children = 'New project',
+  size = 'md',
+  variant,
+  disabled,
+}: {
+  children?: string
+  size?: 'sm' | 'md' | 'lg'
+  variant?: 'primary' | 'secondary' | 'ghost'
+  disabled?: boolean
+}) {
+  return (
+    <Button size={size} variant={variant} disabled={disabled}>
+      {children}
+    </Button>
+  )
+}
+
+function EmptyStateDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-4">
+      {EMPTY_STATE_VARIANTS.map((variant) => (
+        <EmptyState
+          key={variant}
+          variant={variant}
+          icon={<EmptyIcon />}
+          title={EMPTY_STATE_VARIANT_LABEL[variant]}
+          body="Mentions and reviews will show up here."
+        />
+      ))}
+    </div>
+  )
+}
+
+function EmptyStateStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {EMPTY_STATE_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={variant}
+              label={EMPTY_STATE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <EmptyState
+                variant={variant}
+                icon={<EmptyIcon />}
+                title="No messages"
+                body="Mentions and reviews will show up here."
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {EMPTY_STATE_SIZES.map((size) => (
+            <DocsStateCard key={size} label={EMPTY_STATE_SIZE_LABEL[size]} align="stretch" wide size="lg" className="bg-bg-primary">
+              <EmptyState
+                size={size}
+                icon={<EmptyIcon />}
+                title="No projects"
+                body="Create a project to get started."
+                action={<EmptyAction size={size === 'lg' ? 'md' : size}>New project</EmptyAction>}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {EMPTY_STATE_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={EMPTY_STATE_TONE_LABEL[tone]} align="stretch" wide className="bg-bg-primary">
+              <EmptyState
+                tone={tone}
+                icon={<EmptyIcon name={tone === 'danger' ? 'refresh' : tone === 'warning' ? 'lock' : 'inbox'} />}
+                title={
+                  tone === 'success'
+                    ? 'Inbox is clear'
+                    : tone === 'warning'
+                      ? 'No access'
+                      : tone === 'danger'
+                        ? 'Could not load'
+                        : 'No messages'
+                }
+                body={
+                  tone === 'success'
+                    ? 'New mentions will land here.'
+                    : tone === 'warning'
+                      ? 'Ask an owner to invite you to this workspace.'
+                      : tone === 'danger'
+                        ? 'Check the connection, then try again.'
+                        : 'Mentions and reviews will show up here.'
+                }
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="On dark">
+        <DocsStateGrid columns={2}>
+          {EMPTY_STATE_VARIANTS.map((variant) => (
+            <DocsStateCard
+              key={`dark-${variant}`}
+              label={EMPTY_STATE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <EmptyState
+                variant={variant}
+                icon={<EmptyIcon />}
+                title="No messages"
+                body="Mentions and reviews will show up here."
+                onDark
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Title only" align="stretch" wide className="bg-bg-primary">
+            <EmptyState title="No projects" />
+          </DocsStateCard>
+          <DocsStateCard label="No icon" align="stretch" wide className="bg-bg-primary">
+            <EmptyState title="No projects" body="Create a project to get started." />
+          </DocsStateCard>
+          <DocsStateCard label="First use" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              icon={<EmptyIcon name="grid" />}
+              title="No projects"
+              body="Create a project to get started."
+              action={<EmptyAction>New project</EmptyAction>}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="No results" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              icon={<EmptyIcon name="search" />}
+              title="No results"
+              body="Try a different search."
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Could not load" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              tone="danger"
+              icon={<EmptyIcon name="refresh" />}
+              title="Could not load"
+              body="Check the connection, then try again."
+              action={<EmptyAction variant="secondary">Try again</EmptyAction>}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="No access" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              tone="warning"
+              icon={<EmptyIcon name="lock" />}
+              title="No access"
+              body="Ask an owner to invite you to this workspace."
+            />
+          </DocsStateCard>
+          <DocsStateCard label="With secondary" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              icon={<EmptyIcon name="grid" />}
+              title="No projects"
+              body="Create a project or import one you already have."
+              action={<EmptyAction>New project</EmptyAction>}
+              secondary={<EmptyAction variant="ghost">Import</EmptyAction>}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Start" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              align="start"
+              variant="outline"
+              icon={<EmptyIcon />}
+              title="No messages"
+              body="Mentions and reviews will show up here."
+              action={<EmptyAction size="sm">Refresh</EmptyAction>}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled action" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              icon={<EmptyIcon name="grid" />}
+              title="No projects"
+              body="You need permission to create one."
+              action={<EmptyAction disabled>New project</EmptyAction>}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Outline, action" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              variant="outline"
+              icon={<EmptyIcon />}
+              title="Inbox is clear"
+              body="New mentions and review requests will land here."
+              action={<EmptyAction variant="secondary">View projects</EmptyAction>}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              variant="pill"
+              size="sm"
+              icon={<EmptyIcon name="search" />}
+              title="No results"
+              body="Try a different search."
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Ghost, large" align="stretch" wide className="bg-bg-primary">
+            <EmptyState
+              variant="ghost"
+              size="lg"
+              icon={<EmptyIcon />}
+              title="Inbox is clear"
+              body="New mentions and review requests will land here."
+            />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function CheckboxDemo() {
+  const [outline, setOutline] = useState(true)
+  const [digest, setDigest] = useState(true)
+  const [product, setProduct] = useState(false)
+  const [ack, setAck] = useState(false)
+  const selected = Number(digest) + Number(product)
+
+  return (
+    <CheckboxGroup label="Email preferences" className="w-full max-w-[320px] gap-4">
+      <Checkbox
+        variant="outline"
+        label="Outline"
+        checked={outline}
+        onChange={(event) => setOutline(event.target.checked)}
+      />
+      <Checkbox
+        variant="subtle"
+        label="Subtle"
+        checked={outline}
+        onChange={(event) => setOutline(event.target.checked)}
+      />
+      <Checkbox
+        variant="ghost"
+        label="Ghost"
+        checked={outline}
+        onChange={(event) => setOutline(event.target.checked)}
+      />
+      <Checkbox
+        label="All email"
+        checked={selected === 2}
+        indeterminate={selected === 1}
+        onChange={(event) => {
+          const next = event.target.checked
+          setDigest(next)
+          setProduct(next)
+        }}
+      />
+      <Checkbox
+        className="pl-7"
+        label="Weekly digest"
+        checked={digest}
+        onChange={(event) => setDigest(event.target.checked)}
+      />
+      <Checkbox
+        className="pl-7"
+        label="Product updates"
+        checked={product}
+        onChange={(event) => setProduct(event.target.checked)}
+      />
+      <Checkbox
+        tone="danger"
+        label="I understand this will delete the project"
+        checked={ack}
+        onChange={(event) => setAck(event.target.checked)}
+      />
+    </CheckboxGroup>
+  )
+}
+
+const CHECKBOX_VARIANT_LABEL: Record<CheckboxVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+}
+
+const CHECKBOX_TONE_LABEL: Record<CheckboxTone, string> = {
+  brand: 'Brand',
+  danger: 'Danger',
+}
+
+const CHECKBOX_SIZE_LABEL: Record<CheckboxSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function CheckboxStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {CHECKBOX_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={CHECKBOX_VARIANT_LABEL[variant]}>
+              <Checkbox variant={variant} label={CHECKBOX_VARIANT_LABEL[variant]} defaultChecked />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {CHECKBOX_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={CHECKBOX_TONE_LABEL[tone]}>
+              <Checkbox tone={tone} label={tone === 'danger' ? 'Delete this project' : 'Product updates'} defaultChecked />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {CHECKBOX_SIZES.map((size) => (
+            <DocsStateCard key={size} label={CHECKBOX_SIZE_LABEL[size]}>
+              <Checkbox size={size} label={CHECKBOX_SIZE_LABEL[size]} defaultChecked />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Unchecked">
+            <Checkbox label="Off" />
+          </DocsStateCard>
+          <DocsStateCard label="Checked">
+            <Checkbox label="On" defaultChecked />
+          </DocsStateCard>
+          <DocsStateCard label="Mixed">
+            <Checkbox label="Some" indeterminate />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" inert>
+            <Checkbox label="Hover" preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus" inert>
+            <Checkbox label="Focus" preview="focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Active" inert>
+            <Checkbox label="Active" preview="active" />
+          </DocsStateCard>
+          <DocsStateCard label="Invalid">
+            <Checkbox label="Required" invalid />
+          </DocsStateCard>
+          <DocsStateCard label="Invalid, on">
+            <Checkbox label="Required" invalid defaultChecked />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <Checkbox label="Locked" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled, on">
+            <Checkbox label="Locked" defaultChecked disabled />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function RadioDemo() {
+  const [pay, setPay] = useState('card')
+  const [chrome, setChrome] = useState('outline')
+  const [severity, setSeverity] = useState('keep')
+
+  return (
+    <div className="flex w-full max-w-[320px] flex-col gap-6">
+      <RadioGroup label="Appearance" className="gap-1">
+        <Radio
+          variant="outline"
+          name="docs-radio-chrome"
+          label="Outline"
+          checked={chrome === 'outline'}
+          onChange={() => setChrome('outline')}
+        />
+        <Radio
+          variant="subtle"
+          name="docs-radio-chrome"
+          label="Subtle"
+          checked={chrome === 'subtle'}
+          onChange={() => setChrome('subtle')}
+        />
+        <Radio
+          variant="ghost"
+          name="docs-radio-chrome"
+          label="Ghost"
+          checked={chrome === 'ghost'}
+          onChange={() => setChrome('ghost')}
+        />
+      </RadioGroup>
+      <RadioGroup label="Payment" className="gap-1">
+        <Radio
+          name="docs-radio-pay"
+          label="Card"
+          checked={pay === 'card'}
+          onChange={() => setPay('card')}
+        />
+        <Radio
+          name="docs-radio-pay"
+          label="Bank transfer"
+          checked={pay === 'bank'}
+          onChange={() => setPay('bank')}
+        />
+        <Radio
+          name="docs-radio-pay"
+          label="Invoice"
+          checked={pay === 'invoice'}
+          onChange={() => setPay('invoice')}
+        />
+      </RadioGroup>
+      <RadioGroup label="Project" className="gap-1">
+        <Radio
+          name="docs-radio-severity"
+          label="Keep the project"
+          checked={severity === 'keep'}
+          onChange={() => setSeverity('keep')}
+        />
+        <Radio
+          tone="danger"
+          name="docs-radio-severity"
+          label="Delete the project"
+          checked={severity === 'delete'}
+          onChange={() => setSeverity('delete')}
+        />
+      </RadioGroup>
+    </div>
+  )
+}
+
+const RADIO_VARIANT_LABEL: Record<RadioVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+}
+
+const RADIO_TONE_LABEL: Record<RadioTone, string> = {
+  brand: 'Brand',
+  danger: 'Danger',
+}
+
+const RADIO_SIZE_LABEL: Record<RadioSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function RadioStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {RADIO_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={RADIO_VARIANT_LABEL[variant]}>
+              <Radio variant={variant} label={RADIO_VARIANT_LABEL[variant]} checked />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {RADIO_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={RADIO_TONE_LABEL[tone]}>
+              <Radio
+                tone={tone}
+                label={tone === 'danger' ? 'Delete the project' : 'Keep the project'}
+                checked
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {RADIO_SIZES.map((size) => (
+            <DocsStateCard key={size} label={RADIO_SIZE_LABEL[size]}>
+              <Radio size={size} label={RADIO_SIZE_LABEL[size]} checked />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Unchecked">
+            <Radio label="Off" />
+          </DocsStateCard>
+          <DocsStateCard label="Checked">
+            <Radio label="On" checked />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" inert>
+            <Radio label="Hover" preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Hover, on" inert>
+            <Radio label="Hover" checked preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus" inert>
+            <Radio label="Focus" preview="focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Active" inert>
+            <Radio label="Active" preview="active" />
+          </DocsStateCard>
+          <DocsStateCard label="Invalid">
+            <Radio label="Required" invalid />
+          </DocsStateCard>
+          <DocsStateCard label="Invalid, on">
+            <Radio label="Required" invalid checked />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled">
+            <Radio label="Locked" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled, on">
+            <Radio label="Locked" checked disabled />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function StateSlider({
+  initial = 48,
+  ...props
+}: {
+  initial?: number
+  variant?: SliderVariant
+  size?: SliderSize
+  label?: string
+  disabled?: boolean
+  invalid?: boolean
+  valid?: boolean
+  preview?: 'hover' | 'focus' | 'active'
+  tone?: 'default' | 'onDark'
+  showValue?: boolean
+  showEnds?: boolean
+  marks?: boolean | number[]
+  min?: number
+  max?: number
+  step?: number
+  field?: boolean | SliderField
+  unit?: 'none' | 'percent' | 'currency' | 'degree' | 'px'
+  prefix?: string
+  suffix?: string
+  fieldVariant?: NumberFieldVariant
+  fieldSize?: NumberFieldSize
+  fieldStepper?: NumberFieldStepper
+  fieldAlign?: NumberFieldAlign
+  fieldWidth?: NumberFieldWidth
+  fieldCompact?: boolean
+  fieldReadOnly?: boolean
+  fieldPlaceholder?: string
+}) {
+  const [value, setValue] = useState(initial)
+  return <Slider {...props} value={value} onValueChange={setValue} />
+}
+
+function StateRange({
+  initial = [24, 72] as [number, number],
+  ...props
+}: {
+  initial?: [number, number]
+  variant?: SliderVariant
+  size?: SliderSize
+  label?: string
+  disabled?: boolean
+  invalid?: boolean
+  showValue?: boolean
+  showEnds?: boolean
+  formatValue?: (value: number) => string
+  field?: boolean | SliderField
+  unit?: 'none' | 'percent' | 'currency' | 'degree' | 'px'
+}) {
+  const [value, setValue] = useState<[number, number]>(initial)
+  return <RangeSlider {...props} value={value} onValueChange={setValue} />
+}
+
 function SliderDemo() {
   const [value, setValue] = useState(48)
-  return <Slider label="Volume" value={value} onValueChange={setValue} min={0} max={100} />
+  const [range, setRange] = useState<[number, number]>([24, 72])
+
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-6">
+      {SLIDER_VARIANTS.map((variant) => (
+        <Slider
+          key={variant}
+          variant={variant}
+          label={SLIDER_VARIANT_LABEL[variant]}
+          value={value}
+          onValueChange={setValue}
+          field="end"
+          unit="percent"
+        />
+      ))}
+      <Slider
+        label="Opacity"
+        field="start"
+        unit="percent"
+        value={value}
+        onValueChange={setValue}
+      />
+      <Slider
+        label="Quantity"
+        field="end"
+        fieldStepper="split"
+        fieldAlign="center"
+        value={value}
+        onValueChange={setValue}
+      />
+      <RangeSlider
+        label="Price"
+        field="both"
+        unit="currency"
+        value={range}
+        onValueChange={setRange}
+        showEnds
+      />
+    </div>
+  )
+}
+
+function SliderStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {SLIDER_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
+              <StateSlider variant={variant} label={SLIDER_VARIANT_LABEL[variant]} showValue />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {SLIDER_SIZES.map((size) => (
+            <DocsStateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} align="stretch">
+              <StateSlider size={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Range">
+        <DocsStateGrid>
+          {SLIDER_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
+              <StateRange variant={variant} label={SLIDER_VARIANT_LABEL[variant]} showValue />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="With field">
+        <DocsStateGrid>
+          {SLIDER_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
+              <StateSlider variant={variant} label={SLIDER_VARIANT_LABEL[variant]} field="end" unit="percent" />
+            </DocsStateCard>
+          ))}
+          {SLIDER_FIELDS.map((layout) => (
+            <DocsStateCard key={layout} label={SLIDER_FIELD_LABEL[layout]} align="stretch">
+              {layout === 'both' ? (
+                <StateRange label="Price" field={layout} unit="currency" />
+              ) : (
+                <StateSlider label="Opacity" field={layout} unit="percent" />
+              )}
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Field chrome">
+        <DocsStateGrid>
+          {NUMBER_FIELD_VARIANTS.map((fieldVariant) => (
+            <DocsStateCard key={fieldVariant} label={NUMBER_FIELD_VARIANT_LABEL[fieldVariant]} align="stretch">
+              <StateSlider
+                label={NUMBER_FIELD_VARIANT_LABEL[fieldVariant]}
+                field="end"
+                unit="percent"
+                fieldVariant={fieldVariant}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Field stepper">
+        <DocsStateGrid columns={2}>
+          {NUMBER_FIELD_STEPPERS.map((fieldStepper) => (
+            <DocsStateCard key={fieldStepper} label={fieldStepper === 'stack' ? 'Stack' : 'Split'} align="stretch">
+              <StateSlider
+                label={fieldStepper === 'stack' ? 'Opacity' : 'Quantity'}
+                field="end"
+                unit={fieldStepper === 'stack' ? 'percent' : 'none'}
+                fieldStepper={fieldStepper}
+                fieldAlign={fieldStepper === 'split' ? 'center' : undefined}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Field width">
+        <DocsStateGrid columns={2}>
+          {NUMBER_FIELD_WIDTHS.map((fieldWidth) => (
+            <DocsStateCard key={fieldWidth} label={NUMBER_FIELD_WIDTH_LABEL[fieldWidth]} align="stretch">
+              <StateSlider
+                label={NUMBER_FIELD_WIDTH_LABEL[fieldWidth]}
+                field="end"
+                unit="percent"
+                fieldWidth={fieldWidth}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Field align">
+        <DocsStateGrid columns={3}>
+          {NUMBER_FIELD_ALIGNS.map((fieldAlign) => (
+            <DocsStateCard key={fieldAlign} label={NUMBER_FIELD_ALIGN_LABEL[fieldAlign]} align="stretch">
+              <StateSlider
+                label={NUMBER_FIELD_ALIGN_LABEL[fieldAlign]}
+                field="end"
+                unit="percent"
+                fieldAlign={fieldAlign}
+                fieldWidth="fill"
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Field size">
+        <DocsStateGrid columns={3}>
+          {NUMBER_FIELD_SIZES.map((fieldSize) => (
+            <DocsStateCard key={fieldSize} label={fieldSize === 'sm' ? 'Small' : fieldSize === 'md' ? 'Medium' : 'Large'} align="stretch">
+              <StateSlider
+                label={fieldSize === 'sm' ? 'Small' : fieldSize === 'md' ? 'Medium' : 'Large'}
+                field="end"
+                unit="percent"
+                fieldSize={fieldSize}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Default" align="stretch">
+            <StateSlider label="Volume" showValue />
+          </DocsStateCard>
+          <DocsStateCard label="On dark" align="stretch" className="bg-black">
+            <StateSlider tone="onDark" label="Zoom" showValue initial={65} min={1} max={100} />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Rest" align="stretch">
+            <StateSlider label="Volume" showValue />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" inert align="stretch">
+            <StateSlider label="Volume" showValue preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus" inert align="stretch">
+            <StateSlider label="Volume" showValue preview="focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Active" inert align="stretch">
+            <StateSlider label="Volume" showValue preview="active" />
+          </DocsStateCard>
+          <DocsStateCard label="With ends" align="stretch">
+            <StateSlider label="Volume" showValue showEnds />
+          </DocsStateCard>
+          <DocsStateCard label="Marks" align="stretch">
+            <StateSlider label="Quality" marks={[0, 25, 50, 75, 100]} showEnds initial={50} />
+          </DocsStateCard>
+          <DocsStateCard label="Invalid" align="stretch">
+            <StateSlider label="Required" invalid showValue initial={0} />
+          </DocsStateCard>
+          <DocsStateCard label="Valid" align="stretch">
+            <StateSlider label="Complete" valid showValue initial={100} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch">
+            <StateSlider label="Locked" disabled showValue />
+          </DocsStateCard>
+          <DocsStateCard label="Field, invalid" align="stretch">
+            <StateSlider label="Required" field="end" unit="percent" invalid />
+          </DocsStateCard>
+          <DocsStateCard label="Field, disabled" align="stretch">
+            <StateSlider label="Locked" field="end" unit="percent" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Field, read only" align="stretch">
+            <StateSlider label="Locked field" field="end" unit="percent" fieldReadOnly />
+          </DocsStateCard>
+          <DocsStateCard label="Range, disabled" align="stretch">
+            <StateRange label="Locked" disabled showValue />
+          </DocsStateCard>
+          <DocsStateCard label="Range, invalid" align="stretch">
+            <StateRange label="Required" invalid showValue />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function StateNumber({
+  initial = 48,
+  ...props
+}: {
+  initial?: number | null
+  variant?: NumberFieldVariant
+  size?: NumberFieldSize
+  unit?: NumberFieldUnit
+  stepper?: NumberFieldStepper
+  width?: NumberFieldWidth
+  disabled?: boolean
+  invalid?: boolean
+  valid?: boolean
+  readOnly?: boolean
+  preview?: 'hover' | 'focus'
+  min?: number
+  max?: number
+  step?: number
+  compact?: boolean
+  placeholder?: string
+  prefix?: string
+  suffix?: string
+  'aria-label'?: string
+}) {
+  const [value, setValue] = useState<number | null>(initial)
+  return <NumberField {...props} value={value} onValueChange={setValue} />
+}
+
+function NumberFieldDemo() {
+  const [value, setValue] = useState<number | null>(48)
+  const [qty, setQty] = useState<number | null>(2)
+  const [price, setPrice] = useState<number | null>(24)
+
+  return (
+    <div className="flex w-full max-w-[360px] flex-col gap-4">
+      {NUMBER_FIELD_VARIANTS.map((variant) => (
+        <NumberField
+          key={variant}
+          variant={variant}
+          unit="percent"
+          value={value}
+          onValueChange={setValue}
+          min={0}
+          max={100}
+          aria-label={`${NUMBER_FIELD_VARIANT_LABEL[variant]} percent`}
+        />
+      ))}
+      <NumberField
+        unit="currency"
+        value={price}
+        onValueChange={setPrice}
+        min={0}
+        step={0.5}
+        aria-label="Price"
+      />
+      <NumberField
+        stepper="split"
+        value={qty}
+        onValueChange={setQty}
+        min={1}
+        max={99}
+        aria-label="Quantity"
+      />
+      <NumberField
+        width="fill"
+        unit="percent"
+        value={value}
+        onValueChange={setValue}
+        min={0}
+        max={100}
+        aria-label="Fill width"
+      />
+    </div>
+  )
+}
+
+function NumberFieldStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {NUMBER_FIELD_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={NUMBER_FIELD_VARIANT_LABEL[variant]} align="stretch">
+              <StateNumber variant={variant} unit="percent" aria-label={NUMBER_FIELD_VARIANT_LABEL[variant]} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {NUMBER_FIELD_SIZES.map((size) => (
+            <DocsStateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} align="stretch">
+              <StateNumber size={size} unit="percent" aria-label={size} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Unit">
+        <DocsStateGrid>
+          {NUMBER_FIELD_UNITS.map((unit) => (
+            <DocsStateCard key={unit} label={NUMBER_FIELD_UNIT_LABEL[unit]} align="stretch">
+              <StateNumber
+                unit={unit}
+                initial={unit === 'currency' ? 24 : unit === 'px' ? 16 : 48}
+                step={unit === 'currency' ? 0.5 : 1}
+                aria-label={NUMBER_FIELD_UNIT_LABEL[unit]}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Width">
+        <DocsStateGrid columns={2}>
+          {NUMBER_FIELD_WIDTHS.map((width) => (
+            <DocsStateCard key={width} label={NUMBER_FIELD_WIDTH_LABEL[width]} align="stretch">
+              <StateNumber width={width} unit="percent" aria-label={NUMBER_FIELD_WIDTH_LABEL[width]} />
+            </DocsStateCard>
+          ))}
+          {NUMBER_FIELD_VARIANTS.map((variant) => (
+            <DocsStateCard key={`clip-${variant}`} label={`${NUMBER_FIELD_VARIANT_LABEL[variant]}, clipped`} align="stretch">
+              <StateNumber
+                variant={variant}
+                initial={123456789012}
+                aria-label={`${NUMBER_FIELD_VARIANT_LABEL[variant]} overflow`}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Stepper">
+        <DocsStateGrid columns={2}>
+          {NUMBER_FIELD_STEPPERS.map((stepper) => (
+            <DocsStateCard key={stepper} label={stepper === 'stack' ? 'Stack' : 'Split'} align="stretch">
+              <StateNumber
+                stepper={stepper}
+                initial={stepper === 'split' ? 2 : 48}
+                min={stepper === 'split' ? 1 : 0}
+                max={stepper === 'split' ? 99 : 100}
+                unit={stepper === 'stack' ? 'percent' : 'none'}
+                aria-label={stepper === 'stack' ? 'Opacity' : 'Quantity'}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Empty" align="stretch">
+            <StateNumber initial={null} placeholder="0" aria-label="Empty" />
+          </DocsStateCard>
+          <DocsStateCard label="Filled" align="stretch">
+            <StateNumber unit="percent" aria-label="Filled" />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" inert align="stretch">
+            <StateNumber unit="percent" preview="hover" aria-label="Hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Focus" inert align="stretch">
+            <StateNumber unit="percent" preview="focus" aria-label="Focus" />
+          </DocsStateCard>
+          <DocsStateCard label="Invalid" align="stretch">
+            <StateNumber unit="percent" invalid initial={140} aria-label="Invalid" />
+          </DocsStateCard>
+          <DocsStateCard label="Valid" align="stretch">
+            <StateNumber unit="percent" valid aria-label="Valid" />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch">
+            <StateNumber unit="percent" disabled aria-label="Disabled" />
+          </DocsStateCard>
+          <DocsStateCard label="Read only" align="stretch">
+            <StateNumber unit="percent" readOnly aria-label="Read only" />
+          </DocsStateCard>
+          <DocsStateCard label="At minimum" align="stretch">
+            <StateNumber unit="percent" min={0} max={100} initial={0} aria-label="Minimum" />
+          </DocsStateCard>
+          <DocsStateCard label="At maximum" align="stretch">
+            <StateNumber unit="percent" min={0} max={100} initial={100} aria-label="Maximum" />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
 }
 
 function DateDemo() {
-  const [value, setValue] = useState<string | null>('2026-08-29')
-  return <DatePicker value={value} onChange={setValue} />
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-4">
+      {DATE_PICKER_VARIANTS.map((variant) => (
+        <DatePlay
+          key={variant}
+          variant={variant}
+          placeholder={`${DATE_VARIANT_LABEL[variant]} date`}
+        />
+      ))}
+    </div>
+  )
+}
+
+const DATE_VARIANT_LABEL: Record<DatePickerVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+  underline: 'Underline',
+  pill: 'Pill',
+}
+
+const DATE_SIZE_LABEL: Record<DatePickerSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function DatePlay({
+  value: initial = '2026-08-29',
+  ...rest
+}: {
+  value?: string | null
+  variant?: DatePickerVariant
+  size?: DatePickerSize
+  invalid?: boolean
+  valid?: boolean
+  disabled?: boolean
+  compact?: boolean
+  placeholder?: string
+  preview?: DatePickerPreview
+}) {
+  const [value, setValue] = useState<string | null>(initial)
+  return <DatePicker value={value} onChange={setValue} {...rest} />
+}
+
+function RangePlay({
+  value: initial = { start: '2026-08-12', end: '2026-08-20' },
+  ...rest
+}: {
+  value?: DateRange
+  variant?: DatePickerVariant
+  size?: DatePickerSize
+  invalid?: boolean
+  valid?: boolean
+  disabled?: boolean
+  placeholder?: string
+}) {
+  const [range, setRange] = useState<DateRange>(initial)
+  return <DatePicker mode="range" rangeValue={range} onRangeChange={setRange} {...rest} />
+}
+
+function DatePickerStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {DATE_PICKER_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={DATE_VARIANT_LABEL[variant]} align="stretch">
+              <DatePlay variant={variant} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {DATE_PICKER_SIZES.map((size) => (
+            <DocsStateCard key={size} label={DATE_SIZE_LABEL[size]} align="stretch">
+              <DatePlay size={size} />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Mode">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Single" align="stretch">
+            <DatePlay />
+          </DocsStateCard>
+          <DocsStateCard label="Range" align="stretch">
+            <RangePlay />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <DocsStateCard label="Empty" align="stretch">
+            <DatePlay value={null} placeholder="Select a date" />
+          </DocsStateCard>
+          <DocsStateCard label="Filled" align="stretch">
+            <DatePlay />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" align="stretch" inert>
+            <DatePlay preview="hover" />
+          </DocsStateCard>
+          <DocsStateCard label="Open" align="stretch" inert>
+            <DatePlay preview="open" />
+          </DocsStateCard>
+          <DocsStateCard label="Invalid" align="stretch">
+            <DatePlay invalid />
+          </DocsStateCard>
+          <DocsStateCard label="Valid" align="stretch">
+            <DatePlay valid />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch">
+            <DatePlay disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled, empty" align="stretch">
+            <DatePlay value={null} placeholder="Select a date" disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Compact" align="stretch">
+            <DatePlay compact />
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
 }
 
 function OtpDemo() {
   const [value, setValue] = useState(['', '', '', '', '', ''])
-  return <OtpBoxes value={value} onChange={setValue} />
+  return (
+    <div className="w-full max-w-[420px]">
+      <OtpBoxes value={value} onChange={setValue} />
+    </div>
+  )
+}
+
+const OTP_EMPTY = ['', '', '', '', '', '']
+const OTP_PARTIAL = ['4', '8', '2', '', '', '']
+const OTP_FULL = ['4', '8', '2', '9', '1', '0']
+const OTP_NOOP = () => undefined
+
+const OTP_VARIANT_LABEL: Record<OtpBoxesVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+  underline: 'Underline',
+  pill: 'Pill',
+}
+
+const OTP_SIZE_LABEL: Record<OtpBoxesSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function OtpStateCard({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <DocsStateCard label={label} align="stretch" size="lg" wide>
+      {children}
+    </DocsStateCard>
+  )
+}
+
+function OtpStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStack gap={4}>
+          {OTP_BOXES_VARIANTS.map((variant) => (
+            <OtpStateCard key={variant} label={OTP_VARIANT_LABEL[variant]}>
+              <OtpBoxes variant={variant} value={OTP_PARTIAL} onChange={OTP_NOOP} />
+            </OtpStateCard>
+          ))}
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStack gap={4}>
+          {OTP_BOXES_SIZES.map((size) => (
+            <OtpStateCard key={size} label={OTP_SIZE_LABEL[size]}>
+              <OtpBoxes size={size} value={OTP_PARTIAL} onChange={OTP_NOOP} />
+            </OtpStateCard>
+          ))}
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Length">
+        <DocsStack gap={4}>
+          <OtpStateCard label="Four">
+            <OtpBoxes length={4} value={['1', '9', '', '']} onChange={OTP_NOOP} />
+          </OtpStateCard>
+          <OtpStateCard label="Six">
+            <OtpBoxes value={OTP_PARTIAL} onChange={OTP_NOOP} />
+          </OtpStateCard>
+          <OtpStateCard label="Eight, split">
+            <OtpBoxes
+              length={8}
+              split={4}
+              value={['1', '4', '2', '8', '', '', '', '']}
+              onChange={OTP_NOOP}
+            />
+          </OtpStateCard>
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStack gap={4}>
+          <OtpStateCard label="Empty">
+            <OtpBoxes value={OTP_EMPTY} onChange={OTP_NOOP} />
+          </OtpStateCard>
+          <OtpStateCard label="Partial">
+            <OtpBoxes value={OTP_PARTIAL} onChange={OTP_NOOP} />
+          </OtpStateCard>
+          <OtpStateCard label="Filled">
+            <OtpBoxes value={OTP_FULL} onChange={OTP_NOOP} />
+          </OtpStateCard>
+          <OtpStateCard label="Hover">
+            <OtpBoxes value={OTP_PARTIAL} onChange={OTP_NOOP} preview="hover" />
+          </OtpStateCard>
+          <OtpStateCard label="Focus">
+            <OtpBoxes value={OTP_PARTIAL} onChange={OTP_NOOP} preview="focus" />
+          </OtpStateCard>
+          <OtpStateCard label="Valid">
+            <OtpBoxes value={OTP_FULL} onChange={OTP_NOOP} valid />
+          </OtpStateCard>
+          <OtpStateCard label="Invalid">
+            <OtpBoxes value={OTP_FULL} onChange={OTP_NOOP} invalid />
+          </OtpStateCard>
+          <OtpStateCard label="Shaking">
+            <OtpBoxes value={OTP_EMPTY} onChange={OTP_NOOP} invalid shaking />
+          </OtpStateCard>
+          <OtpStateCard label="Masked">
+            <OtpBoxes value={OTP_FULL} onChange={OTP_NOOP} masked />
+          </OtpStateCard>
+          <OtpStateCard label="Disabled">
+            <OtpBoxes value={OTP_EMPTY} onChange={OTP_NOOP} disabled />
+          </OtpStateCard>
+          <OtpStateCard label="Disabled, filled">
+            <OtpBoxes value={OTP_FULL} onChange={OTP_NOOP} disabled />
+          </OtpStateCard>
+        </DocsStack>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+const FIELD_LABEL_SIZE_LABEL: Record<FieldLabelSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+const FIELD_LABEL_TONE_LABEL: Record<FieldLabelTone, string> = {
+  default: 'Default',
+  danger: 'Danger',
+  success: 'Success',
+  warning: 'Warning',
+  disabled: 'Disabled',
+}
+
+const FIELD_HINT_TONE_LABEL: Record<Exclude<FieldHintTone, 'success' | 'danger'>, string> = {
+  default: 'Default',
+  ok: 'Success',
+  error: 'Error',
+  warning: 'Warning',
+}
+
+const FORM_FIELD_LAYOUT_LABEL: Record<FormFieldLayout, string> = {
+  stacked: 'Stacked',
+  inline: 'Inline',
+}
+
+function FieldLabelDemo() {
+  return (
+    <div className="flex w-full max-w-[400px] flex-col gap-6">
+      <FormField htmlFor="demo-name" label="Display name" hint="Shown on your public profile.">
+        <TextField
+          id="demo-name"
+          icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+          placeholder="Alex Rivera"
+        />
+      </FormField>
+      <FormField htmlFor="demo-user" label="Username" optional>
+        <TextField id="demo-user" icon={<DkAtSign {...FIELD_GLYPH} />} placeholder="alex" />
+      </FormField>
+      <FormField htmlFor="demo-email" label="Email" required hint="Use a work address.">
+        <TextField
+          id="demo-email"
+          icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+          placeholder="alex@roboticela.com"
+        />
+      </FormField>
+    </div>
+  )
+}
+
+function FieldLabelStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={1}>
+          {FIELD_LABEL_SIZES.map((size) => (
+            <FieldState key={size} label={FIELD_LABEL_SIZE_LABEL[size]}>
+              <FormField
+                htmlFor={`docs-label-size-${size}`}
+                label="Display name"
+                size={size}
+                hint="Shown on your public profile."
+              >
+                <TextField
+                  id={`docs-label-size-${size}`}
+                  size={size}
+                  icon={
+                    <DkPersonUserProfile
+                      size={size === 'sm' ? 16 : 18}
+                      strokeWidth={1.6}
+                      absoluteStrokeWidth
+                    />
+                  }
+                  placeholder="Alex Rivera"
+                />
+              </FormField>
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Necessity">
+        <DocsStateGrid columns={1}>
+          <FieldState label="Default">
+            <FormField htmlFor="docs-label-default" label="Display name">
+              <TextField
+                id="docs-label-default"
+                icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+                placeholder="Alex Rivera"
+              />
+            </FormField>
+          </FieldState>
+          <FieldState label="Optional">
+            <FormField htmlFor="docs-label-optional" label="Username" optional>
+              <TextField id="docs-label-optional" icon={<DkAtSign {...FIELD_GLYPH} />} placeholder="alex" />
+            </FormField>
+          </FieldState>
+          <FieldState label="Required">
+            <FormField htmlFor="docs-label-required" label="Email" required>
+              <TextField
+                id="docs-label-required"
+                icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+                placeholder="alex@roboticela.com"
+              />
+            </FormField>
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={1}>
+          {FIELD_LABEL_TONES.map((tone) => (
+            <FieldState key={tone} label={FIELD_LABEL_TONE_LABEL[tone]}>
+              <FormField
+                htmlFor={`docs-label-tone-${tone}`}
+                label="Display name"
+                tone={tone}
+                disabled={tone === 'disabled'}
+              >
+                <TextField
+                  id={`docs-label-tone-${tone}`}
+                  icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+                  placeholder="Alex Rivera"
+                  defaultValue="Alex Rivera"
+                  disabled={tone === 'disabled'}
+                  invalid={tone === 'danger'}
+                  valid={tone === 'success'}
+                />
+              </FormField>
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Hint">
+        <DocsStateGrid columns={1}>
+          {FIELD_HINT_TONES.map((tone) => (
+            <FieldState key={tone} label={FIELD_HINT_TONE_LABEL[tone]}>
+              <FormField
+                htmlFor={`docs-hint-${tone}`}
+                label="Username"
+                hint={
+                  tone === 'ok'
+                    ? 'Available'
+                    : tone === 'error'
+                      ? 'Already taken'
+                      : tone === 'warning'
+                        ? 'This name is in use on another team'
+                        : 'Shown on your public profile.'
+                }
+                hintTone={tone}
+                invalid={tone === 'error'}
+                valid={tone === 'ok'}
+              >
+                <TextField
+                  id={`docs-hint-${tone}`}
+                  icon={<DkAtSign {...FIELD_GLYPH} />}
+                  placeholder="alex"
+                  defaultValue="alex"
+                  invalid={tone === 'error'}
+                  valid={tone === 'ok'}
+                />
+              </FormField>
+            </FieldState>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Layout">
+        <DocsStateGrid columns={1}>
+          {FORM_FIELD_LAYOUTS.map((layout) => (
+            <FieldState key={layout} label={FORM_FIELD_LAYOUT_LABEL[layout]}>
+              <FormField
+                htmlFor={`docs-label-layout-${layout}`}
+                label="Display name"
+                hint="Shown on your public profile."
+                layout={layout}
+              >
+                <TextField
+                  id={`docs-label-layout-${layout}`}
+                  icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+                  placeholder="Alex Rivera"
+                />
+              </FormField>
+            </FieldState>
+          ))}
+          <FieldState label="Row">
+            <FieldRow>
+              <FormField htmlFor="docs-label-row-city" label="City" optional>
+                <TextField
+                  id="docs-label-row-city"
+                  icon={<DkFoldedMapTerritoryMapPinLocation {...FIELD_GLYPH} />}
+                  placeholder="Karachi"
+                />
+              </FormField>
+              <FormField htmlFor="docs-label-row-postal" label="Postal" required hint="Required" hintTone="error">
+                <TextField
+                  id="docs-label-row-postal"
+                  icon={<DkFoldedMapTerritoryMapPinLocation {...FIELD_GLYPH} />}
+                  placeholder="00000"
+                  invalid
+                />
+              </FormField>
+            </FieldRow>
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={1}>
+          <FieldState label="Empty">
+            <FormField htmlFor="docs-label-empty" label="Display name" hint="Shown on your public profile.">
+              <TextField
+                id="docs-label-empty"
+                icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+                placeholder="Alex Rivera"
+              />
+            </FormField>
+          </FieldState>
+          <FieldState label="Filled">
+            <FormField htmlFor="docs-label-filled" label="Display name">
+              <TextField
+                id="docs-label-filled"
+                icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+                placeholder="Alex Rivera"
+                defaultValue="Alex Rivera"
+              />
+            </FormField>
+          </FieldState>
+          <FieldState label="Invalid">
+            <FormField
+              htmlFor="docs-label-invalid"
+              label="Email"
+              required
+              invalid
+              hint="Enter a valid email."
+              hintTone="error"
+            >
+              <TextField
+                id="docs-label-invalid"
+                icon={<DkEnvelopeMessageMail {...FIELD_GLYPH} />}
+                placeholder="alex@roboticela.com"
+                defaultValue="alex"
+                invalid
+              />
+            </FormField>
+          </FieldState>
+          <FieldState label="Valid">
+            <FormField
+              htmlFor="docs-label-valid"
+              label="Username"
+              valid
+              hint="Available"
+              hintTone="ok"
+            >
+              <TextField
+                id="docs-label-valid"
+                icon={<DkAtSign {...FIELD_GLYPH} />}
+                placeholder="alex"
+                defaultValue="alex"
+                valid
+              />
+            </FormField>
+          </FieldState>
+          <FieldState label="Warning">
+            <FormField
+              htmlFor="docs-label-warning"
+              label="Username"
+              tone="warning"
+              hint="This name is in use on another team"
+              hintTone="warning"
+            >
+              <TextField
+                id="docs-label-warning"
+                icon={<DkAtSign {...FIELD_GLYPH} />}
+                placeholder="alex"
+                defaultValue="alex"
+              />
+            </FormField>
+          </FieldState>
+          <FieldState label="Disabled">
+            <FormField htmlFor="docs-label-disabled" label="Display name" disabled hint="Managed by your team.">
+              <TextField
+                id="docs-label-disabled"
+                icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
+                placeholder="Alex Rivera"
+                defaultValue="Alex Rivera"
+                disabled
+              />
+            </FormField>
+          </FieldState>
+          <FieldState label="Label only">
+            <FieldLabel htmlFor="docs-label-only">Display name</FieldLabel>
+          </FieldState>
+          <FieldState label="Hidden label">
+            <FormField>
+              <FieldLabel htmlFor="docs-label-hidden" visuallyHidden>
+                Search
+              </FieldLabel>
+              <TextField
+                id="docs-label-hidden"
+                variant="pill"
+                icon={<DkMagnifyingGlassFind {...FIELD_GLYPH} />}
+                placeholder="Search"
+              />
+            </FormField>
+          </FieldState>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
 }
 
 function RecoveryDemo() {
   const [value, setValue] = useState('XJ4K-9M2P')
-  return <RecoveryInput value={value} onChange={setValue} />
+  return (
+    <div className="w-full max-w-[400px]">
+      <RecoveryInput value={value} onChange={setValue} />
+    </div>
+  )
+}
+
+const RECOVERY_SAMPLE = 'XK4M-92QP'
+const RECOVERY_PARTIAL = 'XK4M'
+const RECOVERY_KEY = 'H7QK-9M2P-L4TN-3W8D'
+const RECOVERY_APPLE = 'H7QK-9M2P-L4TN-3W8D-P0AV-61CK-H9QE'
+const RECOVERY_NOOP = () => undefined
+
+const RECOVERY_VARIANT_LABEL: Record<RecoveryInputVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+  underline: 'Underline',
+  pill: 'Pill',
+}
+
+const RECOVERY_SIZE_LABEL: Record<RecoveryInputSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+const RECOVERY_MODE_LABEL: Record<RecoveryInputMode, string> = {
+  field: 'Field',
+  groups: 'Groups',
+}
+
+function RecoveryStateCard({
+  label,
+  inert = false,
+  children,
+}: {
+  label: string
+  inert?: boolean
+  children: ReactNode
+}) {
+  return (
+    <DocsStateCard label={label} align="stretch" size="lg" wide inert={inert}>
+      {children}
+    </DocsStateCard>
+  )
+}
+
+function RecoveryStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid>
+          {RECOVERY_INPUT_VARIANTS.map((variant) => (
+            <RecoveryStateCard key={variant} label={RECOVERY_VARIANT_LABEL[variant]}>
+              <RecoveryInput
+                variant={variant}
+                value={RECOVERY_SAMPLE}
+                onChange={RECOVERY_NOOP}
+                label={RECOVERY_VARIANT_LABEL[variant]}
+              />
+            </RecoveryStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={3}>
+          {RECOVERY_INPUT_SIZES.map((size) => (
+            <RecoveryStateCard key={size} label={RECOVERY_SIZE_LABEL[size]}>
+              <RecoveryInput
+                size={size}
+                value={RECOVERY_SAMPLE}
+                onChange={RECOVERY_NOOP}
+                label={RECOVERY_SIZE_LABEL[size]}
+              />
+            </RecoveryStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Mode">
+        <DocsStateGrid columns={2}>
+          {RECOVERY_INPUT_MODES.map((mode) => (
+            <RecoveryStateCard key={mode} label={RECOVERY_MODE_LABEL[mode]}>
+              <RecoveryInput
+                mode={mode}
+                value={RECOVERY_SAMPLE}
+                onChange={RECOVERY_NOOP}
+                label={RECOVERY_MODE_LABEL[mode]}
+              />
+            </RecoveryStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Length">
+        <DocsStack gap={4}>
+          <RecoveryStateCard label="Eight, backup code">
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Sixteen, field">
+            <RecoveryInput length={16} value={RECOVERY_KEY} onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Sixteen, groups">
+            <RecoveryInput mode="groups" length={16} value={RECOVERY_KEY} onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Twenty-eight, recovery key">
+            <RecoveryInput mode="groups" length={28} value={RECOVERY_APPLE} onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid>
+          <RecoveryStateCard label="Empty">
+            <RecoveryInput value="" onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Partial">
+            <RecoveryInput value={RECOVERY_PARTIAL} onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Filled">
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Hover" inert>
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} preview="hover" />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Focus" inert>
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} preview="focus" />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Valid">
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} valid hint="Code accepted" />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Invalid">
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} invalid hint="Incorrect code, try again" />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Shaking">
+            <RecoveryInput value="" onChange={RECOVERY_NOOP} invalid shaking hint="Incorrect code, try again" />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Masked">
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} masked />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Read only">
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} readOnly />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Disabled">
+            <RecoveryInput value="" onChange={RECOVERY_NOOP} disabled />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Disabled, filled">
+            <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} disabled />
+          </RecoveryStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Groups, state">
+        <DocsStateGrid>
+          <RecoveryStateCard label="Empty">
+            <RecoveryInput mode="groups" value="" onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Partial">
+            <RecoveryInput mode="groups" value={RECOVERY_PARTIAL} onChange={RECOVERY_NOOP} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Hover" inert>
+            <RecoveryInput mode="groups" value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} preview="hover" />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Focus" inert>
+            <RecoveryInput mode="groups" value={RECOVERY_PARTIAL} onChange={RECOVERY_NOOP} preview="focus" />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Valid">
+            <RecoveryInput mode="groups" value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} valid />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Invalid">
+            <RecoveryInput mode="groups" value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} invalid />
+          </RecoveryStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Codes list">
+        <DocsStateGrid columns={2}>
+          <RecoveryStateCard label="Subtle">
+            <RecoveryCodesList codes={['XK4M-92QP', 'L7TN-3W8D', 'P0AV-61CK', 'H9QE-44BM']} />
+          </RecoveryStateCard>
+          <RecoveryStateCard label="Outline, copy">
+            <RecoveryCodesList
+              variant="outline"
+              copyable
+              codes={['XK4M-92QP', 'L7TN-3W8D', 'P0AV-61CK', 'H9QE-44BM']}
+            />
+          </RecoveryStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
 }
 
 function TabsDemo() {
@@ -1871,6 +4275,218 @@ const TEXT_PROPS: PropRow[] = [
   p('align', "'start' | 'center' | 'end'", "'start'", 'Horizontal alignment.'),
   p('as', 'ElementType', 'Semantic default', 'Rendered element. Override when the visual role differs from the HTML tag.'),
 ]
+
+const ALERT_VARIANT_LABEL: Record<AlertVariant, string> = {
+  subtle: 'Subtle',
+  outline: 'Outline',
+  solid: 'Solid',
+  ghost: 'Ghost',
+}
+
+const ALERT_TONE_LABEL: Record<AlertTone, string> = {
+  info: 'Info',
+  success: 'Success',
+  warning: 'Warning',
+  danger: 'Danger',
+  neutral: 'Neutral',
+}
+
+const ALERT_SIZE_LABEL: Record<AlertSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+const ALERT_COPY = {
+  title: 'Verify your email',
+  body: 'We sent a link to alex@roboticela.com.',
+} as const
+
+function AlertAction({
+  tone = 'info',
+  solid = false,
+  children = 'Resend',
+}: {
+  tone?: AlertTone
+  solid?: boolean
+  children?: string
+}) {
+  const color =
+    solid || tone === 'neutral'
+      ? solid
+        ? 'text-text-on-brand hover:text-text-on-brand'
+        : 'text-text-primary'
+      : tone === 'success'
+        ? 'text-success'
+        : tone === 'warning'
+          ? 'text-warning'
+          : tone === 'danger'
+            ? 'text-danger'
+            : 'text-brand-primary'
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      fullWidth={false}
+      className={`h-auto px-0 hover:underline ${color}`}
+    >
+      {children}
+    </Button>
+  )
+}
+
+function AlertDismissPlay() {
+  const [open, setOpen] = useState(true)
+  if (!open) {
+    return (
+      <Button variant="ghost" size="sm" fullWidth={false} onClick={() => setOpen(true)}>
+        Show alert
+      </Button>
+    )
+  }
+  return (
+    <Alert title="Two-factor is off" onDismiss={() => setOpen(false)}>
+      Ask teammates to finish setup before Friday.
+    </Alert>
+  )
+}
+
+function AlertDemo() {
+  return (
+    <div className="flex w-full max-w-[460px] flex-col gap-4">
+      {ALERT_VARIANTS.map((variant) => (
+        <Alert
+          key={variant}
+          variant={variant}
+          title={`${ALERT_VARIANT_LABEL[variant]} alert`}
+        >
+          {ALERT_COPY.body}
+        </Alert>
+      ))}
+    </div>
+  )
+}
+
+function AlertStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStateGrid columns={2}>
+          {ALERT_VARIANTS.map((variant) => (
+            <DocsStateCard key={variant} label={ALERT_VARIANT_LABEL[variant]} align="stretch" wide>
+              <Alert variant={variant} title={ALERT_COPY.title}>
+                {ALERT_COPY.body}
+              </Alert>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Tone">
+        <DocsStateGrid columns={2}>
+          {ALERT_TONES.map((tone) => (
+            <DocsStateCard key={tone} label={ALERT_TONE_LABEL[tone]} align="stretch" wide>
+              <Alert
+                tone={tone}
+                title={
+                  tone === 'success'
+                    ? 'Backup complete'
+                    : tone === 'warning'
+                      ? 'Quota at 88%'
+                      : tone === 'danger'
+                        ? 'Payment failed'
+                        : tone === 'neutral'
+                          ? 'Maintenance tonight'
+                          : ALERT_COPY.title
+                }
+              >
+                {tone === 'success'
+                  ? 'Your changes are live.'
+                  : tone === 'warning'
+                    ? 'Storage is almost full.'
+                    : tone === 'danger'
+                      ? 'Update the card on file.'
+                      : tone === 'neutral'
+                        ? 'The workspace will pause from 01:00 to 03:00 UTC.'
+                        : ALERT_COPY.body}
+              </Alert>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStateGrid columns={2}>
+          {ALERT_SIZES.map((size) => (
+            <DocsStateCard key={size} label={ALERT_SIZE_LABEL[size]} align="stretch" wide>
+              <Alert size={size} title={ALERT_COPY.title}>
+                {ALERT_COPY.body}
+              </Alert>
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStateGrid columns={2}>
+          <DocsStateCard label="Title and body" align="stretch" wide>
+            <Alert title={ALERT_COPY.title}>{ALERT_COPY.body}</Alert>
+          </DocsStateCard>
+          <DocsStateCard label="Title only" align="stretch" wide>
+            <Alert title="Backup complete" />
+          </DocsStateCard>
+          <DocsStateCard label="Body only" align="stretch" wide>
+            <Alert>{ALERT_COPY.body}</Alert>
+          </DocsStateCard>
+          <DocsStateCard label="No icon" align="stretch" wide>
+            <Alert icon={false} title={ALERT_COPY.title}>
+              {ALERT_COPY.body}
+            </Alert>
+          </DocsStateCard>
+          <DocsStateCard label="Dismiss" align="stretch" wide>
+            <AlertDismissPlay />
+          </DocsStateCard>
+          <DocsStateCard label="Action" align="stretch" wide>
+            <Alert title="Invite expired" action={<AlertAction />}>
+              Send a new link to join this workspace.
+            </Alert>
+          </DocsStateCard>
+          <DocsStateCard label="Outline, warning" align="stretch" wide>
+            <Alert variant="outline" tone="warning" title="Quota at 88%">
+              Storage is almost full.
+            </Alert>
+          </DocsStateCard>
+          <DocsStateCard label="Solid, danger" align="stretch" wide>
+            <Alert
+              variant="solid"
+              tone="danger"
+              title="Payment failed"
+              action={<AlertAction tone="danger" solid>Update card</AlertAction>}
+              onDismiss={() => undefined}
+            >
+              Update the card on file.
+            </Alert>
+          </DocsStateCard>
+          <DocsStateCard label="Ghost, success" align="stretch" wide>
+            <Alert variant="ghost" tone="success" title="Saved">
+              Your changes are live.
+            </Alert>
+          </DocsStateCard>
+          <DocsStateCard label="Neutral, dismiss" align="stretch" wide>
+            <Alert
+              tone="neutral"
+              title="Maintenance tonight"
+              onDismiss={() => undefined}
+            >
+              The workspace will pause from 01:00 to 03:00 UTC.
+            </Alert>
+          </DocsStateCard>
+        </DocsStateGrid>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
 
 const DOCS: Record<string, DocDef> = {
   heading: {
@@ -2248,7 +4864,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'text-field': {
     title: 'Text Field',
-    description: 'A single-line input with a leading icon. Outline, subtle, ghost, underline, and pill — filled, focus, and invalid use the same brand, success, and danger tokens as the rest of the kit.',
+    description: 'Collect a short answer such as a name, email, or search query. Use this when the value fits on one line.',
+    ...textFieldGuide,
     Demo: TextFieldDemo,
     wide: true,
     code: `<TextField icon={<DkEnvelopeMessageMail />} placeholder="Email address" />
@@ -2265,12 +4882,15 @@ const DOCS: Record<string, DocDef> = {
       p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height. Medium is 44px, matching buttons and selects.'),
       p('invalid', 'boolean', 'false', 'Danger border, icon, and aria-invalid.'),
       p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
+      p('disabled', 'boolean', 'false', 'Prevents entry. Explain why in nearby copy.'),
+      p('autoComplete', 'string', 'undefined', 'Native autocomplete. Use email, username, name, and similar tokens.'),
       p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the input.'),
     ],
   },
   textarea: {
     title: 'Textarea',
-    description: 'A multi-line input with a leading icon. Outline, subtle, ghost, underline, well, and composer — filled, focus, and invalid use the same tokens as Text Field.',
+    description: 'Collect a note, bio, or message. Use this when the person needs room to write more than one line.',
+    ...textareaGuide,
     Demo: TextareaDemo,
     wide: true,
     code: `<Textarea icon={<DkPencilWriteEdit />} placeholder="Write a note" />
@@ -2287,6 +4907,7 @@ const DOCS: Record<string, DocDef> = {
       p("size", "'sm' | 'md' | 'lg'", "'md'", 'Type scale and minimum height.'),
       p('invalid', 'boolean', 'false', 'Danger border, icon, and aria-invalid.'),
       p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
+      p('disabled', 'boolean', 'false', 'Prevents entry.'),
       p('maxLength', 'number', 'undefined', 'Native limit. Also shows a count when set.'),
       p('count', 'boolean', 'false', 'Show a character count even without maxLength.'),
       p('hint', 'ReactNode', 'undefined', 'Caption on the composer footer, opposite the count.'),
@@ -2296,7 +4917,8 @@ const DOCS: Record<string, DocDef> = {
   },
   'password-field': {
     title: 'Password Field',
-    description: 'A password input with a lock and a reveal control. Outline, subtle, ghost, underline, and pill — with ghost, subtle, outline, text, or pill reveal.',
+    description: 'Collect a secret that stays hidden until the person chooses to show it. Use this on sign in and when creating an account.',
+    ...passwordFieldGuide,
     Demo: PasswordFieldDemo,
     wide: true,
     code: `<PasswordField />
@@ -2317,12 +4939,14 @@ const DOCS: Record<string, DocDef> = {
       p('icon', 'ReactNode', 'lock', 'Leading icon. Defaults to the lock.'),
       p('invalid', 'boolean', 'false', 'Danger border, icon, and aria-invalid.'),
       p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
+      p('autoComplete', 'string', "'current-password'", 'Use current-password on sign-in and new-password on create account.'),
       p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the field.'),
     ],
   },
   'password-reveal': {
     title: 'Password Reveal',
-    description: 'Show or hide a password. Ghost, subtle, outline, Apple-style Show/Hide text, or a pill — designed as a field accessory, not a separate button.',
+    description: 'Lets the person show or hide the characters in a password. Keep it inside the field, not as a separate button.',
+    ...passwordRevealGuide,
     Demo: PasswordRevealDemo,
     wide: true,
     code: `<PasswordReveal visible={visible} onToggle={toggle} />
@@ -2348,7 +4972,8 @@ const DOCS: Record<string, DocDef> = {
   select: {
     title: 'Select',
     description:
-      'A single-value menu. Outline, subtle, ghost, underline, and pill match Text Field. Options can carry an icon and a short description. Search filters the list. The popup is the same width as the field.',
+      'Pick one option from a list. Use this when the choices are too many to show as radios and only one answer is allowed. Search the list when it is long. The menu matches the width of the field.',
+    ...selectGuide,
     Demo: SelectDemo,
     wide: true,
     code: `<Dropdown value={value} onChange={setValue} options={options} />
@@ -2376,213 +5001,583 @@ const DOCS: Record<string, DocDef> = {
       p('searchable', 'boolean', 'false', 'Adds a search field at the top of the popup.'),
       p('searchPlaceholder', 'string', "'Search'", 'Placeholder for the search field.'),
       p('placeholder', 'string', "'Select'", 'Shown when no option is selected.'),
-      p('invalid', 'boolean', 'false', 'Danger border.'),
+      p('label', 'string', 'undefined', 'Visible caption above the field.'),
+      p('ariaLabel', 'string', 'undefined', 'Accessible name when the visible label is omitted.'),
+      p('invalid', 'boolean', 'false', 'Danger border and aria-invalid.'),
       p('valid', 'boolean', 'false', 'Success border. Ignored when invalid.'),
       p('compact', 'boolean', 'false', 'Smaller trigger for toolbars. The popup still matches the field width.'),
       p('disabled', 'boolean', 'false', 'Prevents opening the menu.'),
     ],
   },
-  'search-select': {
-    title: 'Search Select',
-    description: 'A searchable single-select. The popup matches the field width.',
-    Demo: SearchSelectDemo,
-    code: `<SearchSelect value={value} onChange={setValue} options={[...]} />\n`,
-    props: [
-      p('value', 'string', '—', 'The selected option.'),
-      p('icon', 'ReactNode', 'undefined', 'Leading icon on the field. Replaced by the selected option icon when present.'),
-      p('options', 'SearchSelectOption[]', '[]', 'Filterable items. Each can include icon, meta, and description.'),
-      p('allowClear', 'boolean', 'true', 'Adds a clear row.'),
-      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select.'),
-      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height.'),
-    ],
-  },
   'country-select': {
     title: 'Country Select',
-    description: 'Choose a country from a searchable list.',
+    description: 'Ask for a country. The menu is searchable and shows a flag. Pass the chosen country into region and city fields.',
+    ...countrySelectGuide,
     Demo: CountryDemo,
-    code: `<CountrySelect value={iso} onChange={setIso} />\n`,
+    wide: true,
+    code: `<CountrySelect value={iso} onChange={setIso} />
+<CountrySelect variant="subtle" value={iso} onChange={setIso} />
+<CountrySelect size="sm" value={iso} onChange={setIso} />
+`,
+    statesContent: <CountryStates />,
     props: [
       p('value', 'string | null', '—', 'ISO 3166-1 alpha-2 code.'),
-      p('onChange', '(next: string | null) => void', '—', 'Called when the country changes.'),
+      p('onChange', '(next: string | null) => void', '—', 'Called when the country changes. Clear state, county, and city in the same handler.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height. Compact defaults to small.'),
+      p('allowClear', 'boolean', 'true', 'Adds a Not set option that stores null.'),
+      p('enabledIsos', 'string[]', 'undefined', 'When set, other countries stay in the list as Coming soon.'),
+      p('compact', 'boolean', 'false', 'Smaller trigger and flags.'),
+      p('disabled', 'boolean', 'false', 'Prevents opening the menu.'),
+      p('label', 'string', "'Country'", 'Accessible name.'),
+      p('placeholder', 'string', "'Select a country'", 'Shown when no country is selected.'),
+    ],
+  },
+  'state-select': {
+    title: 'State Select',
+    description:
+      'Ask for a state, province, or emirate after the country is known. The caption changes to match that country, for example State in the United States and Province in Pakistan.',
+    ...stateSelectGuide,
+    Demo: StateDemo,
+    wide: true,
+    code: `<CountrySelect value={country} onChange={setCountry} />
+<StateSelect country={country} value={state} onChange={setState} />
+`,
+    statesContent: <StateStates />,
+    props: [
+      p('value', 'string | null', '—', 'ISO 3166-2 code, such as US-CA or PK-SD.'),
+      p('country', 'string | null', 'null', 'ISO country. When set, only that country’s regions are listed.'),
+      p('onChange', '(next: string | null) => void', '—', 'Called when the region changes. Clear county and city in the same handler.'),
+      p('items', 'Subdivision[]', 'catalog', 'Replace the starter catalog with your own list.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height.'),
+      p('allowClear', 'boolean', 'true', 'Adds a Not set option that stores null.'),
+      p('disabled', 'boolean', 'false', 'Prevents opening the menu.'),
+      p('label', 'string', 'noun for the country', 'Accessible name. Defaults to State, Province, Emirate, and so on.'),
+    ],
+  },
+  'county-select': {
+    title: 'County Select',
+    description:
+      'Ask for a county or district after a region is chosen. Hide this field in countries that do not use this layer.',
+    ...countySelectGuide,
+    Demo: CountyDemo,
+    wide: true,
+    code: `<StateSelect country={country} value={state} onChange={setState} />
+<CountySelect state={state} value={county} onChange={setCounty} />
+`,
+    statesContent: <CountyStates />,
+    props: [
+      p('value', 'string | null', '—', 'County id, such as US-CA:los-angeles.'),
+      p('state', 'string | null', 'null', 'ISO 3166-2 region. When set, only that region’s counties are listed.'),
+      p('onChange', '(next: string | null) => void', '—', 'Called when the county changes. Clear city in the same handler.'),
+      p('items', 'County[]', 'catalog', 'Replace the starter catalog with your own list.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height.'),
+      p('allowClear', 'boolean', 'true', 'Adds a Not set option that stores null.'),
+      p('disabled', 'boolean', 'false', 'Prevents opening the menu.'),
+      p('label', 'string', "'County'", 'Accessible name.'),
+    ],
+  },
+  'city-select': {
+    title: 'City Select',
+    description:
+      'Ask for a city. Narrow the list with the country, region, or county already chosen. Pass your own list when the product needs a full directory.',
+    ...citySelectGuide,
+    Demo: CityDemo,
+    wide: true,
+    code: `<CountrySelect value={country} onChange={setCountry} />
+<StateSelect country={country} value={state} onChange={setState} />
+<CountySelect state={state} value={county} onChange={setCounty} />
+<CitySelect country={country} state={state} county={county} value={city} onChange={setCity} />
+`,
+    statesContent: <CityStates />,
+    props: [
+      p('value', 'string | null', '—', 'City id, such as PK-SD:karachi.'),
+      p('country', 'string | null', 'null', 'ISO country. Used when state is not set.'),
+      p('state', 'string | null', 'null', 'ISO 3166-2 region. Takes priority over country.'),
+      p('county', 'string | null', 'null', 'County id. Takes priority over state.'),
+      p('onChange', '(next: string | null) => void', '—', 'Called when the city changes.'),
+      p('items', 'City[]', 'catalog', 'Replace the starter catalog with your own list.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height.'),
+      p('allowClear', 'boolean', 'true', 'Adds a Not set option that stores null.'),
+      p('disabled', 'boolean', 'false', 'Prevents opening the menu.'),
+      p('label', 'string', "'City'", 'Accessible name.'),
     ],
   },
   'language-select': {
     title: 'Language Select',
-    description: 'Choose a language from a searchable list.',
+    description: 'Ask for a display language. Store a language id, not the translated name.',
+    ...languageSelectGuide,
     Demo: LanguageDemo,
-    code: `<LanguageSelect value={id} onChange={setId} />\n`,
-    props: [p('value', 'string | null', '—', 'BCP 47 language id.')],
+    wide: true,
+    code: `<LanguageSelect value={id} onChange={setId} />
+<LanguageSelect variant="subtle" value={id} onChange={setId} />
+`,
+    statesContent: <LanguageStates />,
+    props: [
+      p('value', 'string | null', '—', 'BCP 47 language id.'),
+      p('onChange', '(next: string) => void', '—', 'Called when the language changes.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height.'),
+      p('enabledIds', 'string[]', 'shipped locales', 'When set, other languages stay in the list as Coming soon.'),
+      p('compact', 'boolean', 'false', 'Smaller trigger.'),
+      p('disabled', 'boolean', 'false', 'Prevents opening the menu.'),
+      p('label', 'string', "'Language'", 'Accessible name.'),
+    ],
   },
   'phone-input': {
     title: 'Phone Input',
-    description: 'A phone number field with country code.',
+    description: 'Collect a phone number with a country code. The number formats as the person types. Store the international form with a plus and digits.',
+    ...phoneInputGuide,
     Demo: PhoneDemo,
-    code: `<PhoneInput value={e164} onChange={setE164} />\n`,
+    wide: true,
+    code: `<PhoneInput value={e164} onChange={setE164} />
+`,
+    statesContent: <PhoneStates />,
     props: [
       p('value', 'string', '—', 'E.164 number, such as +14155552671.'),
-      p('onChange', '(next: string) => void', '—', 'Called as the number is edited.'),
+      p('onChange', '(next: string) => void', '—', 'Called as the number is edited. Emits + and digits.'),
+      p('disabled', 'boolean', 'false', 'Prevents changing the country or the number.'),
+      p('label', 'string', "'Phone number'", 'Accessible name on the number field. The Select is named Country code.'),
+      p('placeholder', 'string', "'Phone number'", 'Shown in the national number field when empty.'),
     ],
   },
   checkbox: {
     title: 'Checkbox',
-    description: 'A binary choice in a form.',
+    description: 'Let the person turn a choice on or off before submitting. Several can be on at once. Use a switch if the change should apply immediately.',
+    ...checkboxGuide,
     Demo: CheckboxDemo,
-    code: `<Checkbox label="Email me product updates" checked={on} onChange={toggle} />\n`,
-    states: [
-      { label: 'Unchecked', node: <Checkbox label="Off" /> },
-      { label: 'Checked', node: <Checkbox label="On" defaultChecked /> },
-      { label: 'Disabled', node: <Checkbox label="Locked" defaultChecked disabled /> },
-    ],
+    wide: true,
+    code: `<Checkbox variant="outline" label="Outline" checked={on} onChange={toggle} />
+<Checkbox variant="subtle" label="Subtle" checked={on} onChange={toggle} />
+<Checkbox variant="ghost" label="Ghost" checked={on} onChange={toggle} />
+
+<Checkbox
+  label="All email"
+  checked={selected === 2}
+  indeterminate={selected === 1}
+  onChange={toggleAll}
+/>
+<Checkbox label="Weekly digest" checked={digest} onChange={setDigest} />
+
+<Checkbox tone="danger" label="I understand this will delete the project" checked={ack} onChange={setAck} />
+<Checkbox label="Required" invalid />
+`,
+    statesContent: <CheckboxStates />,
     props: [
-      p('label', 'ReactNode', 'undefined', 'Visible label.'),
-      p('checked', 'boolean', 'uncontrolled', 'Checked state when controlled.'),
+      p('label', 'ReactNode', 'undefined', 'Visible label. Pass aria-label when the words sit elsewhere.'),
+      p('checked', 'boolean', 'uncontrolled', 'On when controlled. Omit to let the input own the value.'),
+      p('indeterminate', 'boolean', 'false', 'Mixed parent for a partly selected set. Shows a minus.'),
+      p('invalid', 'boolean', 'false', 'Error after submit. Sets aria-invalid.'),
+      p("variant", "'outline' | 'subtle' | 'ghost'", "'outline'", 'Unchecked chrome. Outline for forms, subtle on a card, ghost in a list.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Box size. The row stays at least 44px tall.'),
+      p("tone", "'brand' | 'danger'", "'brand'", 'Fill when on. Danger is for a destructive acknowledgement only.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p('disabled', 'boolean', 'false', 'Prevents press.'),
     ],
   },
   radio: {
     title: 'Radio',
-    description: 'One option in a mutually exclusive set.',
+    description: 'Pick exactly one option from a small set that stays visible. Use a select when the list is long.',
+    ...radioGuide,
     Demo: RadioDemo,
-    code: `<Radio name="pay" label="Card" checked={value === 'card'} onChange={select} />\n`,
-    props: [p('label', 'ReactNode', 'undefined', 'Visible label.')],
+    wide: true,
+    code: `<RadioGroup label="Payment">
+  <Radio name="pay" label="Card" checked={value === 'card'} onChange={selectCard} />
+  <Radio name="pay" label="Bank transfer" checked={value === 'bank'} onChange={selectBank} />
+  <Radio name="pay" label="Invoice" checked={value === 'invoice'} onChange={selectInvoice} />
+</RadioGroup>
+
+<Radio variant="subtle" name="chrome" label="Subtle" />
+<Radio tone="danger" name="severity" label="Delete the project" />
+<Radio label="Required" invalid />
+`,
+    statesContent: <RadioStates />,
+    props: [
+      p('label', 'ReactNode', 'undefined', 'Visible label. Pass aria-label when the words sit elsewhere.'),
+      p('checked', 'boolean', 'uncontrolled', 'Selected when controlled. Omit to let the group own the value.'),
+      p('invalid', 'boolean', 'false', 'Error after submit. Sets aria-invalid.'),
+      p("variant", "'outline' | 'subtle' | 'ghost'", "'outline'", 'Unchecked chrome. Outline for forms, subtle on a card, ghost in a list.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Circle size. The row stays at least 44px tall.'),
+      p("tone", "'brand' | 'danger'", "'brand'", 'Ring and disc when selected. Danger is for a destructive choice only.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p('name', 'string', 'undefined', 'Shared name for every option in the set.'),
+      p('disabled', 'boolean', 'false', 'Prevents press.'),
+    ],
   },
   slider: {
     title: 'Slider',
-    description: 'Pick a numeric value along a range.',
+    description: 'Pick a number by dragging along a track. Attach a Number Field when the exact figure must be typed.',
+    ...sliderGuide,
     Demo: SliderDemo,
-    code: `<Slider label="Volume" value={value} onValueChange={setValue} />\n`,
+    wide: true,
+    code: `<Slider variant="fill" label="Volume" value={value} onValueChange={setValue} field="end" unit="percent" />
+<Slider variant="subtle" label="Subtle" value={value} onValueChange={setValue} field="end" unit="percent" />
+<Slider variant="outline" label="Outline" value={value} onValueChange={setValue} field="end" unit="percent" />
+<Slider variant="ghost" label="Ghost" value={value} onValueChange={setValue} field="end" unit="percent" />
+<Slider variant="pill" label="Pill" value={value} onValueChange={setValue} field="end" unit="percent" />
+
+<Slider field="start" unit="percent" value={value} onValueChange={setValue} />
+<Slider field="end" unit="percent" fieldStepper="split" fieldAlign="center" value={value} onValueChange={setValue} />
+<Slider field="end" unit="percent" fieldVariant="underline" fieldWidth="fill" value={value} onValueChange={setValue} />
+
+<RangeSlider
+  label="Price"
+  field="both"
+  unit="currency"
+  value={range}
+  onValueChange={setRange}
+/>
+`,
+    statesContent: <SliderStates />,
     props: [
-      p('value', 'number', '—', 'Current value.'),
-      p('onValueChange', '(value: number) => void', '—', 'Called as the thumb moves.'),
+      p("mode", "'single' | 'range'", "'single'", 'One thumb, or two thumbs that cannot cross. RangeSlider is the range alias.'),
+      p('value', 'number | [number, number]', '—', 'Current value. A pair in range mode.'),
+      p('onValueChange', '(value: number | [number, number]) => void', '—', 'Called as a thumb moves.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Track chrome. Fill is the default. Pill is a thicker track with a raised thumb.'),
+      p("field", "boolean | 'end' | 'start' | 'both'", 'false', 'Attach a Number Field. End is after the track. Start is before. Both is for a range.'),
+      p("unit", "'none' | 'percent' | 'currency' | 'degree' | 'px'", "'none'", 'Sign on the Number Field. Override with prefix or suffix.'),
+      p('prefix', 'string', 'undefined', 'Leading sign on the Number Field, such as €. Overrides the unit prefix.'),
+      p('suffix', 'string', 'undefined', 'Trailing sign on the Number Field, such as kg. Overrides the unit suffix.'),
+      p("fieldVariant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", 'Matches the track', 'Number Field chrome. Fill maps to outline.'),
+      p("fieldSize", "'sm' | 'md' | 'lg'", 'Matches size', 'Number Field height. Defaults to the slider size.'),
+      p("fieldStepper", "'stack' | 'split'", "'stack'", 'Stacked chevrons on the Number Field, or minus and plus on both sides.'),
+      p("fieldAlign", "'start' | 'center' | 'end'", 'start, center when split', 'Alignment of the digits and unit in the Number Field.'),
+      p("fieldWidth", "'fit' | 'fill'", "'fit'", 'Fit grows with the digits until the cap. Fill uses the cap width.'),
+      p('fieldCompact', 'boolean', 'undefined', 'Alias. true is fit. false is fill.'),
+      p('fieldReadOnly', 'boolean', 'false', 'Shows the value in the Number Field. Arrows do not run. The track still moves.'),
+      p('fieldPlaceholder', 'string', "'0'", 'Shown in the Number Field when the value is empty.'),
+      p('fieldName', 'string', 'undefined', 'Name on the Number Field. Range appends Start and End.'),
+      p('fieldId', 'string', 'undefined', 'Id on the Number Field. Range appends -start and -end.'),
+      p('fieldClassName', 'string', 'undefined', 'Class on the Number Field.'),
+      p("fieldPreview", "'hover' | 'focus'", 'undefined', 'Forced visual on the Number Field. Falls back to preview.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Track and thumb size. The hit target stays at least 28px tall.'),
+      p("tone", "'default' | 'onDark'", "'default'", 'On dark is for a black surface, such as the avatar editor.'),
+      p('min', 'number', '0', 'Start of the track.'),
+      p('max', 'number', '100', 'End of the track.'),
+      p('step', 'number', '1', 'Snap increment.'),
+      p('label', 'ReactNode', 'undefined', 'Visible caption. Pass aria-label when the words sit elsewhere.'),
+      p('showValue', 'boolean', 'false', 'Shows the current value opposite the label.'),
+      p('showEnds', 'boolean', 'false', 'Shows min and max under the track.'),
+      p('marks', 'boolean | number[]', 'undefined', 'Tick marks. true uses step when there are twelve or fewer, otherwise min and max.'),
+      p('formatValue', '(value: number) => string', 'String', 'Formats the readout, end labels, and aria-valuetext.'),
+      p('invalid', 'boolean', 'false', 'Error after submit. Sets aria-invalid and a danger fill.'),
+      p('valid', 'boolean', 'false', 'Success fill. Ignored when invalid.'),
+      p('disabled', 'boolean', 'false', 'Prevents press and keyboard.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+    ],
+  },
+  'number-field': {
+    title: 'Number Field',
+    description: 'Type or step a number. A unit such as percent, currency, or pixels sits next to the digits.',
+    ...numberFieldGuide,
+    Demo: NumberFieldDemo,
+    wide: true,
+    code: `<NumberField unit="percent" value={value} onValueChange={setValue} min={0} max={100} />
+<NumberField variant="subtle" unit="percent" value={value} onValueChange={setValue} />
+<NumberField variant="ghost" unit="percent" value={value} onValueChange={setValue} />
+<NumberField variant="underline" unit="percent" value={value} onValueChange={setValue} />
+<NumberField variant="pill" unit="percent" value={value} onValueChange={setValue} />
+
+<NumberField unit="currency" value={price} onValueChange={setPrice} min={0} step={0.5} />
+<NumberField stepper="split" value={qty} onValueChange={setQty} min={1} max={99} />
+<NumberField width="fill" unit="percent" value={value} onValueChange={setValue} />
+`,
+    statesContent: <NumberFieldStates />,
+    props: [
+      p('value', 'number | null', 'uncontrolled', 'Current value. null is an empty field.'),
+      p('onValueChange', '(value: number | null) => void', 'undefined', 'Called as the value is typed or stepped.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Chrome. Matches Text Field.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height. Medium is 44px, matching other fields.'),
+      p("unit", "'none' | 'percent' | 'currency' | 'degree' | 'px'", "'none'", 'Sign beside the digits. Override with prefix or suffix.'),
+      p('prefix', 'string', 'undefined', 'Leading sign, such as €. Overrides the unit prefix.'),
+      p('suffix', 'string', 'undefined', 'Trailing sign, such as kg. Overrides the unit suffix.'),
+      p("stepper", "'stack' | 'split'", "'stack'", 'Stacked chevrons on the right, or minus and plus on both sides.'),
+      p("align", "'start' | 'center' | 'end'", "start, center when split", 'Alignment of the digits and unit.'),
+      p("width", "'fit' | 'fill'", "'fit'", 'Fit grows with the digits until the variant cap, then clips. Fill spans the row.'),
+      p('compact', 'boolean', 'undefined', 'Alias. true is fit. false is fill.'),
+      p('min', 'number', 'undefined', 'Lower bound. Disables decrease at the limit.'),
+      p('max', 'number', 'undefined', 'Upper bound. Disables increase at the limit.'),
+      p('step', 'number', '1', 'Arrow and key increment. Typing snaps to step on blur.'),
+      p('invalid', 'boolean', 'false', 'Danger border and aria-invalid.'),
+      p('valid', 'boolean', 'false', 'Success border. Ignored when invalid.'),
+      p('disabled', 'boolean', 'false', 'Prevents typing and stepping.'),
+      p('readOnly', 'boolean', 'false', 'Shows the value. Arrows do not run.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles.'),
     ],
   },
   'date-picker': {
     title: 'Date Picker',
-    description: 'Select a date or date range.',
+    description:
+      'Pick a calendar date, or a start and an end. The field and the calendar match the other menus in the kit.',
+    ...datePickerGuide,
     Demo: DateDemo,
-    code: `<DatePicker value={value} onChange={setValue} />\n`,
+    wide: true,
+    code: `<DatePicker value={value} onChange={setValue} />
+<DatePicker variant="subtle" value={value} onChange={setValue} />
+<DatePicker variant="ghost" value={value} onChange={setValue} />
+<DatePicker variant="underline" value={value} onChange={setValue} />
+<DatePicker variant="pill" value={value} onChange={setValue} />
+
+<DatePicker size="sm" value={value} onChange={setValue} />
+<DatePicker invalid value={value} onChange={setValue} />
+<DatePicker mode="range" rangeValue={range} onRangeChange={setRange} />
+`,
+    statesContent: <DatePickerStates />,
     props: [
       p('value', 'string | null', '—', 'ISO date for single mode.'),
-      p('mode', "'single' | 'range'", "'single'", 'Selection mode.'),
+      p('onChange', '(next: string | null) => void', '—', 'Called when a day is chosen in single mode.'),
+      p("mode", "'single' | 'range'", "'single'", 'One day, or a start and end.'),
+      p('rangeValue', '{ start: string | null; end: string | null }', '—', 'ISO dates for range mode.'),
+      p('onRangeChange', '(next: DateRange) => void', '—', 'Called when Done commits a range.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Field chrome. Matches Select and Text Field.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height. Compact defaults to small.'),
+      p('placeholder', 'string', "'Select a date'", 'Shown when no date is selected.'),
+      p('invalid', 'boolean', 'false', 'Danger border.'),
+      p('valid', 'boolean', 'false', 'Success border. Ignored when invalid.'),
+      p('compact', 'boolean', 'false', 'Smaller trigger for toolbars.'),
+      p('min', 'string', "'1900-01-01'", 'Earliest ISO date that can be chosen.'),
+      p('max', 'string', 'today', 'Latest ISO date that can be chosen.'),
+      p('disabled', 'boolean', 'false', 'Prevents opening the calendar.'),
+      p("preview", "'hover' | 'open'", 'undefined', 'Forced visual for docs tiles.'),
     ],
   },
   'otp-boxes': {
     title: 'OTP Boxes',
-    description: 'Digit boxes for a one-time code.',
+    description: 'Enter a verification code one digit at a time. Paste fills the row. Use this after sign in or to confirm a device.',
+    ...otpGuide,
     Demo: OtpDemo,
-    code: `<OtpBoxes value={digits} onChange={setDigits} />\n`,
-    states: [
-      { label: 'Default', node: <OtpBoxes value={['', '', '', '', '', '']} onChange={() => undefined} /> },
-      { label: 'Error', node: <OtpBoxes value={['1', '2', '3', '4', '5', '6']} onChange={() => undefined} error /> },
-      { label: 'Disabled', node: <OtpBoxes value={['1', '2', '3', '4', '5', '6']} onChange={() => undefined} disabled /> },
-    ],
+    wide: true,
+    code: `<OtpBoxes value={digits} onChange={setDigits} onComplete={verify} />
+<OtpBoxes variant="underline" value={digits} onChange={setDigits} />
+<OtpBoxes variant="pill" size="sm" value={digits} onChange={setDigits} />
+<OtpBoxes length={8} split={4} value={digits} onChange={setDigits} />
+<OtpBoxes value={digits} onChange={setDigits} invalid shaking />
+<OtpBoxes value={digits} onChange={setDigits} valid />
+<OtpBoxes value={digits} onChange={setDigits} masked />
+`,
+    statesContent: <OtpStates />,
     props: [
       p('value', 'string[]', '—', 'One character per box.'),
+      p('onChange', '(next: string[]) => void', '—', 'Called when a digit changes.'),
       p('length', 'number', '6', 'Number of boxes.'),
-      p('error', 'boolean', 'false', 'Invalid state.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Box chrome. Outline is the auth default. Underline is the quieter layout.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Box size. Small stays 44px tall.'),
+      p('split', 'number', 'undefined', 'Extra gap after this many boxes, such as 3 or 4.'),
+      p('valid', 'boolean', 'false', 'Success after a correct code.'),
+      p('invalid', 'boolean', 'false', 'Error after a rejected code. Alias: error.'),
+      p('error', 'boolean', 'false', 'Alias for invalid.'),
+      p('shaking', 'boolean', 'false', 'Shake the row when the code is rejected.'),
+      p('masked', 'boolean', 'false', 'Hide digits as discs.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles.'),
+      p('disabled', 'boolean', 'false', 'Prevents entry.'),
+      p('onComplete', '(code: string) => void', 'undefined', 'Called when every box is filled.'),
     ],
   },
   'recovery-input': {
     title: 'Recovery Input',
-    description: 'Enter or display recovery codes.',
+    description:
+      'Enter a backup code or account recovery key. Letters and numbers group themselves as the person types.',
+    ...recoveryGuide,
     Demo: RecoveryDemo,
-    code: `<RecoveryInput value={code} onChange={setCode} />\n`,
-    states: [
-      { label: 'Input', node: <RecoveryDemo /> },
-      {
-        label: 'List',
-        node: <RecoveryCodesList codes={['XJ4K-9M2P', 'Q7NT-3B8C']} />,
-      },
+    wide: true,
+    code: `<RecoveryInput value={code} onChange={setCode} />
+<RecoveryInput variant="underline" value={code} onChange={setCode} />
+<RecoveryInput variant="pill" size="sm" value={code} onChange={setCode} />
+<RecoveryInput mode="groups" value={code} onChange={setCode} />
+<RecoveryInput length={16} mode="groups" value={code} onChange={setCode} />
+<RecoveryInput value={code} onChange={setCode} invalid shaking />
+<RecoveryInput value={code} onChange={setCode} valid />
+<RecoveryCodesList copyable codes={codes} />
+`,
+    statesContent: <RecoveryStates />,
+    props: [
+      p('value', 'string', '—', 'The recovery code. Hyphens are optional; they are inserted for you.'),
+      p('onChange', '(next: string) => void', '—', 'Called with the formatted code.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'underline' | 'pill'", "'outline'", 'Chrome. Outline is the auth default. Underline is the quieter layout.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Field height. Small stays 44px tall.'),
+      p("mode", "'field' | 'groups'", "'field'", 'One formatted line, or one box per group.'),
+      p('length', 'number', '8', 'Character count before grouping. Eight is a backup code. Twenty-eight is an Apple-style key.'),
+      p('groupSize', 'number', '4', 'Characters per group.'),
+      p('valid', 'boolean', 'false', 'Success after a correct code.'),
+      p('invalid', 'boolean', 'false', 'Error after a rejected code. Alias: error.'),
+      p('error', 'boolean', 'false', 'Alias for invalid.'),
+      p('shaking', 'boolean', 'false', 'Shake when the code is rejected.'),
+      p('masked', 'boolean', 'false', 'Hide characters as discs.'),
+      p('readOnly', 'boolean', 'false', 'Show a code without allowing edits.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles.'),
+      p('disabled', 'boolean', 'false', 'Prevents entry.'),
+      p('label', 'ReactNode', "'Recovery code'", 'Caption above the field.'),
+      p('hint', 'ReactNode', 'undefined', 'Caption under the field. Uses the invalid or valid tone when set.'),
+      p('placeholder', 'string', 'XXXX-XXXX', 'Shown when empty. Defaults to grouped Xs for the length.'),
+      p('onComplete', '(code: string) => void', 'undefined', 'Called when every character is filled.'),
+      p('codes', 'string[]', '—', 'On RecoveryCodesList, the codes to display.'),
+      p("RecoveryCodesList variant", "'outline' | 'subtle' | 'ghost'", "'subtle'", 'Cell chrome on the list.'),
+      p('copyable', 'boolean', 'false', 'Adds a copy control under RecoveryCodesList.'),
     ],
-    props: [p('value', 'string', '—', 'The recovery code string.')],
   },
   'field-label': {
     title: 'Field Label',
-    description: 'Label, hint, and field grouping.',
-    Demo: () => (
-      <FormField>
-        <FieldLabel htmlFor="demo-name">Display name</FieldLabel>
-        <TextField
-          id="demo-name"
-          icon={<DkPersonUserProfile {...FIELD_GLYPH} />}
-          placeholder="Alex Rivera"
-        />
-        <FieldHint>Shown on your public profile.</FieldHint>
-      </FormField>
-    ),
-    code: `<FormField>\n  <FieldLabel>Display name</FieldLabel>\n  <TextField icon={<DkPersonUserProfile />} />\n  <FieldHint>Shown on your public profile.</FieldHint>\n</FormField>\n`,
+    description:
+      'Name a field and place help or an error under it. A placeholder is not a substitute for this name.',
+    ...fieldLabelGuide,
+    Demo: FieldLabelDemo,
+    wide: true,
+    code: `<FormField htmlFor="name" label="Display name" hint="Shown on your public profile.">
+  <TextField id="name" icon={<DkPersonUserProfile />} placeholder="Alex Rivera" />
+</FormField>
+<FormField htmlFor="user" label="Username" optional>
+  <TextField id="user" icon={<DkAtSign />} placeholder="alex" />
+</FormField>
+<FormField htmlFor="email" label="Email" required hint="Use a work address.">
+  <TextField id="email" icon={<DkEnvelopeMessageMail />} />
+</FormField>
+<FormField htmlFor="user" label="Username" hint="Available" hintTone="ok" valid>
+  <TextField id="user" valid />
+</FormField>
+<FormField htmlFor="email" label="Email" required invalid hint="Enter a valid email." hintTone="error">
+  <TextField id="email" invalid />
+</FormField>
+<FormField htmlFor="name" label="Display name" layout="inline">
+  <TextField id="name" />
+</FormField>
+`,
+    statesContent: <FieldLabelStates />,
     props: [
-      p('optional', 'boolean', 'false', 'Adds an Optional suffix on FieldLabel.'),
-      p('children', 'ReactNode', '—', 'Label text.'),
+      p('children', 'ReactNode', '—', 'Label text. On FormField this is the control.'),
+      p('htmlFor', 'string', 'undefined', 'Associates the label with a control id.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Type size. Match the field: small is 15px, medium and large follow the 17px and 19px labels.'),
+      p("tone", "'default' | 'danger' | 'success' | 'warning' | 'disabled'", "'default'", 'Label color. Disabled, invalid, and valid override this.'),
+      p('optional', 'boolean', 'false', 'Adds an Optional suffix. Wins over required.'),
+      p('required', 'boolean', 'false', 'Adds a danger asterisk. Mark the control required as well.'),
+      p('invalid', 'boolean', 'false', 'Danger label. Pair with hintTone error and an invalid field.'),
+      p('valid', 'boolean', 'false', 'Success label. Ignored when invalid or disabled.'),
+      p('disabled', 'boolean', 'false', 'Disabled label color. Pair with a disabled control.'),
+      p('visuallyHidden', 'boolean', 'false', 'Keeps the name for assistive tech when the layout has no caption.'),
+      p('hint', 'ReactNode', 'undefined', 'FormField only. Caption under the control.'),
+      p("hintTone", "'default' | 'ok' | 'error' | 'warning'", "'default'", 'FormField / FieldHint color. success and danger are aliases for ok and error.'),
+      p("layout", "'stacked' | 'inline'", "'stacked'", 'FormField only. Inline sits the label beside the field from 735px up.'),
     ],
   },
   alert: {
     title: 'Alert',
-    description: 'An inline message for status or errors.',
-    Demo: () => (
-      <Alert tone="info" title="Verify your email">
-        We sent a link to alex@roboticela.com.
-      </Alert>
-    ),
-    code: `<Alert tone="info" title="Verify your email">We sent a link.</Alert>\n`,
-    states: [
-      { label: 'Info', node: <Alert tone="info" title="Info">A status note.</Alert> },
-      { label: 'Success', node: <Alert tone="success" title="Saved">Your changes are live.</Alert> },
-      { label: 'Warning', node: <Alert tone="warning" title="Unverified">Finish setup.</Alert> },
-      { label: 'Danger', node: <Alert tone="danger" title="Failed">Check the form.</Alert> },
-    ],
+    description:
+      'An inline status message. Subtle, outline, solid, and ghost, with info, success, warning, danger, and a quiet neutral note.',
+    ...alertGuide,
+    Demo: AlertDemo,
+    wide: true,
+    code: `<Alert title="Verify your email">We sent a link to alex@roboticela.com.</Alert>
+<Alert variant="outline" tone="warning" title="Quota at 88%">Storage is almost full.</Alert>
+<Alert variant="solid" tone="danger" title="Payment failed">Update the card on file.</Alert>
+<Alert variant="ghost" tone="success" title="Saved">Your changes are live.</Alert>
+<Alert tone="neutral" title="Maintenance tonight" onDismiss={hide}>The workspace will pause.</Alert>
+<Alert title="Invite expired" action={<Button variant="ghost">Resend</Button>}>Send a new link.</Alert>
+`,
+    statesContent: <AlertStates />,
     props: [
-      p('tone', "'info' | 'success' | 'warning' | 'danger'", "'info'", 'Color and icon.'),
-      p('title', 'string', 'undefined', 'Headline.'),
-      p('onDismiss', '() => void', 'undefined', 'Shows a close button.'),
+      p("variant", "'subtle' | 'outline' | 'solid' | 'ghost'", "'subtle'", 'Chrome. Subtle is the default on a page. Outline on a card. Ghost in a list. Solid when the message must not be missed.'),
+      p("tone", "'info' | 'success' | 'warning' | 'danger' | 'neutral'", "'info'", 'Meaning and color. Neutral has no semantic color.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Padding, type, and icon size.'),
+      p('title', 'ReactNode', 'undefined', 'Headline. Omit for a body-only note.'),
+      p('children', 'ReactNode', 'undefined', 'Supporting line under the title.'),
+      p('icon', 'ReactNode | false', 'tone icon', 'Leading icon. Pass false to hide it.'),
+      p('action', 'ReactNode', 'undefined', 'A Button under the body, such as Resend or Try again.'),
+      p('onDismiss', '() => void', 'undefined', 'Shows a Dismiss icon button.'),
     ],
   },
   progress: {
     title: 'Progress',
-    description: 'A determinate progress bar.',
-    Demo: () => <Progress value={64} label="Uploading" />,
-    code: `<Progress value={64} label="Uploading" />\n`,
-    states: [
-      { label: 'Empty', node: <Progress value={0} label="Waiting" /> },
-      { label: 'Partial', node: <Progress value={64} label="Uploading" /> },
-      { label: 'Complete', node: <Progress value={100} label="Done" /> },
-    ],
+    description: 'Show how far a task has gone. Use this for uploads, quotas, and installs. The bar fills from zero to complete.',
+    ...progressGuide,
+    Demo: ProgressDemo,
+    wide: true,
+    code: `<Progress value={64} label="Uploading" />
+<Progress variant="subtle" value={64} label="Uploading" />
+<Progress variant="outline" value={64} label="Uploading" />
+<Progress variant="ghost" value={64} label="Uploading" />
+<Progress variant="pill" value={64} label="Storage" />
+<Progress tone="success" value={100} label="Done" />
+<Progress indeterminate label="Preparing" />
+<Progress variant="subtle" indeterminate label="Preparing" />
+<Progress variant="outline" indeterminate label="Preparing" />
+<Progress variant="ghost" indeterminate label="Preparing" />
+<Progress variant="pill" indeterminate label="Preparing" />
+`,
+    statesContent: <ProgressStates />,
     props: [
-      p('value', 'number', '—', '0–100.'),
-      p('label', 'string', 'undefined', 'Caption beside the percentage.'),
+      p('value', 'number', '0', 'How far the task has gone, from 0 to 100. Ignored when indeterminate.'),
+      p('label', 'string', 'undefined', 'Caption above the bar. Also the accessible name.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Track chrome. Fill is the default. Pill is the thicker bar.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Track height. Small is 4px, matching a system progress view.'),
+      p("tone", "'brand' | 'success' | 'warning' | 'danger'", "'brand'", 'Fill color. Success when the work is done. Danger when it failed.'),
+      p('indeterminate', 'boolean', 'false', 'Unknown amount. The bar travels until you know the value.'),
+      p('onDark', 'boolean', 'false', 'Track and type for a black surface.'),
+      p('showValue', 'boolean', 'true when labeled', 'Show the percent next to the label.'),
+      p('formatValue', '(value: number) => string', 'rounded percent', 'How the percent is written.'),
+      p('disabled', 'boolean', 'false', 'Dims the bar. The bar is never operable.'),
     ],
   },
   skeleton: {
     title: 'Skeleton',
-    description: 'A placeholder while content loads.',
-    Demo: () => (
-      <div className="flex w-full flex-col gap-3">
-        <Skeleton className="h-4 w-2/3" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-5/6" />
-      </div>
-    ),
-    code: `<Skeleton className="h-4 w-2/3" />\n`,
-    props: [p('className', 'string', 'undefined', 'Size and radius of the placeholder.')],
+    description:
+      'A placeholder while content loads. Subtle, outline, ghost, and pill, as a line, heading, circle, rect, or square.',
+    ...skeletonGuide,
+    Demo: SkeletonDemo,
+    wide: true,
+    code: `<Skeleton />
+<Skeleton variant="outline" lines={3} />
+<Skeleton variant="ghost" lines={3} />
+<Skeleton variant="pill" className="h-11 w-[140px]" />
+<Skeleton shape="circle" />
+<Skeleton shape="heading" />
+<Skeleton shape="rect" />
+<Skeleton lines={3} label="Loading article" />
+<Skeleton motion="pulse" lines={3} />
+<Skeleton motion="none" lines={3} />
+`,
+    statesContent: <SkeletonStates />,
+    props: [
+      p("variant", "'subtle' | 'outline' | 'ghost' | 'pill'", "'subtle'", 'Chrome. Subtle is the default fill. Outline is a wireframe. Ghost is fainter. Pill is a button or badge.'),
+      p("shape", "'line' | 'heading' | 'circle' | 'rect' | 'square'", "'line'", 'What the placeholder stands in for. Circle matches Avatar. Rect matches a card image.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Height for a line or heading. Diameter for a circle. Matches Avatar at circle size.'),
+      p("motion", "'shimmer' | 'pulse' | 'none'", "'shimmer'", 'Shimmer is the default sweep. Pulse is an opacity breath. None is static.'),
+      p('lines', 'number', '1', 'Stacked text lines. Last line is shorter. Ignored when shape is not line.'),
+      p('width', 'string | number', 'undefined', 'Override width on a single bone.'),
+      p('label', 'string', 'undefined', 'Accessible name. Sets role status and aria-busy, such as Loading profile.'),
+    ],
   },
   'empty-state': {
     title: 'Empty State',
-    description: 'A calm empty or zero-result view.',
-    Demo: () => (
-      <EmptyState
-        title="No projects"
-        body="Create a project to get started."
-        action={
-          <Button fullWidth={false} className="w-full">
-            New project
-          </Button>
-        }
-      />
-    ),
-    code: `<EmptyState title="No projects" body="Create a project to get started." />\n`,
+    description: 'Show a calm view when a list has nothing to show. Use this for first use, no results, and a blank canvas after an error.',
+    ...emptyStateGuide,
+    Demo: EmptyStateDemo,
+    wide: true,
+    code: `<EmptyState
+  icon={<InboxIcon />}
+  title="No projects"
+  body="Create a project to get started."
+  action={<Button>New project</Button>}
+/>
+<EmptyState variant="subtle" title="No messages" body="Mentions will show up here." />
+<EmptyState variant="outline" title="No messages" body="Mentions will show up here." />
+<EmptyState variant="ghost" title="No messages" body="Mentions will show up here." />
+<EmptyState variant="pill" title="No results" body="Try a different search." />
+<EmptyState tone="danger" title="Could not load" body="Check the connection, then try again." />
+`,
+    statesContent: <EmptyStateStates />,
     props: [
-      p('title', 'string', '—', 'Headline.'),
-      p('body', 'string', 'undefined', 'Supporting copy.'),
-      p('action', 'ReactNode', 'undefined', 'Optional CTA.'),
+      p('title', 'string', 'required', 'Headline. Also the accessible name of the region.'),
+      p('body', 'ReactNode', 'undefined', 'One supporting line under the title.'),
+      p('icon', 'ReactNode', 'undefined', 'A kit icon. Size follows the empty size.'),
+      p('action', 'ReactNode', 'undefined', 'Primary button. Keep the label a short verb.'),
+      p('secondary', 'ReactNode', 'undefined', 'A quieter second action under the primary.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the page. Subtle, outline, and pill sit in a card.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Padding, icon, and type. Small is for a table slot.'),
+      p("tone", "'default' | 'success' | 'warning' | 'danger'", "'default'", 'Icon color. Default is tertiary gray. Danger is a failure.'),
+      p("align", "'center' | 'start'", "'center'", 'Stack alignment. Start is for a table or sidebar slot.'),
+      p('onDark', 'boolean', 'false', 'Type and chrome for a black surface.'),
     ],
   },
   'loading-screen': {

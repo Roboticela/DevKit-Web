@@ -1,17 +1,12 @@
 'use client'
 
 import { useMemo } from 'react'
-import { createPortal } from 'react-dom'
 import {
-  DkTaskCompleteCheckmark,
   DkGlobeWorldEarth
 } from '@/icons'
 import { COUNTRIES, sortedCountriesForSearch } from '@/lib/countries'
-import { cn } from '@/lib/cn'
-import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
+import { Select, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
 import { CountryFlag } from './CountryFlag'
-import { SelectEmpty, SelectList, SelectMenu, SelectOption, SelectSearch } from './SelectMenu'
-import { SelectTrigger } from './SelectTrigger'
 
 type CountrySelectProps = {
   value: string | null
@@ -23,6 +18,8 @@ type CountrySelectProps = {
   allowClear?: boolean
   enabledIsos?: readonly string[]
   compact?: boolean
+  variant?: SelectTriggerVariant
+  size?: SelectTriggerSize
 }
 
 export function countryDisplayName(iso: string | null | undefined) {
@@ -41,129 +38,51 @@ export function CountrySelect({
   allowClear = true,
   enabledIsos,
   compact = false,
+  variant,
+  size,
 }: CountrySelectProps) {
-  const {
-    open,
-    setOpen,
-    query,
-    setQuery,
-    menuStyle,
-    openUp,
-    rootRef,
-    triggerRef,
-    menuRef,
-    searchRef,
-    listId,
-    close,
-  } = useAnchoredMenu([], { matchWidth: true })
-  const selected = value ? (COUNTRIES.find((country) => country.iso === value) ?? null) : null
-  const countries = useMemo(() => sortedCountriesForSearch(query), [query])
+  const flag = compact ? 16 : 18
   const enabledSet = useMemo(
     () => (enabledIsos ? new Set(enabledIsos.map((iso) => iso.toUpperCase())) : null),
     [enabledIsos],
   )
   const isEnabled = (iso: string) => !enabledSet || enabledSet.has(iso.toUpperCase())
 
-  return (
-    <div className={cn('relative w-full font-sans', className)} ref={rootRef}>
-      <SelectTrigger
-        ref={triggerRef}
-        open={open}
-        size={compact ? 'sm' : 'md'}
-        leading={
-          selected ? (
-            <CountryFlag iso={selected.iso} size={compact ? 16 : 18} />
-          ) : (
-            <DkGlobeWorldEarth size={compact ? 16 : 18} strokeWidth={1.75} absoluteStrokeWidth />
-          )
+  const options = useMemo(
+    () =>
+      sortedCountriesForSearch('').map((country) => {
+        const available = isEnabled(country.iso)
+        return {
+          value: country.iso,
+          label: country.name,
+          icon: <CountryFlag iso={country.iso} size={compact ? 16 : 20} />,
+          leadingFit: 'flag' as const,
+          meta: available ? country.iso : 'Coming soon',
+          keywords: country.dial,
+          disabled: !available,
         }
-        placeholder={!selected}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={listId}
-        aria-label={label}
-        disabled={disabled}
-        onClick={() => setOpen((current) => !current)}
-      >
-        {selected ? selected.name : placeholder}
-      </SelectTrigger>
+      }),
+    [compact, enabledSet],
+  )
 
-      {open
-        ? createPortal(
-            <SelectMenu
-              id={listId}
-              label={label}
-              openUp={openUp}
-              style={menuStyle}
-              menuRef={menuRef}
-            >
-              <SelectSearch
-                searchRef={searchRef}
-                value={query}
-                onChange={setQuery}
-                placeholder="Search countries"
-              />
-              <SelectList>
-                {allowClear ? (
-                  <SelectOption
-                    selected={!selected}
-                    leading={<DkGlobeWorldEarth size={18} strokeWidth={1.75} absoluteStrokeWidth />}
-                    name="Not set"
-                    check={
-                      !selected ? (
-                        <DkTaskCompleteCheckmark
-                          className="shrink-0 text-brand-primary"
-                          size={16}
-                          strokeWidth={2.25}
-                          absoluteStrokeWidth
-                        />
-                      ) : null
-                    }
-                    onClick={() => {
-                      onChange(null)
-                      close()
-                    }}
-                  />
-                ) : null}
-                {countries.length === 0 ? (
-                  <SelectEmpty>No countries found</SelectEmpty>
-                ) : (
-                  countries.map((item) => {
-                    const isSelected = item.iso === value
-                    const available = isEnabled(item.iso)
-                    return (
-                      <SelectOption
-                        key={item.iso}
-                        selected={isSelected}
-                        unavailable={!available}
-                        leading={<CountryFlag iso={item.iso} size={20} />}
-                        leadingFit="flag"
-                        name={item.name}
-                        meta={available ? item.iso : 'Coming soon'}
-                        check={
-                          isSelected ? (
-                            <DkTaskCompleteCheckmark
-                              className="shrink-0 text-brand-primary"
-                              size={16}
-                              strokeWidth={2.25}
-                              absoluteStrokeWidth
-                            />
-                          ) : null
-                        }
-                        onClick={() => {
-                          if (!available) return
-                          onChange(item.iso)
-                          close()
-                        }}
-                      />
-                    )
-                  })
-                )}
-              </SelectList>
-            </SelectMenu>,
-            document.body,
-          )
-        : null}
-    </div>
+  return (
+    <Select
+      value={value ?? ''}
+      onChange={(next) => onChange(next || null)}
+      options={options}
+      searchable
+      searchPlaceholder="Search countries"
+      placeholder={placeholder}
+      ariaLabel={label}
+      icon={<DkGlobeWorldEarth size={flag} strokeWidth={1.75} absoluteStrokeWidth />}
+      allowClear={allowClear}
+      clearLabel="Not set"
+      emptyMessage="No countries found"
+      disabled={disabled}
+      compact={compact}
+      variant={variant}
+      size={size}
+      className={className}
+    />
   )
 }

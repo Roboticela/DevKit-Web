@@ -1,27 +1,27 @@
 'use client'
 
-/* eslint-disable react-hooks/set-state-in-effect */
-
-import {
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-  type CSSProperties,
-} from 'react'
+import { useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import {
   DkCalendarDateSchedule,
-  DkChevronCaretDown,
+  DkCalendarDateScheduleRange,
   DkChevronCaretLeft,
-  DkChevronCaretRight
+  DkChevronCaretRight,
 } from '@/icons'
 import { cn } from '@/lib/cn'
-import { EASE, FIELD_SURFACE, FOCUS_VISIBLE_RING, OPEN_RING } from '@/lib/styles'
+import { EASE } from '@/lib/styles'
+import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
 import { Button } from './Button'
 import { IconButton } from './IconButton'
+import { SelectMenu } from './SelectMenu'
+import {
+  SELECT_SIZES,
+  SELECT_VARIANTS,
+  SelectTrigger,
+  type SelectTriggerSize,
+  type SelectTriggerVariant,
+} from './SelectTrigger'
+import { Caption, Label } from './Text'
 
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'] as const
 const MONTHS_SHORT = [
@@ -32,8 +32,20 @@ const MONTHS_LONG = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ] as const
 
+const GLYPH: Record<SelectTriggerSize, { size: number; strokeWidth: number; absoluteStrokeWidth: true }> = {
+  sm: { size: 16, strokeWidth: 1.75, absoluteStrokeWidth: true },
+  md: { size: 18, strokeWidth: 1.75, absoluteStrokeWidth: true },
+  lg: { size: 20, strokeWidth: 1.75, absoluteStrokeWidth: true },
+}
+
 export type DateValue = string | null
 export type DateRange = { start: DateValue; end: DateValue }
+export type DatePickerVariant = SelectTriggerVariant
+export type DatePickerSize = SelectTriggerSize
+export type DatePickerPreview = 'hover' | 'open'
+
+export const DATE_PICKER_VARIANTS: DatePickerVariant[] = SELECT_VARIANTS
+export const DATE_PICKER_SIZES: DatePickerSize[] = SELECT_SIZES
 
 type SingleProps = {
   mode?: 'single'
@@ -59,6 +71,12 @@ type DatePickerProps = {
   max?: string
   className?: string
   triggerWidth?: number | string
+  variant?: DatePickerVariant
+  size?: DatePickerSize
+  compact?: boolean
+  invalid?: boolean
+  valid?: boolean
+  preview?: DatePickerPreview
 } & (SingleProps | RangeProps)
 
 function parseISODate(value: string | null | undefined): Date | null {
@@ -144,7 +162,7 @@ function isInRangeInclusive(date: Date, start: Date | null, end: Date | null) {
   return date >= a && date <= b
 }
 
-function DayButton({
+function DayCell({
   date,
   inMonth,
   disabledDay,
@@ -167,49 +185,74 @@ function DayButton({
   pulse: boolean
   onSelect: () => void
 }) {
-  const rangeBar = inRange
+  const todayMark = isToday && !isSelected
+  const rangeBar = inRange && !(rangeStartEdge && rangeEndEdge)
 
   return (
-    <button
-      type="button"
-      role="gridcell"
-      className={cn(
-        'relative inline-flex h-9 min-w-0 w-full cursor-pointer items-center justify-center border-0 p-0 font-sans text-sm font-normal text-text-primary',
-        'transition-colors duration-150',
-        EASE,
-        !rangeBar && 'rounded-full',
-        !inMonth && !rangeBar && 'text-text-tertiary opacity-40',
-        disabledDay && 'cursor-default text-text-tertiary',
-        disabledDay && !rangeBar && 'opacity-25',
-        rangeBar && 'bg-[var(--brand-primary-range)] text-text-primary',
-        rangeStartEdge && !rangeEndEdge && 'rounded-l-[18px]',
-        rangeEndEdge && !rangeStartEdge && 'rounded-r-[18px]',
-        rangeStartEdge && rangeEndEdge && 'rounded-[18px]',
-        inRange && !rangeStartEdge && !rangeEndEdge && 'rounded-none',
-      )}
-      disabled={disabledDay}
-      aria-selected={isSelected}
-      aria-label={date.toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })}
-      onClick={onSelect}
-    >
-      <span
+    <div className="relative flex items-center justify-center">
+      {rangeBar ? (
+        <span
+          aria-hidden="true"
+          className={cn(
+            'pointer-events-none absolute top-1/2 h-8 -translate-y-1/2 bg-brand-primary-range',
+            rangeStartEdge && 'right-0 left-1/2',
+            rangeEndEdge && 'left-0 right-1/2',
+            !rangeStartEdge && !rangeEndEdge && 'inset-x-0',
+          )}
+        />
+      ) : null}
+      <IconButton
+        label={date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        })}
+        size="sm"
+        variant={isSelected ? 'primary' : 'ghost'}
+        disabled={disabledDay}
+        role="gridcell"
+        aria-selected={isSelected || undefined}
         className={cn(
-          'relative z-[1] inline-flex size-9 items-center justify-center rounded-full',
-          !disabledDay && !isSelected && !rangeBar && 'hover:bg-bg-hover',
-          isToday && !isSelected && 'text-brand-primary shadow-[inset_0_0_0_1px_var(--brand-primary)]',
-          isSelected && 'bg-brand-primary font-medium text-white',
-          inRange && !isSelected && 'font-medium text-text-primary',
+          'relative z-[1] text-sm font-normal tabular-nums',
+          isSelected && 'font-medium',
+          !inMonth && !isSelected && 'text-text-tertiary opacity-40',
+          todayMark && 'font-medium text-brand-primary',
           pulse && 'animate-date-picker-select',
         )}
+        onClick={onSelect}
       >
         {date.getDate()}
-      </span>
-    </button>
+      </IconButton>
+    </div>
+  )
+}
+
+function NavLabel({
+  children,
+  onClick,
+}: {
+  children: string
+  onClick?: () => void
+}) {
+  if (!onClick) {
+    return (
+      <Label as="span" className="px-2 py-1 text-base font-semibold tracking-[-0.01em]">
+        {children}
+      </Label>
+    )
+  }
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      fullWidth={false}
+      className="h-8 px-2 font-semibold tracking-[-0.01em] text-text-primary hover:bg-bg-hover hover:text-text-primary"
+      onClick={onClick}
+    >
+      {children}
+    </Button>
   )
 }
 
@@ -221,16 +264,21 @@ export function DatePicker(props: DatePickerProps) {
     min = '1900-01-01',
     max,
     className = '',
-    triggerWidth = 240,
+    triggerWidth,
+    variant = 'outline',
+    compact = false,
+    invalid = false,
+    valid = false,
+    preview,
   } = props
 
+  const resolvedSize: DatePickerSize = props.size ?? (compact ? 'sm' : 'md')
   const isRange = props.mode === 'range'
   const selectedSingle = !isRange ? parseISODate(props.value) : null
   const rangeStart = isRange ? parseISODate(props.rangeValue.start) : null
   const minDate = parseISODate(min)
   const maxDate = parseISODate(max ?? toISODate(startOfDay(new Date())))
 
-  const [open, setOpen] = useState(false)
   const [view, setView] = useState<'calendar' | 'months' | 'years'>('calendar')
   const [viewMonth, setViewMonth] = useState(() =>
     clampMonth(selectedSingle || rangeStart || startOfDay(new Date()), minDate, maxDate),
@@ -240,91 +288,46 @@ export function DatePicker(props: DatePickerProps) {
   const [draftRange, setDraftRange] = useState<DateRange>(
     isRange ? props.rangeValue : { start: null, end: null },
   )
-  const [popoverStyle, setPopoverStyle] = useState<CSSProperties>({})
-  const [isMobile, setIsMobile] = useState(false)
 
-  const rootRef = useRef<HTMLDivElement>(null)
-  const triggerRef = useRef<HTMLButtonElement>(null)
-  const popoverRef = useRef<HTMLDivElement>(null)
-  const listId = useId()
+  const {
+    open,
+    setOpen,
+    menuStyle,
+    openUp,
+    rootRef,
+    triggerRef,
+    menuRef,
+    listId,
+    close,
+  } = useAnchoredMenu([view, fadeKey], {
+    minWidth: 320,
+    maxWidth: 360,
+    estimatedHeight: 380,
+    maxMenuHeight: 420,
+  })
+
   const today = startOfDay(new Date())
   const displayText = isRange
     ? formatRangeDisplay(props.rangeValue)
     : formatDisplayDate(props.value)
   const days = useMemo(() => buildCalendarDays(viewMonth), [viewMonth])
+  const CalendarIcon = isRange ? DkCalendarDateScheduleRange : DkCalendarDateSchedule
+  const mark = GLYPH[resolvedSize]
+  const name = label
 
-  useEffect(() => {
-    const media = window.matchMedia('(max-width: 734px)')
-    const sync = () => setIsMobile(media.matches)
-    sync()
-    media.addEventListener('change', sync)
-    return () => media.removeEventListener('change', sync)
-  }, [])
-
-  useLayoutEffect(() => {
-    if (!open || isMobile) {
-      setPopoverStyle({})
-      return
-    }
-    function place() {
-      const trigger = triggerRef.current
-      if (!trigger) return
-      const rect = trigger.getBoundingClientRect()
-      const width = 320
-      const gap = 8
-      const left = Math.min(Math.max(12, rect.left), window.innerWidth - width - 12)
-      let top = rect.bottom + gap
-      const estimatedHeight = 420
-      if (top + estimatedHeight > window.innerHeight - 12) {
-        top = Math.max(12, rect.top - estimatedHeight - gap)
-      }
-      setPopoverStyle({ position: 'fixed', top, left, right: 'auto', bottom: 'auto', width })
-    }
-    place()
-    window.addEventListener('resize', place)
-    window.addEventListener('scroll', place, true)
-    return () => {
-      window.removeEventListener('resize', place)
-      window.removeEventListener('scroll', place, true)
-    }
-  }, [open, isMobile, view])
-
-  useEffect(() => {
-    if (!open) return
-    const previous = document.body.style.overflow
-    if (isMobile) document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = previous
-    }
-  }, [open, isMobile])
-
-  useEffect(() => {
-    if (!open) return
+  function openCalendar() {
     const anchor = selectedSingle || rangeStart || parseISODate(draftRange.start) || today
     setViewMonth(clampMonth(anchor, minDate, maxDate))
     setView('calendar')
     if (isRange) setDraftRange(props.rangeValue)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open])
+    setOpen(true)
+  }
 
-  useEffect(() => {
-    if (!open) return
-    function onPointerDown(event: MouseEvent) {
-      const target = event.target as Node
-      if (rootRef.current?.contains(target)) return
-      if (popoverRef.current?.contains(target)) return
-      setOpen(false)
-    }
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setOpen(false)
-    }
-    document.addEventListener('mousedown', onPointerDown)
-    document.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown)
-      document.removeEventListener('keydown', onKeyDown)
-    }
-  }, [open])
+  function toggle() {
+    if (disabled) return
+    if (open) close()
+    else openCalendar()
+  }
 
   function crossfadeMonth(next: Date) {
     setViewMonth(clampMonth(next, minDate, maxDate))
@@ -355,7 +358,7 @@ export function DatePicker(props: DatePickerProps) {
     }
     if (!isRange) {
       props.onChange(iso)
-      setOpen(false)
+      close()
       return
     }
     const start = parseISODate(draftRange.start)
@@ -381,7 +384,7 @@ export function DatePicker(props: DatePickerProps) {
       return
     }
     props.onChange(iso)
-    setOpen(false)
+    close()
   }
 
   function clearSelection() {
@@ -396,7 +399,7 @@ export function DatePicker(props: DatePickerProps) {
   function commitRange() {
     if (!isRange) return
     props.onRangeChange(draftRange)
-    setOpen(false)
+    close()
   }
 
   const activeStart = isRange ? parseISODate(draftRange.start) : selectedSingle
@@ -425,309 +428,245 @@ export function DatePicker(props: DatePickerProps) {
         : !maxDate ||
           new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 1) <
             new Date(maxDate.getFullYear(), maxDate.getMonth(), 1)
+  const todayDisabled = isDisabledDate(today, minDate, maxDate)
+  const hasValue = isRange
+    ? Boolean(props.rangeValue.start || draftRange.start)
+    : Boolean(props.value)
 
-  const triggerStyle = {
-    '--date-picker-trigger-width':
-      typeof triggerWidth === 'number' ? `${triggerWidth}px` : triggerWidth,
-  } as CSSProperties
+  const triggerStyle = triggerWidth
+    ? ({
+        width: typeof triggerWidth === 'number' ? `${triggerWidth}px` : triggerWidth,
+        maxWidth: '100%',
+      } as const)
+    : undefined
 
   return (
     <div
       className={cn(
-        'relative w-full max-[734px]:w-full font-sans',
-        'w-[min(100%,var(--date-picker-trigger-width))]',
+        'flex w-full min-w-0 flex-col gap-1 font-sans',
+        compact && 'min-w-[7.5rem]',
         className,
       )}
       ref={rootRef}
       style={triggerStyle}
     >
-      <button
-        type="button"
-        className={cn(
-          'flex h-11 w-full cursor-pointer items-center gap-3 rounded-[12px] border px-4 text-left font-sans text-[15px] font-normal',
-          FIELD_SURFACE,
-          'transition-[border-color,box-shadow] duration-150',
-          EASE,
-          FOCUS_VISIBLE_RING,
-          open && OPEN_RING,
-          'disabled:cursor-not-allowed disabled:opacity-55',
-        )}
+      <SelectTrigger
         ref={triggerRef}
+        open={open}
+        variant={variant}
+        size={resolvedSize}
+        leading={<CalendarIcon {...mark} />}
+        placeholder={!displayText}
+        invalid={invalid}
+        valid={valid}
+        preview={preview}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={listId}
-        aria-label={label}
+        aria-label={name}
         disabled={disabled}
-        onClick={() => setOpen((current) => !current)}
+        onClick={toggle}
       >
-        <span className="inline-flex shrink-0 text-text-tertiary" aria-hidden="true">
-          <DkCalendarDateSchedule size={18} strokeWidth={1.75} absoluteStrokeWidth />
-        </span>
-        <span
-          className={cn(
-            'min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap',
-            !displayText && 'text-text-tertiary',
-          )}
-        >
-          {displayText || placeholder}
-        </span>
-        <span
-          className={cn(
-            'ml-auto inline-flex shrink-0 text-text-tertiary transition-transform duration-200',
-            EASE,
-            open && 'rotate-180',
-          )}
-          aria-hidden="true"
-        >
-          <DkChevronCaretDown size={14} strokeWidth={2} absoluteStrokeWidth />
-        </span>
-      </button>
+        {displayText || placeholder}
+      </SelectTrigger>
 
       {open
         ? createPortal(
-            <div className={cn('font-sans', isMobile && 'max-[734px]:block')}>
-              <button
-                type="button"
-                className={cn(
-                  'fixed inset-0 z-[45] hidden border-0 bg-black/40',
-                  isMobile && 'block animate-date-picker-scrim',
-                )}
-                aria-label="Close date picker"
-                onClick={() => setOpen(false)}
-              />
-              <div
-                className={cn(
-                  'z-50 w-80 origin-top-left rounded-2xl border border-border-default bg-bg-elevated p-5 text-text-primary dark:bg-bg-secondary',
-                  'animate-date-picker-in',
-                  isMobile &&
-                    'fixed right-0 bottom-0 left-0 w-full max-w-none origin-bottom rounded-t-[20px] rounded-b-none px-5 pt-3 pb-7 animate-date-picker-sheet',
-                )}
-                id={listId}
-                role="dialog"
-                aria-label={label}
-                ref={popoverRef}
-                style={isMobile ? undefined : popoverStyle}
-              >
-                <div
-                  className={cn(
-                    'mx-auto mt-1 mb-4 hidden h-1 w-9 rounded-[980px] bg-border-default',
-                    isMobile && 'block',
-                  )}
-                  aria-hidden="true"
-                />
+            <SelectMenu
+              id={listId}
+              label={name}
+              role="dialog"
+              openUp={openUp}
+              style={menuStyle}
+              menuRef={menuRef}
+              className="z-[400]"
+            >
+              <div className="flex items-center justify-between px-0.5">
+                <IconButton
+                  label={`Previous ${navLabel}`}
+                  size="sm"
+                  className="text-text-tertiary"
+                  disabled={!canPrev}
+                  onClick={() => shiftMonth(-1)}
+                >
+                  <DkChevronCaretLeft size={16} strokeWidth={2} absoluteStrokeWidth />
+                </IconButton>
 
-                <div className="mb-4 flex h-8 items-center justify-between">
-                  <IconButton
-                    label={`Previous ${navLabel}`}
-                    size="sm"
-                    className="text-text-tertiary"
-                    disabled={!canPrev}
-                    onClick={() => shiftMonth(-1)}
-                  >
-                    <DkChevronCaretLeft size={16} strokeWidth={2} absoluteStrokeWidth />
-                  </IconButton>
+                {view === 'calendar' ? (
+                  <div className="inline-flex min-w-0 items-center">
+                    <NavLabel onClick={() => setView('months')}>
+                      {MONTHS_LONG[viewMonth.getMonth()]}
+                    </NavLabel>
+                    <NavLabel onClick={() => setView('years')}>
+                      {String(viewMonth.getFullYear())}
+                    </NavLabel>
+                  </div>
+                ) : view === 'months' ? (
+                  <NavLabel onClick={() => setView('years')}>
+                    {String(viewMonth.getFullYear())}
+                  </NavLabel>
+                ) : (
+                  <NavLabel>
+                    {`${decadeStart}–${decadeStart + 11}`}
+                  </NavLabel>
+                )}
 
-                  {view === 'calendar' ? (
-                    <div className="inline-flex min-w-0 items-center gap-1.5">
-                      <button
-                        type="button"
-                        className="cursor-pointer rounded-lg border-0 bg-transparent px-2 py-1 font-sans text-base font-semibold tracking-[-0.01em] text-text-primary transition-colors duration-150 hover:bg-bg-hover"
-                        onClick={() => setView('months')}
-                      >
-                        {MONTHS_LONG[viewMonth.getMonth()]}
-                      </button>
-                      <button
-                        type="button"
-                        className="cursor-pointer rounded-lg border-0 bg-transparent px-2 py-1 font-sans text-base font-semibold tracking-[-0.01em] text-text-primary transition-colors duration-150 hover:bg-bg-hover"
-                        onClick={() => setView('years')}
-                      >
-                        {viewMonth.getFullYear()}
-                      </button>
+                <IconButton
+                  label={`Next ${navLabel}`}
+                  size="sm"
+                  className="text-text-tertiary"
+                  disabled={!canNext}
+                  onClick={() => shiftMonth(1)}
+                >
+                  <DkChevronCaretRight size={16} strokeWidth={2} absoluteStrokeWidth />
+                </IconButton>
+              </div>
+
+              <div className={cn('animate-date-picker-crossfade', EASE)} key={`${view}-${fadeKey}`}>
+                {view === 'calendar' ? (
+                  <>
+                    <div className="grid h-8 grid-cols-7 items-center" aria-hidden="true">
+                      {WEEKDAYS.map((day, index) => (
+                        <Caption
+                          key={`${day}-${index}`}
+                          as="span"
+                          align="center"
+                          className="font-medium"
+                        >
+                          {day}
+                        </Caption>
+                      ))}
                     </div>
-                  ) : view === 'months' ? (
-                    <button
-                      type="button"
-                      className="cursor-pointer rounded-lg border-0 bg-transparent px-2 py-1 font-sans text-base font-semibold tracking-[-0.01em] text-text-primary transition-colors duration-150 hover:bg-bg-hover"
-                      onClick={() => setView('years')}
-                    >
-                      {viewMonth.getFullYear()}
-                    </button>
-                  ) : (
-                    <span className="cursor-default rounded-lg px-2 py-1 font-sans text-base font-semibold tracking-[-0.01em] text-text-primary">
-                      {decadeStart}–{decadeStart + 11}
-                    </span>
-                  )}
-
-                  <IconButton
-                    label={`Next ${navLabel}`}
-                    size="sm"
-                    className="text-text-tertiary"
-                    disabled={!canNext}
-                    onClick={() => shiftMonth(1)}
-                  >
-                    <DkChevronCaretRight size={16} strokeWidth={2} absoluteStrokeWidth />
-                  </IconButton>
-                </div>
-
-                <div className="animate-date-picker-crossfade" key={`${view}-${fadeKey}`}>
-                  {view === 'calendar' ? (
-                    <>
-                      <div
-                        className="mb-1 grid h-8 grid-cols-7 items-center"
-                        aria-hidden="true"
-                      >
-                        {WEEKDAYS.map((day, index) => (
-                          <span
-                            key={`${day}-${index}`}
-                            className="text-center text-xs font-medium text-text-tertiary"
-                          >
-                            {day}
-                          </span>
-                        ))}
-                      </div>
-                      <div
-                        className="grid w-full grid-cols-7"
-                        role="grid"
-                        aria-label={`${MONTHS_LONG[viewMonth.getMonth()]} ${viewMonth.getFullYear()}`}
-                      >
-                        {days.map(({ date, inMonth }) => {
-                          const iso = toISODate(date)
-                          return (
-                            <DayButton
-                              key={iso}
-                              date={date}
-                              inMonth={inMonth}
-                              disabledDay={isDisabledDate(date, minDate, maxDate)}
-                              isToday={sameDay(date, today)}
-                              isSelected={
-                                (!isRange && selectedSingle && sameDay(date, selectedSingle)) ||
-                                (isRange &&
-                                  Boolean(
-                                    (activeStart && sameDay(date, activeStart)) ||
-                                      (activeEnd && sameDay(date, activeEnd)),
-                                  ))
-                              }
-                              inRange={
-                                isRange &&
-                                Boolean(activeStart && activeEnd) &&
-                                isInRangeInclusive(date, activeStart, activeEnd)
-                              }
-                              rangeStartEdge={Boolean(
-                                isRange &&
-                                  activeStart &&
-                                  activeEnd &&
-                                  sameDay(date, activeStart),
-                              )}
-                              rangeEndEdge={Boolean(
-                                isRange &&
-                                  activeStart &&
-                                  activeEnd &&
-                                  sameDay(date, activeEnd),
-                              )}
-                              pulse={pulseDay === iso}
-                              onSelect={() => selectDay(date)}
-                            />
-                          )
-                        })}
-                      </div>
-                    </>
-                  ) : (
                     <div
-                      className="grid min-h-[248px] grid-cols-3 content-center gap-2"
-                      role="listbox"
-                      aria-label={view === 'months' ? 'Choose month' : 'Choose year'}
+                      className="grid w-full grid-cols-7"
+                      role="grid"
+                      aria-label={`${MONTHS_LONG[viewMonth.getMonth()]} ${viewMonth.getFullYear()}`}
                     >
-                      {(view === 'months' ? MONTHS_SHORT : years).map((item, index) => {
-                        const selected =
-                          view === 'months'
-                            ? index === viewMonth.getMonth()
-                            : item === viewMonth.getFullYear()
-                        const monthStart =
-                          view === 'months'
-                            ? new Date(viewMonth.getFullYear(), index, 1, 12)
-                            : null
-                        const monthEnd =
-                          view === 'months'
-                            ? new Date(viewMonth.getFullYear(), index + 1, 0, 12)
-                            : null
-                        const itemDisabled =
-                          view === 'months'
-                            ? Boolean(
-                                (minDate && monthEnd && monthEnd < startOfDay(minDate)) ||
-                                  (maxDate && monthStart && monthStart > startOfDay(maxDate)),
-                              )
-                            : Number(item) < minYear || Number(item) > maxYear
-
-                        return (
-                          <button
-                            key={String(item)}
-                            type="button"
-                            role="option"
-                            aria-selected={selected}
-                            className={cn(
-                              'h-11 cursor-pointer rounded-[12px] border-0 bg-transparent font-sans text-[15px] font-normal text-text-primary',
-                              'transition-colors duration-150',
-                              EASE,
-                              'hover:bg-bg-hover disabled:cursor-default disabled:opacity-25',
-                              selected && 'bg-brand-primary font-medium text-white hover:bg-brand-primary',
-                            )}
-                            disabled={itemDisabled}
-                            onClick={() => {
-                              if (view === 'months') {
-                                crossfadeMonth(
-                                  new Date(viewMonth.getFullYear(), index, 1, 12),
-                                )
-                                setView('calendar')
-                              } else {
-                                crossfadeMonth(
-                                  new Date(Number(item), viewMonth.getMonth(), 1, 12),
-                                )
-                                setView('months')
-                              }
-                            }}
-                          >
-                            {item}
-                          </button>
-                        )
-                      })}
+                      {Array.from({ length: 6 }, (_, week) => (
+                        <div key={week} className="contents" role="row">
+                          {days.slice(week * 7, week * 7 + 7).map(({ date, inMonth }) => {
+                            const iso = toISODate(date)
+                            return (
+                              <DayCell
+                                key={iso}
+                                date={date}
+                                inMonth={inMonth}
+                                disabledDay={isDisabledDate(date, minDate, maxDate)}
+                                isToday={sameDay(date, today)}
+                                isSelected={Boolean(
+                                  (!isRange && selectedSingle && sameDay(date, selectedSingle)) ||
+                                    (isRange &&
+                                      ((activeStart && sameDay(date, activeStart)) ||
+                                        (activeEnd && sameDay(date, activeEnd)))),
+                                )}
+                                inRange={
+                                  isRange &&
+                                  Boolean(activeStart && activeEnd) &&
+                                  isInRangeInclusive(date, activeStart, activeEnd)
+                                }
+                                rangeStartEdge={Boolean(
+                                  isRange && activeStart && activeEnd && sameDay(date, activeStart),
+                                )}
+                                rangeEndEdge={Boolean(
+                                  isRange && activeStart && activeEnd && sameDay(date, activeEnd),
+                                )}
+                                pulse={pulseDay === iso}
+                                onSelect={() => selectDay(date)}
+                              />
+                            )
+                          })}
+                        </div>
+                      ))}
                     </div>
-                  )}
-                </div>
+                  </>
+                ) : (
+                  <div
+                    className="grid min-h-[224px] grid-cols-3 content-center gap-1"
+                    role="listbox"
+                    aria-label={view === 'months' ? 'Choose month' : 'Choose year'}
+                  >
+                    {(view === 'months' ? MONTHS_SHORT : years).map((item, index) => {
+                      const selected =
+                        view === 'months'
+                          ? index === viewMonth.getMonth()
+                          : item === viewMonth.getFullYear()
+                      const monthStart =
+                        view === 'months' ? new Date(viewMonth.getFullYear(), index, 1, 12) : null
+                      const monthEnd =
+                        view === 'months' ? new Date(viewMonth.getFullYear(), index + 1, 0, 12) : null
+                      const itemDisabled =
+                        view === 'months'
+                          ? Boolean(
+                              (minDate && monthEnd && monthEnd < startOfDay(minDate)) ||
+                                (maxDate && monthStart && monthStart > startOfDay(maxDate)),
+                            )
+                          : Number(item) < minYear || Number(item) > maxYear
 
-                <div className="mt-5 flex items-center justify-between gap-3 border-t border-border-default pt-4">
+                      return (
+                        <Button
+                          key={String(item)}
+                          variant={selected ? 'primary' : 'ghost'}
+                          size="sm"
+                          role="option"
+                          aria-selected={selected}
+                          className={cn(
+                            'h-11 rounded-[12px]',
+                            !selected && 'text-text-primary hover:bg-bg-hover hover:text-text-primary',
+                          )}
+                          disabled={itemDisabled}
+                          onClick={() => {
+                            if (view === 'months') {
+                              crossfadeMonth(new Date(viewMonth.getFullYear(), index, 1, 12))
+                              setView('calendar')
+                            } else {
+                              crossfadeMonth(new Date(Number(item), viewMonth.getMonth(), 1, 12))
+                              setView('months')
+                            }
+                          }}
+                        >
+                          {item}
+                        </Button>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-2 flex items-center justify-between gap-3 border-t border-border-default pt-2.5">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  fullWidth={false}
+                  className="h-auto px-1.5 text-brand-primary hover:underline"
+                  disabled={todayDisabled}
+                  onClick={selectToday}
+                >
+                  Today
+                </Button>
+                <div className="ml-auto inline-flex items-center gap-1">
                   <Button
                     variant="ghost"
                     size="sm"
                     fullWidth={false}
-                    className="h-auto px-0 text-brand-primary hover:underline"
-                    onClick={selectToday}
+                    className="h-auto px-1.5 hover:underline"
+                    disabled={!hasValue}
+                    onClick={clearSelection}
                   >
-                    Today
+                    Clear
                   </Button>
-                  <div className="ml-auto inline-flex items-center gap-3">
+                  {isRange ? (
                     <Button
-                      variant="ghost"
                       size="sm"
                       fullWidth={false}
-                      className="h-auto px-0 hover:underline"
-                      onClick={clearSelection}
+                      onClick={commitRange}
+                      disabled={!draftRange.start}
                     >
-                      Clear
+                      Done
                     </Button>
-                    {isRange ? (
-                      <Button
-                        size="sm"
-                        fullWidth={false}
-                        onClick={commitRange}
-                        disabled={!draftRange.start}
-                      >
-                        Done
-                      </Button>
-                    ) : null}
-                  </div>
+                  ) : null}
                 </div>
               </div>
-            </div>,
+            </SelectMenu>,
             document.body,
           )
         : null}

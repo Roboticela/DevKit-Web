@@ -16,6 +16,7 @@ type PlaceOptions = {
   maxWidth?: number
   matchWidth?: boolean
   estimatedHeight?: number
+  maxMenuHeight?: number
 }
 
 export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}) {
@@ -25,6 +26,7 @@ export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}
     maxWidth = 360,
     matchWidth = false,
     estimatedHeight = 360,
+    maxMenuHeight = 360,
   } = options
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -72,7 +74,7 @@ export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}
           ...box,
           bottom: window.innerHeight - rect.top + gap,
           top: 'auto',
-          maxHeight: Math.min(360, Math.max(220, spaceAbove - 8)),
+          maxHeight: Math.min(maxMenuHeight, Math.max(220, spaceAbove - 8)),
         })
       } else {
         setOpenUp(false)
@@ -80,7 +82,7 @@ export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}
           ...box,
           top: rect.bottom + gap,
           bottom: 'auto',
-          maxHeight: Math.min(360, Math.max(220, spaceBelow - 8)),
+          maxHeight: Math.min(maxMenuHeight, Math.max(220, spaceBelow - 8)),
         })
       }
     }
@@ -93,7 +95,7 @@ export function useAnchoredMenu(deps: unknown[] = [], options: PlaceOptions = {}
       window.removeEventListener('scroll', place, true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, estimatedHeight, from, matchWidth, maxWidth, minWidth, ...deps])
+  }, [open, estimatedHeight, from, matchWidth, maxWidth, maxMenuHeight, minWidth, ...deps])
 
   useEffect(() => {
     if (!open) return

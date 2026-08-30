@@ -196,12 +196,12 @@ html[data-theme="dark"] {
 
   --animate-btn-spin: btn-spin 900ms linear infinite;
   --animate-otp-shake: otp-shake 300ms var(--ease-apple);
-  --animate-otp-pulse: otp-pulse 150ms var(--ease-apple);
+  --animate-progress-indeterminate: progress-indeterminate 1.4s var(--ease-apple) infinite;
+  --animate-skeleton-shimmer: skeleton-shimmer 1.4s var(--ease-apple) infinite;
+  --animate-skeleton-pulse: skeleton-pulse 1.6s var(--ease-apple) infinite;
   --animate-select-in: select-in 180ms var(--ease-apple) both;
-  --animate-date-picker-in: date-picker-in 200ms var(--ease-apple) both;
   --animate-date-picker-crossfade: date-picker-crossfade 150ms var(--ease-apple) both;
   --animate-date-picker-select: date-picker-select 200ms var(--ease-apple);
-  --animate-date-picker-scrim: date-picker-scrim-in 200ms var(--ease-apple) both;
   --animate-auth-panel-in: auth-panel-in 600ms var(--ease-apple) both;
   --animate-loading-in: loading-in 400ms var(--ease-apple) both;
   --animate-docs-header-in: docs-header-in 300ms var(--ease-apple) both;
@@ -245,18 +245,31 @@ html[data-theme="dark"] {
   }
 }
 
-@keyframes select-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-120%);
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+  100% {
+    transform: translateX(420%);
   }
 }
 
-@keyframes date-picker-in {
+@keyframes skeleton-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes select-in {
   from {
     opacity: 0;
     transform: scale(0.96);
@@ -285,15 +298,6 @@ html[data-theme="dark"] {
   }
   100% {
     transform: scale(1);
-  }
-}
-
-@keyframes date-picker-scrim-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 
@@ -411,58 +415,6 @@ body {
   color: rgba(0, 0, 0, 0.55) !important;
 }
 
-.dk-range {
-  --slider-track: color-mix(in srgb, var(--brand-primary) 28%, var(--bg-tertiary));
-  --slider-thumb: var(--brand-primary);
-  width: 100%;
-  height: 28px;
-  margin: 0;
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  accent-color: var(--brand-primary);
-}
-
-.dk-range--dark {
-  --slider-track: color-mix(in srgb, var(--brand-primary) 28%, #3a3a3c);
-}
-
-.dk-range::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 980px;
-  background: var(--slider-track);
-}
-
-.dk-range::-webkit-slider-thumb {
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  margin-top: -9px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--slider-thumb);
-}
-
-.dk-range::-moz-range-track {
-  height: 4px;
-  border: 0;
-  border-radius: 980px;
-  background: var(--slider-track);
-}
-
-.dk-range::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--slider-thumb);
-}
-
-.dk-range:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
 .dk-field:-webkit-autofill,
 .dk-field:-webkit-autofill:hover,
 .dk-field:-webkit-autofill:focus,
@@ -508,12 +460,12 @@ body {
   .animate-btn-spin,
   .animate-otp-shake,
   .animate-otp-pulse,
+  .animate-progress-indeterminate,
+  .animate-skeleton-shimmer,
+  .animate-skeleton-pulse,
   .animate-select-in,
-  .animate-date-picker-in,
   .animate-date-picker-crossfade,
   .animate-date-picker-select,
-  .animate-date-picker-scrim,
-  .animate-date-picker-sheet,
   .animate-docs-header-in,
   .animate-docs-demo-in,
   .animate-docs-crossfade,

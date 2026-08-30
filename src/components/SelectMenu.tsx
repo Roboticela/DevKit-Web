@@ -15,6 +15,7 @@ export function SelectMenu({
   menuRef,
   children,
   className,
+  role = 'listbox',
 }: {
   id: string
   label: string
@@ -23,12 +24,14 @@ export function SelectMenu({
   menuRef: RefObject<HTMLDivElement | null>
   children: ReactNode
   className?: string
+  role?: 'listbox' | 'dialog'
 }) {
   return (
     <div
       className={cn(MENU_SURFACE, openUp && 'origin-bottom', className)}
       id={id}
-      role="listbox"
+      role={role}
+      aria-modal={role === 'dialog' || undefined}
       aria-label={label}
       ref={menuRef}
       style={style}

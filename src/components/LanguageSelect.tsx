@@ -1,20 +1,15 @@
 'use client'
 
 import { useMemo } from 'react'
-import { createPortal } from 'react-dom'
 import {
-  DkTaskCompleteCheckmark,
   DkTranslateLanguagesWorld
 } from '@/icons'
 import {
   AVAILABLE_LANGUAGE_IDS,
   languageDisplayName,
-  sortedLanguagesForSearch,
+  LANGUAGES,
 } from '@/lib/languages'
-import { cn } from '@/lib/cn'
-import { useAnchoredMenu } from '@/lib/useAnchoredMenu'
-import { SelectEmpty, SelectList, SelectMenu, SelectOption, SelectSearch } from './SelectMenu'
-import { SelectTrigger } from './SelectTrigger'
+import { Select, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
 
 export { languageDisplayName }
 
@@ -27,6 +22,8 @@ type LanguageSelectProps = {
   className?: string
   enabledIds?: readonly string[]
   compact?: boolean
+  variant?: SelectTriggerVariant
+  size?: SelectTriggerSize
 }
 
 export function LanguageSelect({
@@ -38,103 +35,51 @@ export function LanguageSelect({
   className = '',
   enabledIds = AVAILABLE_LANGUAGE_IDS,
   compact = false,
+  variant,
+  size,
 }: LanguageSelectProps) {
-  const {
-    open,
-    setOpen,
-    query,
-    setQuery,
-    menuStyle,
-    openUp,
-    rootRef,
-    triggerRef,
-    menuRef,
-    searchRef,
-    listId,
-    close,
-  } = useAnchoredMenu([], { matchWidth: true })
-  const languages = useMemo(() => sortedLanguagesForSearch(query), [query])
-  const selectedLabel = value ? languageDisplayName(value) : null
+  const mark = compact ? 16 : 18
   const enabledSet = useMemo(
     () => (enabledIds ? new Set(enabledIds) : null),
     [enabledIds],
   )
-  const isEnabled = (id: string) => !enabledSet || enabledSet.has(id)
+
+  const options = useMemo(() => {
+    const icon = <DkTranslateLanguagesWorld size={mark} strokeWidth={1.75} absoluteStrokeWidth />
+    const isEnabled = (id: string) => !enabledSet || enabledSet.has(id)
+    return [...LANGUAGES]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((language) => {
+        const available = isEnabled(language.id)
+        return {
+          value: language.id,
+          label: language.name,
+          icon,
+          meta: available ? language.id : 'Coming soon',
+          keywords: language.native,
+          disabled: !available,
+        }
+      })
+  }, [enabledSet, mark])
 
   return (
-    <div className={cn('relative w-full font-sans', className)} ref={rootRef}>
-      <SelectTrigger
-        ref={triggerRef}
-        open={open}
-        size={compact ? 'sm' : 'md'}
-        leading={<DkTranslateLanguagesWorld size={compact ? 16 : 18} strokeWidth={1.75} absoluteStrokeWidth />}
-        placeholder={!selectedLabel}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={listId}
-        aria-label={label}
-        disabled={disabled}
-        onClick={() => setOpen((current) => !current)}
-      >
-        {selectedLabel ?? placeholder}
-      </SelectTrigger>
-
-      {open
-        ? createPortal(
-            <SelectMenu
-              id={listId}
-              label={label}
-              openUp={openUp}
-              style={menuStyle}
-              menuRef={menuRef}
-            >
-              <SelectSearch
-                searchRef={searchRef}
-                value={query}
-                onChange={setQuery}
-                placeholder="Search languages"
-              />
-              <SelectList>
-                {languages.length === 0 ? (
-                  <SelectEmpty>No languages found</SelectEmpty>
-                ) : (
-                  languages.map((item) => {
-                    const isSelected = item.id === value
-                    const available = isEnabled(item.id)
-                    return (
-                      <SelectOption
-                        key={item.id}
-                        selected={isSelected}
-                        unavailable={!available}
-                        leading={
-                          <DkTranslateLanguagesWorld size={18} strokeWidth={1.75} absoluteStrokeWidth />
-                        }
-                        name={item.name}
-                        meta={available ? item.id : 'Coming soon'}
-                        check={
-                          isSelected ? (
-                            <DkTaskCompleteCheckmark
-                              className="shrink-0 text-brand-primary"
-                              size={16}
-                              strokeWidth={2.25}
-                              absoluteStrokeWidth
-                            />
-                          ) : null
-                        }
-                        onClick={() => {
-                          if (!available) return
-                          onChange(item.id)
-                          close()
-                        }}
-                      />
-                    )
-                  })
-                )}
-              </SelectList>
-            </SelectMenu>,
-            document.body,
-          )
-        : null}
-    </div>
+    <Select
+      value={value ?? ''}
+      onChange={(next) => {
+        if (next) onChange(next)
+      }}
+      options={options}
+      searchable
+      searchPlaceholder="Search languages"
+      placeholder={placeholder}
+      ariaLabel={label}
+      icon={<DkTranslateLanguagesWorld size={mark} strokeWidth={1.75} absoluteStrokeWidth />}
+      emptyMessage="No languages found"
+      disabled={disabled}
+      compact={compact}
+      variant={variant}
+      size={size}
+      className={className}
+    />
   )
 }

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import {
-  DkBarChartAnalyticsColumns,
+  DkChartColumnIncreasing,
   DkNotificationBellAlert,
   DkKanbanFolderBoard,
   DkMessageInboxTray,
@@ -67,7 +67,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
       { id: 'overview', label: 'Overview', icon: <DkAppDashboardLayoutTiles {...ICON} /> },
       { id: 'projects', label: 'Projects', icon: <DkKanbanFolderBoard {...ICON} /> },
       { id: 'customers', label: 'Customers', icon: <DkPeopleUsersGroup {...ICON} /> },
-      { id: 'analytics', label: 'Analytics', icon: <DkBarChartAnalyticsColumns {...ICON} /> },
+      { id: 'analytics', label: 'Analytics', icon: <DkChartColumnIncreasing {...ICON} /> },
       { id: 'inbox', label: 'Inbox', icon: <DkMessageInboxTray {...ICON} />, badge: 3 },
     ].filter((item) => !query || item.label.toLowerCase().includes(query))
 
@@ -177,6 +177,7 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
               rowKey={(row) => row.id}
               empty={
                 <EmptyState
+                  size="sm"
                   title="No projects"
                   body="Nothing matches this filter."
                 />
@@ -236,12 +237,11 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
               <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }, (_, index) => (
                   <div key={index} className="flex items-center gap-4">
-                    <Skeleton className="size-11 rounded-full" />
+                    <Skeleton shape="circle" size="lg" />
                     <div className="min-w-0 flex-1">
-                      <Skeleton className="h-3.5 w-[40%] max-w-[220px]" />
-                      <Skeleton className="mt-2 h-3 w-[28%] max-w-[160px]" />
+                      <Skeleton lines={2} />
                     </div>
-                    <Skeleton className="h-6 w-16 rounded-[980px]" />
+                    <Skeleton variant="pill" className="h-6 w-16" />
                   </div>
                 ))}
               </div>
@@ -254,8 +254,8 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
             <PageHeader title="Analytics" description="Capacity and conversion for this billing period." />
             <div className="flex flex-col gap-6 rounded-[18px] border border-border-default bg-bg-elevated p-6 min-[735px]:p-8 dark:bg-bg-secondary">
               <Progress label="Seat usage" value={72} />
-              <Progress label="API quota" value={41} />
-              <Progress label="Storage" value={88} />
+              <Progress variant="subtle" label="API quota" value={41} />
+              <Progress variant="pill" tone="warning" label="Storage" value={88} />
             </div>
           </div>
         ) : null}
