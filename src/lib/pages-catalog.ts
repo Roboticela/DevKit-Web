@@ -296,3 +296,40 @@ export const ANOTHER_DEVICE_STATES = [
 ] as const
 
 export type AnotherDevicePreviewState = (typeof ANOTHER_DEVICE_STATES)[number]['id']
+
+export const LINK_EXPIRED_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const LINK_EXPIRED_STATES = [
+  { id: 'default', label: 'Sign in flow' },
+  { id: 'reset-password', label: 'Password reset' },
+  { id: 'settings', label: 'Settings change' },
+] as const
+
+export type LinkExpiredPreviewState = (typeof LINK_EXPIRED_STATES)[number]['id']
+
+export const SETUP_TWO_FACTOR_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const SETUP_TWO_FACTOR_STATES = [
+  { id: 'default', label: 'Scan QR code' },
+  { id: 'loading', label: 'Loading setup' },
+  { id: 'error', label: 'Invalid code' },
+  { id: 'saving', label: 'Saving' },
+  { id: 'codes', label: 'Recovery codes' },
+  { id: 'success', label: 'Setup complete' },
+] as const
+
+export type SetupTwoFactorPreviewState = (typeof SETUP_TWO_FACTOR_STATES)[number]['id']

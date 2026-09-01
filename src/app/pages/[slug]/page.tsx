@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
+import { SetupTwoFactorDocs } from '@/components/SetupTwoFactorDocs'
+import { LinkExpiredDocs } from '@/components/LinkExpiredDocs'
 import { AnotherDeviceDocs } from '@/components/AnotherDeviceDocs'
 import { AuthenticatorCodeDocs } from '@/components/AuthenticatorCodeDocs'
 import { RecoveryCodeDocs } from '@/components/RecoveryCodeDocs'
@@ -52,6 +54,8 @@ export default async function PageDocPage({
   if (slug === 'authenticator-code') return <AuthenticatorCodeDocs />
   if (slug === 'recovery-code') return <RecoveryCodeDocs />
   if (slug === 'another-device') return <AnotherDeviceDocs />
+  if (slug === 'link-expired') return <LinkExpiredDocs />
+  if (slug === 'setup-2fa') return <SetupTwoFactorDocs />
 
   const { prev, next } = adjacentDocs(PAGES_ITEMS, slug)
 
