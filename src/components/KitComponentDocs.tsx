@@ -8958,11 +8958,11 @@ function MethodDemo() {
           icon={sample.icon}
           title={sample.title}
           subtitle={sample.subtitle}
-          disabled={sample.disabled}
-          hint={sample.hint}
-          selected={!sample.disabled && value === sample.key}
+          disabled={'disabled' in sample ? sample.disabled : false}
+          hint={'hint' in sample ? sample.hint : undefined}
+          selected={!('disabled' in sample && sample.disabled) && value === sample.key}
           onClick={() => {
-            if (sample.disabled) return
+            if ('disabled' in sample && sample.disabled) return
             setValue(sample.key)
           }}
         />

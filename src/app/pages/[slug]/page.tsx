@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
+import { AnotherDeviceDocs } from '@/components/AnotherDeviceDocs'
+import { AuthenticatorCodeDocs } from '@/components/AuthenticatorCodeDocs'
+import { RecoveryCodeDocs } from '@/components/RecoveryCodeDocs'
 import { ChooseVerificationMethodDocs } from '@/components/ChooseVerificationMethodDocs'
 import { VerificationCodeDocs } from '@/components/VerificationCodeDocs'
 import { CreateAccountDocs } from '@/components/CreateAccountDocs'
@@ -46,6 +49,9 @@ export default async function PageDocPage({
   if (slug === 'reset-password') return <ResetPasswordDocs />
   if (slug === 'choose-verification-method') return <ChooseVerificationMethodDocs />
   if (slug === 'verification-code') return <VerificationCodeDocs />
+  if (slug === 'authenticator-code') return <AuthenticatorCodeDocs />
+  if (slug === 'recovery-code') return <RecoveryCodeDocs />
+  if (slug === 'another-device') return <AnotherDeviceDocs />
 
   const { prev, next } = adjacentDocs(PAGES_ITEMS, slug)
 

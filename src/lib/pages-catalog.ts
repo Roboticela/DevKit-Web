@@ -240,3 +240,59 @@ export const VERIFICATION_CODE_STATES = [
 ] as const
 
 export type VerificationCodePreviewState = (typeof VERIFICATION_CODE_STATES)[number]['id']
+
+export const AUTHENTICATOR_CODE_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const AUTHENTICATOR_CODE_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'error', label: 'Validation Error' },
+  { id: 'loading', label: 'Loading (verifying)' },
+  { id: 'no-email', label: 'No email' },
+] as const
+
+export type AuthenticatorCodePreviewState = (typeof AUTHENTICATOR_CODE_STATES)[number]['id']
+
+export const RECOVERY_CODE_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const RECOVERY_CODE_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'error', label: 'Validation Error' },
+  { id: 'loading', label: 'Loading (verifying)' },
+  { id: 'no-email', label: 'No email' },
+] as const
+
+export type RecoveryCodePreviewState = (typeof RECOVERY_CODE_STATES)[number]['id']
+
+export const ANOTHER_DEVICE_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const ANOTHER_DEVICE_STATES = [
+  { id: 'default', label: 'Waiting for approval' },
+  { id: 'completing', label: 'Approved (finishing)' },
+  { id: 'declined', label: 'Declined' },
+  { id: 'expired', label: 'Expired' },
+  { id: 'error', label: 'Error' },
+  { id: 'no-email', label: 'No email' },
+] as const
+
+export type AnotherDevicePreviewState = (typeof ANOTHER_DEVICE_STATES)[number]['id']

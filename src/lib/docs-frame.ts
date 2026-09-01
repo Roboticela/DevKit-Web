@@ -16,10 +16,13 @@ import {
   type DocsTocItem,
 } from './docs-catalog'
 import {
+  ANOTHER_DEVICE_TOC,
+  AUTHENTICATOR_CODE_TOC,
   CHOOSE_VERIFICATION_METHOD_TOC,
   CREATE_ACCOUNT_TOC,
   FORGOT_PASSWORD_TOC,
   PAGES_NAV,
+  RECOVERY_CODE_TOC,
   RESET_PASSWORD_TOC,
   SIGN_IN_TOC,
   VERIFICATION_CODE_TOC,
@@ -79,7 +82,13 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
                   ? CHOOSE_VERIFICATION_METHOD_TOC
                   : slug === 'verification-code'
                     ? VERIFICATION_CODE_TOC
-                    : [{ id: 'overview', label: 'Overview' }],
+                    : slug === 'authenticator-code'
+                      ? AUTHENTICATOR_CODE_TOC
+                      : slug === 'recovery-code'
+                        ? RECOVERY_CODE_TOC
+                        : slug === 'another-device'
+                          ? ANOTHER_DEVICE_TOC
+                          : [{ id: 'overview', label: 'Overview' }],
       activeTab: 'Pages',
       sections: PAGES_NAV,
       contentWidth: 900,
