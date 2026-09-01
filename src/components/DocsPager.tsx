@@ -16,15 +16,15 @@ export function DocsPager({
       className={cn('flex items-center justify-between gap-4 border-t border-border-default pt-6', className)}
     >
       {prev ? (
-        <Anchor href={prev.href} size="md">
-          ← {prev.label}
+        <Anchor href={prev.href} variant="arrow" arrow="start" size="md" className="min-w-0 max-w-[min(100%,16rem)]">
+          {prev.label}
         </Anchor>
       ) : (
         <span />
       )}
       {next ? (
-        <Anchor href={next.href} size="md">
-          {next.label} →
+        <Anchor href={next.href} variant="arrow" arrow="end" size="md" className="min-w-0 max-w-[min(100%,16rem)]">
+          {next.label}
         </Anchor>
       ) : null}
     </nav>

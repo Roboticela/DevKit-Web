@@ -71,6 +71,6 @@ export const MENU_OPTION = cn(
 )
 
 export const PILL_BUTTON = cn(
-  'inline-flex cursor-pointer items-center justify-center rounded-[980px] font-sans font-medium leading-none',
+  'inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-[980px] font-sans font-medium leading-none',
   'transition-colors duration-150 ease-linear',
 )

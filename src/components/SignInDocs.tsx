@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { DkSuccessCircleCheckmark } from '@/icons'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { brand } from '@/lib/devkit'
-import { PAGES_ITEMS, SIGN_IN_STATES, type SignInPreviewState } from '@/lib/pages-catalog'
+import { PAGES_ITEMS, SIGN_IN_STATES, resolveSignInPreview, type SignInPreviewState } from '@/lib/pages-catalog'
 import { adjacentDocs } from '@/lib/docs-catalog'
 import { useTheme } from '@/lib/theme'
 import { Badge } from './Badge'
@@ -27,17 +27,19 @@ const TREE: CompositionNode[] = [
       {
         label: 'Auth Nav',
         href: '/components/auth-nav',
-        note: '(logo, theme, Create one)',
+        note: '(Brand Logo, theme, Create one)',
       },
-      { label: 'Auth Brand', note: '(logo, headline, subhead)' },
-      { label: 'Text Field', href: '/components/text-field', note: '(Email)' },
+      { label: 'Brand Logo', href: '/components/brand-logo', note: '(mark)' },
+      { label: 'Auth Brand', note: '(Sign In, subhead)' },
+      { label: 'Text Field', href: '/components/text-field', note: '(Email or username)' },
       { label: 'Password Field', href: '/components/password-field' },
       { label: 'Password Reveal', href: '/components/password-reveal' },
       { label: 'Anchor', href: '/components/anchor', note: '(Forgot password?)' },
       { label: 'Button', href: '/components/button', note: '(Primary, full width)' },
-      { label: 'Divider', href: '/components/divider', note: '("or continue with")' },
-      { label: 'Social Login Buttons', href: '/components/social-login', note: '(Google, Apple, GitHub)' },
-      { label: 'Anchor', href: '/components/anchor', note: '(Create account)' },
+      { label: 'Divider', href: '/components/divider', note: '("or")' },
+      { label: 'Social Login Button', href: '/components/social-login', note: '(Roboticela, Passkey, Google)' },
+      { label: 'Other Ways Button', href: '/components/social-login', note: '(Apple, Microsoft, GitHub, and more)' },
+      { label: 'Anchor', href: '/components/anchor', note: '(Create one)' },
     ],
   },
 ]
@@ -72,11 +74,11 @@ const DATA: PropRow[] = [
     description: 'Blocks the form after too many attempts and shows a lockout message.',
   },
   {
-    name: 'ssoProviders',
-    type: "Array<'google' | 'apple' | 'github'>",
+    name: 'lastMethod',
+    type: "'google' | 'passkey' | 'roboticela' | null",
     required: 'No',
-    defaultValue: "['google', 'apple', 'github']",
-    description: 'Which social login buttons to render under the divider.',
+    defaultValue: 'null',
+    description: 'Which method was used last. That button shows Last used.',
   },
 ]
 
@@ -86,62 +88,72 @@ import { AuthLegal } from '@/components/TextLink'
 import { AuthProviderStack } from '@/components/AuthProviderButton'
 import { Button } from '@/components/Button'
 import { Divider } from '@/components/Divider'
-import { GitHubButton } from '@/components/GitHubButton'
-import { GoogleButton } from '@/components/GoogleButton'
-import { AppleButton } from '@/components/ProviderButtons'
+import { OtherWaysButton } from '@/components/OtherWaysButton'
 import { PasswordField } from '@/components/PasswordField'
+import {
+  SOCIAL_LOGIN_MORE_PROVIDERS,
+  SOCIAL_LOGIN_PRIMARY_PROVIDERS,
+  SocialLoginButton,
+} from '@/components/SocialLoginButton'
 import { TextField } from '@/components/TextField'
-import { DkEnvelopeMessageMail } from '@/icons'
+import { DkChevronCaretLeft, DkEnvelopeMessageMail } from '@/icons'
 
 export default function SignInPage({
   onSubmit,
   errorMessage,
   isLoading = false,
-  ssoProviders = ['google', 'apple', 'github'],
+  lastMethod = null,
 }) {
+  const [more, setMore] = useState(false)
+
   return (
     <AuthLayout navLinkTo="/create-account" navLinkLabel="Create one">
-      <AuthBrand title="Welcome back" subhead="Use your DevKit Account" />
-      <form
-        className="mt-8 flex flex-col"
-        onSubmit={(event) => {
-          event.preventDefault()
-          onSubmit?.(Object.fromEntries(new FormData(event.currentTarget)))
-        }}
-      >
-        <div className="flex flex-col gap-4">
-          <TextField
-            icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
-            name="email"
-            type="email"
-            placeholder="Email address"
-          />
-          <PasswordField name="password" placeholder="Password" />
-        </div>
-        <Anchor href="/forgot-password" className="mt-3 self-end text-sm">
-          Forgot password?
-        </Anchor>
-        {errorMessage ? <p className="text-danger">{errorMessage}</p> : null}
-        <Button className="mt-6" type="submit" loading={isLoading}>
-          Sign In
-        </Button>
-        <Divider>or continue with</Divider>
-        <AuthProviderStack className="gap-y-3">
-          {ssoProviders.includes('google') ? <GoogleButton /> : null}
-          {ssoProviders.includes('apple') ? <AppleButton /> : null}
-          {ssoProviders.includes('github') ? <GitHubButton /> : null}
-        </AuthProviderStack>
-        <p className="mt-6 text-center text-sm">
-          Don't have an account? <Anchor href="/create-account">Create account</Anchor>
-        </p>
-        <AuthLegal />
-      </form>
+      <AuthBrand title="Sign In" subhead="Use your DevKit Account" />
+      {more ? (
+        <>
+          <AuthProviderStack className="gap-y-3">
+            {SOCIAL_LOGIN_MORE_PROVIDERS.map((provider) => (
+              <SocialLoginButton key={provider} provider={provider} />
+            ))}
+          </AuthProviderStack>
+          <div className="mt-3">
+            <OtherWaysButton icon={<DkChevronCaretLeft />} onClick={() => setMore(false)}>
+              Back
+            </OtherWaysButton>
+          </div>
+        </>
+      ) : (
+        <>
+          <form className="mt-8 flex flex-col" noValidate onSubmit={...}>
+            <TextField name="username" placeholder="Email or username" />
+            <PasswordField name="password" />
+            <Anchor href="/forgot-password">Forgot password?</Anchor>
+            <Button type="submit" loading={isLoading}>Sign In</Button>
+          </form>
+          <Divider>or</Divider>
+          <AuthProviderStack className="gap-y-3">
+            {SOCIAL_LOGIN_PRIMARY_PROVIDERS.map((provider) => (
+              <SocialLoginButton
+                key={provider}
+                provider={provider}
+                lastUsed={lastMethod === provider}
+              >
+                {provider === 'passkey' ? 'Sign in with Passkey' : undefined}
+              </SocialLoginButton>
+            ))}
+          </AuthProviderStack>
+          <div className="mt-3">
+            <OtherWaysButton onClick={() => setMore(true)} />
+          </div>
+        </>
+      )}
     </AuthLayout>
   )
 }
 `
 
 const BUILT_WITH = [
+  { label: 'Brand Logo', href: '/components/brand-logo' },
   { label: 'Auth Nav', href: '/components/auth-nav' },
   { label: 'Anchor', href: '/components/anchor' },
   { label: 'Text Field', href: '/components/text-field' },
@@ -149,6 +161,7 @@ const BUILT_WITH = [
   { label: 'Button', href: '/components/button' },
   { label: 'Divider', href: '/components/divider' },
   { label: 'Social Login Button', href: '/components/social-login' },
+  { label: 'Other Ways Button', href: '/components/social-login' },
 ]
 
 export function SignInDocs() {
@@ -175,7 +188,7 @@ export function SignInDocs() {
           </Badge>
         </div>
         <Subhead className="mt-2">
-          A minimal authentication page with email/password and social login.
+          A minimal authentication page with email or username, a password, Roboticela, passkey, Google, and other ways to sign in.
         </Subhead>
         <DocsMetaBadges showStatus={false} />
         <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -204,18 +217,21 @@ export function SignInDocs() {
       <section id="states" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>States</DocsSectionTitle>
         <div className="grid grid-cols-1 gap-4 min-[735px]:grid-cols-2">
-          {SIGN_IN_STATES.map((item) => (
-            <PageStateThumb
-              key={item.id}
-              label={item.label}
-              selected={state === item.id}
-              onClick={() => selectState(item.id)}
-            >
-              <div className="origin-top scale-[0.42] [width:238%]">
-                <SignInPage state={item.id} />
-              </div>
-            </PageStateThumb>
-          ))}
+          {SIGN_IN_STATES.map((item) => {
+            const preview = resolveSignInPreview(item.id)
+            return (
+              <PageStateThumb
+                key={item.id}
+                label={item.label}
+                selected={state === item.id}
+                onClick={() => selectState(item.id)}
+              >
+                <div className="origin-top scale-[0.42] [width:238%]">
+                  <SignInPage state={preview.state} lastMethod={preview.lastMethod} />
+                </div>
+              </PageStateThumb>
+            )
+          })}
         </div>
       </section>
 
@@ -235,7 +251,7 @@ export function SignInDocs() {
           <RelatedCard
             href="/pages/create-account"
             title="Create Account"
-            description="New-user registration with the same auth nav."
+            description="New-user registration with the same auth nav and social providers."
           />
           <RelatedCard
             href="/pages/forgot-password"
@@ -243,9 +259,9 @@ export function SignInDocs() {
             description="Email a reset link when a password is lost."
           />
           <RelatedCard
-            href="/pages/otp-verification"
-            title="Two-Factor Auth"
-            description="OTP verification after a successful sign-in."
+            href="/pages/verification-code"
+            title="Verification Code"
+            description="Email OTP after a successful sign-in."
           />
         </div>
       </section>

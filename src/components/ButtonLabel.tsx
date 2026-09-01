@@ -35,9 +35,9 @@ export function ButtonLabel({
   children: ReactNode
 }) {
   return (
-    <span className="inline-flex items-center justify-center gap-2">
+    <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
       {loading ? <Loader decorative size="sm" onDark={light} /> : null}
-      <span className="inline-flex items-center justify-center gap-2">
+      <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
         {loading && loadingText ? loadingText : children}
       </span>
     </span>

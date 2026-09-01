@@ -3,6 +3,9 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Button } from './Button'
+import { Loader } from './Loader'
+
+const PROVIDER_LABEL_WIDTH = 'w-[240px]'
 
 function continuingLabel(children: ReactNode) {
   if (typeof children === 'string') {
@@ -20,7 +23,7 @@ export function AuthProviderStack({
   className?: string
 }) {
   return (
-    <div data-provider-stack="" className={cn('w-full min-w-0', className)}>
+    <div data-provider-stack="" className={cn('flex w-full min-w-0 flex-col', className)}>
       {children}
     </div>
   )
@@ -41,26 +44,36 @@ export function AuthProviderButton({
   className,
   children,
   type = 'button',
+  disabled,
   ...rest
 }: AuthProviderButtonProps) {
+  const busyLabel = loadingText ?? continuingLabel(children)
+
   return (
     <Button
       type={type}
       variant="action"
-      loading={loading}
-      loadingText={loadingText ?? continuingLabel(children)}
-      leading={icon}
-      className={cn('relative', lastUsed && 'pr-24', className)}
-      trailing={
-        lastUsed ? (
-          <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 whitespace-nowrap text-xs font-normal leading-none tracking-[-0.01em] text-text-tertiary dark:text-gray-on-dark">
-            Last used
-          </span>
-        ) : undefined
-      }
+      disabled={disabled || loading}
+      className={cn('relative', className)}
       {...rest}
     >
-      {children}
+      <span
+        data-provider-label=""
+        className={cn(
+          'inline-flex items-center justify-start gap-2 whitespace-nowrap',
+          PROVIDER_LABEL_WIDTH,
+        )}
+      >
+        <span className="inline-flex size-5 shrink-0 items-center justify-center [&_img]:block [&_svg]:block">
+          {loading ? <Loader decorative size="sm" /> : icon}
+        </span>
+        {loading ? busyLabel : children}
+      </span>
+      {lastUsed ? (
+        <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 whitespace-nowrap text-xs font-normal leading-none tracking-[-0.01em] text-text-tertiary dark:text-gray-on-dark">
+          Last used
+        </span>
+      ) : null}
     </Button>
   )
 }

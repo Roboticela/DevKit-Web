@@ -9,6 +9,9 @@ import {
   DkAppDashboardLayoutTiles,
   DkPadlockSecureClosed,
   DkEnvelopeMessageMail,
+  DkFingerprintBiometricScanPattern,
+  DkDevicesDesktopAndMobile,
+  DkRoundKeyAccess,
   DkPersonUserProfile,
   DkAtSign,
   DkFoldedMapTerritoryMapPinLocation,
@@ -168,8 +171,6 @@ import {
   type FieldLabelTone,
   type FormFieldLayout,
 } from './FieldLabel'
-import { GitHubButton } from './GitHubButton'
-import { GoogleButton } from './GoogleButton'
 import { IconButton } from './IconButton'
 import {
   IconTab,
@@ -374,7 +375,13 @@ import {
 } from './PasswordReveal'
 import { PhoneInput } from './PhoneInput'
 import { CitySelect, CountySelect, StateSelect } from './PlaceSelect'
-import { AppleButton } from './ProviderButtons'
+import {
+  SOCIAL_LOGIN_MORE_PROVIDERS,
+  SOCIAL_LOGIN_PRIMARY_PROVIDERS,
+  SOCIAL_LOGIN_PROVIDERS,
+  SocialLoginButton,
+  type SocialLoginProvider,
+} from './SocialLoginButton'
 import {
   ProfileButton,
   PROFILE_BUTTON_LAYOUTS,
@@ -8823,36 +8830,347 @@ function AvatarEditorDemo() {
   )
 }
 
-function SocialDemo() {
+function SocialProviderStack({
+  providers = SOCIAL_LOGIN_PROVIDERS,
+  loading = false,
+  disabled = false,
+  lastUsedProvider,
+  loadingProvider,
+  passkeyLabel,
+}: {
+  providers?: readonly SocialLoginProvider[]
+  loading?: boolean
+  disabled?: boolean
+  lastUsedProvider?: SocialLoginProvider
+  loadingProvider?: SocialLoginProvider
+  passkeyLabel?: string
+}) {
   return (
-    <AuthProviderStack className="flex flex-col gap-3">
-      <GoogleButton />
-      <AppleButton />
-      <GitHubButton />
-      <OtherWaysButton />
+    <AuthProviderStack className="w-full max-w-[460px] gap-y-3">
+      {providers.map((provider) => (
+        <SocialLoginButton
+          key={provider}
+          provider={provider}
+          loading={loading || loadingProvider === provider}
+          disabled={disabled}
+          lastUsed={lastUsedProvider === provider}
+        >
+          {provider === 'passkey' ? passkeyLabel : undefined}
+        </SocialLoginButton>
+      ))}
     </AuthProviderStack>
   )
 }
 
-function MethodDemo() {
-  const [value, setValue] = useState('app')
+function SocialDemo() {
   return (
-    <div className="flex w-full flex-col gap-3">
-      <VerificationMethodCard
-        selected={value === 'app'}
-        onClick={() => setValue('app')}
-        icon={<DkSecurityShieldProtect size={18} strokeWidth={1.75} absoluteStrokeWidth />}
-        title="Authenticator app"
-        subtitle="Use a one-time code"
-      />
-      <VerificationMethodCard
-        selected={value === 'sms'}
-        onClick={() => setValue('sms')}
-        icon={<DkHandheldMobilePhone size={18} strokeWidth={1.75} absoluteStrokeWidth />}
-        title="Text message"
-        subtitle="Send a code to your phone"
-      />
+    <div className="w-full max-w-[460px]">
+      <SocialProviderStack />
+      <div className="mt-3">
+        <OtherWaysButton />
+      </div>
     </div>
+  )
+}
+
+function providerStackFor(provider: SocialLoginProvider): readonly SocialLoginProvider[] {
+  return (SOCIAL_LOGIN_PRIMARY_PROVIDERS as readonly SocialLoginProvider[]).includes(provider)
+    ? SOCIAL_LOGIN_PRIMARY_PROVIDERS
+    : SOCIAL_LOGIN_MORE_PROVIDERS
+}
+
+const PROVIDER_STATE_LABEL: Record<SocialLoginProvider, string> = {
+  roboticela: 'Roboticela',
+  passkey: 'Passkey',
+  google: 'Google',
+  apple: 'Apple',
+  microsoft: 'Microsoft',
+  github: 'GitHub',
+  facebook: 'Facebook',
+  x: 'X',
+  linkedin: 'LinkedIn',
+  discord: 'Discord',
+  slack: 'Slack',
+}
+
+function SocialStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Status">
+        <div className="flex w-full flex-col gap-8">
+          <DocsStateCard label="Default" align="stretch" wide>
+            <SocialProviderStack providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS} />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide>
+            <SocialProviderStack providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS} disabled />
+          </DocsStateCard>
+          <DocsStateCard label="Last used (Google)" align="stretch" wide>
+            <SocialProviderStack
+              providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS}
+              lastUsedProvider="google"
+              passkeyLabel="Sign in with Passkey"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Last used (Passkey)" align="stretch" wide>
+            <SocialProviderStack
+              providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS}
+              lastUsedProvider="passkey"
+              passkeyLabel="Sign in with Passkey"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Last used (Roboticela)" align="stretch" wide>
+            <SocialProviderStack
+              providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS}
+              lastUsedProvider="roboticela"
+              passkeyLabel="Sign in with Passkey"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Other ways list" align="stretch" wide>
+            <SocialProviderStack providers={SOCIAL_LOGIN_MORE_PROVIDERS} />
+          </DocsStateCard>
+          {SOCIAL_LOGIN_PROVIDERS.map((provider) => (
+            <DocsStateCard
+              key={provider}
+              label={`Loading (${PROVIDER_STATE_LABEL[provider]})`}
+              align="stretch"
+              wide
+            >
+              <SocialProviderStack
+                providers={providerStackFor(provider)}
+                loadingProvider={provider}
+                passkeyLabel="Sign in with Passkey"
+              />
+            </DocsStateCard>
+          ))}
+        </div>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
+function MethodDemo() {
+  const [value, setValue] = useState('email')
+  return (
+    <RadioGroup label="Verification method" className="w-full max-w-[460px] gap-3">
+      {METHOD_DOC_SAMPLES.map((sample) => (
+        <VerificationMethodCard
+          key={sample.key}
+          icon={sample.icon}
+          title={sample.title}
+          subtitle={sample.subtitle}
+          disabled={sample.disabled}
+          hint={sample.hint}
+          selected={!sample.disabled && value === sample.key}
+          onClick={() => {
+            if (sample.disabled) return
+            setValue(sample.key)
+          }}
+        />
+      ))}
+    </RadioGroup>
+  )
+}
+
+const METHOD_DOC_GLYPH = { size: 28, strokeWidth: 1.6, absoluteStrokeWidth: true } as const
+
+const METHOD_DOC_SAMPLES = [
+  {
+    key: 'email',
+    title: 'Email',
+    subtitle: 'Send a code to alex@roboticela.com.',
+    icon: <DkEnvelopeMessageMail {...METHOD_DOC_GLYPH} />,
+  },
+  {
+    key: 'passkey',
+    title: 'Passkey',
+    subtitle: 'Use Face ID, Touch ID, or your device screen lock.',
+    icon: <DkFingerprintBiometricScanPattern {...METHOD_DOC_GLYPH} />,
+  },
+  {
+    key: 'authenticator',
+    title: 'Authenticator App',
+    subtitle: 'Enter a code from Google Authenticator or similar.',
+    icon: <DkHandheldMobilePhone {...METHOD_DOC_GLYPH} />,
+  },
+  {
+    key: 'recovery',
+    title: 'Recovery Code',
+    subtitle: 'Not configured for this account',
+    icon: <DkRoundKeyAccess {...METHOD_DOC_GLYPH} />,
+    disabled: true,
+    hint: 'Not configured for this account',
+  },
+  {
+    key: 'device',
+    title: 'Another Device',
+    subtitle: 'No other signed-in devices',
+    icon: <DkDevicesDesktopAndMobile {...METHOD_DOC_GLYPH} />,
+    disabled: true,
+    hint: 'Sign in on another device first',
+  },
+] as const
+
+const METHOD_STATE_SAMPLE = METHOD_DOC_SAMPLES[0]
+
+function MethodStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Method">
+        <div className="flex w-full flex-col gap-8">
+          {METHOD_DOC_SAMPLES.map((sample) => (
+            <DocsStateCard key={sample.key} label={sample.title} align="stretch" wide>
+              <VerificationMethodCard
+                icon={sample.icon}
+                title={sample.title}
+                subtitle={sample.subtitle}
+                disabled={'disabled' in sample ? sample.disabled : false}
+                hint={'hint' in sample ? sample.hint : undefined}
+                selected={sample.key === 'email'}
+              />
+            </DocsStateCard>
+          ))}
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <div className="flex w-full flex-col gap-8">
+          <DocsStateCard label="Rest" align="stretch" wide>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Selected" align="stretch" wide>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+              selected
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Hover" align="stretch" wide inert>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+              preview="hover"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Hover, selected" align="stretch" wide inert>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+              selected
+              preview="hover"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Focus" align="stretch" wide inert>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+              preview="focus"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Focus, selected" align="stretch" wide inert>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+              selected
+              preview="focus"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Active" align="stretch" wide inert>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+              preview="active"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Active, selected" align="stretch" wide inert>
+            <VerificationMethodCard
+              icon={METHOD_STATE_SAMPLE.icon}
+              title={METHOD_STATE_SAMPLE.title}
+              subtitle={METHOD_STATE_SAMPLE.subtitle}
+              selected
+              preview="active"
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled" align="stretch" wide>
+            <VerificationMethodCard
+              icon={METHOD_DOC_SAMPLES[3].icon}
+              title={METHOD_DOC_SAMPLES[3].title}
+              subtitle={METHOD_DOC_SAMPLES[3].subtitle}
+              disabled
+              hint={METHOD_DOC_SAMPLES[3].hint}
+            />
+          </DocsStateCard>
+          <DocsStateCard label="Disabled, selected" align="stretch" wide>
+            <VerificationMethodCard
+              icon={METHOD_DOC_SAMPLES[3].icon}
+              title={METHOD_DOC_SAMPLES[3].title}
+              subtitle={METHOD_DOC_SAMPLES[3].subtitle}
+              selected
+              disabled
+              hint={METHOD_DOC_SAMPLES[3].hint}
+            />
+          </DocsStateCard>
+        </div>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Group">
+        <div className="flex w-full flex-col gap-8">
+          <DocsStateCard label="Default" align="stretch" wide>
+            <RadioGroup label="Verification method" className="gap-3">
+              {METHOD_DOC_SAMPLES.filter((sample) => !('disabled' in sample && sample.disabled)).map(
+                (sample) => (
+                  <VerificationMethodCard
+                    key={sample.key}
+                    icon={sample.icon}
+                    title={sample.title}
+                    subtitle={sample.subtitle}
+                    selected={sample.key === 'email'}
+                  />
+                ),
+              )}
+            </RadioGroup>
+          </DocsStateCard>
+          <DocsStateCard label="Full list" align="stretch" wide>
+            <RadioGroup label="Verification method" className="gap-3">
+              {METHOD_DOC_SAMPLES.map((sample) => (
+                <VerificationMethodCard
+                  key={sample.key}
+                  icon={sample.icon}
+                  title={sample.title}
+                  subtitle={sample.subtitle}
+                  disabled={'disabled' in sample ? sample.disabled : false}
+                  hint={'hint' in sample ? sample.hint : undefined}
+                  selected={sample.key === 'email'}
+                />
+              ))}
+            </RadioGroup>
+          </DocsStateCard>
+          <DocsStateCard label="None selected" align="stretch" wide>
+            <RadioGroup label="Verification method" className="gap-3">
+              {METHOD_DOC_SAMPLES.filter((sample) => !('disabled' in sample && sample.disabled)).map(
+                (sample) => (
+                  <VerificationMethodCard
+                    key={sample.key}
+                    icon={sample.icon}
+                    title={sample.title}
+                    subtitle={sample.subtitle}
+                  />
+                ),
+              )}
+            </RadioGroup>
+          </DocsStateCard>
+        </div>
+      </DocsStateGroup>
+    </DocsStack>
   )
 }
 
@@ -11743,28 +12061,61 @@ const DOCS: Record<string, DocDef> = {
   },
   'social-login': {
     title: 'Social Login Button',
-    description: 'Continue with Google, Apple, GitHub, and more.',
+    description: 'Continue with Roboticela, Passkey, Google, Apple, GitHub, and more.',
     Demo: SocialDemo,
-    code: `<GoogleButton />\n<AppleButton />\n<GitHubButton />\n`,
-    states: [
-      { label: 'Default', node: <GoogleButton /> },
-      { label: 'Loading', node: <GoogleButton loading /> },
-      { label: 'Disabled', node: <GoogleButton disabled /> },
-    ],
+    code: `<SocialLoginButton provider="roboticela" />
+<SocialLoginButton provider="passkey">Sign in with Passkey</SocialLoginButton>
+<SocialLoginButton provider="google" />
+<SocialLoginButton provider="apple" />
+<SocialLoginButton provider="microsoft" />
+<SocialLoginButton provider="github" />
+<SocialLoginButton provider="facebook" />
+<SocialLoginButton provider="x" />
+<SocialLoginButton provider="linkedin" />
+<SocialLoginButton provider="discord" />
+<SocialLoginButton provider="slack" />
+`,
+    statesContent: <SocialStates />,
     props: [
-      p('loading', 'boolean', 'false', 'Busy spinner and Continuing… label.'),
+      {
+        name: 'provider',
+        type: "'roboticela' | 'passkey' | 'google' | 'apple' | 'microsoft' | 'github' | 'facebook' | 'x' | 'linkedin' | 'discord' | 'slack'",
+        required: 'Yes',
+        defaultValue: '—',
+        description: 'Which identity provider to show.',
+      },
+      p('loading', 'boolean', 'false', 'Busy spinner and Continuing… label. Passkey uses Waiting for passkey…'),
       p('lastUsed', 'boolean', 'false', 'Marks the last-used provider.'),
+      p('children', 'ReactNode', 'Continue with {Provider}', 'Optional label. Sign-in uses Sign in with Passkey.'),
     ],
   },
   'verification-method': {
     title: 'Verification Method',
     description: 'A selectable 2FA method card.',
     Demo: MethodDemo,
-    code: `<VerificationMethodCard selected icon={...} title="Authenticator app" subtitle="Use a one-time code" />\n`,
+    code: `<RadioGroup label="Verification method" className="gap-3">
+  <VerificationMethodCard
+    selected
+    icon={...}
+    title="Email"
+    subtitle="Send a code to alex@roboticela.com."
+  />
+  <VerificationMethodCard
+    icon={...}
+    title="Passkey"
+    subtitle="Use Face ID, Touch ID, or your device screen lock."
+  />
+</RadioGroup>\n`,
+    statesContent: <MethodStates />,
     props: [
-      p('selected', 'boolean', 'false', 'Selected radio appearance.'),
+      p('selected', 'boolean', 'false', 'Selected checkmark appearance.'),
+      p('disabled', 'boolean', 'false', 'Dims the card and blocks selection.'),
+      p('preview', "'hover' | 'focus' | 'active'", 'undefined', 'Forced interaction state for docs and visual QA.'),
+      p('icon', 'ReactNode', '—', 'Method icon shown in the leading badge.'),
       p('title', 'string', '—', 'Method name.'),
       p('subtitle', 'string', '—', 'Short description.'),
+      p('hint', 'string', 'undefined', 'Native title for disabled-state tooltips.'),
+      p('onClick', '() => void', 'undefined', 'Called when the card is pressed.'),
     ],
   },
   'totp-manual-key': {

@@ -6,10 +6,13 @@ import { brand } from '@/lib/devkit'
 import { cn } from '@/lib/cn'
 import {
   Anchor,
+  ANCHOR_ARROWS,
+  ANCHOR_ARROW_LABEL,
   ANCHOR_TONES,
   ANCHOR_TONE_LABEL,
   ANCHOR_VARIANTS,
   ANCHOR_VARIANT_LABEL,
+  type AnchorArrow,
   type AnchorPreview as AnchorPreviewState,
   type AnchorSize,
   type AnchorTone,
@@ -54,6 +57,7 @@ const DEFAULTS = {
   size: 'md' as AnchorSize,
   state: 'default' as DemoState,
   tone: 'brand' as AnchorTone,
+  arrow: 'end' as AnchorArrow,
   external: false,
 }
 
@@ -66,9 +70,10 @@ const PROPS: PropRow[] = [
   },
   {
     name: 'variant',
-    type: "'inline' | 'subtle' | 'underline' | 'plain' | 'standalone'",
+    type: "'inline' | 'subtle' | 'underline' | 'plain' | 'standalone' | 'arrow'",
     defaultValue: "'inline'",
-    description: 'Visual style. Inline sits in copy. Standalone is a “Learn more” trail with a chevron.',
+    description:
+      'Visual style. Inline sits in copy. Standalone is a “Learn more” trail with a chevron. Arrow is a circular chevron, as on View all products.',
   },
   {
     name: 'size',
@@ -95,6 +100,13 @@ const PROPS: PropRow[] = [
     description: 'Renders as inert text. Not focusable and does not navigate.',
   },
   {
+    name: 'arrow',
+    type: "'end' | 'start'",
+    defaultValue: "'end'",
+    description:
+      'Side of the circular chevron. End is next or View all. Start is previous. Sets the Arrow variant when used alone.',
+  },
+  {
     name: 'leading',
     type: 'ReactNode',
     defaultValue: '—',
@@ -116,6 +128,7 @@ function previewOf(state: DemoState): AnchorPreviewState | undefined {
 function labelOf(variant: AnchorVariant, external: boolean) {
   if (external) return 'roboticela.com'
   if (variant === 'standalone') return 'Learn more'
+  if (variant === 'arrow') return 'View all products'
   if (variant === 'subtle') return 'Privacy Policy'
   if (variant === 'plain') return 'Alex Rivera'
   return 'Learn more'
@@ -130,12 +143,14 @@ function buildSnippet(opts: {
   size: AnchorSize
   state: DemoState
   tone: AnchorTone
+  arrow: AnchorArrow
   external: boolean
 }) {
   const attrs: string[] = []
   if (opts.variant !== 'inline') attrs.push(`variant="${opts.variant}"`)
   if (opts.size !== 'inherit') attrs.push(`size="${SIZE_CODE[opts.size]}"`)
   if (opts.tone !== 'brand') attrs.push(`tone="${opts.tone}"`)
+  if (opts.variant === 'arrow' && opts.arrow === 'start') attrs.push('arrow="start"')
   if (opts.external) attrs.push('external')
   if (opts.state === 'disabled') attrs.push('disabled')
 
@@ -151,6 +166,7 @@ function DemoAnchor({
   size,
   state,
   tone,
+  arrow,
   external,
   preview,
 }: {
@@ -158,6 +174,7 @@ function DemoAnchor({
   size: AnchorSize
   state: DemoState
   tone: AnchorTone
+  arrow?: AnchorArrow
   external: boolean
   preview?: AnchorPreviewState
 }) {
@@ -167,6 +184,7 @@ function DemoAnchor({
       variant={variant}
       size={size}
       tone={tone}
+      arrow={variant === 'arrow' ? (arrow ?? 'end') : undefined}
       external={external || undefined}
       disabled={state === 'disabled'}
       preview={preview ?? previewOf(state)}
@@ -180,7 +198,7 @@ export function AnchorStates() {
   return (
     <DocsStack gap={10}>
       <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+        <DocsStateGrid columns={3}>
           {ANCHOR_VARIANTS.map((item) => (
             <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
               <DemoAnchor variant={item} size="md" state="default" tone="brand" external={false} />
@@ -215,9 +233,26 @@ export function AnchorStates() {
         </DocsStateGrid>
       </DocsStateGroup>
 
+      <DocsStateGroup title="Arrow">
+        <DocsStateGrid columns={2}>
+          {ANCHOR_ARROWS.map((item) => (
+            <DocsStateCard key={item} label={ANCHOR_ARROW_LABEL[item]}>
+              <DemoAnchor
+                variant="arrow"
+                size="md"
+                state="default"
+                tone="brand"
+                arrow={item}
+                external={false}
+              />
+            </DocsStateCard>
+          ))}
+        </DocsStateGrid>
+      </DocsStateGroup>
+
       {ANCHOR_VARIANTS.map((item) => (
         <DocsStateGroup key={item} title={ANCHOR_VARIANT_LABEL[item]}>
-          <DocsStateGrid columns={6}>
+          <DocsStateGrid columns={item === 'arrow' ? 3 : 6}>
             {STATES.map((entry) => (
               <DocsStateCard key={entry.value} label={entry.label} inert>
                 <DemoAnchor
@@ -234,11 +269,11 @@ export function AnchorStates() {
       ))}
 
       <DocsStateGroup title="External">
-        <DocsStateGrid columns={2}>
+        <DocsStateGrid columns={3}>
           {ANCHOR_VARIANTS.map((item) => (
             <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
               <Anchor href={brand.supportUrl} variant={item} size="md" external>
-                {item === 'standalone' ? 'Visit the site' : brand.supportLabel}
+                {item === 'standalone' || item === 'arrow' ? 'Visit the site' : brand.supportLabel}
               </Anchor>
             </DocsStateCard>
           ))}
@@ -290,22 +325,24 @@ export function AnchorDocs() {
   const [size, setSize] = useState<AnchorSize>(DEFAULTS.size)
   const [state, setState] = useState<DemoState>(DEFAULTS.state)
   const [tone, setTone] = useState<AnchorTone>(DEFAULTS.tone)
+  const [arrow, setArrow] = useState<AnchorArrow>(DEFAULTS.arrow)
   const [external, setExternal] = useState(DEFAULTS.external)
   const [grid, setGrid] = useState(false)
   const [replay, setReplay] = useState(0)
 
   const code = useMemo(
-    () => buildSnippet({ variant, size, state, tone, external }),
-    [variant, size, state, tone, external],
+    () => buildSnippet({ variant, size, state, tone, arrow, external }),
+    [variant, size, state, tone, arrow, external],
   )
-  const fadeKey = `${variant}-${size}-${state}-${tone}-${external}-${replay}`
-  const inCopy = variant !== 'standalone'
+  const fadeKey = `${variant}-${size}-${state}-${tone}-${arrow}-${external}-${replay}`
+  const inCopy = variant !== 'standalone' && variant !== 'arrow'
 
   function reset() {
     setVariant(DEFAULTS.variant)
     setSize(DEFAULTS.size)
     setState(DEFAULTS.state)
     setTone(DEFAULTS.tone)
+    setArrow(DEFAULTS.arrow)
     setExternal(DEFAULTS.external)
   }
 
@@ -314,7 +351,7 @@ export function AnchorDocs() {
       <DocsHeader
         crumb="Components / Navigation / Anchor"
         title="Anchor"
-        description="A text link to another screen or to the open web. Use it when the person is going somewhere. Use a Button when they are doing something. Links that leave the product show a launch icon."
+        description="A text link to another screen or to the open web. Use it when the person is going somewhere. Use a Button when they are doing something. Arrow is the circular chevron for View all, previous, and next."
       >
         <DocsMetaBadges />
       </DocsHeader>
@@ -325,8 +362,9 @@ export function AnchorDocs() {
           <DocsProse>
             <Body>
               Anchor is how the person leaves this screen for another. Inline sits in a sentence. Standalone is a
-              quiet trail after a headline — Learn more, with a chevron. A destination on another site gets a launch
-              icon, so it is obvious the next step leaves the product.
+              quiet trail after a headline — Learn more, with a chevron. Arrow is the circular chevron used for View
+              all products, and for previous and next. A destination on another site gets a launch icon, so it is
+              obvious the next step leaves the product.
             </Body>
           </DocsProse>
           <DocsPrinciples
@@ -349,6 +387,7 @@ export function AnchorDocs() {
             doItems={[
               'Use inline inside Body or Caption so the link inherits the reading size.',
               'Use standalone after a heading when the next step is a single destination.',
+              'Use arrow for View all, previous, and next. End is forward. Start is back.',
               'Pass external when the URL is on another origin, even if it is stored as a relative path.',
             ]}
             dontItems={[
@@ -406,6 +445,18 @@ export function AnchorDocs() {
                   label: ANCHOR_TONE_LABEL[value],
                 }))}
               />
+              {variant === 'arrow' ? (
+                <SegmentedControl
+                  label="Arrow"
+                  size="sm"
+                  value={arrow}
+                  onChange={setArrow}
+                  options={ANCHOR_ARROWS.map((value) => ({
+                    value,
+                    label: ANCHOR_ARROW_LABEL[value],
+                  }))}
+                />
+              ) : null}
               <div className="flex flex-col gap-1">
                 <Caption as="span">External</Caption>
                 <div className="flex h-8 items-center">
@@ -423,10 +474,10 @@ export function AnchorDocs() {
           {inCopy ? (
             <Body className="max-w-[32rem] text-center">
               DevKit is the component library for {brand.companyName} products.{' '}
-              <DemoAnchor variant={variant} size={size} state={state} tone={tone} external={external} />
+              <DemoAnchor variant={variant} size={size} state={state} tone={tone} arrow={arrow} external={external} />
             </Body>
           ) : (
-            <DemoAnchor variant={variant} size={size} state={state} tone={tone} external={external} />
+            <DemoAnchor variant={variant} size={size} state={state} tone={tone} arrow={arrow} external={external} />
           )}
         </DocsDemoPanel>
 
@@ -451,11 +502,11 @@ export function AnchorDocs() {
           intro="A link is a native control. The accessible name is the visible text, plus a note when the destination opens in a new window."
           items={[
             'Renders a real anchor. Role is implied. Do not recreate this with a clickable span.',
-            'Tab to focus. Enter to follow. Focus is a 2px brand outline with the underline visible.',
+            'Tab to focus. Enter to follow. Focus is a 2px brand outline. Inline also shows the underline.',
             'Disabled is not in the tab order. It is announced as a disabled link.',
             'target="_blank" and external={true} append a visually hidden “opens in a new window”.',
-            'The launch icon is decorative. The label still names the destination if the icon is missing.',
-            'Do not rely on color alone. Hover and focus also reveal the underline.',
+            'The launch icon and the circular chevron are decorative. The label still names the destination if they are missing.',
+            'Do not rely on color alone. Hover fills the arrow circle, or reveals the underline on inline links.',
           ]}
           keys={[
             { keys: ['Tab'], action: 'Focus the link' },

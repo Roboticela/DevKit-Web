@@ -140,7 +140,7 @@ export const DOCS_NAV: DocsNavSection[] = [
     id: 'navigation',
     label: 'Navigation',
     items: [
-      c('anchor', 'Anchor', 'Navigation', 'A text link to another screen or to the open web. Use it when the person is going somewhere. Use a Button when they are doing something. Links that leave the product show a launch icon.', true),
+      c('anchor', 'Anchor', 'Navigation', 'A text link to another screen or to the open web. Use it when the person is going somewhere. Use a Button when they are doing something. Arrow is the circular chevron for View all, previous, and next.', true),
       c('tabs', 'Tabs', 'Navigation', 'Switch between peer views of the same page, such as All and Live. Use Icon Tab when the items are destinations in the app, not filters of one list.', true),
       c('icon-tab', 'Icon Tab', 'Navigation', 'The compact bar of destinations at the bottom of an app, with an icon and a short label. Use it for Home, Inbox, and Profile.', true),
       c('breadcrumb', 'Breadcrumb', 'Navigation', 'The path from the root to this page so the person can step back. The last crumb is the current page and is not a link.'),
@@ -171,7 +171,7 @@ export const DOCS_NAV: DocsNavSection[] = [
     label: 'Auth',
     items: [
       c('auth-nav', 'Auth Nav', 'Auth', 'The bar on sign-in and related flows. Logo, theme toggle, and a trailing Anchor.', true),
-      c('social-login', 'Social Login Button', 'Auth', 'Continue with Google, Apple, GitHub, and more.'),
+      c('social-login', 'Social Login Button', 'Auth', 'Continue with Roboticela, Passkey, Google, Apple, GitHub, and more.'),
       c('verification-method', 'Verification Method', 'Auth', 'A selectable 2FA method card.'),
       c('totp-manual-key', 'TOTP Manual Key', 'Auth', 'A copyable authenticator secret.'),
     ],

@@ -15,7 +15,15 @@ import {
   type DocsNavSection,
   type DocsTocItem,
 } from './docs-catalog'
-import { PAGES_NAV, SIGN_IN_TOC } from './pages-catalog'
+import {
+  CHOOSE_VERIFICATION_METHOD_TOC,
+  CREATE_ACCOUNT_TOC,
+  FORGOT_PASSWORD_TOC,
+  PAGES_NAV,
+  RESET_PASSWORD_TOC,
+  SIGN_IN_TOC,
+  VERIFICATION_CODE_TOC,
+} from './pages-catalog'
 
 export type DocsFrame = {
   activeId: string
@@ -23,7 +31,6 @@ export type DocsFrame = {
   activeTab: 'Docs' | 'Components' | 'Pages' | 'Guides'
   sections: DocsNavSection[]
   contentWidth: 760 | 900
-  pagesSidebar: boolean
 }
 
 export function resolveDocsFrame(pathname: string): DocsFrame | null {
@@ -52,7 +59,6 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
       activeTab: 'Components',
       sections: DOCS_NAV,
       contentWidth,
-      pagesSidebar: false,
     }
   }
 
@@ -60,11 +66,23 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
     const slug = (pathname === '/pages' ? 'sign-in' : pathname.slice('/pages/'.length)) || 'sign-in'
     return {
       activeId: slug,
-      toc: slug === 'sign-in' ? SIGN_IN_TOC : [{ id: 'overview', label: 'Overview' }],
+      toc:
+        slug === 'sign-in'
+          ? SIGN_IN_TOC
+          : slug === 'create-account'
+            ? CREATE_ACCOUNT_TOC
+            : slug === 'forgot-password'
+              ? FORGOT_PASSWORD_TOC
+              : slug === 'reset-password'
+                ? RESET_PASSWORD_TOC
+                : slug === 'choose-verification-method'
+                  ? CHOOSE_VERIFICATION_METHOD_TOC
+                  : slug === 'verification-code'
+                    ? VERIFICATION_CODE_TOC
+                    : [{ id: 'overview', label: 'Overview' }],
       activeTab: 'Pages',
       sections: PAGES_NAV,
       contentWidth: 900,
-      pagesSidebar: true,
     }
   }
 

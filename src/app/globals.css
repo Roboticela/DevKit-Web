@@ -489,18 +489,28 @@ body {
 }
 
 [data-provider-stack] {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   min-width: 0;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 }
 
 [data-provider-stack] > button {
-  grid-column: 1 / -1;
   width: 100%;
-  display: grid;
-  grid-template-columns: subgrid !important;
-  align-items: center;
+  white-space: nowrap;
+  justify-content: center;
+}
+
+[data-provider-stack] > button > span {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+[data-provider-stack] > button [data-provider-label] {
+  width: 240px;
+  flex-shrink: 0;
+  justify-content: flex-start;
 }
 
 @media (prefers-reduced-motion: reduce) {

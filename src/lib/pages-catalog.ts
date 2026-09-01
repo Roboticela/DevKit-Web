@@ -18,19 +18,29 @@ export const PAGES_NAV: DocsNavSection[] = [
       { id: 'sign-in', label: 'Sign In', href: '/pages/sign-in', searchGroup: 'Auth' },
       { id: 'create-account', label: 'Create Account', href: '/pages/create-account', searchGroup: 'Auth' },
       { id: 'forgot-password', label: 'Forgot Password', href: '/pages/forgot-password', searchGroup: 'Auth' },
+      { id: 'reset-password', label: 'Reset Password', href: '/pages/reset-password', searchGroup: 'Auth' },
       {
-        id: 'otp-verification',
-        label: 'OTP Verification',
-        href: '/pages/otp-verification',
+        id: 'choose-verification-method',
+        label: 'Choose Verification Method',
+        href: '/pages/choose-verification-method',
         searchGroup: 'Auth',
       },
       {
-        id: 'passkey-sign-in',
-        label: 'Passkey Sign In',
-        href: '/pages/passkey-sign-in',
+        id: 'verification-code',
+        label: 'Verification Code',
+        href: '/pages/verification-code',
         searchGroup: 'Auth',
-        isNew: true,
       },
+      {
+        id: 'authenticator-code',
+        label: 'Authenticator Code',
+        href: '/pages/authenticator-code',
+        searchGroup: 'Auth',
+      },
+      { id: 'recovery-code', label: 'Recovery Code', href: '/pages/recovery-code', searchGroup: 'Auth' },
+      { id: 'another-device', label: 'Another Device', href: '/pages/another-device', searchGroup: 'Auth' },
+      { id: 'link-expired', label: 'Link Expired', href: '/pages/link-expired', searchGroup: 'Auth' },
+      { id: 'setup-2fa', label: 'Setup Two-Factor', href: '/pages/setup-2fa', searchGroup: 'Auth' },
     ],
   },
   {
@@ -97,6 +107,136 @@ export const SIGN_IN_STATES = [
   { id: 'error', label: 'Validation Error' },
   { id: 'loading', label: 'Loading (submitting)' },
   { id: 'locked', label: 'Locked Out (too many attempts)' },
+  { id: 'other-ways', label: 'Other ways to sign in' },
+  { id: 'last-used-google', label: 'Last used (Google)' },
+  { id: 'last-used-passkey', label: 'Last used (Passkey)' },
+  { id: 'last-used-roboticela', label: 'Last used (Roboticela)' },
 ] as const
 
 export type SignInPreviewState = (typeof SIGN_IN_STATES)[number]['id']
+
+export type SignInPageState = 'default' | 'error' | 'loading' | 'locked' | 'other-ways'
+
+export type AuthLastMethod = 'google' | 'passkey' | 'roboticela'
+
+export function resolveSignInPreview(state: SignInPreviewState): {
+  state: SignInPageState
+  lastMethod: AuthLastMethod | null
+} {
+  if (state === 'last-used-google') return { state: 'default', lastMethod: 'google' }
+  if (state === 'last-used-passkey') return { state: 'default', lastMethod: 'passkey' }
+  if (state === 'last-used-roboticela') return { state: 'default', lastMethod: 'roboticela' }
+  return { state, lastMethod: null }
+}
+
+export const CREATE_ACCOUNT_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const CREATE_ACCOUNT_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'error', label: 'Validation Error' },
+  { id: 'loading', label: 'Loading (submitting)' },
+  { id: 'other-ways', label: 'Other ways to sign in' },
+  { id: 'last-used-google', label: 'Last used (Google)' },
+  { id: 'last-used-passkey', label: 'Last used (Passkey)' },
+  { id: 'last-used-roboticela', label: 'Last used (Roboticela)' },
+] as const
+
+export type CreateAccountPreviewState = (typeof CREATE_ACCOUNT_STATES)[number]['id']
+
+export type CreateAccountPageState = 'default' | 'error' | 'loading' | 'other-ways'
+
+export function resolveCreateAccountPreview(state: CreateAccountPreviewState): {
+  state: CreateAccountPageState
+  lastMethod: AuthLastMethod | null
+} {
+  if (state === 'last-used-google') return { state: 'default', lastMethod: 'google' }
+  if (state === 'last-used-passkey') return { state: 'default', lastMethod: 'passkey' }
+  if (state === 'last-used-roboticela') return { state: 'default', lastMethod: 'roboticela' }
+  return { state, lastMethod: null }
+}
+
+export const FORGOT_PASSWORD_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const FORGOT_PASSWORD_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'error', label: 'Validation Error' },
+  { id: 'loading', label: 'Loading (submitting)' },
+] as const
+
+export type ForgotPasswordPreviewState = (typeof FORGOT_PASSWORD_STATES)[number]['id']
+
+export const RESET_PASSWORD_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const RESET_PASSWORD_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'error', label: 'Validation Error' },
+  { id: 'loading', label: 'Loading (saving)' },
+  { id: 'success', label: 'Password updated' },
+  { id: 'success-signin', label: 'Password updated (from sign-in)' },
+  { id: 'checking', label: 'Checking session' },
+] as const
+
+export type ResetPasswordPreviewState = (typeof RESET_PASSWORD_STATES)[number]['id']
+
+export const CHOOSE_VERIFICATION_METHOD_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const CHOOSE_VERIFICATION_METHOD_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'selected', label: 'Method selected' },
+  { id: 'loading', label: 'Loading (continuing)' },
+  { id: 'error', label: 'Error' },
+  { id: 'checking', label: 'Loading methods' },
+] as const
+
+export type ChooseVerificationMethodPreviewState =
+  (typeof CHOOSE_VERIFICATION_METHOD_STATES)[number]['id']
+
+export const VERIFICATION_CODE_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const VERIFICATION_CODE_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'error', label: 'Validation Error' },
+  { id: 'loading', label: 'Loading (verifying)' },
+  { id: 'resend-countdown', label: 'Resend countdown' },
+  { id: 'resend-ready', label: 'Resend ready' },
+  { id: 'no-email', label: 'No email' },
+  { id: 'checking', label: 'Verifying link' },
+  { id: 'reset-password', label: 'Reset password flow' },
+] as const
+
+export type VerificationCodePreviewState = (typeof VERIFICATION_CODE_STATES)[number]['id']

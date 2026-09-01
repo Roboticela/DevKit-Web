@@ -2,6 +2,8 @@ export { Alert, ALERT_SIZES, ALERT_TONES, ALERT_VARIANTS } from './Alert'
 export type { AlertSize, AlertTone, AlertVariant } from './Alert'
 export {
   Anchor,
+  ANCHOR_ARROWS,
+  ANCHOR_ARROW_LABEL,
   ANCHOR_SIZES,
   ANCHOR_TONES,
   ANCHOR_VARIANTS,
@@ -10,7 +12,7 @@ export {
   ANCHOR_VARIANT_LABEL,
   isExternalHref,
 } from './Anchor'
-export type { AnchorPreview, AnchorSize, AnchorTone, AnchorVariant } from './Anchor'
+export type { AnchorArrow, AnchorPreview, AnchorSize, AnchorTone, AnchorVariant } from './Anchor'
 export { Avatar, AvatarGroup, initialsFromName, AVATAR_SHAPES, AVATAR_SIZES, AVATAR_STATUSES, AVATAR_TONES, AVATAR_VARIANTS, AVATAR_SHAPE_LABEL, AVATAR_SIZE_LABEL, AVATAR_STATUS_LABEL, AVATAR_TONE_LABEL, AVATAR_VARIANT_LABEL } from './Avatar'
 export type { AvatarShape, AvatarSize, AvatarStatus, AvatarTone, AvatarVariant } from './Avatar'
 export { AvatarEditor } from './AvatarEditor'
@@ -56,6 +58,11 @@ export type { CompositionNode } from './CompositionTree'
 export { MaintenanceNote } from './MaintenanceNote'
 export { PageStateThumb } from './PageStateThumb'
 export { SignInPage } from './SignInPage'
+export type { SignInLastMethod } from './SignInPage'
+export { CreateAccountPage } from './CreateAccountPage'
+export type { CreateAccountLastMethod } from './CreateAccountPage'
+export { ForgotPasswordPage } from './ForgotPasswordPage'
+export { ResetPasswordPage } from './ResetPasswordPage'
 export { ViewportPreview } from './ViewportPreview'
 export { Button } from './Button'
 export type { ButtonSize, ButtonVariant } from './Button'
@@ -246,21 +253,27 @@ export type {
   FormFieldLayout,
 } from './FieldLabel'
 export { AuthProviderButton, AuthProviderStack } from './AuthProviderButton'
-export { GitHubButton } from './GitHubButton'
-export { GitHubMark } from './GitHubMark'
-export { GoogleButton } from './GoogleButton'
-export { GoogleMark } from './GoogleMark'
-export { OtherWaysButton } from './OtherWaysButton'
-export { PasskeyButton } from './PasskeyButton'
 export {
   AppleButton,
   DiscordButton,
   FacebookButton,
+  GitHubButton,
+  GoogleButton,
   LinkedInButton,
   MicrosoftButton,
+  PasskeyButton,
+  RoboticelaButton,
   SlackButton,
+  SOCIAL_LOGIN_MORE_PROVIDERS,
+  SOCIAL_LOGIN_PRIMARY_PROVIDERS,
+  SOCIAL_LOGIN_PROVIDERS,
+  SocialLoginButton,
   XButton,
-} from './ProviderButtons'
+} from './SocialLoginButton'
+export type { SocialLoginButtonProps, SocialLoginProvider } from './SocialLoginButton'
+export { GitHubMark } from './GitHubMark'
+export { GoogleMark } from './GoogleMark'
+export { OtherWaysButton } from './OtherWaysButton'
 export {
   AppleMark,
   DiscordMark,
@@ -270,7 +283,6 @@ export {
   SlackMark,
   XMark,
 } from './providerMarks'
-export { RoboticelaButton } from './RoboticelaButton'
 export { RoboticelaMark } from './RoboticelaMark'
 export { IconButton } from './IconButton'
 export type { IconButtonSize, IconButtonStatus, IconButtonVariant } from './IconButton'

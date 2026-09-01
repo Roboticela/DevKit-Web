@@ -4,9 +4,32 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { AuthNav } from './AuthNav'
 import { BrandLogo } from './BrandLogo'
-import { Body, Heading, Label, Subhead } from './Text'
+import { Body, Heading, Label } from './Text'
 
 export { AuthNav } from './AuthNav'
+
+export function AuthFormCollapse({
+  open,
+  children,
+  className,
+}: {
+  open: boolean
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <div
+      className={cn(
+        'grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.28,0.11,0.32,1)] motion-reduce:transition-none',
+        open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+        className,
+      )}
+      aria-hidden={open ? undefined : true}
+    >
+      <div className="overflow-hidden">{children}</div>
+    </div>
+  )
+}
 
 export function AuthBrand({
   title,
@@ -22,15 +45,21 @@ export function AuthBrand({
   return (
     <>
       <div className="mb-6 flex justify-center text-text-primary">
-        {icon ?? <BrandLogo className="block size-11 object-contain" size={44} alt="" />}
+        {icon ?? <BrandLogo className="block size-11" size={44} alt="" />}
       </div>
-      <Heading align="center">{title}</Heading>
-      <Subhead
+      <Heading
+        align="center"
+        className="!text-[32px] !leading-[1.1] !tracking-[-0.01em] min-[735px]:!text-[32px] min-[735px]:!leading-[1.1]"
+      >
+        {title}
+      </Heading>
+      <Body
+        size="sm"
         align="center"
         className={cn('mt-2', narrowSubhead && 'mx-auto max-w-[360px]')}
       >
         {subhead}
-      </Subhead>
+      </Body>
     </>
   )
 }
@@ -86,7 +115,12 @@ export function AuthSuccess({
           </svg>
         )}
       </div>
-      <Heading align="center">{title}</Heading>
+      <Heading
+        align="center"
+        className="!text-[32px] !leading-[1.1] !tracking-[-0.01em] min-[735px]:!text-[32px] min-[735px]:!leading-[1.1]"
+      >
+        {title}
+      </Heading>
       {body ? (
         <Body size="sm" align="center" className="mx-auto mt-2 max-w-[360px]">
           {body}
