@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
+import { OnboardingDocs } from '@/components/OnboardingDocs'
+import { SaveRecoveryCodesDocs } from '@/components/SaveRecoveryCodesDocs'
+import { SetupTwoFactorSuccessDocs } from '@/components/SetupTwoFactorSuccessDocs'
 import { SetupTwoFactorDocs } from '@/components/SetupTwoFactorDocs'
 import { LinkExpiredDocs } from '@/components/LinkExpiredDocs'
 import { AnotherDeviceDocs } from '@/components/AnotherDeviceDocs'
@@ -47,6 +50,7 @@ export default async function PageDocPage({
 
   if (slug === 'sign-in') return <SignInDocs />
   if (slug === 'create-account') return <CreateAccountDocs />
+  if (slug === 'onboarding') return <OnboardingDocs />
   if (slug === 'forgot-password') return <ForgotPasswordDocs />
   if (slug === 'reset-password') return <ResetPasswordDocs />
   if (slug === 'choose-verification-method') return <ChooseVerificationMethodDocs />
@@ -56,6 +60,8 @@ export default async function PageDocPage({
   if (slug === 'another-device') return <AnotherDeviceDocs />
   if (slug === 'link-expired') return <LinkExpiredDocs />
   if (slug === 'setup-2fa') return <SetupTwoFactorDocs />
+  if (slug === 'save-recovery-codes') return <SaveRecoveryCodesDocs />
+  if (slug === 'setup-2fa-success') return <SetupTwoFactorSuccessDocs />
 
   const { prev, next } = adjacentDocs(PAGES_ITEMS, slug)
 

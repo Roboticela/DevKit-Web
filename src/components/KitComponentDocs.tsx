@@ -234,6 +234,7 @@ import {
   navSearchGuide,
   numberFieldGuide,
   otpGuide,
+  qrGuide,
   pageHeaderGuide,
   paginationGuide,
   passwordFieldGuide,
@@ -486,6 +487,8 @@ import {
 } from './TextField'
 import { ThemeIconToggle } from './ThemeIconToggle'
 import { ThemeToggle } from './ThemeToggle'
+import { QrCode, QR_CODE_SIZES, QR_CODE_VARIANTS } from './QrCode'
+import type { QrCodeSize, QrCodeVariant } from './QrCode'
 import { TotpManualKey } from './TotpManualKey'
 import { VerificationMethodCard } from './VerificationMethodCard'
 
@@ -4561,6 +4564,111 @@ function OtpStates() {
   )
 }
 
+const SAMPLE_TOTP_CONTENT = { kind: 'totp' as const, secret: 'JBSWY3DPEHPK3PXP' }
+const SAMPLE_URL_CONTENT = { kind: 'url' as const, href: 'https://roboticela.com' }
+const SAMPLE_WIFI_CONTENT = {
+  kind: 'wifi' as const,
+  ssid: 'Roboticela-Guest',
+  password: 'welcome-home',
+}
+const SAMPLE_TEXT_CONTENT = { kind: 'text' as const, text: 'Scan to connect with Roboticela.' }
+
+function QrDemo() {
+  return (
+    <div className="flex w-full justify-center">
+      <QrCode content={SAMPLE_TOTP_CONTENT} alt="Authenticator QR code" variant="branded" />
+    </div>
+  )
+}
+
+const QR_VARIANT_LABEL: Record<QrCodeVariant, string> = {
+  outline: 'Outline',
+  subtle: 'Subtle',
+  ghost: 'Ghost',
+  embedded: 'Embedded',
+  branded: 'Branded',
+}
+
+const QR_SIZE_LABEL: Record<QrCodeSize, string> = {
+  sm: 'Small',
+  md: 'Medium',
+  lg: 'Large',
+}
+
+function QrStates() {
+  return (
+    <DocsStack gap={10}>
+      <DocsStateGroup title="Appearance">
+        <DocsStack gap={4}>
+          {QR_CODE_VARIANTS.map((variant) => (
+            <OtpStateCard key={variant} label={QR_VARIANT_LABEL[variant]}>
+              <QrCode content={SAMPLE_TOTP_CONTENT} variant={variant} className="mt-0" />
+            </OtpStateCard>
+          ))}
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Size">
+        <DocsStack gap={4}>
+          {QR_CODE_SIZES.map((size) => (
+            <OtpStateCard key={size} label={QR_SIZE_LABEL[size]}>
+              <QrCode content={SAMPLE_TOTP_CONTENT} size={size} className="mt-0" />
+            </OtpStateCard>
+          ))}
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Content">
+        <DocsStack gap={4}>
+          <OtpStateCard label="TOTP — authenticator setup">
+            <QrCode content={SAMPLE_TOTP_CONTENT} alt="Authenticator QR code" className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="URL — link or download">
+            <QrCode content={SAMPLE_URL_CONTENT} alt="Visit Roboticela" className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="Wi‑Fi — network join">
+            <QrCode content={SAMPLE_WIFI_CONTENT} alt="Join guest Wi‑Fi" className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="Text — plain message">
+            <QrCode content={SAMPLE_TEXT_CONTENT} alt="Roboticela message" className="mt-0" />
+          </OtpStateCard>
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="Logo">
+        <DocsStack gap={4}>
+          <OtpStateCard label="Brand logo — default">
+            <QrCode content={SAMPLE_URL_CONTENT} className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="No logo">
+            <QrCode content={SAMPLE_URL_CONTENT} logo={false} className="mt-0" />
+          </OtpStateCard>
+        </DocsStack>
+      </DocsStateGroup>
+
+      <DocsStateGroup title="State">
+        <DocsStack gap={4}>
+          <OtpStateCard label="Default">
+            <QrCode content={SAMPLE_TOTP_CONTENT} className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="Loading">
+            <QrCode content={SAMPLE_TOTP_CONTENT} loading className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="Error">
+            <QrCode content={SAMPLE_TOTP_CONTENT} error className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="Expired">
+            <QrCode content={SAMPLE_TOTP_CONTENT} expired className="mt-0" />
+          </OtpStateCard>
+          <OtpStateCard label="Disabled">
+            <QrCode content={SAMPLE_TOTP_CONTENT} disabled className="mt-0" />
+          </OtpStateCard>
+        </DocsStack>
+      </DocsStateGroup>
+    </DocsStack>
+  )
+}
+
 const FIELD_LABEL_SIZE_LABEL: Record<FieldLabelSize, string> = {
   sm: 'Small',
   md: 'Medium',
@@ -5060,11 +5168,26 @@ function RecoveryStates() {
           <RecoveryStateCard label="Subtle">
             <RecoveryCodesList codes={['XK4M-92QP', 'L7TN-3W8D', 'P0AV-61CK', 'H9QE-44BM']} />
           </RecoveryStateCard>
-          <RecoveryStateCard label="Outline, copy">
+          <RecoveryStateCard label="Outline, copy and download">
             <RecoveryCodesList
               variant="outline"
+              columns={3}
               copyable
-              codes={['XK4M-92QP', 'L7TN-3W8D', 'P0AV-61CK', 'H9QE-44BM']}
+              downloadable
+              codes={[
+                'XK4M-92QP',
+                'L7TN-3W8D',
+                'P0AV-61CK',
+                'H9QE-44BM',
+                'R3ST-55LM',
+                'N8WK-77QJ',
+                'T2VX-88PK',
+                'M5BY-11ZN',
+                'K7PL-22WX',
+                'F4HM-33YN',
+                'D9QK-44ZT',
+                'B6JR-55UV',
+              ]}
             />
           </RecoveryStateCard>
         </DocsStateGrid>
@@ -10702,7 +10825,7 @@ const DOCS: Record<string, DocDef> = {
 <RecoveryInput length={16} mode="groups" value={code} onChange={setCode} />
 <RecoveryInput value={code} onChange={setCode} invalid shaking />
 <RecoveryInput value={code} onChange={setCode} valid />
-<RecoveryCodesList copyable codes={codes} />
+<RecoveryCodesList copyable downloadable codes={codes} />
 `,
     statesContent: <RecoveryStates />,
     props: [
@@ -10727,7 +10850,12 @@ const DOCS: Record<string, DocDef> = {
       p('onComplete', '(code: string) => void', 'undefined', 'Called when every character is filled.'),
       p('codes', 'string[]', '—', 'On RecoveryCodesList, the codes to display.'),
       p("RecoveryCodesList variant", "'outline' | 'subtle' | 'ghost'", "'subtle'", 'Cell chrome on the list.'),
-      p('copyable', 'boolean', 'false', 'Adds a copy control under RecoveryCodesList.'),
+      p("RecoveryCodesList columns", '2 | 3 | 4', '2', 'Grid width. Three shows a 3×4 layout for twelve codes.'),
+      p('copyable', 'boolean', 'false', 'Adds a copy button under RecoveryCodesList.'),
+      p('downloadable', 'boolean', 'false', 'Adds a download button under RecoveryCodesList.'),
+      p('downloadFilename', 'string', 'brand.recoveryCodesFilename', 'Filename used when downloading the codes as a text file.'),
+      p('onCopy', '() => void', 'undefined', 'Called after a successful copy.'),
+      p('onDownload', '() => void', 'undefined', 'Called after a download starts.'),
     ],
   },
   'field-label': {
@@ -12116,6 +12244,39 @@ const DOCS: Record<string, DocDef> = {
       p('subtitle', 'string', '—', 'Short description.'),
       p('hint', 'string', 'undefined', 'Native title for disabled-state tooltips.'),
       p('onClick', '() => void', 'undefined', 'Called when the card is pressed.'),
+    ],
+  },
+  'qr-code': {
+    title: 'QR Code',
+    description: 'A scannable QR for URLs, TOTP setup, Wi‑Fi, and more. Brand logo centered by default.',
+    ...qrGuide,
+    Demo: QrDemo,
+    wide: true,
+    code: `import { QrCode } from '@/components/QrCode'
+
+<QrCode content={{ kind: 'totp', secret, accountName: email }} alt="Authenticator QR code" variant="branded" />
+<QrCode content={{ kind: 'url', href: 'https://roboticela.com' }} alt="Visit Roboticela" />
+<QrCode content={{ kind: 'wifi', ssid: 'Guest', password: 'welcome' }} />
+<QrCode value={encodedString} logo={false} variant="embedded" />
+<QrCode content={{ kind: 'totp', secret }} loading />
+<QrCode content={{ kind: 'totp', secret }} error />
+<QrCode content={{ kind: 'url', href }} expired expiredMessage="Link expired" />
+`,
+    statesContent: <QrStates />,
+    props: [
+      p('value', 'string', 'undefined', 'Pre-encoded string. Use when you already have the final payload.'),
+      p('content', 'QrContent', 'undefined', 'Structured content: text, url, totp, email, phone, sms, wifi, or geo.'),
+      p('alt', 'string', "'QR code'", 'Image alt text.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Output size. Medium is 180px for auth setup.'),
+      p("variant", "'outline' | 'subtle' | 'ghost' | 'embedded' | 'branded'", "'outline'", 'Frame around the white QR pad. Branded uses a primary-tinted frame.'),
+      p("logo", "false | 'brand' | string | ReactNode", "'brand'", 'Center mark. false hides it. string is a custom image URL.'),
+      p('loading', 'boolean', 'false', 'Show a loading placeholder.'),
+      p('error', 'boolean', 'false', 'Show the error state instead of the image.'),
+      p('expired', 'boolean', 'false', 'Dim the code and show an expired overlay.'),
+      p('disabled', 'boolean', 'false', 'Reduce opacity for inactive codes.'),
+      p('errorMessage', 'string', "'Could not load QR code'", 'Copy shown in the error state.'),
+      p('expiredMessage', 'string', "'Expired'", 'Copy shown in the expired overlay.'),
+      p('className', 'string', 'undefined', 'Extra classes on the outer wrapper.'),
     ],
   },
   'totp-manual-key': {

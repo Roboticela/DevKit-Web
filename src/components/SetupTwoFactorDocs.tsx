@@ -31,13 +31,14 @@ const TREE: CompositionNode[] = [
       {
         label: 'Auth Nav',
         href: '/components/auth-nav',
-        note: '(Brand Logo, theme, Settings link)',
+        note: '(Brand Logo, theme, Sign in link)',
       },
       { label: 'Auth Brand', note: '(Phone icon, title, subhead)' },
+      { label: 'QR Code', href: '/components/qr-code', note: '(TOTP setup scan)' },
       { label: 'TOTP Manual Key', href: '/components/totp-manual-key', note: '(Copyable secret)' },
       { label: 'OTP Boxes', href: '/components/otp-boxes', note: '(6-digit verification)' },
-      { label: 'Recovery Input', href: '/components/recovery-input', note: '(Recovery codes list)' },
-      { label: 'Button', href: '/components/button', note: '(Save, Continue)' },
+      { label: 'Button', href: '/components/button', note: '(Save)' },
+      { label: 'Anchor', href: '/components/anchor', note: '(Skip for now)' },
     ],
   },
 ]
@@ -51,13 +52,6 @@ const DATA: PropRow[] = [
     description: 'Called with the first 6-digit code after the QR scan to confirm setup.',
   },
   {
-    name: 'onContinue',
-    type: '() => void',
-    required: 'No',
-    defaultValue: 'undefined',
-    description: 'Called when the person finishes saving recovery codes.',
-  },
-  {
     name: 'secret',
     type: 'string',
     required: 'Yes',
@@ -65,36 +59,46 @@ const DATA: PropRow[] = [
     description: 'The TOTP secret shown under the QR code for manual entry.',
   },
   {
-    name: 'recoveryCodes',
-    type: 'string[]',
+    name: 'showSkipForNow',
+    type: 'boolean',
     required: 'No',
-    defaultValue: 'undefined',
-    description: 'One-time backup codes shown after successful setup.',
+    defaultValue: 'true',
+    description: 'Show Skip for now below Save so someone can defer setup.',
+  },
+  {
+    name: 'skipHref',
+    type: 'string',
+    required: 'No',
+    defaultValue: "'/dashboard'",
+    description: 'Where Skip for now goes, usually the signed-in home.',
   },
 ]
 
 const REACT_SOURCE = `import { AuthBrand, AuthLayout, AuthSuccess } from '@/components/AuthLayout'
+import { Anchor } from '@/components/Anchor'
 import { Button } from '@/components/Button'
-import { FieldLabel } from '@/components/FieldLabel'
+import { Caption, Body } from '@/components/Text'
 import { OtpBoxes } from '@/components/OtpBoxes'
-import { RecoveryCodesList } from '@/components/RecoveryInput'
+import { QrCode } from '@/components/QrCode'
 import { TotpManualKey } from '@/components/TotpManualKey'
 import { DkHandheldMobilePhone } from '@/icons'
 
-export default function SetupTwoFactorPage({ secret, qrSrc, onSave, recoveryCodes }) {
+export default function SetupTwoFactorPage({ secret, onSave }) {
   return (
-    <AuthLayout navLinkTo="/pages/settings" navLinkLabel="Settings">
+    <AuthLayout navLinkTo="/sign-in" navLinkLabel="Sign in">
       <AuthBrand
         title="Set Up Authenticator"
-        subhead="Scan the QR code, then enter a code."
+        subhead="Your account needs two-factor authentication. Scan the QR code, then enter a code."
         icon={<DkHandheldMobilePhone size={44} strokeWidth={1.5} />}
       />
-      <img src={qrSrc} alt="Authenticator QR code" width={180} height={180} />
+      <QrCode content={{ kind: 'totp', secret }} alt="Authenticator QR code" variant="branded" />
       <TotpManualKey secret={secret} />
-      <FieldLabel>Verification code</FieldLabel>
+      <Caption align="center" tone="secondary">Verification code</Caption>
       <OtpBoxes value={digits} onChange={setDigits} />
       <Button type="submit" loading={isSaving} loadingText="Saving…">Save</Button>
-      <RecoveryCodesList copyable codes={recoveryCodes} />
+      <Body size="sm" align="center" tone="tertiary" className="mt-3">
+        <Anchor href="/dashboard" variant="subtle" className="text-sm">Skip for now</Anchor>
+      </Body>
     </AuthLayout>
   )
 }
@@ -102,10 +106,11 @@ export default function SetupTwoFactorPage({ secret, qrSrc, onSave, recoveryCode
 
 const BUILT_WITH = [
   { label: 'Auth Nav', href: '/components/auth-nav' },
+  { label: 'QR Code', href: '/components/qr-code' },
   { label: 'TOTP Manual Key', href: '/components/totp-manual-key' },
   { label: 'OTP Boxes', href: '/components/otp-boxes' },
-  { label: 'Recovery Input', href: '/components/recovery-input' },
   { label: 'Button', href: '/components/button' },
+  { label: 'Anchor', href: '/components/anchor' },
 ]
 
 export function SetupTwoFactorDocs() {
@@ -132,8 +137,8 @@ export function SetupTwoFactorDocs() {
           </Badge>
         </div>
         <Subhead className="mt-2">
-          Walk someone through linking an authenticator app, confirming the first code, and saving recovery
-          codes.
+          Shown after sign-in when an account still needs two-factor authentication. Walk someone through
+          linking an authenticator app and confirming the first code.
         </Subhead>
         <DocsMetaBadges showStatus={false} />
         <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -201,9 +206,9 @@ export function SetupTwoFactorDocs() {
             description="Use a saved backup code when the authenticator is unavailable."
           />
           <RelatedCard
-            href="/pages/settings"
-            title="Settings"
-            description="Where authenticator setup is started from Security."
+            href="/pages/save-recovery-codes"
+            title="Save Recovery Codes"
+            description="Next step after setup — copy and store one-time backup codes."
           />
         </div>
       </section>

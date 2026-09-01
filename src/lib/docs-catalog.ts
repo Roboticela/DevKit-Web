@@ -174,6 +174,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('social-login', 'Social Login Button', 'Auth', 'Continue with Roboticela, Passkey, Google, Apple, GitHub, and more.'),
       c('verification-method', 'Verification Method', 'Auth', 'A selectable 2FA method card.'),
       c('totp-manual-key', 'TOTP Manual Key', 'Auth', 'A copyable authenticator secret.'),
+      c('qr-code', 'QR Code', 'Auth', 'A scannable QR for URLs, TOTP, Wi‑Fi, and more.'),
     ],
   },
   {

@@ -212,9 +212,9 @@ export function RecoveryCodeDocs() {
             description="TOTP entry when the authenticator app is available."
           />
           <RelatedCard
-            href="/pages/setup-2fa"
-            title="Setup Two-Factor"
-            description="Where recovery codes are generated and saved."
+            href="/pages/save-recovery-codes"
+            title="Save Recovery Codes"
+            description="Where recovery codes are generated and saved after setup."
           />
         </div>
       </section>

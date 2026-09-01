@@ -108,6 +108,7 @@ import { Tabs, TABS_VARIANT_LABEL, TABS_VARIANTS } from './Tabs'
 import { ThemeIconToggle } from './ThemeIconToggle'
 import { ThemeToggle } from './ThemeToggle'
 import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
+import { QrCode } from './QrCode'
 import { TotpManualKey } from './TotpManualKey'
 import { VerificationMethodCard } from './VerificationMethodCard'
 
@@ -983,11 +984,39 @@ export function ComponentGallery() {
               </div>
             </DemoCard>
 
+            <DemoCard>
+              <StateLabel>QR code — TOTP / URL / loading / error</StateLabel>
+              <div className="grid gap-8 min-[735px]:grid-cols-2 min-[1069px]:grid-cols-4">
+                <QrCode
+                  content={{ kind: 'totp', secret: 'JBSWY3DPEHPK3PXP' }}
+                  alt="Authenticator QR code"
+                  variant="branded"
+                  className="mt-0"
+                />
+                <QrCode
+                  content={{ kind: 'url', href: 'https://roboticela.com' }}
+                  alt="Visit Roboticela"
+                  className="mt-0"
+                />
+                <QrCode
+                  content={{ kind: 'totp', secret: 'JBSWY3DPEHPK3PXP' }}
+                  loading
+                  className="mt-0"
+                />
+                <QrCode
+                  content={{ kind: 'totp', secret: 'JBSWY3DPEHPK3PXP' }}
+                  error
+                  className="mt-0"
+                />
+              </div>
+            </DemoCard>
+
             <div className="grid gap-4 min-[735px]:grid-cols-2">
               <DemoCard>
-                <StateLabel>Recovery codes — copy</StateLabel>
+                <StateLabel>Recovery codes — copy / download</StateLabel>
                 <RecoveryCodesList
                   copyable
+                  downloadable
                   codes={['XK4M-92QP', 'L7TN-3W8D', 'P0AV-61CK', 'H9QE-44BM']}
                 />
               </DemoCard>

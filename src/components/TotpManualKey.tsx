@@ -29,7 +29,7 @@ export function TotpManualKey({
   const dark = tone === 'dark'
 
   return (
-    <div className="mt-4 flex w-full max-w-[420px] flex-col items-center gap-2">
+    <div className="mx-auto mt-4 flex w-full max-w-[420px] flex-col items-center gap-2">
       <Caption
         align="center"
         className={dark ? 'text-[#a1a1a6]' : undefined}

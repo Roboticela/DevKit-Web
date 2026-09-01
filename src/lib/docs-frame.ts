@@ -22,9 +22,12 @@ import {
   CREATE_ACCOUNT_TOC,
   FORGOT_PASSWORD_TOC,
   LINK_EXPIRED_TOC,
+  ONBOARDING_TOC,
   PAGES_NAV,
   RECOVERY_CODE_TOC,
   RESET_PASSWORD_TOC,
+  SAVE_RECOVERY_CODES_TOC,
+  SETUP_TWO_FACTOR_SUCCESS_TOC,
   SETUP_TWO_FACTOR_TOC,
   SIGN_IN_TOC,
   VERIFICATION_CODE_TOC,
@@ -76,7 +79,9 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
           ? SIGN_IN_TOC
           : slug === 'create-account'
             ? CREATE_ACCOUNT_TOC
-            : slug === 'forgot-password'
+            : slug === 'onboarding'
+              ? ONBOARDING_TOC
+              : slug === 'forgot-password'
               ? FORGOT_PASSWORD_TOC
               : slug === 'reset-password'
                 ? RESET_PASSWORD_TOC
@@ -94,7 +99,11 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
                             ? LINK_EXPIRED_TOC
                             : slug === 'setup-2fa'
                               ? SETUP_TWO_FACTOR_TOC
-                              : [{ id: 'overview', label: 'Overview' }],
+                              : slug === 'save-recovery-codes'
+                                ? SAVE_RECOVERY_CODES_TOC
+                                : slug === 'setup-2fa-success'
+                                  ? SETUP_TWO_FACTOR_SUCCESS_TOC
+                                  : [{ id: 'overview', label: 'Overview' }],
       activeTab: 'Pages',
       sections: PAGES_NAV,
       contentWidth: 900,

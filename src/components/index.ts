@@ -527,4 +527,26 @@ export { AuthLegal, ErrorText, StatusText } from './TextLink'
 export { ThemeToggle, type ThemeToggleVariant } from './ThemeToggle'
 export { ThemeIconToggle, type ThemeIconToggleSize, type ThemeIconToggleVariant } from './ThemeIconToggle'
 export { TotpManualKey } from './TotpManualKey'
+export {
+  QrCode,
+  QR_CODE_SIZES,
+  QR_CODE_VARIANTS,
+  QR_CONTENT_KINDS,
+  buildEmailQrValue,
+  buildGeoQrValue,
+  buildPhoneQrValue,
+  buildSmsQrValue,
+  buildTextQrValue,
+  buildTotpAuthUri,
+  buildUrlQrValue,
+  buildWifiQrValue,
+  encodeQrContent,
+} from './QrCode'
+export type {
+  QrCodeLogo,
+  QrCodeSize,
+  QrCodeVariant,
+  QrContent,
+  QrContentKind,
+} from './QrCode'
 export { VerificationMethodCard } from './VerificationMethodCard'

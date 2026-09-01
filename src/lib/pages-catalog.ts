@@ -17,6 +17,7 @@ export const PAGES_NAV: DocsNavSection[] = [
     items: [
       { id: 'sign-in', label: 'Sign In', href: '/pages/sign-in', searchGroup: 'Auth' },
       { id: 'create-account', label: 'Create Account', href: '/pages/create-account', searchGroup: 'Auth' },
+      { id: 'onboarding', label: 'Onboarding', href: '/pages/onboarding', searchGroup: 'Auth' },
       { id: 'forgot-password', label: 'Forgot Password', href: '/pages/forgot-password', searchGroup: 'Auth' },
       { id: 'reset-password', label: 'Reset Password', href: '/pages/reset-password', searchGroup: 'Auth' },
       {
@@ -41,6 +42,18 @@ export const PAGES_NAV: DocsNavSection[] = [
       { id: 'another-device', label: 'Another Device', href: '/pages/another-device', searchGroup: 'Auth' },
       { id: 'link-expired', label: 'Link Expired', href: '/pages/link-expired', searchGroup: 'Auth' },
       { id: 'setup-2fa', label: 'Setup Two-Factor', href: '/pages/setup-2fa', searchGroup: 'Auth' },
+      {
+        id: 'save-recovery-codes',
+        label: 'Save Recovery Codes',
+        href: '/pages/save-recovery-codes',
+        searchGroup: 'Auth',
+      },
+      {
+        id: 'setup-2fa-success',
+        label: 'Two-Factor Setup Success',
+        href: '/pages/setup-2fa-success',
+        searchGroup: 'Auth',
+      },
     ],
   },
   {
@@ -325,11 +338,68 @@ export const SETUP_TWO_FACTOR_TOC: DocsTocItem[] = [
 
 export const SETUP_TWO_FACTOR_STATES = [
   { id: 'default', label: 'Scan QR code' },
+  { id: 'qr-loading', label: 'QR loading' },
+  { id: 'qr-error', label: 'QR error' },
   { id: 'loading', label: 'Loading setup' },
   { id: 'error', label: 'Invalid code' },
   { id: 'saving', label: 'Saving' },
-  { id: 'codes', label: 'Recovery codes' },
   { id: 'success', label: 'Setup complete' },
 ] as const
 
 export type SetupTwoFactorPreviewState = (typeof SETUP_TWO_FACTOR_STATES)[number]['id']
+
+export const SAVE_RECOVERY_CODES_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const SAVE_RECOVERY_CODES_STATES = [
+  { id: 'default', label: 'Save codes' },
+  { id: 'loading', label: 'Loading codes' },
+  { id: 'saving', label: 'Continuing' },
+] as const
+
+export type SaveRecoveryCodesPreviewState = (typeof SAVE_RECOVERY_CODES_STATES)[number]['id']
+
+export const SETUP_TWO_FACTOR_SUCCESS_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const SETUP_TWO_FACTOR_SUCCESS_STATES = [
+  { id: 'default', label: 'Setup complete' },
+  { id: 'continuing', label: 'Continuing to dashboard' },
+] as const
+
+export type SetupTwoFactorSuccessPreviewState = (typeof SETUP_TWO_FACTOR_SUCCESS_STATES)[number]['id']
+
+export const ONBOARDING_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const ONBOARDING_STATES = [
+  { id: 'default', label: 'Google' },
+  { id: 'apple', label: 'Apple' },
+  { id: 'microsoft', label: 'Microsoft' },
+  { id: 'passkey', label: 'Passkey' },
+  { id: 'email', label: 'Email sign-up' },
+  { id: 'optional-expanded', label: 'Optional details open' },
+  { id: 'username-taken', label: 'Username unavailable' },
+  { id: 'error', label: 'Validation error' },
+  { id: 'loading', label: 'Saving' },
+] as const
+
+export type OnboardingPreviewState = (typeof ONBOARDING_STATES)[number]['id']

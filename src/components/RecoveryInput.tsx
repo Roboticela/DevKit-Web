@@ -10,7 +10,8 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from 'react'
-import { DkClipboardCopyDuplicate, DkTaskCompleteCheckmark } from '@/icons'
+import { DkClipboardCopyDuplicate, DkDownloadArrowSave, DkTaskCompleteCheckmark } from '@/icons'
+import { brand } from '@/lib/devkit'
 import { cn } from '@/lib/cn'
 import { EASE, FIELD_INVALID, FIELD_VALID, FOCUS_RING, OPEN_RING } from '@/lib/styles'
 import { Button } from './Button'
@@ -583,35 +584,78 @@ function RecoveryGroups({
 export function RecoveryCodesList({
   codes,
   variant = 'subtle',
+  columns = 2,
   copyable = false,
+  downloadable = false,
+  downloadFilename = brand.recoveryCodesFilename,
+  onCopy,
+  onDownload,
   className,
 }: {
   codes: string[]
   variant?: 'outline' | 'subtle' | 'ghost'
+  columns?: 2 | 3 | 4
   copyable?: boolean
+  downloadable?: boolean
+  downloadFilename?: string
+  onCopy?: () => void
+  onDownload?: () => void
   className?: string
 }) {
   const [copied, setCopied] = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const formatted = codes.map((code) => formatRecoveryCode(code) || code)
+  const showActions = copyable || downloadable
+  const compact = columns === 3 || columns === 4
+
+  const columnGrid =
+    columns === 4
+      ? 'grid-cols-2 min-[400px]:grid-cols-4'
+      : columns === 3
+        ? 'grid-cols-3'
+        : 'grid-cols-1 min-[420px]:grid-cols-2'
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(formatted.join('\n'))
       setCopied(true)
+      onCopy?.()
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
       setCopied(false)
     }
   }
 
+  async function handleDownload() {
+    if (downloading) return
+
+    setDownloading(true)
+    try {
+      await new Promise((resolve) => window.setTimeout(resolve, 350))
+      const blob = new Blob([formatted.join('\n')], { type: 'text/plain;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = downloadFilename
+      link.click()
+      URL.revokeObjectURL(url)
+      onDownload?.()
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   return (
     <div className={cn('flex w-full flex-col gap-3', className)}>
-      <ul className="m-0 grid list-none grid-cols-1 gap-2 p-0 min-[420px]:grid-cols-2">
+      <ul className={cn('m-0 grid list-none gap-2 p-0', columnGrid)}>
         {formatted.map((code) => (
           <li key={code}>
             <code
               className={cn(
-                'block rounded-[12px] px-3 py-2.5 text-center font-mono text-[13px] font-semibold tracking-[0.08em] text-text-primary',
+                'block rounded-[12px] text-center font-mono font-semibold text-text-primary',
+                compact
+                  ? 'px-2 py-2 text-[11px] tracking-[0.06em] min-[400px]:px-2.5 min-[400px]:text-[12px] min-[400px]:tracking-[0.07em]'
+                  : 'px-3 py-2.5 text-[13px] tracking-[0.08em]',
                 listChrome[variant],
               )}
             >
@@ -620,23 +664,48 @@ export function RecoveryCodesList({
           </li>
         ))}
       </ul>
-      {copyable ? (
-        <Button
-          variant="action"
-          size="sm"
-          type="button"
-          aria-label={copied ? 'Copied' : 'Copy recovery codes'}
-          leading={
-            copied ? (
-              <DkTaskCompleteCheckmark size={16} strokeWidth={2} absoluteStrokeWidth aria-hidden />
-            ) : (
-              <DkClipboardCopyDuplicate size={16} strokeWidth={1.75} absoluteStrokeWidth aria-hidden />
-            )
-          }
-          onClick={() => void handleCopy()}
+      {showActions ? (
+        <div
+          className={cn(
+            'grid gap-2',
+            copyable && downloadable ? 'grid-cols-2' : 'grid-cols-1',
+          )}
         >
-          {copied ? 'Copied' : 'Copy codes'}
-        </Button>
+          {copyable ? (
+            <Button
+              variant="action"
+              size="sm"
+              type="button"
+              aria-label={copied ? 'Copied' : 'Copy recovery codes'}
+              leading={
+                copied ? (
+                  <DkTaskCompleteCheckmark size={16} strokeWidth={2} absoluteStrokeWidth aria-hidden />
+                ) : (
+                  <DkClipboardCopyDuplicate size={16} strokeWidth={1.75} absoluteStrokeWidth aria-hidden />
+                )
+              }
+              onClick={() => void handleCopy()}
+            >
+              {copied ? 'Copied' : 'Copy'}
+            </Button>
+          ) : null}
+          {downloadable ? (
+            <Button
+              variant="action"
+              size="sm"
+              type="button"
+              aria-label={downloading ? 'Downloading recovery codes' : 'Download recovery codes'}
+              loading={downloading}
+              loadingText="Downloading…"
+              leading={
+                <DkDownloadArrowSave size={16} strokeWidth={1.75} absoluteStrokeWidth aria-hidden />
+              }
+              onClick={() => void handleDownload()}
+            >
+              Download
+            </Button>
+          ) : null}
+        </div>
       ) : null}
     </div>
   )

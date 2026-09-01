@@ -823,6 +823,51 @@ export const otpGuide = {
   ),
 }
 
+export const qrGuide = {
+  usage: (
+    <DocsUsage>
+      <DocsProse>
+        <Body>
+          QR Code renders a scannable image from raw text or structured content — URLs, TOTP setup, Wi‑Fi,
+          email, phone, SMS, geo, and plain text. The matrix stays on a white pad with the brand logo centered
+          by default. Outline is the default frame in auth. Branded adds a primary-tinted frame for setup flows.
+        </Body>
+      </DocsProse>
+      <DocsPrinciples
+        items={[
+          { title: 'Content or value', body: 'Pass content with a kind, or value with a pre-encoded string. Use encodeQrContent helpers for each kind.' },
+          { title: 'Brand logo', body: 'logo defaults to brand. Set logo={false} for plain codes. High error correction keeps scans reliable with the center mark.' },
+          { title: 'States', body: 'Use loading while fetching data. Use error when generation fails. Use expired for time-limited codes such as device pairing.' },
+        ]}
+      />
+      <DocsDoDont
+        doItems={[
+          'Use content={{ kind: "totp", secret }} during authenticator setup.',
+          'Use content={{ kind: "url", href }} for marketing or app-download codes.',
+          'Pair TOTP codes with Totp Manual Key so people can type the secret if scanning fails.',
+        ]}
+        dontItems={[
+          'Do not put the QR on a dark or tinted background without the white pad.',
+          'Do not pass only the raw secret for authenticator setup — use kind totp or a TOTP URI.',
+          'Do not resize the image with CSS in a way that blurs the modules.',
+        ]}
+      />
+    </DocsUsage>
+  ),
+  accessibility: (
+    <A11ySection
+      intro="The QR is decorative for sighted users who scan with a phone. Always offer an equivalent text path for people who cannot scan."
+      items={[
+        'Use alt text that names what the code is for, such as Authenticator QR code or Download app.',
+        'Loading sets aria-busy on the placeholder.',
+        'Error replaces the image with text so screen reader users know generation failed.',
+        'disabled sets aria-disabled on the wrapper.',
+        'Do not rely on the QR alone — manual entry or a link must stay available.',
+      ]}
+    />
+  ),
+}
+
 export const recoveryGuide = {
   usage: (
     <DocsUsage>
