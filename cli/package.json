@@ -1,6 +1,6 @@
 {
   "name": "@roboticela/devkit",
-  "version": "4.7.1",
+  "version": "4.7.2",
   "description": "Roboticela DevKit — CLI and React UI. Templates, components, and premium assets are versioned on the DevKit server.",
   "type": "module",
   "main": "./dist/ui/index.js",
