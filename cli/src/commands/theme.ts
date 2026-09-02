@@ -3,12 +3,11 @@ import { join } from "path";
 import chalk from "chalk";
 import { readConfig, writeConfig } from "../lib/config.js";
 import { generateThemeCSS } from "../lib/theme.js";
+import { resolveThemeCssPath } from "../lib/theme-path.js";
 import { log } from "../lib/logger.js";
 
-function getCssPath(template: string, cwd: string): string {
-  return template === "nextjs-compact"
-    ? join(cwd, "app", "globals.css")
-    : join(cwd, "src", "index.css");
+function getCssPath(cwd: string): string {
+  return resolveThemeCssPath(cwd);
 }
 
 function patchCss(cssPath: string, newBlock: string): void {
@@ -22,7 +21,7 @@ function patchCss(cssPath: string, newBlock: string): void {
 export function themeApplyCommand(cwd = process.cwd()) {
   const config = readConfig(cwd);
   const css = generateThemeCSS(config);
-  patchCss(getCssPath(config.template, cwd), css);
+  patchCss(getCssPath(cwd), css);
   log.success("Theme applied to CSS.");
 }
 

@@ -1,6 +1,8 @@
 # Roboticela DevKit API Server
 
-Express API for CLI authentication, project licensing, and premium asset delivery.
+Express API for CLI authentication, project licensing, versioned catalog (free + premium), and first-party templates.
+
+**Source of truth:** templates live in `/templates/*/template.json`; assets in `catalog/catalog.json` with `latestVersion` + `versions.history`. The npm CLI does **not** ship these — bump versions on the server when you release assets or scaffolds.
 
 ## Quick start
 
@@ -28,14 +30,24 @@ API runs at `http://localhost:4000`.
 | GET | `/projects` | Yes | List projects |
 | GET | `/projects/:id/license` | Yes | License status |
 | POST | `/licenses/:projectId/checkout` | Yes | Stripe checkout (dev: auto-activate) |
-| GET | `/assets` | Yes | Catalog metadata |
+| GET | `/assets` | Yes | Versioned catalog metadata |
+| GET | `/assets/:id/payload` | Yes | Free asset install payload (versioned) |
+| GET | `/templates` | No | Live template ids, labels, versions |
+| GET | `/templates/:id/files` | No | Scaffold files for `create` |
 | POST | `/assets/projects/:id/assets/:assetId/access` | Yes | Authorized premium download |
 
 ## CLI integration
 
 ```bash
-DEVKIT_API_URL=http://localhost:4000 devkit auth login
-DEVKIT_API_URL=http://localhost:4000 devkit page add dashboard-page
+# From monorepo root — one command local setup
+npm run try
+
+# Then from any directory
+devkit-test create my-app --yes
+cd my-app
+devkit-test login
+devkit-test activate
+devkit-test add dashboard-page
 ```
 
 ## Licensing
@@ -44,6 +56,16 @@ DEVKIT_API_URL=http://localhost:4000 devkit page add dashboard-page
 - Stripe webhook confirms payment server-side
 - Development mode activates license without Stripe when `NODE_ENV=development`
 
-## Premium assets
+## Premium assets & templates
 
-Assets live in `server/catalog/`. The CLI requests individual assets — no bulk download endpoint.
+Assets live in `server/catalog/`. Templates are served from `../templates` (monorepo) or `server/templates` (deploy).
+
+| Endpoint | Auth | Description |
+|----------|------|-------------|
+| GET `/templates` | No | List templates |
+| GET `/templates/:id/files` | No | Download scaffold files |
+| GET `/assets` | Yes | Live catalog (free + premium) |
+| GET `/assets/:id/payload` | Yes | Free module install metadata |
+| POST `/assets/projects/:id/assets/:assetId/access` | Yes | Premium package (license-gated) |
+
+Update catalog/templates on the server without republishing the CLI.

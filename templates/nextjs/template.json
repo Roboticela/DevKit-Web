@@ -1,0 +1,8 @@
+{
+  "id": "nextjs-compact",
+  "version": "1.0.0",
+  "label": "NextJS Compact",
+  "hint": "Next.js · React · Tailwind — Web SSR/RSC",
+  "cssPath": "app/globals.css",
+  "installTargets": ["root"]
+}

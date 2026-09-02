@@ -2,14 +2,18 @@ import { intro, outro, text, select, multiselect, confirm, spinner } from "@clac
 import chalk from "chalk";
 import { execSync } from "child_process";
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
-import { join } from "path";
-import { downloadTemplate } from "../lib/template.js";
+import { join, dirname } from "path";
+import { downloadTemplate, listTemplates } from "../lib/template.js";
 import { writeConfig, writeLock, defaultConfig } from "../lib/config.js";
 import { generateThemeCSS } from "../lib/theme.js";
 import { installComponent } from "../lib/installer.js";
+import { installProjectDependencies } from "../lib/project-install.js";
 import { log } from "../lib/logger.js";
 import { listComponents, type PackageKind } from "../lib/registry.js";
 import { isPremiumAssetId } from "../lib/premium-guard.js";
+import { cliBinName } from "../lib/cli-meta.js";
+import { isSessionValid, readSession } from "../lib/auth-store.js";
+import { getApiBaseUrl } from "../lib/api-client.js";
 import { CLI_VERSION } from "../version.js";
 
 interface CreateOptions {
@@ -21,19 +25,6 @@ interface CreateOptions {
   add?: string;
   yes?: boolean;
 }
-
-const TEMPLATES = [
-  {
-    value: "nextjs-compact",
-    label: "NextJS Compact",
-    hint: "Next.js 16 · React 19 · TailwindCSS 4 — Web only, SSR/RSC",
-  },
-  {
-    value: "vite-express-tauri",
-    label: "Wide Express  (Vite + Express + Tauri)",
-    hint: "Vite 7 · React 19 · Express 5 · Tauri 2 — Web + Desktop",
-  },
-];
 
 const PRESETS = [
   { value: "default",   label: "Default    — System Blue      — Balanced, Apple-class" },
@@ -88,10 +79,35 @@ export async function createCommand(projectName: string | undefined, opts: Creat
 
   if (!name || typeof name !== "string") { process.exit(0); }
 
-  const template = (opts.template ?? (opts.yes ? "nextjs-compact" : await select({
-    message: "Select a template",
-    options: TEMPLATES,
+  log.info(`API: ${chalk.dim(getApiBaseUrl())}`);
+
+  let templateOptions: { value: string; label: string; hint?: string }[] = [];
+  try {
+    const remote = await listTemplates();
+    templateOptions = remote.map((t) => ({
+      value: t.id,
+      label: t.label,
+      hint: t.version ? `v${t.version}${t.hint ? ` · ${t.hint}` : ""}` : t.hint,
+    }));
+  } catch (e) {
+    log.error(`Could not load templates from server: ${(e as Error).message}`);
+    log.info("Start the DevKit API (npm run try) or set DEVKIT_API_URL=https://devkit.roboticela.com");
+    process.exit(1);
+  }
+  if (templateOptions.length === 0) {
+    log.error("Server returned no templates.");
+    process.exit(1);
+  }
+
+  const template = (opts.template ?? (opts.yes ? templateOptions[0]!.value : await select({
+    message: "Select a template (from server)",
+    options: templateOptions,
   }))) as string;
+
+  if (!templateOptions.some((t) => t.value === template)) {
+    log.error(`Unknown template '${template}'. Available: ${templateOptions.map((t) => t.value).join(", ")}`);
+    process.exit(1);
+  }
 
   const siteName = opts.yes ? name : await text({
     message: "Site display name",
@@ -121,35 +137,39 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   if (opts.add) {
     selectedComponents = opts.add.split(",").map((s) => s.trim()).filter(Boolean);
   } else if (!opts.yes) {
-    try {
-      const kinds: { kind: PackageKind; label: string }[] = [{ kind: "component", label: "components" }];
+    if (!isSessionValid(readSession())) {
+      log.info(`Sign in to pick packages now, or add later: ${cliBinName()} login && ${cliBinName()} add`);
+    } else {
+      try {
+        const kinds: { kind: PackageKind; label: string }[] = [{ kind: "component", label: "components" }];
 
-      const selected: string[] = [];
-      for (const { kind, label } of kinds) {
-        const options = await getCreatePickerOptions(template, kind);
-        if (options.length === 0) {
-          log.warn(`No ${label} available for this template.`);
-          continue;
+        const selected: string[] = [];
+        for (const { kind, label } of kinds) {
+          const options = await getCreatePickerOptions(template, kind);
+          if (options.length === 0) {
+            log.warn(`No ${label} available for this template.`);
+            continue;
+          }
+          const picked = await multiselect({
+            message: `Add ${label} now? (space to select, enter to confirm)`,
+            options,
+            required: false,
+          }) as string[];
+          selected.push(...picked);
         }
-        const picked = await multiselect({
-          message: `Add ${label} now? (space to select, enter to confirm)`,
-          options,
-          required: false,
-        }) as string[];
-        selected.push(...picked);
-      }
 
-      const seen = new Set<string>();
-      selectedComponents = selected.filter((name) => {
-        if (seen.has(name)) return false;
-        seen.add(name);
-        return true;
-      });
-      if (selectedComponents.length === 0) {
-        log.info("No packages selected — you can always run 'devkit add' later.");
+        const seen = new Set<string>();
+        selectedComponents = selected.filter((n) => {
+          if (seen.has(n)) return false;
+          seen.add(n);
+          return true;
+        });
+        if (selectedComponents.length === 0) {
+          log.info("No packages selected — you can always run 'devkit add' later.");
+        }
+      } catch (e) {
+        log.warn(`Could not load server catalog for picker: ${(e as Error).message}`);
       }
-    } catch (e) {
-      log.warn(`Could not load registry packages for picker: ${(e as Error).message}`);
     }
   }
 
@@ -165,24 +185,40 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   }
   mkdirSync(destDir, { recursive: true });
 
-  // 1. Download template
+  // 1. Download template (name + files from server)
   const s = spinner();
   s.start(`Fetching template: ${chalk.cyan(template)}`);
+  let downloaded: Awaited<ReturnType<typeof downloadTemplate>>;
   try {
-    await downloadTemplate(template, destDir, {
+    downloaded = await downloadTemplate(template, destDir, {
       projectName: name,
       siteName: siteName as string,
       siteUrl: siteUrl as string,
     });
-    s.stop(chalk.green(`✓  Template fetched: ${template}`));
+    s.stop(chalk.green(`✓  Template fetched: ${downloaded.label} @${downloaded.version}`));
+    if (downloaded.hint) log.step(downloaded.hint);
   } catch (e) {
     s.stop(chalk.red(`✗  Failed to fetch template`));
     log.error((e as Error).message);
     process.exit(1);
   }
 
+  // Point @roboticela/devkit at local monorepo package when using devkit-test
+  const { getLocalDevKitPackagePath } = await import("../lib/module-installer.js");
+  const localPkg = getLocalDevKitPackagePath();
+  if (localPkg) {
+    const pkgPath = join(destDir, "package.json");
+    const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as {
+      dependencies?: Record<string, string>;
+    };
+    pkg.dependencies = pkg.dependencies ?? {};
+    pkg.dependencies["@roboticela/devkit"] = `file:${localPkg.replace(/\\/g, "/")}`;
+    writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
+    log.success("Linked @roboticela/devkit → local monorepo package");
+  }
+
   // 2. Write devkit.config.json
-  const config = defaultConfig(template as "nextjs-compact" | "vite-express-tauri", siteName as string, siteUrl as string);
+  const config = defaultConfig(template, siteName as string, siteUrl as string, downloaded.version);
   config.theme!.preset = preset as string;
   if (primaryColor) config.theme!.colors = { ...config.theme!.colors, primary: primaryColor };
   writeConfig(config, destDir);
@@ -193,10 +229,9 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   log.success("Created devkit.lock.json");
 
   // 4. Generate theme CSS
+  const { resolveThemeCssPath } = await import("../lib/theme-path.js");
   const themeCss = generateThemeCSS(config);
-  const cssPath = template === "nextjs-compact"
-    ? join(destDir, "app", "globals.css")
-    : join(destDir, "src", "index.css");
+  const cssPath = resolveThemeCssPath(destDir, downloaded.cssPath);
 
   if (existsSync(cssPath)) {
     const existing = readFileSync(cssPath, "utf-8");
@@ -206,51 +241,84 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     ).trimStart();
     writeFileSync(cssPath, themeCss + withoutOldBlock);
   } else {
-    mkdirSync(join(destDir, template === "nextjs-compact" ? "app" : "src"), { recursive: true });
+    mkdirSync(dirname(cssPath), { recursive: true });
     writeFileSync(cssPath, themeCss);
   }
   log.success(`Applied theme preset: ${preset}`);
 
-  // 5. npm install
+  // 5. npm install (live npm output — never a silent spinner)
+  const installTargets = downloaded.installTargets ?? ["root"];
   if (doInstall) {
-    s.start("Installing npm dependencies…");
+    log.blank();
+    log.info(
+      installTargets.includes("server")
+        ? "Next: install app + server dependencies (npm output appears below)…"
+        : "Next: install dependencies (npm output appears below)…"
+    );
     try {
-      execSync("npm install", { cwd: destDir, stdio: "pipe" });
-      s.stop(chalk.green("✓  npm install complete"));
-    } catch {
-      s.stop(chalk.yellow("⚠  npm install failed — run it manually"));
+      const result = await installProjectDependencies(destDir, template, s, installTargets);
+      const parts = result.steps.join(" + ");
+      log.success(`All dependency installs finished (${parts})`);
+    } catch (e) {
+      log.warn(`npm install failed — ${(e as Error).message}`);
+      log.warn("You can finish manually:");
+      log.step(`cd ${name} && npm install`);
+      if (installTargets.includes("server")) {
+        log.step(`cd ${name}/server && npm install`);
+      }
+    }
+  } else {
+    log.info("Skipped npm install (--no-install). Later run:");
+    log.step(`cd ${name} && npm install`);
+    if (installTargets.includes("server")) {
+      log.step(`cd ${name}/server && npm install`);
     }
   }
 
   // 6. git init
   if (doGit) {
+    s.start("Initializing git repository…");
     try {
       execSync("git init", { cwd: destDir, stdio: "pipe" });
-      execSync('git add . && git commit -m "chore: init project with DevKit"', { cwd: destDir, stdio: "pipe" });
-      log.success("Initialized git repository");
+      execSync('git add . && git commit -m "chore: init project with DevKit"', {
+        cwd: destDir,
+        stdio: "pipe",
+      });
+      s.stop(chalk.green("✓  Git repository ready"));
     } catch {
-      log.warn("git init failed — git may not be installed");
+      s.stop(chalk.yellow("⚠  git init failed — git may not be installed"));
     }
   }
 
-  // 7. Add selected components
-  for (const comp of selectedComponents) {
-    s.start(`Adding component: ${chalk.cyan(comp)}`);
-    try {
-      if (isPremiumAssetId(comp)) {
-        s.stop(chalk.yellow(`⚠  Skipped ${comp}: use devkit page add after auth + license`));
-        continue;
-      }
-      await installComponent(comp, template, "latest", undefined, destDir);
-      s.stop(chalk.green(`✓  Added: ${comp}`));
-    } catch (e) {
-      s.stop(chalk.yellow(`⚠  Skipped ${comp}: ${(e as Error).message}`));
-    }
-  }
-
-  // 8. Register project identity locally
+  // Register project identity + bind forever session if already logged in
   const { ensureProjectIdentity } = await import("../lib/project.js");
+  const { bindSessionToProject } = await import("../lib/auth-store.js");
   ensureProjectIdentity(destDir);
+  bindSessionToProject(destDir);
+
+  // 7. Add selected components (login required)
+  if (selectedComponents.length > 0) {
+    if (!isSessionValid(readSession(destDir))) {
+      log.warn(`Skipped package install — sign in first: ${cliBinName()} login`);
+      log.info(`Then: ${cliBinName()} add ${selectedComponents.join(" ")}`);
+    } else {
+      for (const comp of selectedComponents) {
+        s.start(`Adding component: ${chalk.cyan(comp)}`);
+        try {
+          if (isPremiumAssetId(comp)) {
+            s.stop(chalk.yellow(`⚠  Skipped ${comp}: use ${cliBinName()} add after activate`));
+            continue;
+          }
+          await installComponent(comp, template, "latest", undefined, destDir);
+          s.stop(chalk.green(`✓  Added: ${comp}`));
+        } catch (e) {
+          s.stop(chalk.yellow(`⚠  Skipped ${comp}: ${(e as Error).message}`));
+        }
+      }
+    }
+  } else {
+    // no packages selected at create time
+  }
 
   // ── Done ─────────────────────────────────────────────────────────────────
 
@@ -263,12 +331,18 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   if (selectedComponents.length > 0) {
     console.log(`  ${chalk.bold("Components")}  ${selectedComponents.join(", ")}`);
   }
+  const cli = cliBinName();
+  const loggedIn = isSessionValid(readSession(destDir));
   console.log();
   console.log(chalk.bold("  Next steps:"));
   console.log(`    ${chalk.cyan("cd")} ${name}`);
   console.log(`    ${chalk.cyan("cp")} .env.example .env    ${chalk.gray("# Fill in your secrets")}`);
-  console.log(`    ${chalk.cyan("devkit auth login")}        ${chalk.gray("# Sign in to DevKit server")}`);
-  console.log(`    ${chalk.cyan("devkit doctor")}           ${chalk.gray("# Check for missing config")}`);
-  console.log(`    ${chalk.cyan("devkit dev")}               ${chalk.gray("# Start the dev server")}`);
+  if (!loggedIn) {
+    console.log(`    ${chalk.cyan(`${cli} login`)}             ${chalk.gray("# Required before add (session never expires)")}`);
+  }
+  console.log(`    ${chalk.cyan(`${cli} add button`)}         ${chalk.gray("# Free component (requires login)")}`);
+  console.log(`    ${chalk.cyan(`${cli} activate`)}          ${chalk.gray("# Unlock premium")}`);
+  console.log(`    ${chalk.cyan(`${cli} doctor`)}            ${chalk.gray("# Health check")}`);
+  console.log(`    ${chalk.cyan(`${cli} dev`)}               ${chalk.gray("# Start the app")}`);
   console.log();
 }

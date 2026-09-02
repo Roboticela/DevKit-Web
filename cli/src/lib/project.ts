@@ -3,6 +3,7 @@ import { readConfig, writeConfig, type DevKitConfig } from "./config.js";
 import { apiFetch } from "./api-client.js";
 import { readSession, isSessionValid } from "./auth-store.js";
 import { log } from "./logger.js";
+import { cliBinName } from "./cli-meta.js";
 
 export function generateInstallationId(): string {
   return `inst_${randomBytes(12).toString("hex")}`;
@@ -23,7 +24,7 @@ export function ensureProjectIdentity(cwd = process.cwd()): NonNullable<DevKitCo
 export async function registerProjectWithServer(cwd = process.cwd()): Promise<string | null> {
   const session = readSession();
   if (!isSessionValid(session)) {
-    log.warn("Not authenticated — run 'devkit auth login' to register project with DevKit server.");
+    log.warn(`Not authenticated — run '${cliBinName()} login' to register project with DevKit server.`);
     return null;
   }
 

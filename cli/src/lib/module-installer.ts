@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import { execSync } from "child_process";
+import chalk from "chalk";
 import { readLock, writeLock, isComponentInstalled } from "./config.js";
 import { log } from "./logger.js";
 import { CLI_VERSION } from "../version.js";
@@ -36,27 +37,64 @@ function detectPackageManager(cwd: string): string {
 
 function installPackage(cwd: string, spec: string, dev = false) {
   const pm = detectPackageManager(cwd);
-  log.step(`Installing ${spec}`);
-  if (pm === "yarn") {
-    execSync(`yarn add ${dev ? "-D " : ""}${spec}`, { cwd, stdio: "inherit" });
-  } else if (pm === "pnpm") {
-    execSync(`pnpm add ${dev ? "-D " : ""}${spec}`, { cwd, stdio: "inherit" });
-  } else if (pm === "bun") {
-    execSync(`bun add ${dev ? "-d " : ""}${spec}`, { cwd, stdio: "inherit" });
-  } else {
-    execSync(`npm install ${dev ? "--save-dev " : "--save "}${spec}`, { cwd, stdio: "inherit" });
+  const started = Date.now();
+  log.step(`Installing ${spec} (live output below)…`);
+  const timer = setInterval(() => {
+    const secs = Math.floor((Date.now() - started) / 1000);
+    process.stderr.write(`\r  ${chalk.dim(`… still installing ${spec} (${secs}s)`)}   `);
+  }, 1000);
+  try {
+    if (pm === "yarn") {
+      execSync(`yarn add ${dev ? "-D " : ""}${spec}`, { cwd, stdio: "inherit" });
+    } else if (pm === "pnpm") {
+      execSync(`pnpm add ${dev ? "-D " : ""}${spec}`, { cwd, stdio: "inherit" });
+    } else if (pm === "bun") {
+      execSync(`bun add ${dev ? "-d " : ""}${spec}`, { cwd, stdio: "inherit" });
+    } else {
+      execSync(`npm install ${dev ? "--save-dev " : "--save "}${spec}`, { cwd, stdio: "inherit" });
+    }
+  } finally {
+    clearInterval(timer);
+    process.stderr.write("\r" + " ".repeat(60) + "\r");
   }
+}
+
+/** When set (by `devkit-test`), install UI package from local disk instead of npm. */
+export function getLocalDevKitPackagePath(): string | undefined {
+  const p = process.env.DEVKIT_LOCAL_PACKAGE?.trim();
+  return p && existsSync(p) ? p : undefined;
 }
 
 export function ensureDevKitPackage(cwd: string, version = CLI_VERSION): void {
   const pkg = readPackageJson(cwd);
   const deps = (pkg.dependencies ?? {}) as Record<string, string>;
-  const spec = `${DEVKIT_PACKAGE}@${version}`;
-  if (deps[DEVKIT_PACKAGE]) return;
-  deps[DEVKIT_PACKAGE] = `^${version}`;
+  const localPath = getLocalDevKitPackagePath();
+
+  if (localPath) {
+    // Always re-point to local monorepo package while using devkit-test
+    const fileSpec = localPath.replace(/\\/g, "/");
+    const wanted = `file:${fileSpec}`;
+    const already =
+      deps[DEVKIT_PACKAGE] === wanted &&
+      existsSync(join(cwd, "node_modules", "@roboticela", "devkit", "package.json"));
+    if (already) return;
+    deps[DEVKIT_PACKAGE] = wanted;
+    pkg.dependencies = deps;
+    writePackageJson(cwd, pkg);
+    installPackage(cwd, DEVKIT_PACKAGE);
+    return;
+  }
+
+  const wantedRange = `^${version}`;
+  const current = deps[DEVKIT_PACKAGE];
+  if (current === wantedRange || current === version) {
+    if (existsSync(join(cwd, "node_modules", "@roboticela", "devkit", "package.json"))) return;
+  }
+
+  deps[DEVKIT_PACKAGE] = wantedRange;
   pkg.dependencies = deps;
   writePackageJson(cwd, pkg);
-  installPackage(cwd, spec);
+  installPackage(cwd, `${DEVKIT_PACKAGE}@${version}`);
 }
 
 export function buildImportStatement(manifest: ModuleManifest): string {
@@ -112,7 +150,7 @@ export async function installModuleComponent(
   lock.components[name] = {
     version: resolvedVersion,
     variant: null,
-    resolved: `module:${manifest.package ?? DEVKIT_PACKAGE}#${manifest.exportName}`,
+    resolved: `server:module:${manifest.package ?? DEVKIT_PACKAGE}@${resolvedVersion}#${manifest.exportName}`,
     installedAt: new Date().toISOString(),
   };
   writeLock(lock, cwd);

@@ -8,6 +8,7 @@ import { checkApiHealth, getApiBaseUrl } from "../lib/api-client.js";
 import { readSession, isSessionValid } from "../lib/auth-store.js";
 import { getProjectLicenseStatus } from "../lib/project.js";
 import { detectAdapter } from "../lib/adapters/index.js";
+import { cliBinName } from "../lib/cli-meta.js";
 
 export async function doctorCommand(cwd = process.cwd()) {
   let ok = true;
@@ -47,7 +48,7 @@ export async function doctorCommand(cwd = process.cwd()) {
     if (config.project?.id) {
       log.success(`Project ID: ${config.project.id}`);
     } else {
-      log.warn("Project not registered with DevKit server — run 'devkit auth login'");
+      log.warn(`Project not registered with DevKit server — run '${cliBinName()} login'`);
     }
 
     const lock = readLock(cwd);
@@ -83,17 +84,21 @@ export async function doctorCommand(cwd = process.cwd()) {
     ok = false;
   }
 
-  // Bundled registry
+  // Live server catalog
   const registryOk = await healthCheck();
-  if (registryOk) log.success("Bundled component registry available");
-  else log.warn("Bundled component registry empty — free components may be unavailable");
+  if (registryOk) log.success("DevKit server catalog reachable");
+  else {
+    log.warn("Server catalog unavailable — run login and ensure API is up");
+    ok = false;
+  }
 
   // API
   const apiUrl = getApiBaseUrl();
   const apiOk = await checkApiHealth(apiUrl);
   if (apiOk) log.success(`DevKit API reachable (${apiUrl})`);
   else {
-    log.warn(`DevKit API unreachable (${apiUrl}) — premium assets require the server`);
+    log.warn(`DevKit API unreachable (${apiUrl}) — catalog, templates, and premium require the server`);
+    ok = false;
   }
 
   // Auth
@@ -103,12 +108,12 @@ export async function doctorCommand(cwd = process.cwd()) {
     try {
       const license = await getProjectLicenseStatus(cwd);
       if (license?.active) log.success("Project license: active");
-      else log.warn("Project license: not active ($50 one-time — devkit license purchase)");
+      else log.warn(`Project license: not active ($50 one-time — ${cliBinName()} activate)`);
     } catch {
       log.warn("Could not verify license status");
     }
   } else {
-    log.warn("Not authenticated — run 'devkit auth login' for premium assets");
+    log.warn(`Not authenticated — run '${cliBinName()} login' for premium assets`);
   }
 
   log.blank();

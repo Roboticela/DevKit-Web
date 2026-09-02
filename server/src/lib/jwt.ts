@@ -38,12 +38,14 @@ export function verifyRefreshToken(token: string): RefreshTokenPayload {
 }
 
 export function parseExpiresInMs(value: string): number {
-  const match = value.match(/^(\d+)([smhd])$/);
-  if (!match) return 15 * 60 * 1000;
+  const match = value.match(/^(\d+)([smhdy])$/i);
+  if (!match) return 100 * 365.25 * 24 * 60 * 60 * 1000; // forever default
   const n = parseInt(match[1]!, 10);
-  const unit = match[2];
+  const unit = match[2]!.toLowerCase();
   if (unit === "s") return n * 1000;
   if (unit === "m") return n * 60 * 1000;
   if (unit === "h") return n * 60 * 60 * 1000;
-  return n * 24 * 60 * 60 * 1000;
+  if (unit === "d") return n * 24 * 60 * 60 * 1000;
+  // years
+  return n * 365.25 * 24 * 60 * 60 * 1000;
 }

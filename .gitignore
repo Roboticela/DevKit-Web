@@ -46,3 +46,6 @@ refcode
 /server/dist
 /cli/node_modules
 /cli/dist
+
+# Local test harness
+/.devkit-local/

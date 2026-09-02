@@ -1,5 +1,15 @@
 export function getApiBaseUrl(): string {
-  return process.env.DEVKIT_API_URL ?? process.env.DEVKIT_REGISTRY?.replace(/\/$/, "") ?? "http://localhost:4000";
+  if (process.env.DEVKIT_API_URL) {
+    return process.env.DEVKIT_API_URL.replace(/\/$/, "");
+  }
+  if (process.env.DEVKIT_REGISTRY) {
+    return process.env.DEVKIT_REGISTRY.replace(/\/$/, "");
+  }
+  // Local monorepo shim (`devkit-test`) defaults to the local API
+  if (process.env.DEVKIT_TEST === "1") {
+    return "http://localhost:4000";
+  }
+  return "https://devkit.roboticela.com";
 }
 
 export class DevKitApiError extends Error {

@@ -1,4 +1,5 @@
 import type { PackageKind } from "./component-entry.js";
+import { cliBinName } from "./cli-meta.js";
 
 /** Known premium asset IDs — never install via bundled copy or module export. */
 export const PREMIUM_ASSET_IDS = new Set([
@@ -13,10 +14,8 @@ export function isPremiumAssetId(name: string): boolean {
   return PREMIUM_ASSET_IDS.has(name.split("@")[0]!);
 }
 
-export function premiumInstallHint(name: string, kind: PackageKind = "page"): string {
-  const cmd =
-    kind === "section" ? "devkit section add" : kind === "scaffold" ? "devkit scaffold add" : "devkit page add";
-  return `'${name}' is a premium server asset. Run: ${cmd} ${name}`;
+export function premiumInstallHint(name: string, _kind: PackageKind = "page"): string {
+  return `'${name}' is premium. Run: ${cliBinName()} add ${name}`;
 }
 
 export function assertNotPremiumAsset(name: string, kind?: PackageKind): void {

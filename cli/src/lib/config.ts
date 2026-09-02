@@ -4,11 +4,29 @@ import { join } from "path";
 export interface DevKitConfig {
   $schema?: string;
   devkit: string;
-  template: "nextjs-compact" | "vite-express-tauri";
+  /** Template id from the live server catalog (not a fixed CLI enum). */
+  template: string;
+  /** Semver of the scaffold downloaded from the server. */
+  templateVersion?: string;
   project?: {
     id: string | null;
     installationId: string | null;
     registeredAt?: string;
+  };
+  /**
+   * Persistent DevKit account session (never expires).
+   * Written by `devkit login` so auth survives builds/clones with this project.
+   */
+  account?: {
+    userId: string;
+    email: string;
+    name?: string;
+    accessToken: string;
+    refreshToken: string;
+    apiUrl: string;
+    forever: boolean;
+    expiresAt?: number;
+    loggedInAt?: string;
   };
   site: {
     name: string;
@@ -52,8 +70,7 @@ const CONFIG_FILE = "devkit.config.json";
 const LOCK_FILE = "devkit.lock.json";
 
 /** Stable URL for editors (works before/without the public registry host). */
-export const DEVKIT_CONFIG_SCHEMA_URL =
-  "https://raw.githubusercontent.com/Roboticela/DevKit/main/cli/schemas/devkit-config.json";
+export const DEVKIT_CONFIG_SCHEMA_URL = "https://devkit.roboticela.com/schemas/devkit-config.json";
 
 export function configExists(cwd = process.cwd()): boolean {
   return existsSync(join(cwd, CONFIG_FILE));
@@ -88,11 +105,17 @@ export function isComponentInstalled(name: string, cwd = process.cwd()): boolean
   return name in readLock(cwd).components;
 }
 
-export function defaultConfig(template: DevKitConfig["template"], siteName: string, siteUrl: string): DevKitConfig {
+export function defaultConfig(
+  template: string,
+  siteName: string,
+  siteUrl: string,
+  templateVersion?: string
+): DevKitConfig {
   return {
     $schema: DEVKIT_CONFIG_SCHEMA_URL,
     devkit: "2.0",
     template,
+    ...(templateVersion ? { templateVersion } : {}),
     project: { id: null, installationId: null },
     site: { name: siteName, url: siteUrl, description: `${siteName} — built with Roboticela DevKit` },
     theme: {

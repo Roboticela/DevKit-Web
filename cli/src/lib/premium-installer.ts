@@ -14,6 +14,7 @@ import {
   type PremiumImportEntry,
 } from "../lib/premium-package.js";
 import { log } from "../lib/logger.js";
+import { cliBinName } from "../lib/cli-meta.js";
 import type { PackageKind } from "../lib/component-entry.js";
 
 function routeSlug(assetId: string): string {
@@ -38,7 +39,7 @@ export async function installPremiumAsset(
     projectId = (await registerProjectWithServer(cwd)) ?? undefined;
   }
   if (!projectId) {
-    log.error("Project must be registered. Run 'devkit auth login' and 'devkit init'.");
+    log.error(`Project must be registered. Run '${cliBinName()} login' and '${cliBinName()} init'.`);
     process.exit(1);
   }
 
@@ -139,7 +140,7 @@ export async function installPremiumAsset(
     if ((e as Error).message.includes("LICENSE_REQUIRED")) {
       console.log();
       log.warn("Premium asset — project license required ($50 one-time).");
-      log.info("Run: devkit license purchase");
+      log.info(`Run: ${cliBinName()} activate`);
     }
     process.exit(1);
   }

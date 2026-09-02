@@ -5,13 +5,14 @@ import { getProjectLicenseStatus, registerProjectWithServer } from "../lib/proje
 import { apiFetch } from "../lib/api-client.js";
 import { readSession, isSessionValid } from "../lib/auth-store.js";
 import { log } from "../lib/logger.js";
+import { cliBinName } from "../lib/cli-meta.js";
 
 export async function licenseStatusCommand(cwd = process.cwd()) {
   intro(chalk.cyan("Project license"));
 
   const session = readSession();
   if (!isSessionValid(session)) {
-    log.error("Not signed in. Run 'devkit auth login'.");
+    log.error(`Not signed in. Run '${cliBinName()} login'.`);
     process.exit(1);
   }
 
@@ -36,7 +37,7 @@ export async function licenseStatusCommand(cwd = process.cwd()) {
   console.log();
 
   if (!status.active) {
-    log.info("Purchase: devkit license purchase");
+    log.info(`Purchase: ${cliBinName()} activate`);
   }
 
   outro(status.active ? chalk.green("Premium access enabled.") : chalk.yellow("No active license."));
@@ -45,7 +46,7 @@ export async function licenseStatusCommand(cwd = process.cwd()) {
 export async function licensePurchaseCommand(cwd = process.cwd()) {
   const session = readSession();
   if (!isSessionValid(session)) {
-    log.error("Not signed in. Run 'devkit auth login'.");
+    log.error(`Not signed in. Run '${cliBinName()} login'.`);
     process.exit(1);
   }
 

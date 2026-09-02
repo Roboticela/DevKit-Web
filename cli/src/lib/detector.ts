@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 
-export type TemplateId = "nextjs-compact" | "vite-express-tauri" | "unknown";
+export type TemplateId = string | "unknown";
 
 export function detectTemplate(cwd = process.cwd()): TemplateId {
   const pkgPath = join(cwd, "package.json");

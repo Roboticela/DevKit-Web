@@ -15,8 +15,11 @@ Public routes are server-rendered for SEO (metadata, sitemap, robots, JSON-LD).
 
 ```bash
 cp .env.example .env
-npm install
+npm install                 # Vite / client app
+npm install --prefix server # Express server
 npm run db:push
-npm run dev          # Vite + Express
-npm run tauri:dev    # Desktop shell
+npm run dev                 # Vite + Express together
+npm run tauri:dev           # Desktop shell
 ```
+
+`devkit create` installs **both** the app and `server/` packages automatically and shows live progress.

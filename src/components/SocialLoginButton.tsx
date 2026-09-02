@@ -55,7 +55,7 @@ const PROVIDERS: Record<
   },
   passkey: {
     label: 'Continue with Passkey',
-    icon: <DkFingerprintBiometricScanPattern size={18} strokeWidth={1.75} absoluteStrokeWidth />,
+    icon: <DkFingerprintBiometricScanPattern size={20} />,
     loadingText: 'Waiting for passkey…',
   },
   google: {

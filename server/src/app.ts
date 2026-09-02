@@ -6,6 +6,7 @@ import { authRouter } from "./routes/auth.js";
 import { projectsRouter } from "./routes/projects.js";
 import { licensesRouter } from "./routes/licenses.js";
 import { assetsRouter } from "./routes/assets.js";
+import { templatesRouter } from "./routes/templates.js";
 import { healthRouter } from "./routes/health.js";
 import { errorHandler } from "./middleware/auth.js";
 
@@ -14,7 +15,7 @@ export function createApp() {
 
   app.use(helmet());
   app.use(cors({ origin: true, credentials: true }));
-  app.use(express.json({ limit: "2mb" }));
+  app.use(express.json({ limit: "25mb" }));
 
   app.use(
     "/auth",
@@ -38,6 +39,12 @@ export function createApp() {
     "/assets",
     rateLimit({ windowMs: 60 * 1000, max: 200, standardHeaders: true }),
     assetsRouter
+  );
+
+  app.use(
+    "/templates",
+    rateLimit({ windowMs: 60 * 1000, max: 60, standardHeaders: true }),
+    templatesRouter
   );
 
   app.use("/health", healthRouter);

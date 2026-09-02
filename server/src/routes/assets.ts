@@ -6,6 +6,9 @@ import {
   getCatalogAsset,
   loadAssetPayload,
   buildSignedManifest,
+  serializeCatalogAsset,
+  getCatalogVersion,
+  resolveAssetVersion,
 } from "../lib/catalog.js";
 import { getPublicVerificationKey } from "../lib/crypto.js";
 import { ApiError } from "../lib/errors.js";
@@ -37,18 +40,50 @@ assetsRouter.get("/", requireAuth, async (req: AuthedRequest, res, next) => {
     });
 
     res.json({
-      assets: assets.map((a) => ({
-        id: a.id,
-        type: a.type,
-        tier: a.tier,
-        displayName: a.displayName,
-        description: a.description,
-        category: a.category,
-        templates: a.templates,
-        latestVersion: a.latestVersion,
-        dependencies: a.dependencies ?? [],
-        tags: a.tags ?? [],
-      })),
+      catalogVersion: getCatalogVersion(),
+      assets: assets.map(serializeCatalogAsset),
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
+/** Authenticated: install payload (free module metadata or premium package via access). */
+assetsRouter.get("/:assetId/payload", requireAuth, async (req: AuthedRequest, res, next) => {
+  try {
+    const assetId = param(req.params.assetId);
+    const framework = String(req.query.framework ?? "nextjs-compact");
+    const version = String(req.query.version ?? "latest");
+    const asset = getCatalogAsset(assetId);
+    if (!asset) throw new ApiError("Asset not found.", 404, "NOT_FOUND");
+
+    if (asset.tier === "premium") {
+      throw new ApiError(
+        "Premium assets require licensed project access. Use the project access endpoint.",
+        403,
+        "LICENSE_REQUIRED"
+      );
+    }
+
+    const payload = loadAssetPayload(assetId!, framework, version);
+    if (!payload) {
+      const resolved = asset ? resolveAssetVersion(asset, version) : null;
+      if (!resolved) {
+        throw new ApiError(
+          `Version '${version}' is not published for '${assetId}'.`,
+          404,
+          "VERSION_NOT_FOUND"
+        );
+      }
+      throw new ApiError(`No payload for '${assetId}'.`, 404, "PAYLOAD_NOT_FOUND");
+    }
+
+    res.json({
+      assetId,
+      framework,
+      tier: asset.tier,
+      version: payload.manifest.version,
+      ...payload,
     });
   } catch (e) {
     next(e);
@@ -60,7 +95,7 @@ assetsRouter.get("/:assetId", requireAuth, async (req, res, next) => {
   try {
     const asset = getCatalogAsset(param(req.params.assetId));
     if (!asset) throw new ApiError("Asset not found.", 404, "NOT_FOUND");
-    res.json({ asset });
+    res.json({ asset: serializeCatalogAsset(asset) });
   } catch (e) {
     next(e);
   }

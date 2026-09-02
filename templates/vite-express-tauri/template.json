@@ -1,0 +1,8 @@
+{
+  "id": "vite-express-tauri",
+  "version": "1.0.0",
+  "label": "Wide Express (Vite + Express + Tauri)",
+  "hint": "Vite · Express · Tauri — Web + Desktop",
+  "cssPath": "src/index.css",
+  "installTargets": ["root", "server"]
+}

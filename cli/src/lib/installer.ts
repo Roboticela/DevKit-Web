@@ -1,9 +1,8 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync, rmSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync, rmSync } from "fs";
 import { join, dirname } from "path";
 import { execSync } from "child_process";
 import { createHash } from "crypto";
-import { getBundledComponentMeta, getBundledPackageDir } from "./bundled-registry.js";
-import { getManifest } from "./registry.js";
+import { fetchFreeAssetPayload, listServerAssets } from "./premium-assets.js";
 import { isComponentInstalled, readLock, writeLock } from "./config.js";
 import { log } from "./logger.js";
 import { assertNotPremiumAsset } from "./premium-guard.js";
@@ -27,32 +26,41 @@ interface Injection {
 }
 interface Manifest {
   version: string;
-  files: FileEntry[];
+  delivery?: string;
+  files?: FileEntry[];
   injections?: Injection[];
   dependencies?: { frontend?: string[]; devFrontend?: string[]; backend?: string[]; devBackend?: string[] };
   envVars?: string[];
 }
 
-function hashFile(path: string): string {
-  const content = readFileSync(path);
+function hashContent(content: string | Buffer): string {
   return createHash("sha256").update(content).digest("hex");
 }
 
-function isRegistryPackage(name: string): boolean {
-  // Strip optional @version pin used in manifests/CLI (e.g. button@1.0.0)
-  const base = name.split("@")[0]!;
-  return getBundledComponentMeta(base) !== null;
+function hashFile(path: string): string {
+  return hashContent(readFileSync(path));
 }
 
-function partitionDeps(names: string[]): { registry: string[]; npm: string[] } {
-  const registry: string[] = [];
+let catalogIdCache: Set<string> | null = null;
+
+async function isCatalogPackage(name: string): Promise<boolean> {
+  const base = name.split("@")[0]!;
+  if (!catalogIdCache) {
+    const assets = await listServerAssets();
+    catalogIdCache = new Set(assets.map((a) => a.id));
+  }
+  return catalogIdCache.has(base);
+}
+
+async function partitionDeps(names: string[]): Promise<{ catalog: string[]; npm: string[] }> {
+  const catalog: string[] = [];
   const npm: string[] = [];
   for (const raw of names) {
     const base = raw.split("@")[0]!;
-    if (isRegistryPackage(base)) registry.push(raw);
+    if (await isCatalogPackage(base)) catalog.push(raw);
     else npm.push(raw);
   }
-  return { registry, npm };
+  return { catalog, npm };
 }
 
 function npmInstall(packages: string[], cwd: string, dev = false): void {
@@ -64,18 +72,14 @@ function npmInstall(packages: string[], cwd: string, dev = false): void {
 
 /** Options for installing or updating a component. */
 export interface InstallOptions {
-  /**
-   * When true, replace managed files even if the user edited them since install.
-   * Default: keep local edits (skip copy) and retain their hashes in the manifest.
-   */
   force?: boolean;
-  /**
-   * When true, this install was requested as a transitive registry dependency.
-   * Already-installed packages are skipped instead of reinstalled.
-   */
   asDependency?: boolean;
 }
 
+/**
+ * Install a free (or non-premium) asset using versioned payloads from the DevKit server.
+ * Never reads a local/bundled registry — catalog + files come from the API only.
+ */
 export async function installComponent(
   name: string,
   template: string,
@@ -112,12 +116,17 @@ export async function installComponent(
       }
     }
 
-    // 1. Read manifest from bundled package registry
-    const result = await getManifest(name, template, version, variant);
-    const manifest = result.manifest as unknown as Manifest & { delivery?: string };
-    const resolvedVersion = result.version;
+    const payload = await fetchFreeAssetPayload(name, template, version);
+    const manifest = payload.manifest as unknown as Manifest & {
+      delivery?: string;
+      exportName?: string;
+      package?: string;
+      usage?: string;
+      styles?: boolean;
+    };
+    const resolvedVersion = String(manifest.version ?? version);
 
-    // Module delivery — install @roboticela/devkit package, import only (no source copy)
+    // Module delivery — pin @roboticela/devkit to the server-declared version
     if (manifest.delivery === "module") {
       const { installModuleComponent } = await import("./module-installer.js");
       await installModuleComponent(
@@ -131,42 +140,43 @@ export async function installComponent(
       return;
     }
 
-    // 2. Install registry package dependencies first (compose from registry — never npm)
+    // Server-package free assets (compiled files from API)
     const deps = manifest.dependencies ?? {};
-    const frontendParts = partitionDeps(deps.frontend ?? []);
-    const devFrontendParts = partitionDeps(deps.devFrontend ?? []);
-    const backendParts = partitionDeps(deps.backend ?? []);
-    const devBackendParts = partitionDeps(deps.devBackend ?? []);
+    const frontendParts = await partitionDeps(deps.frontend ?? []);
+    const devFrontendParts = await partitionDeps(deps.devFrontend ?? []);
+    const backendParts = await partitionDeps(deps.backend ?? []);
+    const devBackendParts = await partitionDeps(deps.devBackend ?? []);
 
-    const registryDeps = [
-      ...frontendParts.registry,
-      ...devFrontendParts.registry,
-      ...backendParts.registry,
-      ...devBackendParts.registry,
+    const catalogDeps = [
+      ...frontendParts.catalog,
+      ...devFrontendParts.catalog,
+      ...backendParts.catalog,
+      ...devBackendParts.catalog,
     ];
 
-    for (const dep of registryDeps) {
+    for (const dep of catalogDeps) {
       const [depName, depVersion = "latest"] = dep.split("@");
       if (!depName || depName === name) continue;
-      log.step(`Adding dependency ${depName}`);
+      log.step(`Adding dependency ${depName}@${depVersion}`);
       await installComponent(depName, template, depVersion, undefined, cwd, { ...options, asDependency: true }, installing);
     }
 
-    // 3. Copy component files from bundled registry
-    const tmpDir = join(cwd, ".devkit", `.tmp-${name}`);
-    const packageDir = getBundledPackageDir(name, template, resolvedVersion, variant);
-    if (!packageDir) {
-      const hint = variant ? ` (variant=${variant})` : "";
-      throw new Error(`Package files for '${name}'@${resolvedVersion}${hint} not found in the bundled registry.`);
+    const files = payload.files ?? {};
+    if (Object.keys(files).length === 0 && !(manifest.files?.length)) {
+      throw new Error(
+        `Asset '${name}'@${resolvedVersion} has no installable payload from the server.`
+      );
     }
-    mkdirSync(tmpDir, { recursive: true });
-    cpSync(packageDir, tmpDir, { recursive: true });
 
-    // 4. Copy files into project
     const managedFiles: Array<{ path: string; hash: string; userModified: boolean }> = [];
+    const fileEntries: FileEntry[] =
+      manifest.files?.length
+        ? manifest.files
+        : Object.keys(files).map((rel) => ({ source: rel, destination: rel }));
 
-    for (const fileEntry of manifest.files) {
-      const src = join(tmpDir, fileEntry.source);
+    for (const fileEntry of fileEntries) {
+      const content = files[fileEntry.source];
+      if (content == null) continue;
       const dest = join(cwd, fileEntry.destination);
 
       let userModified = false;
@@ -183,28 +193,21 @@ export async function installComponent(
           userModified: true,
         });
       } else {
-        if (force && existsSync(dest) && lockedComp) {
-          const tracked = previousByPath.get(fileEntry.destination);
-          if (tracked && tracked.hash !== hashFile(dest)) {
-            log.warn(`Overwrote (user-modified, --force): ${fileEntry.destination}`);
-          }
-        }
         mkdirSync(dirname(dest), { recursive: true });
-        if (existsSync(src)) {
-          cpSync(src, dest);
-          const hash = hashFile(dest);
-          managedFiles.push({ path: fileEntry.destination, hash, userModified: false });
-          log.step(`Created ${fileEntry.destination}`);
-        }
+        writeFileSync(dest, content);
+        managedFiles.push({
+          path: fileEntry.destination,
+          hash: hashContent(content),
+          userModified: false,
+        });
+        log.step(`Created ${fileEntry.destination}`);
       }
     }
 
-    // 5. Apply injections
     for (const injection of manifest.injections ?? []) {
       applyInjection(injection, cwd);
     }
 
-    // 6. Install real npm packages only (names that are not DevKit registry packages)
     npmInstall(frontendParts.npm, cwd, false);
     npmInstall(devFrontendParts.npm, cwd, true);
     if (existsSync(join(cwd, "server"))) {
@@ -212,12 +215,12 @@ export async function installComponent(
       npmInstall(devBackendParts.npm, join(cwd, "server"), true);
     }
 
-    // 7. Write component manifest
     const compManifest = {
       name,
       version: resolvedVersion,
       template,
       variant: variant ?? null,
+      delivery: manifest.delivery ?? "server-package",
       installedAt: new Date().toISOString(),
       managedFiles,
       injections: manifest.injections ?? [],
@@ -227,17 +230,15 @@ export async function installComponent(
     mkdirSync(join(cwd, ".devkit"), { recursive: true });
     writeFileSync(join(cwd, ".devkit", `${name}.manifest.json`), JSON.stringify(compManifest, null, 2) + "\n");
 
-    // 8. Update lock file
     const lock = readLock(cwd);
     lock.components[name] = {
       version: resolvedVersion,
       variant: variant ?? null,
-      resolved: `bundled:${name}@${resolvedVersion}/${template}${variant ? `/variants/${variant}` : ""}`,
+      resolved: `server:${name}@${resolvedVersion}/${template}`,
       installedAt: new Date().toISOString(),
     };
     writeLock(lock, cwd);
 
-    // 9. Print required env vars
     if ((manifest.envVars?.length ?? 0) > 0) {
       log.blank();
       log.warn(`Required env vars for ${name}:`);
@@ -245,8 +246,6 @@ export async function installComponent(
         log.step(envVar);
       }
     }
-
-    rmSync(tmpDir, { recursive: true, force: true });
   } finally {
     installing.delete(name);
   }

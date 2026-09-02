@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/Roboticela/DevKit/main/cli/schemas/devkit-config.json",
+  "$id": "https://devkit.roboticela.com/schemas/devkit-config.json",
   "title": "DevKit project configuration",
   "type": "object",
   "required": ["devkit", "template", "site"],
@@ -10,8 +10,11 @@
     "devkit": { "type": "string", "description": "DevKit config format version" },
     "template": {
       "type": "string",
-      "enum": ["nextjs-compact", "vite-express-tauri"],
-      "description": "Project template this repo was scaffolded from"
+      "description": "Template id from the live DevKit server catalog"
+    },
+    "templateVersion": {
+      "type": "string",
+      "description": "Semver of the scaffold downloaded from the server"
     },
     "site": {
       "type": "object",
@@ -64,6 +67,23 @@
         "darkMode": { "type": "boolean" },
         "darkModeStrategy": { "type": "string", "enum": ["class", "media"] }
       }
+    },
+    "account": {
+      "type": "object",
+      "description": "Persistent DevKit login (never expires). Written by `devkit login` so the session travels with the project.",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "name": { "type": "string" },
+        "accessToken": { "type": "string" },
+        "refreshToken": { "type": "string" },
+        "apiUrl": { "type": "string" },
+        "forever": { "type": "boolean", "const": true },
+        "expiresAt": { "type": "number" },
+        "loggedInAt": { "type": "string" }
+      },
+      "required": ["userId", "email", "accessToken", "refreshToken", "apiUrl", "forever"],
+      "additionalProperties": true
     },
     "auth": { "type": "object", "additionalProperties": true },
     "subscriptions": { "type": "object", "additionalProperties": true },

@@ -95,6 +95,7 @@ authRouter.post("/token", async (req, res, next) => {
       accessToken: signAccessToken(user.id, user.email),
       refreshToken: signRefreshToken(user.id, refreshJti),
       expiresIn: parseExpiresInMs(env.JWT_ACCESS_EXPIRES) / 1000,
+      forever: true,
       tokenType: "Bearer",
       user: { id: user.id, email: user.email, name: user.name },
     });
@@ -119,6 +120,7 @@ authRouter.post("/refresh", async (req, res, next) => {
     res.json({
       accessToken: signAccessToken(user.id, user.email),
       expiresIn: parseExpiresInMs(env.JWT_ACCESS_EXPIRES) / 1000,
+      forever: true,
       tokenType: "Bearer",
     });
   } catch (e) {

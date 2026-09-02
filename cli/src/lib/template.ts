@@ -1,41 +1,40 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSync } from "fs";
+import { mkdirSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { apiFetch, getApiBaseUrl } from "./api-client.js";
+import { log } from "./logger.js";
 
-const TEMPLATE_IDS = ["nextjs-compact", "vite-express-tauri"] as const;
-
-const TEMPLATE_DIRS: Record<string, string> = {
-  "nextjs-compact": "nextjs",
-  "vite-express-tauri": "vite-express-tauri",
-};
-
-function getTemplatesRoot(fromImportMetaUrl = import.meta.url): string {
-  const pkgRoot = join(dirname(fileURLToPath(fromImportMetaUrl)), "..", "..");
-  const nested = join(pkgRoot, "templates");
-  const sibling = join(pkgRoot, "..", "templates");
-  if (existsSync(join(nested, "nextjs"))) return nested;
-  if (existsSync(join(sibling, "nextjs"))) return sibling;
-  throw new Error("First-party templates not found. Reinstall @roboticela/devkit.");
+export interface RemoteTemplate {
+  id: string;
+  version: string;
+  label: string;
+  hint: string;
+  cssPath?: string | null;
+  installTargets?: Array<"root" | "server">;
 }
 
-function copyDirFiltered(src: string, dest: string, vars: Record<string, string>) {
-  mkdirSync(dest, { recursive: true });
-  for (const entry of readdirSync(src)) {
-    if (entry === "node_modules" || entry === ".git") continue;
-    const srcPath = join(src, entry);
-    const destPath = join(dest, entry);
-    if (statSync(srcPath).isDirectory()) {
-      copyDirFiltered(srcPath, destPath, vars);
-    } else {
-      let content = readFileSync(srcPath, "utf-8");
-      for (const [key, val] of Object.entries(vars)) {
-        content = content.replaceAll(`{{${key}}}`, val);
-      }
-      writeFileSync(destPath, content);
-    }
+/** Live template names + descriptions from DevKit server. */
+export async function listTemplates(): Promise<RemoteTemplate[]> {
+  const data = await apiFetch<{ templates: RemoteTemplate[] }>("/templates", {
+    apiUrl: getApiBaseUrl(),
+  });
+  if (!data.templates?.length) {
+    throw new Error("Server returned no templates. Add folders with template.json under the server templates root.");
   }
+  return data.templates;
 }
 
+export async function getTemplate(templateId: string): Promise<RemoteTemplate> {
+  const data = await apiFetch<{ template: RemoteTemplate }>(
+    `/templates/${encodeURIComponent(templateId)}`,
+    { apiUrl: getApiBaseUrl() }
+  );
+  return data.template;
+}
+
+/**
+ * Download a first-party template from the server and write it to destDir,
+ * applying {{PLACEHOLDER}} substitutions.
+ */
 export async function downloadTemplate(
   templateId: string,
   destDir: string,
@@ -45,33 +44,55 @@ export async function downloadTemplate(
     siteUrl: string;
     siteDescription?: string;
   }
-): Promise<void> {
-  if (!TEMPLATE_IDS.includes(templateId as (typeof TEMPLATE_IDS)[number])) {
-    throw new Error(`Unknown template: ${templateId}`);
-  }
+): Promise<RemoteTemplate> {
+  log.step(`Fetching template '${templateId}' from ${getApiBaseUrl()}…`);
 
-  const templatesRoot = getTemplatesRoot();
-  const dirName = TEMPLATE_DIRS[templateId]!;
-  const srcDir = join(templatesRoot, dirName);
+  const data = await apiFetch<{
+    templateId: string;
+    version: string;
+    label: string;
+    hint: string;
+    cssPath?: string | null;
+    installTargets?: Array<"root" | "server">;
+    fileCount: number;
+    files: Record<string, string>;
+  }>(`/templates/${encodeURIComponent(templateId)}/files`, {
+    apiUrl: getApiBaseUrl(),
+  });
 
-  if (!existsSync(srcDir)) {
-    throw new Error(`Template '${templateId}' not bundled in @roboticela/devkit.`);
+  if (!data.files || Object.keys(data.files).length === 0) {
+    throw new Error(`Server returned an empty template for '${templateId}'.`);
   }
 
   const slug = vars.projectName.toLowerCase().replace(/[^a-z0-9-]/g, "-");
-
-  copyDirFiltered(srcDir, destDir, {
+  const replacements: Record<string, string> = {
     PROJECT_NAME: vars.projectName,
     PROJECT_SLUG: slug,
     SITE_NAME: vars.siteName,
     SITE_URL: vars.siteUrl,
     SITE_DESCRIPTION: vars.siteDescription ?? `${vars.siteName} — built with Roboticela DevKit`,
-  });
-}
+  };
 
-export function listTemplates() {
-  return [
-    { id: "nextjs-compact", label: "Next.js", dir: "nextjs" },
-    { id: "vite-express-tauri", label: "Vite + Express + Tauri", dir: "vite-express-tauri" },
-  ];
+  mkdirSync(destDir, { recursive: true });
+
+  for (const [relPath, raw] of Object.entries(data.files)) {
+    let content = raw;
+    for (const [key, val] of Object.entries(replacements)) {
+      content = content.replaceAll(`{{${key}}}`, val);
+    }
+    const dest = join(destDir, relPath);
+    mkdirSync(dirname(dest), { recursive: true });
+    writeFileSync(dest, content);
+  }
+
+  log.step(`Wrote ${Object.keys(data.files).length} files · ${data.label} @${data.version}`);
+
+  return {
+    id: data.templateId,
+    version: data.version,
+    label: data.label,
+    hint: data.hint,
+    cssPath: data.cssPath,
+    installTargets: data.installTargets,
+  };
 }

@@ -1,0 +1,4 @@
+# Never publish catalog payloads or scaffolds — those come from the DevKit API.
+registry/
+templates/
+*.tgz

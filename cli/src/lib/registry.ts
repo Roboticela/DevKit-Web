@@ -5,13 +5,13 @@ import type {
 } from "./component-entry.js";
 import { normalizeKind } from "./component-entry.js";
 import {
-  getBundledComponentMeta,
-  getBundledManifest,
-  getRegistryRoot,
-  listBundledComponents,
-} from "./bundled-registry.js";
-import { listServerAssets, type ServerCatalogAsset } from "./premium-assets.js";
-import { readSession, isSessionValid } from "./auth-store.js";
+  listServerAssets,
+  fetchFreeAssetPayload,
+  type ServerCatalogAsset,
+} from "./premium-assets.js";
+import { readSession, isSessionValid, requireLogin } from "./auth-store.js";
+import { checkApiHealth, getApiBaseUrl } from "./api-client.js";
+import { cliBinName } from "./cli-meta.js";
 
 export type { ComponentEntry, PackageKind, ListComponentsFilters };
 
@@ -25,74 +25,78 @@ function serverAssetToEntry(asset: ServerCatalogAsset): ComponentEntry {
     templates: asset.templates,
     platforms: asset.templates.includes("vite-express-tauri") ? ["web", "desktop"] : ["web"],
     hasVariants: false,
-    latestVersion: asset.latestVersion,
+    latestVersion: asset.versions?.latest ?? asset.latestVersion,
     tags: asset.tags ?? [],
     stub: false,
   };
 }
 
-function requireBundledRegistry(): void {
-  if (!getRegistryRoot()) {
-    throw new Error(
-      "Bundled registry not found in the @roboticela/devkit package. Reinstall with: npm i -g @roboticela/devkit"
-    );
-  }
-}
-
+/** Live catalog from DevKit server (free + premium), versioned. */
 export async function listComponents(filters: ListComponentsFilters = {}): Promise<ComponentEntry[]> {
-  let local: ComponentEntry[] = [];
-  if (getRegistryRoot()) {
-    local = listBundledComponents(filters) ?? [];
-  }
+  requireLogin();
 
-  let server: ComponentEntry[] = [];
-  if (isSessionValid(readSession())) {
-    try {
-      const assets = await listServerAssets({
-        type: filters.kind,
-        template: filters.template,
-      });
-      server = assets
-        .filter((a) => a.tier === "premium")
-        .map(serverAssetToEntry);
-      if (filters.kind) server = server.filter((c) => c.kind === filters.kind);
-      if (filters.category) server = server.filter((c) => c.category === filters.category);
-    } catch {
-      /* server unavailable */
-    }
-  }
+  const assets = await listServerAssets({
+    type: filters.kind,
+    template: filters.template,
+  });
 
-  const seen = new Set(local.map((c) => c.name));
-  const merged = [...local];
-  for (const entry of server) {
-    if (!seen.has(entry.name)) merged.push(entry);
-  }
-  return merged;
+  let entries = assets.map(serverAssetToEntry);
+  if (filters.kind) entries = entries.filter((c) => c.kind === filters.kind);
+  if (filters.category) entries = entries.filter((c) => c.category === filters.category);
+  if (filters.group) entries = entries.filter((c) => c.group === filters.group);
+  return entries;
 }
 
 export async function getComponentInfo(name: string): Promise<Record<string, unknown>> {
-  requireBundledRegistry();
-  const local = getBundledComponentMeta(name);
-  if (!local) throw new Error(`Package '${name}' not found in the bundled registry.`);
-  return { ...local, kind: normalizeKind(local.kind) };
+  requireLogin();
+  const assets = await listServerAssets();
+  const asset = assets.find((a) => a.id === name);
+  if (!asset) throw new Error(`Package '${name}' not found on DevKit server.`);
+  return {
+    ...asset,
+    name: asset.id,
+    kind: normalizeKind(asset.type),
+    latestVersion: asset.versions?.latest ?? asset.latestVersion,
+  };
 }
 
 export async function getManifest(
   name: string,
   template: string,
   version = "latest",
-  variant?: string
-): Promise<{ name: string; template: string; version: string; variant: string | null; manifest: Record<string, unknown> }> {
-  requireBundledRegistry();
-  const local = getBundledManifest(name, template, version, variant);
-  if (!local) {
-    const hint = variant ? ` (variant=${variant})` : "";
-    throw new Error(`No manifest for '${name}'@${version} template=${template}${hint} in the bundled registry.`);
-  }
-  return local;
+  _variant?: string
+): Promise<{
+  name: string;
+  template: string;
+  version: string;
+  variant: string | null;
+  manifest: Record<string, unknown>;
+}> {
+  requireLogin();
+  const payload = await fetchFreeAssetPayload(name, template, version);
+  const resolvedVersion = String(payload.manifest.version ?? version);
+  return {
+    name,
+    template,
+    version: resolvedVersion,
+    variant: null,
+    manifest: payload.manifest,
+  };
 }
 
-/** True when the CLI package ships a usable on-disk registry (no network). */
+/** Server catalog reachable. */
 export async function healthCheck(): Promise<boolean> {
-  return getRegistryRoot() !== null && (listBundledComponents() ?? []).length > 0;
+  if (!(await checkApiHealth())) return false;
+  const session = readSession();
+  if (!isSessionValid(session)) return false;
+  try {
+    await listServerAssets();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function catalogUnavailableHint(): string {
+  return `Catalog comes from the DevKit server (${getApiBaseUrl()}). Run '${cliBinName()} login' and ensure the API is up.`;
 }

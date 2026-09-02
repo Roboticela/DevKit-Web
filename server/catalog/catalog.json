@@ -1,7 +1,278 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "updatedAt": "2026-09-02",
   "assets": [
+    {
+      "id": "button",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Button",
+      "description": "Primary interactive button with variants and loading state",
+      "category": "ui",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "ui",
+        "interactive"
+      ],
+      "delivery": "module",
+      "exportName": "Button",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
+    {
+      "id": "modal",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Modal",
+      "description": "Accessible modal dialog with actions and sizes",
+      "category": "ui",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "ui",
+        "overlay"
+      ],
+      "delivery": "module",
+      "exportName": "Modal",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
+    {
+      "id": "text-field",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Text Field",
+      "description": "Form text input with variants and auth field helper",
+      "category": "forms",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "forms",
+        "input"
+      ],
+      "delivery": "module",
+      "exportName": "TextField",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
+    {
+      "id": "data-table",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Data Table",
+      "description": "Structured data table with columns and layouts",
+      "category": "ui",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "ui",
+        "table"
+      ],
+      "delivery": "module",
+      "exportName": "DataTable",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
+    {
+      "id": "alert",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Alert",
+      "description": "Inline status alert with tones and variants",
+      "category": "ui",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "ui",
+        "feedback"
+      ],
+      "delivery": "module",
+      "exportName": "Alert",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
+    {
+      "id": "badge",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Badge",
+      "description": "Compact status and label badge",
+      "category": "ui",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "ui"
+      ],
+      "delivery": "module",
+      "exportName": "Badge",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
+    {
+      "id": "tabs",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Tabs",
+      "description": "Tabbed navigation for switching panels",
+      "category": "ui",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "ui",
+        "navigation"
+      ],
+      "delivery": "module",
+      "exportName": "Tabs",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stat-card",
+      "type": "component",
+      "tier": "free",
+      "displayName": "Stat Card",
+      "description": "Metric card with delta and tone",
+      "category": "ui",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "4.6.0",
+      "dependencies": [],
+      "tags": [
+        "ui",
+        "dashboard"
+      ],
+      "delivery": "module",
+      "exportName": "StatCard",
+      "package": "@roboticela/devkit",
+      "versions": {
+        "latest": "4.6.0",
+        "history": [
+          {
+            "version": "4.6.0",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "4.5.2",
+            "releasedAt": "2026-08-01"
+          }
+        ]
+      }
+    },
     {
       "id": "dashboard-page",
       "type": "page",
@@ -9,10 +280,29 @@
       "displayName": "Dashboard Page",
       "description": "Full dashboard overview page with sidebar, stats, and activity feed.",
       "category": "app-shell",
-      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
       "latestVersion": "1.0.0",
-      "dependencies": ["dashboard-sidebar", "stat-card", "data-table"],
-      "tags": ["dashboard", "analytics"]
+      "dependencies": [
+        "stat-card",
+        "data-table"
+      ],
+      "tags": [
+        "dashboard",
+        "analytics"
+      ],
+      "delivery": "server-package",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          }
+        ]
+      }
     },
     {
       "id": "settings-page",
@@ -21,10 +311,26 @@
       "displayName": "Settings Page",
       "description": "Account and application settings page with profile and security sections.",
       "category": "app-shell",
-      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
       "latestVersion": "1.0.0",
-      "dependencies": ["settings-row", "dashboard-sidebar"],
-      "tags": ["settings", "account"]
+      "dependencies": [],
+      "tags": [
+        "settings",
+        "account"
+      ],
+      "delivery": "server-package",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          }
+        ]
+      }
     },
     {
       "id": "hero-section",
@@ -33,10 +339,28 @@
       "displayName": "Hero Section",
       "description": "Marketing hero section with headline, CTA, and visual.",
       "category": "marketing",
-      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
       "latestVersion": "1.0.0",
-      "dependencies": ["button", "anchor"],
-      "tags": ["marketing", "landing"]
+      "dependencies": [
+        "button"
+      ],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          }
+        ]
+      }
     },
     {
       "id": "auth-scaffold",
@@ -45,10 +369,28 @@
       "displayName": "Auth Scaffold",
       "description": "Complete authentication flows: sign-in, sign-up, 2FA, password reset.",
       "category": "authentication",
-      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
       "latestVersion": "1.0.0",
-      "dependencies": ["sign-in-page", "text-field", "social-login-button"],
-      "tags": ["auth", "security"]
+      "dependencies": [
+        "text-field"
+      ],
+      "tags": [
+        "auth",
+        "security"
+      ],
+      "delivery": "server-package",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          }
+        ]
+      }
     }
   ]
 }

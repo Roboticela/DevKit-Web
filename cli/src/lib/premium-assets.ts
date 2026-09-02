@@ -1,6 +1,7 @@
 import { createVerify } from "crypto";
 import { getApiBaseUrl, apiFetch } from "./api-client.js";
 import { readSession, isSessionValid } from "./auth-store.js";
+import { cliBinName } from "./cli-meta.js";
 
 let cachedPublicKey: string | null = null;
 
@@ -51,7 +52,7 @@ export async function requestPremiumAsset(
 ): Promise<SignedAssetPackage> {
   const session = readSession();
   if (!isSessionValid(session)) {
-    throw new Error("Authentication required. Run 'devkit auth login'.");
+    throw new Error(`Authentication required. Run '${cliBinName()} login'.`);
   }
 
   const res = await apiFetch<{ authorized: boolean; package: SignedAssetPackage }>(
@@ -81,8 +82,15 @@ export interface ServerCatalogAsset {
   category: string;
   templates: string[];
   latestVersion: string;
+  versions?: {
+    latest: string;
+    history: Array<{ version: string; releasedAt?: string; notes?: string }>;
+  };
   dependencies: string[];
   tags: string[];
+  delivery?: "module" | "server-package";
+  exportName?: string;
+  package?: string;
 }
 
 export async function listServerAssets(filters?: {
@@ -91,7 +99,9 @@ export async function listServerAssets(filters?: {
   template?: string;
 }): Promise<ServerCatalogAsset[]> {
   const session = readSession();
-  if (!isSessionValid(session)) return [];
+  if (!isSessionValid(session)) {
+    throw new Error(`Authentication required. Run '${cliBinName()} login'.`);
+  }
 
   const params = new URLSearchParams();
   if (filters?.type) params.set("type", filters.type);
@@ -101,7 +111,25 @@ export async function listServerAssets(filters?: {
   const qs = params.toString();
   const data = await apiFetch<{ assets: ServerCatalogAsset[] }>(
     `/assets${qs ? `?${qs}` : ""}`,
-    { token: session!.accessToken, apiUrl: session!.apiUrl }
+    { token: session!.accessToken, apiUrl: session!.apiUrl ?? getApiBaseUrl() }
   );
   return data.assets;
+}
+
+/** Free (module) asset install metadata from server — realtime, not CLI-bundled. */
+export async function fetchFreeAssetPayload(
+  assetId: string,
+  framework: string,
+  version = "latest"
+): Promise<{ manifest: Record<string, unknown>; files: Record<string, string> }> {
+  const session = readSession();
+  if (!isSessionValid(session)) {
+    throw new Error(`Authentication required. Run '${cliBinName()} login'.`);
+  }
+
+  const params = new URLSearchParams({ framework, version });
+  return apiFetch<{ manifest: Record<string, unknown>; files: Record<string, string> }>(
+    `/assets/${encodeURIComponent(assetId)}/payload?${params}`,
+    { token: session!.accessToken, apiUrl: session!.apiUrl ?? getApiBaseUrl() }
+  );
 }
