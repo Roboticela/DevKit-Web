@@ -1,0 +1,12 @@
+{
+  "name": "dashboard-page",
+  "version": "1.0.0",
+  "type": "page",
+  "framework": "nextjs-compact",
+  "delivery": "server-package",
+  "devkitVersion": ">=4.5.0",
+  "route": "dashboard",
+  "dependencies": {
+    "frontend": ["button@latest", "stat-card@latest", "data-table@latest"]
+  }
+}

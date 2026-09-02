@@ -1,0 +1,80 @@
+{
+  "name": "@roboticela/devkit",
+  "version": "4.5.2",
+  "description": "Roboticela DevKit CLI — scaffold, extend, and theme full-stack projects with one command",
+  "type": "module",
+  "main": "./dist/ui/index.js",
+  "types": "./dist/ui/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/ui/index.d.ts",
+      "import": "./dist/ui/index.js"
+    },
+    "./styles.css": "./dist/ui/styles.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "./dist/ui/styles.css"
+  ],
+  "bin": {
+    "devkit": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc && tsup && node scripts/build-ui.js && node scripts/post-build.js",
+    "start": "node dist/index.js",
+    "lint": "eslint src",
+    "prepublishOnly": "npm run build",
+    "release:patch": "npm version patch && npm publish --access public",
+    "release:minor": "npm version minor && npm publish --access public",
+    "release:major": "npm version major && npm publish --access public"
+  },
+  "keywords": [
+    "devkit",
+    "cli",
+    "scaffold",
+    "components",
+    "roboticela"
+  ],
+  "author": "Roboticela",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roboticela/DevKit.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.9.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "ora": "^8.1.0",
+    "semver": "^7.6.0",
+    "tar": "^7.4.0",
+    "user": "^0.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "@types/semver": "^7.5.8",
+    "@types/tar": "^6.1.13",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "registry",
+    "schemas",
+    "templates"
+  ]
+}

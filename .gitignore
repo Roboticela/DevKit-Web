@@ -40,3 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 refcode
+
+# DevKit server & CLI build output
+/server/node_modules
+/server/dist
+/cli/node_modules
+/cli/dist

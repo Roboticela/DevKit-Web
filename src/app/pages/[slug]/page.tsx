@@ -9,12 +9,14 @@ import { AnotherDeviceDocs } from '@/components/AnotherDeviceDocs'
 import { AuthenticatorCodeDocs } from '@/components/AuthenticatorCodeDocs'
 import { RecoveryCodeDocs } from '@/components/RecoveryCodeDocs'
 import { ChooseVerificationMethodDocs } from '@/components/ChooseVerificationMethodDocs'
+import { DashboardDocs } from '@/components/DashboardDocs'
 import { VerificationCodeDocs } from '@/components/VerificationCodeDocs'
 import { CreateAccountDocs } from '@/components/CreateAccountDocs'
 import { DocsArticleStub } from '@/components/DocsArticleStub'
 import { ForgotPasswordDocs } from '@/components/ForgotPasswordDocs'
 import { ResetPasswordDocs } from '@/components/ResetPasswordDocs'
 import { SignInDocs } from '@/components/SignInDocs'
+import { SettingsDocs } from '@/components/SettingsDocs'
 import { adjacentDocs, findDocContext } from '@/lib/docs-catalog'
 import { PAGES_ITEMS, PAGES_NAV } from '@/lib/pages-catalog'
 
@@ -62,6 +64,8 @@ export default async function PageDocPage({
   if (slug === 'setup-2fa') return <SetupTwoFactorDocs />
   if (slug === 'save-recovery-codes') return <SaveRecoveryCodesDocs />
   if (slug === 'setup-2fa-success') return <SetupTwoFactorSuccessDocs />
+  if (slug === 'dashboard') return <DashboardDocs />
+  if (slug === 'settings') return <SettingsDocs />
 
   const { prev, next } = adjacentDocs(PAGES_ITEMS, slug)
 

@@ -1,0 +1,16 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "{{SITE_NAME}}",
+  "version": "0.1.0",
+  "identifier": "com.roboticela.{{PROJECT_SLUG}}",
+  "build": {
+    "frontendDist": "../dist/client",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev:client",
+    "beforeBuildCommand": "npm run build:client"
+  },
+  "app": {
+    "windows": [{ "title": "{{SITE_NAME}}", "width": 1200, "height": 800, "resizable": true }],
+    "security": { "csp": null }
+  }
+}

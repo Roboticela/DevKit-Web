@@ -1,0 +1,9 @@
+{
+  "name": "settings-page",
+  "version": "1.0.0",
+  "type": "page",
+  "framework": "nextjs-compact",
+  "delivery": "server-package",
+  "route": "settings",
+  "devkitVersion": ">=4.5.0"
+}

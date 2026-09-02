@@ -20,6 +20,7 @@ import {
   AUTHENTICATOR_CODE_TOC,
   CHOOSE_VERIFICATION_METHOD_TOC,
   CREATE_ACCOUNT_TOC,
+  DASHBOARD_TOC,
   FORGOT_PASSWORD_TOC,
   LINK_EXPIRED_TOC,
   ONBOARDING_TOC,
@@ -27,6 +28,7 @@ import {
   RECOVERY_CODE_TOC,
   RESET_PASSWORD_TOC,
   SAVE_RECOVERY_CODES_TOC,
+  SETTINGS_TOC,
   SETUP_TWO_FACTOR_SUCCESS_TOC,
   SETUP_TWO_FACTOR_TOC,
   SIGN_IN_TOC,
@@ -103,7 +105,11 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
                                 ? SAVE_RECOVERY_CODES_TOC
                                 : slug === 'setup-2fa-success'
                                   ? SETUP_TWO_FACTOR_SUCCESS_TOC
-                                  : [{ id: 'overview', label: 'Overview' }],
+                                  : slug === 'dashboard'
+                                    ? DASHBOARD_TOC
+                                    : slug === 'settings'
+                                      ? SETTINGS_TOC
+                                      : [{ id: 'overview', label: 'Overview' }],
       activeTab: 'Pages',
       sections: PAGES_NAV,
       contentWidth: 900,

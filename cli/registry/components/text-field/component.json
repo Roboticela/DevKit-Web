@@ -1,0 +1,14 @@
+{
+  "id": 3,
+  "name": "text-field",
+  "displayName": "Text Field",
+  "description": "Text input with validation states",
+  "category": "forms",
+  "kind": "component",
+  "delivery": "module",
+  "templates": ["nextjs-compact", "vite-express-tauri"],
+  "platforms": ["web", "desktop"],
+  "hasVariants": false,
+  "tags": ["forms"],
+  "versions": { "latest": "4.5.2", "history": [{ "version": "4.5.2", "date": "2026-09-02" }] }
+}

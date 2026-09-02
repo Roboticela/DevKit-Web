@@ -11890,7 +11890,7 @@ const DOCS: Record<string, DocDef> = {
     Demo: ListRowDemo,
     wide: true,
     code: `<ListGroup>
-  <ListRow leading={<ListMark><GearIcon /></ListMark>} title="General" chevron />
+  <ListRow leading={<ListMark><DkGearSettingsPreferences /></ListMark>} title="General" chevron />
   <ListRow leading={<Avatar name="Alex Rivera" />} title="Alex Rivera" meta="alex@roboticela.com" chevron />
 </ListGroup>
 <ListGroup variant="subtle">

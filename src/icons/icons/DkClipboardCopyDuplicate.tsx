@@ -1,0 +1,14 @@
+import { createIcon } from '../create-icon'
+import type { Icon } from '../types'
+
+export const DkClipboardCopyDuplicate: Icon = createIcon('DkClipboardCopyDuplicate', [
+  ['rect', { x: '8', y: '8', width: '11', height: '12', rx: '2.5', stroke: 'currentColor', strokeWidth: '1.8' }],
+  [
+    'path',
+    {
+      d: 'M16 8V6C16 4.9 15.1 4 14 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8',
+      stroke: 'currentColor',
+      strokeWidth: '1.8',
+    },
+  ],
+])

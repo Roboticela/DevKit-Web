@@ -1,0 +1,274 @@
+import { intro, outro, text, select, multiselect, confirm, spinner } from "@clack/prompts";
+import chalk from "chalk";
+import { execSync } from "child_process";
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
+import { join } from "path";
+import { downloadTemplate } from "../lib/template.js";
+import { writeConfig, writeLock, defaultConfig } from "../lib/config.js";
+import { generateThemeCSS } from "../lib/theme.js";
+import { installComponent } from "../lib/installer.js";
+import { log } from "../lib/logger.js";
+import { listComponents, type PackageKind } from "../lib/registry.js";
+import { isPremiumAssetId } from "../lib/premium-guard.js";
+import { CLI_VERSION } from "../version.js";
+
+interface CreateOptions {
+  template?: string;
+  preset?: string;
+  primary?: string;
+  git?: boolean;
+  install?: boolean;
+  add?: string;
+  yes?: boolean;
+}
+
+const TEMPLATES = [
+  {
+    value: "nextjs-compact",
+    label: "NextJS Compact",
+    hint: "Next.js 16 · React 19 · TailwindCSS 4 — Web only, SSR/RSC",
+  },
+  {
+    value: "vite-express-tauri",
+    label: "Wide Express  (Vite + Express + Tauri)",
+    hint: "Vite 7 · React 19 · Express 5 · Tauri 2 — Web + Desktop",
+  },
+];
+
+const PRESETS = [
+  { value: "default",   label: "Default    — System Blue      — Balanced, Apple-class" },
+  { value: "minimal",   label: "Minimal    — Neutral Gray     — Sharp, restrained" },
+  { value: "bold",      label: "Bold       — Bright Blue      — Soft radius, expressive" },
+  { value: "playful",   label: "Playful    — Green + Amber    — Soft, friendly" },
+  { value: "corporate", label: "Corporate  — Deep Blue        — Sharp, formal" },
+];
+
+interface CreatePickerOption {
+  value: string;
+  label: string;
+  hint?: string;
+}
+
+async function getCreatePickerOptions(template: string, kind?: PackageKind): Promise<CreatePickerOption[]> {
+  const entries = await listComponents({ template, kind });
+  return entries
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((entry) => ({
+      value: entry.name,
+      label: entry.name,
+      hint: entry.description.length > 52 ? `${entry.description.slice(0, 49)}…` : entry.description,
+    }));
+}
+
+export async function createCommand(projectName: string | undefined, opts: CreateOptions) {
+  console.log();
+  const inner = 53;
+  const verCentered = (() => {
+    const s = `v${CLI_VERSION}`;
+    const pad = inner - s.length;
+    const left = Math.floor(pad / 2);
+    return " ".repeat(left) + s + " ".repeat(pad - left);
+  })();
+  console.log(chalk.bold.white("  ┌─────────────────────────────────────────────────────┐"));
+  console.log(chalk.bold.white("  │      Roboticela DevKit — Create New Project         │"));
+  console.log(chalk.bold.white(`  │${verCentered}│`));
+  console.log(chalk.bold.white("  └─────────────────────────────────────────────────────┘"));
+  console.log();
+
+  intro(chalk.cyan("Let's scaffold your project"));
+
+  // ── Collect answers ──────────────────────────────────────────────────────
+
+  const name = projectName ?? (opts.yes ? "my-app" : await text({
+    message: "Project name",
+    placeholder: "my-app",
+    validate: (v) => v.length < 1 ? "Name is required" : undefined,
+  }) as string);
+
+  if (!name || typeof name !== "string") { process.exit(0); }
+
+  const template = (opts.template ?? (opts.yes ? "nextjs-compact" : await select({
+    message: "Select a template",
+    options: TEMPLATES,
+  }))) as string;
+
+  const siteName = opts.yes ? name : await text({
+    message: "Site display name",
+    initialValue: name,
+  }) as string;
+
+  const siteUrl = opts.yes ? `https://${name}.com` : await text({
+    message: "Site URL",
+    placeholder: "https://myapp.com",
+  }) as string;
+
+  const preset = opts.preset ?? (opts.yes ? "default" : await select({
+    message: "Theme preset",
+    options: PRESETS,
+  }) as string);
+
+  const primaryColor = opts.primary ?? (opts.yes ? undefined : await text({
+    message: "Primary brand color (hex, leave blank to use preset)",
+    placeholder: "(leave blank for preset default)",
+    validate: (v) => v && !/^#[0-9a-fA-F]{6}$/.test(v) ? "Enter a valid hex like #0071e3 or leave blank" : undefined,
+  }) as string | undefined);
+
+  const doGit = opts.git ?? (opts.yes ? true : await confirm({ message: "Initialize a git repository?" }) as boolean);
+  const doInstall = opts.install ?? (opts.yes ? true : await confirm({ message: "Install npm dependencies now?" }) as boolean);
+
+  let selectedComponents: string[] = [];
+  if (opts.add) {
+    selectedComponents = opts.add.split(",").map((s) => s.trim()).filter(Boolean);
+  } else if (!opts.yes) {
+    try {
+      const kinds: { kind: PackageKind; label: string }[] = [{ kind: "component", label: "components" }];
+
+      const selected: string[] = [];
+      for (const { kind, label } of kinds) {
+        const options = await getCreatePickerOptions(template, kind);
+        if (options.length === 0) {
+          log.warn(`No ${label} available for this template.`);
+          continue;
+        }
+        const picked = await multiselect({
+          message: `Add ${label} now? (space to select, enter to confirm)`,
+          options,
+          required: false,
+        }) as string[];
+        selected.push(...picked);
+      }
+
+      const seen = new Set<string>();
+      selectedComponents = selected.filter((name) => {
+        if (seen.has(name)) return false;
+        seen.add(name);
+        return true;
+      });
+      if (selectedComponents.length === 0) {
+        log.info("No packages selected — you can always run 'devkit add' later.");
+      }
+    } catch (e) {
+      log.warn(`Could not load registry packages for picker: ${(e as Error).message}`);
+    }
+  }
+
+  // ── Build ────────────────────────────────────────────────────────────────
+
+  console.log();
+  log.header("Creating project…");
+
+  const destDir = join(process.cwd(), name);
+  if (existsSync(destDir)) {
+    log.error(`Directory '${name}' already exists.`);
+    process.exit(1);
+  }
+  mkdirSync(destDir, { recursive: true });
+
+  // 1. Download template
+  const s = spinner();
+  s.start(`Fetching template: ${chalk.cyan(template)}`);
+  try {
+    await downloadTemplate(template, destDir, {
+      projectName: name,
+      siteName: siteName as string,
+      siteUrl: siteUrl as string,
+    });
+    s.stop(chalk.green(`✓  Template fetched: ${template}`));
+  } catch (e) {
+    s.stop(chalk.red(`✗  Failed to fetch template`));
+    log.error((e as Error).message);
+    process.exit(1);
+  }
+
+  // 2. Write devkit.config.json
+  const config = defaultConfig(template as "nextjs-compact" | "vite-express-tauri", siteName as string, siteUrl as string);
+  config.theme!.preset = preset as string;
+  if (primaryColor) config.theme!.colors = { ...config.theme!.colors, primary: primaryColor };
+  writeConfig(config, destDir);
+  log.success("Created devkit.config.json");
+
+  // 3. Write devkit.lock.json
+  writeLock({ lockVersion: 1, template, components: {} }, destDir);
+  log.success("Created devkit.lock.json");
+
+  // 4. Generate theme CSS
+  const themeCss = generateThemeCSS(config);
+  const cssPath = template === "nextjs-compact"
+    ? join(destDir, "app", "globals.css")
+    : join(destDir, "src", "index.css");
+
+  if (existsSync(cssPath)) {
+    const existing = readFileSync(cssPath, "utf-8");
+    const withoutOldBlock = existing.replace(
+      /\/\* ── DevKit Managed Theme Block[\s\S]*?── End DevKit Managed Theme Block ── \*\//,
+      ""
+    ).trimStart();
+    writeFileSync(cssPath, themeCss + withoutOldBlock);
+  } else {
+    mkdirSync(join(destDir, template === "nextjs-compact" ? "app" : "src"), { recursive: true });
+    writeFileSync(cssPath, themeCss);
+  }
+  log.success(`Applied theme preset: ${preset}`);
+
+  // 5. npm install
+  if (doInstall) {
+    s.start("Installing npm dependencies…");
+    try {
+      execSync("npm install", { cwd: destDir, stdio: "pipe" });
+      s.stop(chalk.green("✓  npm install complete"));
+    } catch {
+      s.stop(chalk.yellow("⚠  npm install failed — run it manually"));
+    }
+  }
+
+  // 6. git init
+  if (doGit) {
+    try {
+      execSync("git init", { cwd: destDir, stdio: "pipe" });
+      execSync('git add . && git commit -m "chore: init project with DevKit"', { cwd: destDir, stdio: "pipe" });
+      log.success("Initialized git repository");
+    } catch {
+      log.warn("git init failed — git may not be installed");
+    }
+  }
+
+  // 7. Add selected components
+  for (const comp of selectedComponents) {
+    s.start(`Adding component: ${chalk.cyan(comp)}`);
+    try {
+      if (isPremiumAssetId(comp)) {
+        s.stop(chalk.yellow(`⚠  Skipped ${comp}: use devkit page add after auth + license`));
+        continue;
+      }
+      await installComponent(comp, template, "latest", undefined, destDir);
+      s.stop(chalk.green(`✓  Added: ${comp}`));
+    } catch (e) {
+      s.stop(chalk.yellow(`⚠  Skipped ${comp}: ${(e as Error).message}`));
+    }
+  }
+
+  // 8. Register project identity locally
+  const { ensureProjectIdentity } = await import("../lib/project.js");
+  ensureProjectIdentity(destDir);
+
+  // ── Done ─────────────────────────────────────────────────────────────────
+
+  console.log();
+  outro(chalk.green("Project ready!"));
+  console.log();
+  console.log(`  ${chalk.bold("Location")}    ${name}/`);
+  console.log(`  ${chalk.bold("Template")}    ${template}`);
+  console.log(`  ${chalk.bold("Theme")}       ${preset}`);
+  if (selectedComponents.length > 0) {
+    console.log(`  ${chalk.bold("Components")}  ${selectedComponents.join(", ")}`);
+  }
+  console.log();
+  console.log(chalk.bold("  Next steps:"));
+  console.log(`    ${chalk.cyan("cd")} ${name}`);
+  console.log(`    ${chalk.cyan("cp")} .env.example .env    ${chalk.gray("# Fill in your secrets")}`);
+  console.log(`    ${chalk.cyan("devkit auth login")}        ${chalk.gray("# Sign in to DevKit server")}`);
+  console.log(`    ${chalk.cyan("devkit doctor")}           ${chalk.gray("# Check for missing config")}`);
+  console.log(`    ${chalk.cyan("devkit dev")}               ${chalk.gray("# Start the dev server")}`);
+  console.log();
+}

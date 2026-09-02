@@ -1,0 +1,14 @@
+import { createIcon } from '../create-icon'
+import type { Icon } from '../types'
+
+export const DkGlobeWorldEarth: Icon = createIcon('DkGlobeWorldEarth', [
+  ['circle', { cx: '12', cy: '12', r: '8.5', stroke: 'currentColor', strokeWidth: '1.8' }],
+  [
+    'path',
+    {
+      d: 'M3.8 12H20.2M12 3.5C14.2 5.8 15.2 8.7 15.2 12C15.2 15.3 14.2 18.2 12 20.5C9.8 18.2 8.8 15.3 8.8 12C8.8 8.7 9.8 5.8 12 3.5Z',
+      stroke: 'currentColor',
+      strokeWidth: '1.5',
+    },
+  ],
+])

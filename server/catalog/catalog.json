@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-09-02",
+  "assets": [
+    {
+      "id": "dashboard-page",
+      "type": "page",
+      "tier": "premium",
+      "displayName": "Dashboard Page",
+      "description": "Full dashboard overview page with sidebar, stats, and activity feed.",
+      "category": "app-shell",
+      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "latestVersion": "1.0.0",
+      "dependencies": ["dashboard-sidebar", "stat-card", "data-table"],
+      "tags": ["dashboard", "analytics"]
+    },
+    {
+      "id": "settings-page",
+      "type": "page",
+      "tier": "premium",
+      "displayName": "Settings Page",
+      "description": "Account and application settings page with profile and security sections.",
+      "category": "app-shell",
+      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "latestVersion": "1.0.0",
+      "dependencies": ["settings-row", "dashboard-sidebar"],
+      "tags": ["settings", "account"]
+    },
+    {
+      "id": "hero-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Hero Section",
+      "description": "Marketing hero section with headline, CTA, and visual.",
+      "category": "marketing",
+      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "latestVersion": "1.0.0",
+      "dependencies": ["button", "anchor"],
+      "tags": ["marketing", "landing"]
+    },
+    {
+      "id": "auth-scaffold",
+      "type": "scaffold",
+      "tier": "premium",
+      "displayName": "Auth Scaffold",
+      "description": "Complete authentication flows: sign-in, sign-up, 2FA, password reset.",
+      "category": "authentication",
+      "templates": ["nextjs-compact", "vite-express-tauri"],
+      "latestVersion": "1.0.0",
+      "dependencies": ["sign-in-page", "text-field", "social-login-button"],
+      "tags": ["auth", "security"]
+    }
+  ]
+}

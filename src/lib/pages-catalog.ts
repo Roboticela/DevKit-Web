@@ -403,3 +403,41 @@ export const ONBOARDING_STATES = [
 ] as const
 
 export type OnboardingPreviewState = (typeof ONBOARDING_STATES)[number]['id']
+
+export const DASHBOARD_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const DASHBOARD_STATES = [
+  { id: 'default', label: 'Overview' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'customers', label: 'Loading customers' },
+  { id: 'inbox', label: 'Empty inbox' },
+  { id: 'sidebar-collapsed', label: 'Sidebar collapsed' },
+  { id: 'invite-open', label: 'Invite modal' },
+] as const
+
+export type DashboardPreviewState = (typeof DASHBOARD_STATES)[number]['id']
+
+export const SETTINGS_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'live-preview', label: 'Live Preview' },
+  { id: 'code', label: 'Code' },
+  { id: 'states', label: 'States' },
+  { id: 'composition', label: 'Composition' },
+  { id: 'data', label: 'Data Requirements' },
+]
+
+export const SETTINGS_STATES = [
+  { id: 'default', label: 'Default' },
+  { id: 'two-factor-off', label: 'Two-factor off' },
+  { id: 'sidebar-collapsed', label: 'Sidebar collapsed' },
+  { id: 'signing-out', label: 'Signing out' },
+] as const
+
+export type SettingsPreviewState = (typeof SETTINGS_STATES)[number]['id']

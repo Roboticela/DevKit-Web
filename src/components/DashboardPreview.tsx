@@ -1,6 +1,7 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   DkChartColumnIncreasing,
   DkNotificationBellAlert,
@@ -34,6 +35,7 @@ import { Tabs } from './Tabs'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
 import { ThemeToggle } from './ThemeToggle'
+import type { DashboardPreviewState } from '@/lib/pages-catalog'
 
 const ICON = { size: 18, strokeWidth: 1.5, absoluteStrokeWidth: true } as const
 
@@ -50,18 +52,38 @@ function statusTone(status: string) {
   return 'neutral' as const
 }
 
-export function DashboardPreview({ full = false }: { full?: boolean }) {
+function pageFromState(state: DashboardPreviewState) {
+  if (state === 'projects') return 'projects'
+  if (state === 'customers') return 'customers'
+  if (state === 'inbox') return 'inbox'
+  return 'overview'
+}
+
+export function DashboardPreview({
+  full = false,
+  state = 'default',
+}: {
+  full?: boolean
+  state?: DashboardPreviewState
+}) {
+  const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [page, setPage] = useState('overview')
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(state === 'sidebar-collapsed')
+  const [page, setPage] = useState(() => pageFromState(state))
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState('all')
-  const [inviteOpen, setInviteOpen] = useState(false)
+  const [inviteOpen, setInviteOpen] = useState(state === 'invite-open')
   const [tablePage, setTablePage] = useState(1)
   const [banner, setBanner] = useState(true)
   const [productAlerts, setProductAlerts] = useState(true)
   const [weekly, setWeekly] = useState(true)
   const [note, setNote] = useState('')
+
+  useEffect(() => {
+    setPage(pageFromState(state))
+    setSidebarCollapsed(state === 'sidebar-collapsed')
+    setInviteOpen(state === 'invite-open')
+  }, [state])
 
   const sections = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -97,6 +119,10 @@ export function DashboardPreview({ full = false }: { full?: boolean }) {
   function navigate(id: string) {
     if (id === 'logout') {
       setPage('overview')
+      return
+    }
+    if (full && id === 'settings') {
+      router.push('/settings')
       return
     }
     setPage(id)

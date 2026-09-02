@@ -1,20 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import {
-  DkClipboardCopyDuplicate,
-  DkMagnifyingGlassFind,
-  DkTaskCompleteCheckmark,
-} from '@/icons'
-import { GlyphSvg } from '@/icons/create-glyph'
-import { LucideSvg } from '@/icons/create-icon'
-import { KIT_ICONS } from '@/icons/kit'
-import catalog from '@/icons/catalog'
-import { loadLucideData, PACK_LOADERS } from '@/icons/loaders'
-import { renameIcon } from '@/icons/names'
-import { describeIcon } from '@/icons/tags'
-import { ICON_PACKS } from '@/icons/sets'
-import type { CompactGlyph, IconNode } from '@/icons/types'
+import { ICON_NAMES, describeIcon, icons } from '@/icons'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { cn } from '@/lib/cn'
 import { EASE, FOCUS_RING } from '@/lib/styles'
@@ -29,53 +16,37 @@ import { Modal } from './Modal'
 import { Body } from './Text'
 
 const PAGE_SIZE = 96
-const CATALOG = catalog as Record<string, string[]>
 
-type IconEntry = { pack: string; key: string; name: string; tags: string[]; search: string }
+type IconEntry = { name: string; tags: string[]; search: string }
 type CodeView = 'usage' | 'name' | 'import' | 'jsx'
 
-const ALL_ICONS: IconEntry[] = [
-  ...KIT_ICONS.map((item) => ({ pack: 'kit', key: item.name, name: item.name })),
-  ...ICON_PACKS.filter((pack) => pack.id !== 'kit').flatMap((pack) =>
-    (CATALOG[pack.id] ?? []).map((key) => ({ pack: pack.id, key, name: renameIcon(pack.id, key) })),
-  ),
-].map((item) => {
-  const meta = describeIcon(item.pack, item.key, item.name)
-  return { ...item, ...meta }
-})
-
-function packLabel(pack: string) {
-  return ICON_PACKS.find((item) => item.id === pack)?.label ?? pack
-}
+const ALL_ICONS: IconEntry[] = ICON_NAMES.map((name) => ({
+  name,
+  ...describeIcon(name),
+}))
 
 function labelTag(tag: string) {
   return tag.charAt(0).toUpperCase() + tag.slice(1)
 }
 
-function importSnippet(pack: string, name: string) {
-  if (pack === 'kit' || pack === 'lucide') {
-    return `import { ${name} } from '@/icons'`
-  }
-  return `import ${pack} from '@/icons/${pack}'`
+function importSnippet(name: string) {
+  return `import { ${name} } from '@/icons'`
 }
 
-function jsxSnippet(pack: string, name: string, size = 24) {
-  if (pack === 'kit' || pack === 'lucide') {
-    return `<${name} size={${size}} />`
-  }
-  return `<${pack}.${name} size={${size}} />`
+function jsxSnippet(name: string, size = 24) {
+  return `<${name} size={${size}} />`
 }
 
-function usageSnippet(pack: string, name: string) {
-  return `${importSnippet(pack, name)}\n\n${jsxSnippet(pack, name)}`
+function usageSnippet(name: string) {
+  return `${importSnippet(name)}\n\n${jsxSnippet(name)}`
 }
 
 function snippetsFor(item: IconEntry) {
   return {
     name: item.name,
-    import: importSnippet(item.pack, item.name),
-    jsx: jsxSnippet(item.pack, item.name),
-    usage: usageSnippet(item.pack, item.name),
+    import: importSnippet(item.name),
+    jsx: jsxSnippet(item.name),
+    usage: usageSnippet(item.name),
   }
 }
 
@@ -86,8 +57,6 @@ export function IconsDocs() {
   const [selected, setSelected] = useState<IconEntry | null>(null)
   const [detailOpen, setDetailOpen] = useState(false)
   const [codeView, setCodeView] = useState<CodeView>('usage')
-  const [lucideData, setLucideData] = useState<Record<string, IconNode> | null>(null)
-  const [glyphPacks, setGlyphPacks] = useState<Record<string, Record<string, CompactGlyph>>>({})
 
   const names = useMemo(() => {
     const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
@@ -104,30 +73,6 @@ export function IconsDocs() {
   useEffect(() => {
     setPage(1)
   }, [query])
-
-  useEffect(() => {
-    let active = true
-    const targets = selected ? [...visible, selected] : visible
-    const needLucide = targets.some((item) => item.pack === 'lucide')
-    if (needLucide && !lucideData) {
-      void loadLucideData().then((mod) => {
-        if (active) setLucideData(mod.default)
-      })
-    }
-    const needed = new Set(
-      targets.map((item) => item.pack).filter((id) => id !== 'kit' && id !== 'lucide' && PACK_LOADERS[id]),
-    )
-    for (const id of needed) {
-      if (glyphPacks[id]) continue
-      void PACK_LOADERS[id]().then((mod) => {
-        if (!active) return
-        setGlyphPacks((current) => (current[id] ? current : { ...current, [id]: mod.default }))
-      })
-    }
-    return () => {
-      active = false
-    }
-  }, [visible, selected, lucideData, glyphPacks])
 
   function searchTag(tag: string) {
     setQuery(tag)
@@ -165,7 +110,7 @@ export function IconsDocs() {
       <DocsHeader
         crumb="Components / Foundations / Icons"
         title="Icons"
-        description={`${ALL_ICONS.length.toLocaleString()} local icons you can search by name or meaning. Use these glyphs in buttons, fields, and empty states.`}
+        description={`${ALL_ICONS.length.toLocaleString()} Roboticela icons you can search by name or meaning. Add icons under src/icons/icons/ — one file per icon.`}
       >
         <DocsMetaBadges />
       </DocsHeader>
@@ -175,7 +120,7 @@ export function IconsDocs() {
         <DocsUsage>
           <DocsProse>
             <Body>
-              Import from <DocsInlineCode>@/icons</DocsInlineCode>. Kit and Lucide icons are named{' '}
+              Import from <DocsInlineCode>@/icons</DocsInlineCode>. Every icon is named{' '}
               <DocsInlineCode>Dk…</DocsInlineCode>. Size 18 sits in buttons and fields; 24 in empty
               states. Decorative icons next to visible text should be hidden from assistive tech.
             </Body>
@@ -183,7 +128,7 @@ export function IconsDocs() {
           <DocsPrinciples
             items={[
               { title: 'Meaning first', body: 'Search tags, not just filenames. Pick the glyph that matches the action.' },
-              { title: 'One stroke', body: 'Use strokeWidth 1.75 and absoluteStrokeWidth in product chrome so icons match.' },
+              { title: 'Stroke icons', body: 'Stroke widths are baked into each path. Pass size and className as needed.' },
               { title: 'Named when alone', body: 'An icon without a visible label needs an accessible name on the control around it.' },
             ]}
           />
@@ -194,27 +139,24 @@ export function IconsDocs() {
               'Use the same size in a row of actions.',
             ]}
             dontItems={[
-              'Do not mix two icon packs in one toolbar.',
+              'Do not mix unrelated glyph styles in one toolbar.',
               'Do not use an icon as the only error signal.',
               'Do not scale below 16px for a primary action.',
             ]}
           />
           <DocsSnippet>
             {selected
-              ? usageSnippet(selected.pack, selected.name)
-              : `import { DkRoboticelaBrandLogo, DkTaskCompleteCheckmark, DkGithubOctocatBrandLogo } from '@/icons'\n\n<DkRoboticelaBrandLogo size={24} />\n<DkTaskCompleteCheckmark size={16} />\n<DkGithubOctocatBrandLogo size={18} />`}
+              ? usageSnippet(selected.name)
+              : `import { DkDashboardOverviewGrid } from '@/icons'\n\n<DkDashboardOverviewGrid size={18} />`}
           </DocsSnippet>
         </DocsUsage>
       </section>
 
       <section id="library" className="mt-10 scroll-mt-20">
         <label className="relative block">
-          <DkMagnifyingGlassFind
-            size={15}
-            strokeWidth={1.75}
-            absoluteStrokeWidth
-            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-text-tertiary"
-          />
+          <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[15px] text-text-tertiary" aria-hidden>
+            ⌕
+          </span>
           <input
             type="search"
             value={query}
@@ -233,33 +175,29 @@ export function IconsDocs() {
             : `Showing ${from.toLocaleString()}–${to.toLocaleString()} of ${names.length.toLocaleString()}`}
         </p>
 
-        {visible.length === 0 ? null : (
+        {visible.length === 0 ? (
+          <p className="mt-6 text-[15px] text-text-secondary">
+            No icons yet. Add one file per icon in src/icons/icons/, provider marks in src/icons/icons/provider/, and product logos in src/icons/icons/brand/.
+          </p>
+        ) : (
           <>
             <div className="mt-4 grid grid-cols-3 gap-2 min-[480px]:grid-cols-4 min-[735px]:grid-cols-6 min-[1069px]:grid-cols-8">
               {visible.map((item) => (
                 <button
-                  key={`${item.pack}-${item.name}`}
+                  key={item.name}
                   type="button"
                   aria-haspopup="dialog"
-                  aria-expanded={detailOpen && selected?.name === item.name && selected.pack === item.pack}
+                  aria-expanded={detailOpen && selected?.name === item.name}
                   onClick={() => openIcon(item)}
                   className={cn(
                     'flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-xl bg-bg-secondary px-1.5 py-3 text-text-primary',
                     'transition-colors duration-150',
                     EASE,
                     'hover:bg-bg-tertiary',
-                    selected?.name === item.name &&
-                      selected.pack === item.pack &&
-                      'bg-brand-primary-subtle text-brand-primary',
+                    selected?.name === item.name && 'bg-brand-primary-subtle text-brand-primary',
                   )}
                 >
-                  <IconPreview
-                    pack={item.pack}
-                    name={item.name}
-                    dataKey={item.key}
-                    lucideData={lucideData}
-                    glyphPacks={glyphPacks}
-                  />
+                  <IconPreview name={item.name} />
                   <span className="max-w-full truncate font-mono text-[10px] text-text-tertiary">{item.name}</span>
                   {item.tags.length > 0 ? (
                     <span className="flex max-w-full justify-center gap-1 overflow-hidden">
@@ -326,10 +264,7 @@ export function IconsDocs() {
           title={selected.name}
           size="lg"
         >
-          <p className="m-0 text-[13px] text-text-tertiary">
-            {packLabel(selected.pack)}
-            {selected.key !== selected.name ? ` · ${selected.key}` : ''}
-          </p>
+          <p className="m-0 text-[13px] text-text-tertiary">Roboticela Icon Library</p>
 
           {selected.tags.length > 0 ? (
             <div className="mt-4 flex flex-wrap gap-2">
@@ -353,38 +288,17 @@ export function IconsDocs() {
 
           <div className="mt-4 grid grid-cols-2 gap-2">
             <div className="flex h-32 items-center justify-center rounded-xl bg-white text-[#1D1D1F]">
-              <IconPreview
-                pack={selected.pack}
-                name={selected.name}
-                dataKey={selected.key}
-                lucideData={lucideData}
-                glyphPacks={glyphPacks}
-                size={64}
-              />
+              <IconPreview name={selected.name} size={64} />
             </div>
             <div className="flex h-32 items-center justify-center rounded-xl bg-black text-white">
-              <IconPreview
-                pack={selected.pack}
-                name={selected.name}
-                dataKey={selected.key}
-                lucideData={lucideData}
-                glyphPacks={glyphPacks}
-                size={64}
-              />
+              <IconPreview name={selected.name} size={64} />
             </div>
           </div>
 
           <div className="mt-4 flex items-end justify-center gap-6 rounded-xl bg-bg-secondary px-4 py-6 dark:bg-bg-tertiary">
             {[16, 24, 32, 48].map((size) => (
               <div key={size} className="flex flex-col items-center gap-2 text-text-primary">
-                <IconPreview
-                  pack={selected.pack}
-                  name={selected.name}
-                  dataKey={selected.key}
-                  lucideData={lucideData}
-                  glyphPacks={glyphPacks}
-                  size={size}
-                />
+                <IconPreview name={selected.name} size={size} />
                 <span className="text-[11px] text-text-tertiary">{size}</span>
               </div>
             ))}
@@ -399,13 +313,7 @@ export function IconsDocs() {
                   variant="action"
                   size="sm"
                   aria-pressed={codeView === action.id}
-                  leading={
-                    done ? (
-                      <DkTaskCompleteCheckmark size={14} strokeWidth={2} absoluteStrokeWidth className="text-success" />
-                    ) : (
-                      <DkClipboardCopyDuplicate size={14} strokeWidth={1.75} absoluteStrokeWidth />
-                    )
-                  }
+                  leading={done ? '✓' : '⎘'}
                   onClick={() => void copyText(action.id, action.value)}
                 >
                   {done ? 'Copied' : action.label}
@@ -424,7 +332,7 @@ export function IconsDocs() {
                   : 'Usage'}
           </p>
           <div className="overflow-hidden rounded-xl">
-            <CodeBlock code={shownCode} fadeKey={`${selected.pack}-${selected.name}-${codeView}`} />
+            <CodeBlock code={shownCode} fadeKey={`${selected.name}-${codeView}`} />
           </div>
         </Modal>
       ) : null}
@@ -432,35 +340,10 @@ export function IconsDocs() {
   )
 }
 
-function IconPreview({
-  pack,
-  name,
-  dataKey,
-  lucideData,
-  glyphPacks,
-  size = 22,
-  className,
-}: {
-  pack: string
-  name: string
-  dataKey: string
-  lucideData: Record<string, IconNode> | null
-  glyphPacks: Record<string, Record<string, CompactGlyph>>
-  size?: number
-  className?: string
-}) {
-  if (pack === 'kit') {
-    const item = KIT_ICONS.find((entry) => entry.name === name)
-    if (!item) return null
-    const Icon = item.Icon
-    return <Icon size={size} strokeWidth={1.75} absoluteStrokeWidth className={className} />
+function IconPreview({ name, size = 22, className }: { name: string; size?: number; className?: string }) {
+  const IconComponent = icons[name as keyof typeof icons]
+  if (typeof IconComponent !== 'function') {
+    return <span className="shrink-0" style={{ width: size, height: size }} />
   }
-  if (pack === 'lucide') {
-    const node = lucideData?.[dataKey]
-    if (!node) return <span className="shrink-0" style={{ width: size, height: size }} />
-    return <LucideSvg node={node} size={size} strokeWidth={1.75} className={className} />
-  }
-  const glyph = glyphPacks[pack]?.[dataKey]
-  if (!glyph) return <span className="shrink-0" style={{ width: size, height: size }} />
-  return <GlyphSvg data={glyph} size={size} uid={`${pack}-${dataKey}-${size}`} className={className} />
+  return <IconComponent size={size} className={className} />
 }

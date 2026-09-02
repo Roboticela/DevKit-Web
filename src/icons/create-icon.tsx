@@ -1,133 +1,157 @@
-import { createElement, forwardRef, type ReactNode } from 'react'
-import type { IconNode, LucideIcon, LucideProps, SVGElementType } from './types'
+import { createElement, forwardRef, type CSSProperties, type ReactNode } from 'react'
+import type { BrandAttr, BrandGlyph, BrandNode, Icon, IconNode, IconProps } from './types'
 
-const DEFAULT_ATTRS = {
+const STROKE_DEFAULTS = {
   xmlns: 'http://www.w3.org/2000/svg',
-  width: 24,
-  height: 24,
   viewBox: '0 0 24 24',
   fill: 'none',
   stroke: 'currentColor',
   strokeWidth: 2,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
+  strokeLinecap: 'round',
+  strokeLinejoin: 'round',
+} as const
+
+function hasA11yProp(props: IconProps) {
+  return props['aria-label'] != null || props['aria-labelledby'] != null
 }
 
-function toKebabCase(value: string) {
-  return value
-    .replaceAll(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replaceAll(/([A-Z])([A-Z][a-z])/g, '$1-$2')
-    .toLowerCase()
-}
-
-function hasA11yProp(props: LucideProps) {
-  return Boolean(
-    props['aria-label'] ||
-      props['aria-labelledby'] ||
-      props['aria-describedby'] ||
-      props.role === 'img' ||
-      props.title,
-  )
-}
-
-function mergeClass(...values: Array<string | undefined>) {
-  return values.filter(Boolean).join(' ')
-}
-
-export function createLucideIcon(iconName: string, iconNode: IconNode): LucideIcon {
-  const kebab = toKebabCase(iconName)
-  const Icon = forwardRef<SVGSVGElement, LucideProps>(
+export function createIcon(name: string, nodes: IconNode): Icon {
+  const Icon = forwardRef<SVGSVGElement, IconProps>(
     (
-      {
-        color = 'currentColor',
-        size = 24,
-        strokeWidth = 2,
-        absoluteStrokeWidth,
-        className,
-        children,
-        title,
-        style,
-        ...rest
-      },
+      { size = 24, color, title, className, children, style, absoluteStrokeWidth: _absoluteStrokeWidth, ...rest },
+      ref,
+    ) =>
+      createElement(
+        'svg',
+        {
+          ref,
+          ...STROKE_DEFAULTS,
+          ...rest,
+          width: size,
+          height: size,
+          className: ['block shrink-0', className].filter(Boolean).join(' '),
+          style: { display: 'block', ...(color ? { color } : null), ...style },
+          role: title || hasA11yProp(rest) ? 'img' : undefined,
+          'aria-hidden': title || hasA11yProp(rest) ? undefined : true,
+        },
+        [
+          title ? createElement('title', { key: 'title' }, title) : null,
+          ...nodes.map(([tag, attrs], index) => createElement(tag, { key: index, ...attrs })),
+          children,
+        ],
+      ),
+  )
+  Icon.displayName = name
+  return Icon
+}
+
+function expandBrandNode(node: BrandNode): { tag: string; attr?: BrandAttr; child?: BrandNode[] } {
+  return {
+    tag: node.t ?? 'path',
+    attr: node.a,
+    child: node.c,
+  }
+}
+
+function cssToStyle(value: string): CSSProperties {
+  const style: Record<string, string> = {}
+  for (const part of value.split(';')) {
+    const idx = part.indexOf(':')
+    if (idx < 0) continue
+    const rawKey = part.slice(0, idx).trim()
+    const rawVal = part.slice(idx + 1).trim()
+    if (!rawKey) continue
+    const key = rawKey.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase())
+    style[key] = rawVal
+  }
+  return style as CSSProperties
+}
+
+function scopeUrl(value: string, prefix: string) {
+  return value.replace(/url\(#([^)]+)\)/g, (_match, id: string) => `url(#${prefix}${id})`)
+}
+
+function brandAttr(attr: BrandAttr | undefined, idPrefix?: string): Record<string, unknown> {
+  if (!attr) return {}
+  const out: Record<string, unknown> = {}
+  for (const [rawKey, value] of Object.entries(attr)) {
+    if (value === undefined) continue
+    const key =
+      rawKey === 'class'
+        ? 'className'
+        : rawKey.includes('-')
+          ? rawKey.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase())
+          : rawKey
+
+    if (key === 'style' && typeof value === 'string') {
+      out.style = cssToStyle(value)
+      continue
+    }
+
+    if (typeof value === 'string' && idPrefix) {
+      if (key === 'id') {
+        out.id = `${idPrefix}${value}`
+        continue
+      }
+      if (value.includes('url(#')) {
+        out[key] = scopeUrl(value, idPrefix)
+        continue
+      }
+    }
+
+    out[key] = value
+  }
+  return out
+}
+
+function brandTree(nodes: BrandNode[] | undefined, idPrefix?: string): ReactNode {
+  if (!nodes?.length) return null
+  return nodes.map((node, index) => {
+    const expanded = expandBrandNode(node)
+    return createElement(
+      expanded.tag,
+      { key: index, ...brandAttr(expanded.attr, idPrefix) },
+      brandTree(expanded.child, idPrefix),
+    )
+  })
+}
+
+export function createBrandIcon(name: string, glyph: BrandGlyph): Icon {
+  const idPrefix = `${name}-`
+  const Icon = forwardRef<SVGSVGElement, IconProps>(
+    (
+      { size = 24, color, title, className, children, style, absoluteStrokeWidth: _absoluteStrokeWidth, ...rest },
       ref,
     ) => {
-      const width = Number(strokeWidth)
-      const dim = Number(size) || 24
-      const calculatedStrokeWidth = absoluteStrokeWidth ? (width * 24) / dim : strokeWidth
-
+      const rootAttr = brandAttr(glyph.a, idPrefix)
       return createElement(
         'svg',
         {
           ref,
-          ...DEFAULT_ATTRS,
+          xmlns: 'http://www.w3.org/2000/svg',
+          overflow: 'visible',
+          ...rootAttr,
+          ...rest,
           width: size,
           height: size,
-          stroke: color,
-          strokeWidth: calculatedStrokeWidth,
-          className: mergeClass('lucide', `lucide-${kebab}`, 'block shrink-0', className),
-          ...(!children && !hasA11yProp({ title, style, ...rest }) ? { 'aria-hidden': 'true' } : null),
-          ...rest,
-          overflow: rest.overflow ?? 'visible',
-          style: { display: 'block', ...style },
+          className: ['block shrink-0', className].filter(Boolean).join(' '),
+          style: {
+            display: 'block',
+            ...(color ? { color } : null),
+            ...(typeof rootAttr.style === 'object' && rootAttr.style ? rootAttr.style : null),
+            ...style,
+          },
+          role: title ? 'img' : undefined,
+          'aria-hidden': title ? undefined : true,
         },
         [
-          ...iconNode.map(([tag, attrs], index) =>
-            createElement(tag as SVGElementType, { key: index, ...attrs }),
-          ),
           title ? createElement('title', { key: 'title' }, title) : null,
-          ...(Array.isArray(children) ? children : [children]),
-        ].filter(Boolean) as ReactNode[],
+          brandTree(glyph.c, idPrefix),
+          children,
+        ],
       )
     },
   )
-
-  Icon.displayName = iconName
+  Icon.displayName = name
   return Icon
-}
-
-export function createLucidePack(data: Record<string, IconNode>) {
-  const pack: Record<string, LucideIcon> = {}
-  for (const [name, node] of Object.entries(data)) {
-    pack[name] = createLucideIcon(name, node)
-  }
-  return pack
-}
-
-export function LucideSvg({
-  node,
-  size = 24,
-  className,
-  title,
-  strokeWidth = 2,
-  absoluteStrokeWidth = true,
-}: {
-  node: IconNode
-  size?: number
-  className?: string
-  title?: string
-  strokeWidth?: number
-  absoluteStrokeWidth?: boolean
-}) {
-  const dim = Number(size) || 24
-  const width = Number(strokeWidth)
-  const calculatedStrokeWidth = absoluteStrokeWidth ? (width * 24) / dim : strokeWidth
-  return createElement(
-    'svg',
-    {
-      ...DEFAULT_ATTRS,
-      width: size,
-      height: size,
-      overflow: 'visible',
-      strokeWidth: calculatedStrokeWidth,
-      className: mergeClass('block shrink-0', className),
-      style: { display: 'block' },
-      'aria-hidden': title ? undefined : true,
-    },
-    [
-      title ? createElement('title', { key: 'title' }, title) : null,
-      ...node.map(([tag, attrs], index) =>
-        createElement(tag as SVGElementType, { key: attrs.key ?? index, ...attrs }),
-      ),
-    ],
-  )
 }

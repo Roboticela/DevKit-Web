@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "devkit:server": "npm run dev --prefix server",
+    "devkit:cli": "npm run dev --prefix cli"
   },
   "dependencies": {
     "next": "16.3.3",

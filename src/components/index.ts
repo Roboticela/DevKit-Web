@@ -271,19 +271,7 @@ export {
   XButton,
 } from './SocialLoginButton'
 export type { SocialLoginButtonProps, SocialLoginProvider } from './SocialLoginButton'
-export { GitHubMark } from './GitHubMark'
-export { GoogleMark } from './GoogleMark'
 export { OtherWaysButton } from './OtherWaysButton'
-export {
-  AppleMark,
-  DiscordMark,
-  FacebookMark,
-  LinkedInMark,
-  MicrosoftMark,
-  SlackMark,
-  XMark,
-} from './providerMarks'
-export { RoboticelaMark } from './RoboticelaMark'
 export { IconButton } from './IconButton'
 export type { IconButtonSize, IconButtonStatus, IconButtonVariant } from './IconButton'
 export {

@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-09-02",
+  "components": [
+    { "name": "button", "templates": ["nextjs-compact", "vite-express-tauri"], "category": "ui" },
+    { "name": "modal", "templates": ["nextjs-compact", "vite-express-tauri"], "category": "ui" },
+    { "name": "text-field", "templates": ["nextjs-compact", "vite-express-tauri"], "category": "forms" },
+    { "name": "data-table", "templates": ["nextjs-compact", "vite-express-tauri"], "category": "ui" }
+  ]
+}

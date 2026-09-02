@@ -1,0 +1,14 @@
+{
+  "id": 4,
+  "name": "data-table",
+  "displayName": "Data Table",
+  "description": "Sortable data table with selection",
+  "category": "ui",
+  "kind": "component",
+  "delivery": "module",
+  "templates": ["nextjs-compact", "vite-express-tauri"],
+  "platforms": ["web", "desktop"],
+  "hasVariants": false,
+  "tags": ["data"],
+  "versions": { "latest": "4.5.2", "history": [{ "version": "4.5.2", "date": "2026-09-02" }] }
+}

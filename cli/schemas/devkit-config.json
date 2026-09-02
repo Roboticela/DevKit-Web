@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Roboticela/DevKit/main/cli/schemas/devkit-config.json",
+  "title": "DevKit project configuration",
+  "type": "object",
+  "required": ["devkit", "template", "site"],
+  "additionalProperties": true,
+  "properties": {
+    "$schema": { "type": "string", "format": "uri" },
+    "devkit": { "type": "string", "description": "DevKit config format version" },
+    "template": {
+      "type": "string",
+      "enum": ["nextjs-compact", "vite-express-tauri"],
+      "description": "Project template this repo was scaffolded from"
+    },
+    "site": {
+      "type": "object",
+      "required": ["name", "url"],
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "icon": { "type": "string", "description": "Favicon or app icon path (e.g. /favicon.svg)" },
+        "description": { "type": "string" },
+        "branding": {
+          "type": "object",
+          "description": "Logo URLs, hero copy, CTA labels — anything components should render from data instead of hardcoding, so updates can refresh implementation files without overwriting your brand.",
+          "additionalProperties": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "theme": {
+      "type": "object",
+      "description": "Theme tokens follow DevKit Design Constitution (.cursor/rules/design-main-rule.mdc). Generated CSS uses --space-*, --radius-*, --color-*, typography, motion, and z-index scales.",
+      "additionalProperties": true,
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": ["default", "minimal", "bold", "playful", "corporate"],
+          "description": "Accent + radius personality preset"
+        },
+        "colors": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": "string", "description": "Accent 500 / brand primary (hex)" },
+            "secondary": { "type": "string", "description": "Secondary accent (hex)" }
+          },
+          "additionalProperties": true
+        },
+        "fonts": {
+          "type": "object",
+          "properties": {
+            "sans": { "type": "string", "description": "Text font family name, or \"system\" for constitution stack" },
+            "mono": { "type": "string", "description": "Code font family name, or \"system\"" },
+            "display": { "type": "string", "description": "Display font family name, or \"system\"" }
+          },
+          "additionalProperties": true
+        },
+        "radius": {
+          "type": "string",
+          "description": "Radius personality: sharp | balanced | soft (aliases: none/sm→sharp, md→balanced, lg/xl/full→soft)",
+          "enum": ["sharp", "balanced", "soft", "none", "sm", "md", "lg", "xl", "full"]
+        },
+        "darkMode": { "type": "boolean" },
+        "darkModeStrategy": { "type": "string", "enum": ["class", "media"] }
+      }
+    },
+    "auth": { "type": "object", "additionalProperties": true },
+    "subscriptions": { "type": "object", "additionalProperties": true },
+    "storage": { "type": "object", "additionalProperties": true },
+    "database": {
+      "type": "object",
+      "properties": { "url": { "type": "string" } },
+      "additionalProperties": true
+    }
+  }
+}

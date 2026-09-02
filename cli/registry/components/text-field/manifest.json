@@ -1,0 +1,7 @@
+{
+  "delivery": "module",
+  "version": "4.5.2",
+  "exportName": "TextField",
+  "package": "@roboticela/devkit",
+  "styles": true
+}

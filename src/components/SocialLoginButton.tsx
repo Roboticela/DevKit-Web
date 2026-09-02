@@ -1,20 +1,20 @@
 'use client'
 
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
-import { DkFingerprintBiometricScanPattern } from '@/icons'
-import { AuthProviderButton } from './AuthProviderButton'
-import { GitHubMark } from './GitHubMark'
-import { GoogleMark } from './GoogleMark'
-import { RoboticelaMark } from './RoboticelaMark'
 import {
-  AppleMark,
-  DiscordMark,
-  FacebookMark,
-  LinkedInMark,
-  MicrosoftMark,
-  SlackMark,
-  XMark,
-} from './providerMarks'
+  DkAppleBrandLogo,
+  DkDiscordBrandLogo,
+  DkFacebookBrandLogo,
+  DkFingerprintBiometricScanPattern,
+  DkGithubOctocatBrandLogo,
+  DkGoogleBrandLogo,
+  DkLinkedInBrandLogo,
+  DkMicrosoftBrandLogo,
+  DkRoboticela,
+  DkSlackBrandLogo,
+  DkXBrandLogo,
+} from '@/icons'
+import { AuthProviderButton } from './AuthProviderButton'
 
 export const SOCIAL_LOGIN_PROVIDERS = [
   'roboticela',
@@ -51,7 +51,7 @@ const PROVIDERS: Record<
 > = {
   roboticela: {
     label: 'Continue with Roboticela',
-    icon: <RoboticelaMark size={20} />,
+    icon: <DkRoboticela size={20} />,
   },
   passkey: {
     label: 'Continue with Passkey',
@@ -60,39 +60,39 @@ const PROVIDERS: Record<
   },
   google: {
     label: 'Continue with Google',
-    icon: <GoogleMark />,
+    icon: <DkGoogleBrandLogo size={18} />,
   },
   apple: {
     label: 'Continue with Apple',
-    icon: <AppleMark />,
+    icon: <DkAppleBrandLogo size={18} />,
   },
   microsoft: {
     label: 'Continue with Microsoft',
-    icon: <MicrosoftMark />,
+    icon: <DkMicrosoftBrandLogo size={18} />,
   },
   github: {
     label: 'Continue with GitHub',
-    icon: <GitHubMark />,
+    icon: <DkGithubOctocatBrandLogo size={18} />,
   },
   facebook: {
     label: 'Continue with Facebook',
-    icon: <FacebookMark />,
+    icon: <DkFacebookBrandLogo size={18} />,
   },
   x: {
     label: 'Continue with X',
-    icon: <XMark />,
+    icon: <DkXBrandLogo size={18} />,
   },
   linkedin: {
     label: 'Continue with LinkedIn',
-    icon: <LinkedInMark />,
+    icon: <DkLinkedInBrandLogo size={18} />,
   },
   discord: {
     label: 'Continue with Discord',
-    icon: <DiscordMark />,
+    icon: <DkDiscordBrandLogo size={18} />,
   },
   slack: {
     label: 'Continue with Slack',
-    icon: <SlackMark />,
+    icon: <DkSlackBrandLogo size={18} />,
   },
 }
 

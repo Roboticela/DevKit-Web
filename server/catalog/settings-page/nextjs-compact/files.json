@@ -1,0 +1,4 @@
+{
+  "package.json": "{\n  \"name\": \"@roboticela/premium-settings-page\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"main\": \"./index.js\",\n  \"exports\": { \".\": \"./index.js\" },\n  \"peerDependencies\": {\n    \"react\": \">=18\",\n    \"react-dom\": \">=18\",\n    \"@roboticela/devkit\": \">=4.5.0\"\n  }\n}",
+  "index.js": "'use client';\nimport { createElement as h } from 'react';\nexport default function SettingsPage() {\n  return h('main', { className: 'p-8' },\n    h('h1', { className: 'text-2xl font-semibold text-text-primary' }, 'Settings'),\n    h('p', { className: 'mt-2 text-text-secondary' }, 'Premium settings page — server-delivered only.')\n  );\n}\n"
+}

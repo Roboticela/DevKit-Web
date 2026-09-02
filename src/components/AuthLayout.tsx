@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { DkTaskCompleteCheckmark } from '@/icons'
 import { cn } from '@/lib/cn'
 import { AuthNav } from './AuthNav'
 import { BrandLogo } from './BrandLogo'
@@ -103,17 +104,7 @@ export function AuthSuccess({
   return (
     <div className="mx-auto flex w-full max-w-[460px] flex-col items-center text-center">
       <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-[980px] bg-bg-secondary text-success dark:bg-[#1c1c1e]">
-        {children ?? (
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M5 13l4 4L19 7"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
+        {children ?? <DkTaskCompleteCheckmark size={28} strokeWidth={2.2} aria-hidden />}
       </div>
       <Heading
         align="center"

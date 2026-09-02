@@ -1,0 +1,229 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LicenseStatus {
+  pending
+  active
+  revoked
+  expired
+  cancelled
+}
+
+enum ProjectRole {
+  owner
+  admin
+  developer
+  viewer
+}
+
+enum AssetTier {
+  free
+  premium
+}
+
+enum AssetType {
+  component
+  section
+  page
+  scaffold
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projects       Project[]
+  projectMembers ProjectMember[]
+  sessions       Session[]
+  refreshTokens  RefreshToken[]
+  devices        Device[]
+  auditLogs      AuditLog[]
+}
+
+model Project {
+  id             String   @id @default(cuid())
+  slug           String
+  name           String
+  template       String
+  installationId String   @unique @default(cuid())
+  ownerId        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  owner   User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  license License?
+  members ProjectMember[]
+  assets  ProjectAsset[]
+  payments Payment[]
+
+  @@unique([ownerId, slug])
+  @@index([installationId])
+}
+
+model ProjectMember {
+  id        String      @id @default(cuid())
+  projectId String
+  userId    String
+  role      ProjectRole @default(developer)
+  createdAt DateTime    @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+model License {
+  id        String        @id @default(cuid())
+  projectId String        @unique
+  status    LicenseStatus @default(pending)
+  issuedAt  DateTime?
+  revokedAt DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  projectId       String
+  stripeSessionId String?  @unique
+  stripePaymentId String?  @unique
+  amountCents     Int      @default(5000)
+  currency        String   @default("usd")
+  status          String   @default("pending")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+model Asset {
+  id          String    @id
+  type        AssetType
+  tier        AssetTier @default(premium)
+  displayName String
+  description String    @default("")
+  category    String    @default("")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  versions       AssetVersion[]
+  dependencyRefs AssetDependency[]
+}
+
+model AssetVersion {
+  id            String   @id @default(cuid())
+  assetId       String
+  version       String
+  framework     String
+  devkitVersion String   @default("4.5.0")
+  manifestJson  Json
+  filesJson     Json
+  checksum      String
+  signature     String?
+  publishedAt   DateTime @default(now())
+
+  asset        Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  dependencies AssetDependency[] @relation("AssetVersionDeps")
+
+  @@unique([assetId, version, framework])
+  @@index([assetId])
+}
+
+model AssetDependency {
+  id               String @id @default(cuid())
+  assetVersionId   String
+  dependsOnAssetId String
+  dependsOnVersion String @default("latest")
+  required         Boolean @default(true)
+
+  assetVersion AssetVersion @relation("AssetVersionDeps", fields: [assetVersionId], references: [id], onDelete: Cascade)
+  dependsOn    Asset        @relation(fields: [dependsOnAssetId], references: [id])
+
+  @@index([assetVersionId])
+}
+
+model ProjectAsset {
+  id         String   @id @default(cuid())
+  projectId  String
+  assetId    String
+  version    String
+  framework  String
+  installedAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, assetId])
+  @@index([projectId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Device {
+  id           String   @id @default(cuid())
+  userId       String?
+  deviceCode   String   @unique
+  userCode     String   @unique
+  status       String   @default("pending")
+  expiresAt    DateTime
+  approvedAt   DateTime?
+  createdAt    DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([deviceCode])
+  @@index([userCode])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  projectId String?
+  action    String
+  resource  String?
+  metadata  Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([createdAt])
+}

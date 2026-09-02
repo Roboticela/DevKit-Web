@@ -1,0 +1,8 @@
+{
+  "delivery": "module",
+  "version": "4.5.2",
+  "exportName": "Button",
+  "package": "@roboticela/devkit",
+  "styles": true,
+  "usage": "import { Button } from '@roboticela/devkit';"
+}
