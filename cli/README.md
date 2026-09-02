@@ -1,10 +1,8 @@
 # Roboticela DevKit
 
-**Scaffold full-stack apps. Add polished UI. Unlock premium pages — one CLI.**
+**CLI + React UI** for [devkit.roboticela.com](https://devkit.roboticela.com).
 
-`@roboticela/devkit` is the official CLI and React UI package for [Roboticela DevKit](https://devkit.roboticela.com). Create a project, sign in, add free components as module imports, and activate premium pages for your project — without pasting editable source into `src/`.
-
-Docs, catalog, and account: **[devkit.roboticela.com](https://devkit.roboticela.com)**
+Scaffold apps, install versioned packages from the live catalog, apply themes, and unlock premium pages — without copying editable source into `src/`.
 
 [![npm](https://img.shields.io/npm/v/@roboticela/devkit.svg)](https://www.npmjs.com/package/@roboticela/devkit)
 [![Node](https://img.shields.io/node/v/@roboticela/devkit.svg)](https://nodejs.org)
@@ -16,158 +14,172 @@ Docs, catalog, and account: **[devkit.roboticela.com](https://devkit.roboticela.
 
 ```bash
 npm i -g @roboticela/devkit
-```
-
-Or run without a global install:
-
-```bash
+# or
 npx @roboticela/devkit create my-app
 ```
 
-**Requirements:** Node.js 20 or later.
-
-Sign in and manage licenses at [devkit.roboticela.com](https://devkit.roboticela.com).
+**Requires Node.js ≥ 20.** Docs, account, and theme studio: [devkit.roboticela.com](https://devkit.roboticela.com)
 
 ---
 
-## What you get
+## How it works
 
-| | |
-|---|---|
-| **Templates** | First-party scaffolds (Next.js, Vite + Express + Tauri, and more) served live from DevKit |
-| **Free UI** | Production components from `@roboticela/devkit` — import, don’t copy |
-| **Premium** | Pages, sections, and scaffolds as licensed packages under `@roboticela/premium-*` |
-| **Theme** | Design tokens and presets wired into your project CSS |
-| **Licensing** | Sign in once; activate premium per project ($50 one-time) |
+| Concern | Source of truth |
+|---------|-----------------|
+| Templates | Live catalog — ids, labels, versions, files |
+| Components / pages / sections / scaffolds | Live catalog — versioned |
+| Themes | Live catalog — preview on [devkit.roboticela.com/theme](https://devkit.roboticela.com/theme) |
+| npm package | CLI + React UI module only (no bundled registry/templates) |
 
-Catalog names, template labels, package metadata, and **versions** always load from [devkit.roboticela.com](https://devkit.roboticela.com) — new templates and assets appear without reinstalling the CLI. The npm package ships the CLI + React UI module only (no bundled templates or component registry).
+New installs use **latest**. `devkit.lock.json` pins versions for `sync`. You can always request a specific version.
 
 ---
 
 ## Quick start
 
 ```bash
-# 1. Create a project
 devkit create my-app
 cd my-app
-
-# 2. Sign in (required for free and premium packages)
 devkit login
-
-# 3. Add a free component
 devkit add button
-
-# 4. Unlock premium for this project, then add a page
 devkit activate
 devkit add dashboard-page
-
-# 5. Run
 npm run dev
+# premium → /devkit-premium/...
 ```
 
-Premium routes are available under `/devkit-premium/...`.
-
-Browse the full catalog at [devkit.roboticela.com](https://devkit.roboticela.com).
-
-**Non-interactive create:**
+Non-interactive:
 
 ```bash
-devkit create my-app --template nextjs-compact --yes --install
+devkit create my-app --template nextjs-compact --preset bold -y --install
 ```
 
 ---
 
-## Using free components
+## Free components
 
 ```tsx
 import { Button } from "@roboticela/devkit";
 import "@roboticela/devkit/styles.css";
-
-export function Example() {
-  return <Button>Continue</Button>;
-}
 ```
 
-Free components stay as dependencies of `@roboticela/devkit`. Premium assets install into `node_modules` as scoped packages — your app imports them; source is not copied into `src/` for editing.
+Premium assets install under `node_modules/@roboticela/premium-*` (compiled packages only).
 
 ---
 
-## CLI reference
+## Versions
+
+```bash
+# Latest (default)
+devkit add button
+devkit add dashboard-page
+
+# Pin a catalog version
+devkit add button@1.0.1
+devkit add dashboard-page --version 1.0.0
+
+# Move installed packages to a version / latest
+devkit update button --to 1.0.1
+devkit update --all
+
+# CI: reinstall exact lockfile versions
+devkit sync
+```
+
+Lockfile keeps older pins until you update. Catalog bumps do not require a CLI republish.
+
+---
+
+## Themes
+
+```bash
+devkit theme list                 # catalog themes + preview URLs
+devkit theme preview              # open studio for current / default
+devkit theme preview bold         # https://devkit.roboticela.com/theme?theme=bold
+devkit theme preset bold          # apply + write CSS
+devkit theme apply                # regenerate managed CSS from config
+```
+
+---
+
+## Command reference
+
+Run `devkit --help` for the full flag list. Useful entry points:
 
 ### Project
 
-```bash
-devkit create [name]          # New project from a live template
-devkit init                   # Add DevKit to an existing app
-devkit dev                    # Start the project’s development server
-```
+| Command | Description |
+|---------|-------------|
+| `devkit create [name]` | Scaffold from a live template |
+| `devkit init` | Add DevKit to an existing app |
+| `devkit dev` | Run the project `dev` script |
 
-**`create` flags:** `--template <id>` · `--preset <name>` · `--primary <hex>` · `--git` / `--no-git` · `--install` / `--no-install` · `--add <a,b>` · `-y, --yes`
+**`create` options**
+
+| Flag | Description |
+|------|-------------|
+| `--template <id>` | Template id from the catalog |
+| `--preset <name>` | Theme id from the catalog |
+| `--primary <hex>` | Override primary color |
+| `--git` / `--no-git` | Git init (default: on) |
+| `--install` / `--no-install` | Install deps (default: on) |
+| `--add <a,b>` | Free components after scaffold |
+| `-y, --yes` | Non-interactive defaults |
 
 ### Packages
 
-```bash
-devkit add [names…]           # Free components or premium pages/sections/scaffolds
-devkit remove <name>          # Remove a package from the project
-devkit list                   # Browse the catalog
-devkit list --installed       # Show what’s installed
-devkit info <name>            # Package details
-devkit sync                   # Restore from devkit.lock.json (CI)
-devkit update <name>          # Update specific packages
-devkit update --all           # Update every installed package
-```
+| Command | Description |
+|---------|-------------|
+| `devkit add [names…]` | Install from catalog (`name@version` supported) |
+| `devkit remove <name>` | Remove from lockfile |
+| `devkit list` | Catalog or installed |
+| `devkit info <name>` | Metadata + version history |
+| `devkit sync` | Reinstall from lockfile |
+| `devkit update [names…]` | Bump packages or CLI |
 
-**Useful options:** `add --dry-run` · `add --type page|section|scaffold|component` · `list --type <kind>` · `list --template <id>`
+**`add` options:** `--type <kind>` · `--variant <id>` · `--version <ver>` · `--dry-run`  
+**`list` options:** `--type` · `--installed` · `--template <id>`  
+**`update` options:** `--all` · `--cli` · `--check` · `-f` · `--to <ver>`  
+**`sync` / `remove`:** `-f` / `--keep-files`
 
 ### Account & license
 
 ```bash
-devkit login                  # Sign in (session does not expire)
-devkit logout
-devkit status                 # CLI, auth, license, and API at a glance
-devkit activate               # Unlock premium for this project ($50)
-devkit license                # License status
+devkit login | logout | status | activate | license
 ```
-
-Account and billing: [devkit.roboticela.com](https://devkit.roboticela.com)
 
 ### Theme
 
 ```bash
-devkit theme list
-devkit theme preset bold      # default | minimal | bold | playful | corporate
-devkit theme apply            # Regenerate theme CSS from config
+devkit theme list | preset <id> | apply | preview [id]
 ```
 
-### Diagnostics & CLI updates
+### Diagnostics
 
 ```bash
-devkit doctor                 # Full project + API diagnostics
-devkit update --cli           # Update the CLI only (project untouched)
-devkit update --cli --check   # Check for a newer CLI
+devkit doctor
+devkit update --cli
+devkit update --cli --check
 ```
 
 ---
 
-## Project configuration
+## Project files
 
 | File | Purpose |
 |------|---------|
-| `devkit.config.json` | Template, site, theme, account session, project identity |
-| `devkit.lock.json` | Locked package versions for reproducible `sync` |
-
-Login writes a durable session into `devkit.config.json` under `account`, so auth travels with the project.
+| `devkit.config.json` | Template, `templateVersion`, site, theme, account session |
+| `devkit.lock.json` | Pinned package versions for `sync` |
+| `.devkit/` | Generated manifests / premium helpers |
 
 ---
 
 ## Templates
 
-Template **ids, display names, and short descriptions** come from DevKit at [devkit.roboticela.com](https://devkit.roboticela.com). Whatever is published there is what `create` and `init` offer.
+Ids and labels come from the live catalog. Examples:
 
-Common first-party ids:
-
-| Template id | Stack |
-|-------------|--------|
+| Id | Stack |
+|----|--------|
 | `nextjs-compact` | Next.js · React · Tailwind |
 | `vite-express-tauri` | Vite · Express · Tauri |
 
@@ -179,53 +191,35 @@ devkit create my-app --template nextjs-compact
 
 ## Environment
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DEVKIT_API_URL` | `https://devkit.roboticela.com` | DevKit API base URL |
+| Variable | Description |
+|----------|-------------|
+| `DEVKIT_API_URL` | Override the default API endpoint (optional) |
 
-Local testing with `devkit-test` uses `http://localhost:4000` automatically.
-
-
-## Keep things current
-
-```bash
-# Packages in the current project
-devkit update button
-devkit update --all
-
-# CLI only — never modifies project source or lockfile
-devkit update --cli
-devkit update --cli --check
-
-# Exact lockfile restore (CI)
-devkit sync
-```
+Local monorepo: `npm run try` → use `devkit-test` against a local API.
 
 ---
 
 ## Troubleshooting
 
 ```bash
-devkit status                 # Auth + license + API
-devkit doctor                 # Deeper diagnostics
+devkit status
+devkit doctor
 ```
 
 | Issue | Fix |
 |-------|-----|
-| Templates / catalog won’t load | Confirm `DEVKIT_API_URL` points at [devkit.roboticela.com](https://devkit.roboticela.com) |
-| Can’t add packages | Run `devkit login` |
-| Premium install fails | Run `devkit activate`, then `devkit license` |
-| Need help | Visit [devkit.roboticela.com](https://devkit.roboticela.com) |
+| Templates / themes / catalog fail | Check network / `DEVKIT_API_URL` if you override it · `devkit status` |
+| Can’t add packages | `devkit login` |
+| Premium fails | `devkit activate` then `devkit license` |
+| Wrong package version | `devkit add name@x.y.z` or `devkit update name --to x.y.z` |
+| Docs / theme studio | [devkit.roboticela.com](https://devkit.roboticela.com) |
 
 ---
 
 ## Links
 
-- **Website & docs:** [devkit.roboticela.com](https://devkit.roboticela.com)
-- **Catalog & account:** [devkit.roboticela.com](https://devkit.roboticela.com)
-- **npm package:** [npmjs.com/package/@roboticela/devkit](https://www.npmjs.com/package/@roboticela/devkit)
-
----
+- [devkit.roboticela.com](https://devkit.roboticela.com) — docs, account, theme studio  
+- [npmjs.com/package/@roboticela/devkit](https://www.npmjs.com/package/@roboticela/devkit)
 
 ## License
 

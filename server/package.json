@@ -11,7 +11,10 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "catalog:release": "node scripts/release-catalog.mjs",
+    "catalog:release:init": "node scripts/release-catalog.mjs --init",
+    "catalog:release:dry": "node scripts/release-catalog.mjs --dry-run"
   },
   "dependencies": {
     "@prisma/client": "^6.0.0",

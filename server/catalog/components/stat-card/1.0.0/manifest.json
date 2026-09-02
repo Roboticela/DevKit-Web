@@ -1,0 +1,16 @@
+{
+  "name": "stat-card",
+  "version": "1.0.0",
+  "type": "component",
+  "tier": "free",
+  "delivery": "module",
+  "exportName": "StatCard",
+  "package": "@roboticela/devkit",
+  "styles": true,
+  "usage": "import { StatCard } from '@roboticela/devkit';",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": []
+}

@@ -15,7 +15,7 @@ import { statusCommand } from "./commands/status.js";
 import { devCommand } from "./commands/dev.js";
 import { authLoginCommand, authLogoutCommand } from "./commands/auth.js";
 import { licenseStatusCommand, licensePurchaseCommand } from "./commands/license.js";
-import { themeApplyCommand, themePresetCommand, themeListCommand } from "./commands/theme.js";
+import { themeApplyCommand, themePresetCommand, themeListCommand, themePreviewCommand } from "./commands/theme.js";
 import { CLI_VERSION } from "./version.js";
 import { getApiBaseUrl } from "./lib/api-client.js";
 import { cliBinName, isLocalTestMode } from "./lib/cli-meta.js";
@@ -47,9 +47,9 @@ if (isTest) {
 
 program
   .command("create [name]")
-  .description("Scaffold a project from a server template")
+  .description("Scaffold a project from a live template")
   .option("--template <id>", "Template id")
-  .option("--preset <name>", "Theme preset: default|minimal|bold|playful|corporate")
+  .option("--preset <name>", "Theme id from the live catalog")
   .option("--primary <hex>", "Primary color (e.g. #0E7AFF)")
   .option("--git", "Initialize git (default)")
   .option("--no-git", "Skip git init")
@@ -73,9 +73,10 @@ program
 
 program
   .command("add [names...]")
-  .description("Install packages from the server catalog")
+  .description("Install packages from the live catalog")
   .option("--type <kind>", "component | page | section | scaffold")
   .option("--variant <id>", "Variant id")
+  .option("--version <ver>", "Install a specific catalog version (or use name@version)")
   .option("--dry-run", "Resolve only; do not install")
   .action((names, opts) => addCommand(names ?? [], opts));
 
@@ -140,19 +141,23 @@ program
 
 // ── Theme ────────────────────────────────────────────────────────────────────
 
-const theme = program.command("theme").description("Theme tokens (apply | preset | list)");
-theme
-  .command("apply")
-  .description("Write managed theme CSS from devkit.config.json")
-  .action(() => themeApplyCommand());
-theme
-  .command("preset <name>")
-  .description("Set preset: default|minimal|bold|playful|corporate")
-  .action((name) => themePresetCommand(name));
+const theme = program.command("theme").description("Theme tokens (list | preset | apply | preview)");
 theme
   .command("list")
-  .description("Print current theme settings")
+  .description("List themes from the catalog (+ current project)")
   .action(() => themeListCommand());
+theme
+  .command("preset <name>")
+  .description("Apply a catalog theme id")
+  .action((name) => themePresetCommand(name));
+theme
+  .command("apply")
+  .description("Write managed theme CSS from config (uses catalog tokens)")
+  .action(() => themeApplyCommand());
+theme
+  .command("preview [name]")
+  .description("Open docs theme studio (devkit.roboticela.com/theme?theme=…)")
+  .action((name) => themePreviewCommand(name));
 
 // ── Diagnostics & updates ────────────────────────────────────────────────────
 
@@ -221,7 +226,7 @@ program.addHelpText(
 ${chalk.bold("Command options")}
   create [name]
     --template <id>     Template id from the catalog
-    --preset <name>     default | minimal | bold | playful | corporate
+    --preset <name>     Theme id from the catalog
     --primary <hex>     Primary brand color (e.g. #0E7AFF)
     --git / --no-git    Initialize git (default: on)
     --install / --no-install
@@ -232,7 +237,9 @@ ${chalk.bold("Command options")}
   add [names...]
     --type <kind>       component | page | section | scaffold
     --variant <id>      Variant id when the package has variants
+    --version <ver>     Catalog version (default: latest)
     --dry-run           Resolve only; do not install
+                        Also: ${bin} add button@1.0.1
 
   remove <name>
     --keep-files        Unregister without deleting managed files
@@ -243,28 +250,37 @@ ${chalk.bold("Command options")}
     --template <id>     Filter catalog by template id
 
   sync
-    -f, --force         Overwrite managed files
+    -f, --force         Overwrite managed files (keeps lock versions)
 
   update [names...]
-    --all               Update every installed package
+    --all               Update every installed package to latest (or --to)
     --cli               Update this CLI binary only (not the project)
     --check             With --cli: report newer version, do not install
     -f, --force         Overwrite managed files on reinstall
-    --to <ver>          Target package version (default: latest)
+    --to <ver>          Target catalog version (default: latest)
 
   theme
-    apply               Write managed theme CSS from config
-    preset <name>       default | minimal | bold | playful | corporate
-    list                Print current theme settings
+    list                Themes from the catalog + preview URLs
+    preset <id>         Apply a catalog theme id
+    apply               Write managed CSS (catalog tokens)
+    preview [id]        Open docs theme studio (devkit.roboticela.com/theme)
 
 ${chalk.bold("Examples")}
-  ${bin} create my-app --template nextjs-compact -y --install
-  ${bin} add button modal --dry-run
-  ${bin} list --type page --installed
-  ${bin} update button --to 4.6.0
+  ${bin} create my-app --template nextjs-compact --preset bold -y --install
+  ${bin} add button modal
+  ${bin} add button@1.0.1
+  ${bin} add dashboard-page --version 1.0.0 --type page
+  ${bin} list --type component
+  ${bin} list --installed
+  ${bin} update button --to 1.0.1
+  ${bin} update --all
   ${bin} update --cli --check
-  ${bin} sync -f
-  ${bin} theme preset bold && ${bin} theme apply
+  ${bin} sync
+  ${bin} theme list
+  ${bin} theme preview bold
+  ${bin} theme preset bold
+  ${bin} status
+  ${bin} doctor
 `
 );
 

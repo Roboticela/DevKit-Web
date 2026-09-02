@@ -1,0 +1,9 @@
+{
+  "name": "auth-scaffold",
+  "version": "1.0.0",
+  "type": "scaffold",
+  "framework": "nextjs-compact",
+  "delivery": "server-package",
+  "route": "auth",
+  "devkitVersion": ">=4.5.0"
+}

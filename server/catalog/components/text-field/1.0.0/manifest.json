@@ -1,0 +1,16 @@
+{
+  "name": "text-field",
+  "version": "1.0.0",
+  "type": "component",
+  "tier": "free",
+  "delivery": "module",
+  "exportName": "TextField",
+  "package": "@roboticela/devkit",
+  "styles": true,
+  "usage": "import { TextField } from '@roboticela/devkit';",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": []
+}

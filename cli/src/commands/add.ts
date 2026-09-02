@@ -15,6 +15,8 @@ interface AddOptions {
   variant?: string;
   dryRun?: boolean;
   type?: string;
+  /** Explicit version (overrides name@version when both set). */
+  version?: string;
 }
 
 function inferKind(name: string, meta?: ComponentEntry): PackageKind {
@@ -142,7 +144,7 @@ async function installOne(
     return;
   }
 
-  await installPremiumAsset(name, kind, cwd);
+  await installPremiumAsset(name, kind, cwd, { version });
 }
 
 export async function addCommand(names: string[], opts: AddOptions, cwd = process.cwd()) {
@@ -166,10 +168,16 @@ export async function addCommand(names: string[], opts: AddOptions, cwd = proces
     }
 
   todo = names.map((nameAtVersion) => {
-      const [name, version = "latest"] = nameAtVersion.split("@");
+      const at = nameAtVersion.lastIndexOf("@");
+      // Support scoped-looking names and name@version (button@1.0.1)
+      let name = nameAtVersion;
+      let version = opts.version ?? "latest";
+      if (at > 0) {
+        name = nameAtVersion.slice(0, at);
+        version = opts.version ?? nameAtVersion.slice(at + 1) ?? "latest";
+      }
       const meta = catalog.find((c) => c.name === name);
       let kind = inferKind(name!, meta);
-      // Prefer live server kind when available
       if (meta?.kind) kind = meta.kind;
       if (opts.type === "component" || opts.type === "page" || opts.type === "section" || opts.type === "scaffold") {
         kind = opts.type;

@@ -120,7 +120,10 @@ export async function updatePackagesCommand(
           { force }
         );
       } else {
-        await installPremiumAsset(name, kind, cwd, { force: true });
+        await installPremiumAsset(name, kind, cwd, {
+          force: true,
+          version: version === "latest" ? "latest" : version,
+        });
       }
       s.succeed(chalk.green(`${name} updated`));
       ok++;

@@ -1,3 +1,9 @@
+/** Production DevKit HTTP API (not the docs site). */
+export const DEFAULT_API_BASE_URL = "https://api.devkit.roboticela.com";
+
+/** Public docs / theme studio / marketing site. */
+export const DOCS_BASE_URL = "https://devkit.roboticela.com";
+
 export function getApiBaseUrl(): string {
   if (process.env.DEVKIT_API_URL) {
     return process.env.DEVKIT_API_URL.replace(/\/$/, "");
@@ -9,7 +15,7 @@ export function getApiBaseUrl(): string {
   if (process.env.DEVKIT_TEST === "1") {
     return "http://localhost:4000";
   }
-  return "https://devkit.roboticela.com";
+  return DEFAULT_API_BASE_URL;
 }
 
 export class DevKitApiError extends Error {

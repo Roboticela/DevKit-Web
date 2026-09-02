@@ -15,6 +15,7 @@ import { cliBinName } from "../lib/cli-meta.js";
 import { isSessionValid, readSession } from "../lib/auth-store.js";
 import { getApiBaseUrl } from "../lib/api-client.js";
 import { CLI_VERSION } from "../version.js";
+import { listThemes } from "../lib/themes.js";
 
 interface CreateOptions {
   template?: string;
@@ -25,14 +26,6 @@ interface CreateOptions {
   add?: string;
   yes?: boolean;
 }
-
-const PRESETS = [
-  { value: "default",   label: "Default    — System Blue      — Balanced, Apple-class" },
-  { value: "minimal",   label: "Minimal    — Neutral Gray     — Sharp, restrained" },
-  { value: "bold",      label: "Bold       — Bright Blue      — Soft radius, expressive" },
-  { value: "playful",   label: "Playful    — Green + Amber    — Soft, friendly" },
-  { value: "corporate", label: "Corporate  — Deep Blue        — Sharp, formal" },
-];
 
 interface CreatePickerOption {
   value: string;
@@ -91,7 +84,7 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     }));
   } catch (e) {
     log.error(`Could not load templates from server: ${(e as Error).message}`);
-    log.info("Start the DevKit API (npm run try) or set DEVKIT_API_URL=https://devkit.roboticela.com");
+    log.info("Start the DevKit API (npm run try) or set DEVKIT_API_URL if you use a custom endpoint.");
     process.exit(1);
   }
   if (templateOptions.length === 0) {
@@ -119,10 +112,31 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     placeholder: "https://myapp.com",
   }) as string;
 
-  const preset = opts.preset ?? (opts.yes ? "default" : await select({
-    message: "Theme preset",
-    options: PRESETS,
-  }) as string);
+  let remoteThemes: Awaited<ReturnType<typeof listThemes>> = [];
+  try {
+    remoteThemes = await listThemes();
+  } catch (e) {
+    log.error(`Could not load themes from server: ${(e as Error).message}`);
+    process.exit(1);
+  }
+  const themeOptions = remoteThemes.map((t) => ({
+    value: t.id,
+    label: t.label,
+    hint: t.hint,
+  }));
+  const defaultThemeId = themeOptions[0]?.value ?? "default";
+
+  const preset = (opts.preset ?? (opts.yes ? defaultThemeId : await select({
+    message: "Theme preset (from server — preview on devkit.roboticela.com/theme)",
+    options: themeOptions,
+  }))) as string;
+
+  if (!themeOptions.some((t) => t.value === preset)) {
+    log.error(`Unknown theme '${preset}'. Available: ${themeOptions.map((t) => t.value).join(", ")}`);
+    process.exit(1);
+  }
+  const selectedTheme = remoteThemes.find((t) => t.id === preset)!;
+  log.info(`Theme preview: ${chalk.cyan(selectedTheme.previewUrl)}`);
 
   const primaryColor = opts.primary ?? (opts.yes ? undefined : await text({
     message: "Primary brand color (hex, leave blank to use preset)",
@@ -220,7 +234,12 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   // 2. Write devkit.config.json
   const config = defaultConfig(template, siteName as string, siteUrl as string, downloaded.version);
   config.theme!.preset = preset as string;
-  if (primaryColor) config.theme!.colors = { ...config.theme!.colors, primary: primaryColor };
+  config.theme!.radius = selectedTheme.radius;
+  config.theme!.colors = {
+    primary: primaryColor || selectedTheme.primary,
+    secondary: selectedTheme.secondary,
+  };
+  if (primaryColor) config.theme!.colors.primary = primaryColor;
   writeConfig(config, destDir);
   log.success("Created devkit.config.json");
 
@@ -230,7 +249,11 @@ export async function createCommand(projectName: string | undefined, opts: Creat
 
   // 4. Generate theme CSS
   const { resolveThemeCssPath } = await import("../lib/theme-path.js");
-  const themeCss = generateThemeCSS(config);
+  const themeCss = generateThemeCSS(config, {
+    primary: selectedTheme.primary,
+    secondary: selectedTheme.secondary,
+    radius: selectedTheme.radius,
+  });
   const cssPath = resolveThemeCssPath(destDir, downloaded.cssPath);
 
   if (existsSync(cssPath)) {

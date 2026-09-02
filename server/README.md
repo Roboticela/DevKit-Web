@@ -2,7 +2,9 @@
 
 Express API for CLI authentication, project licensing, versioned catalog (free + premium), and first-party templates.
 
-**Source of truth:** templates live in `/templates/*/template.json`; assets in `catalog/catalog.json` with `latestVersion` + `versions.history`. The npm CLI does **not** ship these — bump versions on the server when you release assets or scaffolds.
+**Hosts:** production API → `https://api.devkit.roboticela.com` · docs / theme studio → `https://devkit.roboticela.com`
+
+**Catalog versioning:** run `npm run catalog:release` to bump every asset +0.0.1 (or `--init` for 1.0.0) and snapshot payloads under `catalog/components|pages|sections|scaffolds/<id>/<version>/`. Clients install `latest` by default; lockfiles and `devkit add name@1.0.1` pin older versions.
 
 ## Quick start
 
@@ -32,8 +34,9 @@ API runs at `http://localhost:4000`.
 | POST | `/licenses/:projectId/checkout` | Yes | Stripe checkout (dev: auto-activate) |
 | GET | `/assets` | Yes | Versioned catalog metadata |
 | GET | `/assets/:id/payload` | Yes | Free asset install payload (versioned) |
-| GET | `/templates` | No | Live template ids, labels, versions |
-| GET | `/templates/:id/files` | No | Scaffold files for `create` |
+| GET | `/themes` | No | Live theme presets + preview URLs |
+| GET | `/themes/:id` | No | Single theme |
+| GET | `/themes/:id/preview` | No | 302 → docs `https://devkit.roboticela.com/theme?theme=:id` |
 | POST | `/assets/projects/:id/assets/:assetId/access` | Yes | Authorized premium download |
 
 ## CLI integration

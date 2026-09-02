@@ -81,6 +81,8 @@ const RADIUS_PERSONALITY: Record<string, "sharp" | "balanced" | "soft"> = {
   soft: "soft",
 };
 
+// ── Presets — offline fallback only; live tokens come from GET /themes ────────
+
 const PRESETS: Record<
   string,
   { primary: string; secondary: string; radius: "sharp" | "balanced" | "soft" }
@@ -91,6 +93,27 @@ const PRESETS: Record<
   playful: { primary: "#30d158", secondary: "#ff9f0a", radius: "soft" },
   corporate: { primary: "#1d4ed8", secondary: "#515154", radius: "sharp" },
 };
+
+export type ThemePresetTokens = {
+  primary: string;
+  secondary: string;
+  radius: "sharp" | "balanced" | "soft" | string;
+};
+
+/** Resolve preset tokens: prefer server-provided override, else local fallback. */
+export function resolvePresetTokens(
+  presetId: string | undefined,
+  override?: ThemePresetTokens | null
+): ThemePresetTokens {
+  if (override?.primary) {
+    return {
+      primary: override.primary,
+      secondary: override.secondary ?? "#86868b",
+      radius: override.radius ?? "balanced",
+    };
+  }
+  return PRESETS[presetId ?? "default"] ?? PRESETS.default!;
+}
 
 /** Constitution §18 radius scale, shifted by personality. */
 function radiusTokens(personality: "sharp" | "balanced" | "soft"): Record<string, string> {
@@ -143,9 +166,12 @@ function radiusTokens(personality: "sharp" | "balanced" | "soft"): Record<string
 
 // ── Token generator (Design Constitution §§01–38) ──────────────────────────────
 
-export function generateThemeCSS(config: DevKitConfig): string {
+export function generateThemeCSS(
+  config: DevKitConfig,
+  presetOverride?: ThemePresetTokens | null
+): string {
   const theme = config.theme ?? {};
-  const preset = PRESETS[theme.preset ?? "default"] ?? PRESETS.default;
+  const preset = resolvePresetTokens(theme.preset, presetOverride);
 
   const primary = theme.colors?.primary ?? preset.primary;
   const secondary = theme.colors?.secondary ?? preset.secondary;

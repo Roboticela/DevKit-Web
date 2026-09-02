@@ -1,0 +1,16 @@
+{
+  "name": "badge",
+  "version": "1.0.0",
+  "type": "component",
+  "tier": "free",
+  "delivery": "module",
+  "exportName": "Badge",
+  "package": "@roboticela/devkit",
+  "styles": true,
+  "usage": "import { Badge } from '@roboticela/devkit';",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": []
+}

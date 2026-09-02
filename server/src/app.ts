@@ -7,6 +7,7 @@ import { projectsRouter } from "./routes/projects.js";
 import { licensesRouter } from "./routes/licenses.js";
 import { assetsRouter } from "./routes/assets.js";
 import { templatesRouter } from "./routes/templates.js";
+import { themesRouter } from "./routes/themes.js";
 import { healthRouter } from "./routes/health.js";
 import { errorHandler } from "./middleware/auth.js";
 
@@ -45,6 +46,12 @@ export function createApp() {
     "/templates",
     rateLimit({ windowMs: 60 * 1000, max: 60, standardHeaders: true }),
     templatesRouter
+  );
+
+  app.use(
+    "/themes",
+    rateLimit({ windowMs: 60 * 1000, max: 120, standardHeaders: true }),
+    themesRouter
   );
 
   app.use("/health", healthRouter);

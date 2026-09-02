@@ -36,7 +36,7 @@ export async function syncCommand(opts: { force?: boolean } = {}, cwd = process.
           : name.endsWith("-section")
             ? "section"
             : "page";
-        await installPremiumAsset(name, kind, cwd, { force: true });
+        await installPremiumAsset(name, kind, cwd, { force: true, version: entry.version });
       } else {
         await installComponent(
           name,

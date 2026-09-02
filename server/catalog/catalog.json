@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.0.0",
   "updatedAt": "2026-09-02",
   "assets": [
     {
@@ -13,7 +13,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "ui",
@@ -23,8 +23,12 @@
       "exportName": "Button",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"
@@ -47,7 +51,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "ui",
@@ -57,8 +61,12 @@
       "exportName": "Modal",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"
@@ -81,7 +89,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "forms",
@@ -91,8 +99,12 @@
       "exportName": "TextField",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"
@@ -115,7 +127,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "ui",
@@ -125,8 +137,12 @@
       "exportName": "DataTable",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"
@@ -149,7 +165,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "ui",
@@ -159,8 +175,12 @@
       "exportName": "Alert",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"
@@ -183,7 +203,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "ui"
@@ -192,8 +212,12 @@
       "exportName": "Badge",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"
@@ -216,7 +240,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "ui",
@@ -226,8 +250,12 @@
       "exportName": "Tabs",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"
@@ -250,7 +278,7 @@
         "nextjs-compact",
         "vite-express-tauri"
       ],
-      "latestVersion": "4.6.0",
+      "latestVersion": "1.0.0",
       "dependencies": [],
       "tags": [
         "ui",
@@ -260,8 +288,12 @@
       "exportName": "StatCard",
       "package": "@roboticela/devkit",
       "versions": {
-        "latest": "4.6.0",
+        "latest": "1.0.0",
         "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          },
           {
             "version": "4.6.0",
             "releasedAt": "2026-09-02"

@@ -7,10 +7,12 @@ import { generateThemeCSS } from "../lib/theme.js";
 import { ensureProjectIdentity } from "../lib/project.js";
 import { bindSessionToProject } from "../lib/auth-store.js";
 import { listTemplates, getTemplate } from "../lib/template.js";
+import { listThemes } from "../lib/themes.js";
 import { resolveThemeCssPath } from "../lib/theme-path.js";
 import { log } from "../lib/logger.js";
 import { cliBinName } from "../lib/cli-meta.js";
 import { getApiBaseUrl } from "../lib/api-client.js";
+import chalk from "chalk";
 
 export async function initCommand(cwd = process.cwd()) {
   if (configExists(cwd)) {
@@ -63,20 +65,33 @@ export async function initCommand(cwd = process.cwd()) {
   const siteName = (await text({ message: "Site name", placeholder: "My App" })) as string;
   const siteUrl = (await text({ message: "Site URL", placeholder: "https://myapp.com" })) as string;
 
+  let remoteThemes: Awaited<ReturnType<typeof listThemes>> = [];
+  try {
+    remoteThemes = await listThemes();
+  } catch (e) {
+    log.error(`Could not load themes from server: ${(e as Error).message}`);
+    process.exit(1);
+  }
+
   const preset = (await select({
-    message: "Theme preset",
-    options: [
-      { value: "default", label: "Default    — System Blue (balanced)" },
-      { value: "minimal", label: "Minimal    — Neutral (sharp)" },
-      { value: "bold", label: "Bold       — Bright Blue (soft)" },
-      { value: "playful", label: "Playful    — Green (soft)" },
-      { value: "corporate", label: "Corporate  — Deep Blue (sharp)" },
-    ],
+    message: "Theme preset (from server)",
+    options: remoteThemes.map((t) => ({
+      value: t.id,
+      label: t.label,
+      hint: t.hint,
+    })),
   })) as string;
+  const selectedTheme = remoteThemes.find((t) => t.id === preset)!;
+  log.info(`Preview: ${chalk.cyan(selectedTheme.previewUrl)}`);
 
   const selectedMeta = remoteTemplates.find((t) => t.id === template);
   const config = defaultConfig(template, siteName, siteUrl, selectedMeta?.version);
   config.theme!.preset = preset;
+  config.theme!.radius = selectedTheme.radius;
+  config.theme!.colors = {
+    primary: selectedTheme.primary,
+    secondary: selectedTheme.secondary,
+  };
   writeConfig(config, cwd);
   log.success("Created devkit.config.json");
 
@@ -86,7 +101,11 @@ export async function initCommand(cwd = process.cwd()) {
   ensureProjectIdentity(cwd);
   bindSessionToProject(cwd);
 
-  const themeCss = generateThemeCSS(config);
+  const themeCss = generateThemeCSS(config, {
+    primary: selectedTheme.primary,
+    secondary: selectedTheme.secondary,
+    radius: selectedTheme.radius,
+  });
   const cssPath = resolveThemeCssPath(cwd, cssPathHint);
   if (existsSync(cssPath)) {
     const old = readFileSync(cssPath, "utf-8");

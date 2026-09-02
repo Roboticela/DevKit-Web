@@ -1,0 +1,12 @@
+{
+  "name": "auth-scaffold",
+  "version": "1.0.0",
+  "type": "scaffold",
+  "framework": "vite-express-tauri",
+  "delivery": "server-package",
+  "dependencies": {
+    "frontend": [
+      "text-field"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-09-03",
+  "previewBaseUrl": "https://devkit.roboticela.com/theme",
+  "themes": [
+    {
+      "id": "default",
+      "label": "Default",
+      "hint": "System Blue — balanced, Roboticela-class",
+      "primary": "#0071e3",
+      "secondary": "#86868b",
+      "radius": "balanced"
+    },
+    {
+      "id": "minimal",
+      "label": "Minimal",
+      "hint": "Neutral Gray — sharp, restrained",
+      "primary": "#424245",
+      "secondary": "#0071e3",
+      "radius": "sharp"
+    },
+    {
+      "id": "bold",
+      "label": "Bold",
+      "hint": "Bright Blue — soft radius, expressive",
+      "primary": "#0a84ff",
+      "secondary": "#ff375f",
+      "radius": "soft"
+    },
+    {
+      "id": "playful",
+      "label": "Playful",
+      "hint": "Green + Amber — soft, friendly",
+      "primary": "#30d158",
+      "secondary": "#ff9f0a",
+      "radius": "soft"
+    },
+    {
+      "id": "corporate",
+      "label": "Corporate",
+      "hint": "Deep Blue — sharp, formal",
+      "primary": "#1d4ed8",
+      "secondary": "#515154",
+      "radius": "sharp"
+    }
+  ]
+}

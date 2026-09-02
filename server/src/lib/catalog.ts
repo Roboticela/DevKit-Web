@@ -1,11 +1,18 @@
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import type { AssetTier, AssetType } from "@prisma/client";
 import { signPayload, sha256 } from "../lib/crypto.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const CATALOG_DIR = join(__dirname, "..", "..", "catalog");
+export const CATALOG_DIR = join(__dirname, "..", "..", "catalog");
+
+const TYPE_DIR: Record<string, string> = {
+  component: "components",
+  page: "pages",
+  section: "sections",
+  scaffold: "scaffolds",
+};
 
 export interface VersionHistoryEntry {
   version: string;
@@ -22,7 +29,6 @@ export interface CatalogAssetMeta {
   category: string;
   templates: string[];
   latestVersion: string;
-  /** Explicit version list — CLI/clients pin installs to these. */
   versions?: {
     latest: string;
     history: VersionHistoryEntry[];
@@ -76,43 +82,107 @@ export function resolveAssetVersion(asset: CatalogAssetMeta, requested = "latest
 
   if (requested === "latest" || !requested) return latest;
   if (known.has(requested)) return requested;
-  // Allow requesting a version that matches latest even if history is incomplete
   if (requested === asset.latestVersion) return requested;
+  // Allow installing any on-disk version even if history entry was trimmed
+  if (versionDirExists(asset, requested)) return requested;
   return null;
 }
 
-export function loadAssetPayload(
-  assetId: string,
-  framework: string,
-  version = "latest"
+function typeRoot(asset: CatalogAssetMeta): string | null {
+  const folder = TYPE_DIR[asset.type];
+  if (!folder) return null;
+  return join(CATALOG_DIR, folder, asset.id);
+}
+
+function versionDirExists(asset: CatalogAssetMeta, version: string): boolean {
+  const root = typeRoot(asset);
+  if (!root) return false;
+  return existsSync(join(root, version));
+}
+
+function listOnDiskVersions(asset: CatalogAssetMeta): string[] {
+  const root = typeRoot(asset);
+  if (!root || !existsSync(root)) return [];
+  return readdirSync(root)
+    .filter((e) => /^\d+\.\d+\.\d+$/.test(e) && statSync(join(root, e)).isDirectory())
+    .sort((a, b) => {
+      const pa = a.split(".").map(Number);
+      const pb = b.split(".").map(Number);
+      for (let i = 0; i < 3; i++) {
+        if ((pa[i] ?? 0) !== (pb[i] ?? 0)) return (pa[i] ?? 0) - (pb[i] ?? 0);
+      }
+      return 0;
+    });
+}
+
+function resolveVersionDir(asset: CatalogAssetMeta, version: string): string | null {
+  const root = typeRoot(asset);
+  if (!root) return null;
+  const exact = join(root, version);
+  if (existsSync(exact)) return exact;
+  return null;
+}
+
+function loadFromVersionDir(
+  asset: CatalogAssetMeta,
+  version: string,
+  framework: string
 ): { manifest: Record<string, unknown>; files: Record<string, string> } | null {
-  const asset = getCatalogAsset(assetId);
-  if (!asset) return null;
+  const versionDir = resolveVersionDir(asset, version);
+  if (!versionDir) return null;
 
-  const resolved = resolveAssetVersion(asset, version);
-  if (!resolved) return null;
+  // Module: catalog/components/<id>/<ver>/manifest.json
+  const moduleManifest = join(versionDir, "manifest.json");
+  if (existsSync(moduleManifest)) {
+    const manifest = JSON.parse(readFileSync(moduleManifest, "utf-8")) as Record<string, unknown>;
+    if (String(manifest.delivery ?? "module") === "module") {
+      return {
+        manifest: { ...manifest, version, delivery: "module" },
+        files: {},
+      };
+    }
+  }
 
-  // Free module assets are fully described by catalog.json (versioned metadata)
-  if (asset.tier === "free" || asset.delivery === "module") {
-    const exportName = asset.exportName ?? toExportName(assetId);
+  // Server-package: catalog/pages/<id>/<ver>/<framework>/{manifest,files}.json
+  const fwCandidates = [
+    join(versionDir, framework),
+    join(versionDir, "nextjs-compact"),
+    ...((asset.templates ?? []).map((t) => join(versionDir, t))),
+  ];
+
+  for (const fwDir of fwCandidates) {
+    if (!existsSync(join(fwDir, "manifest.json"))) continue;
+    const manifest = JSON.parse(readFileSync(join(fwDir, "manifest.json"), "utf-8")) as Record<
+      string,
+      unknown
+    >;
+    const delivery = String(manifest.delivery ?? "server-package");
+    if (delivery === "module") {
+      return { manifest: { ...manifest, version, delivery: "module" }, files: {} };
+    }
+    const filesPath = join(fwDir, "files.json");
+    const files: Record<string, string> = existsSync(filesPath)
+      ? JSON.parse(readFileSync(filesPath, "utf-8"))
+      : {};
+    if (!files["index.js"]) {
+      throw new Error(`Asset '${asset.id}@${version}' must ship compiled index.js only.`);
+    }
     return {
-      manifest: {
-        delivery: "module",
-        version: resolved,
-        exportName,
-        package: asset.package ?? "@roboticela/devkit",
-        styles: true,
-        usage: `import { ${exportName} } from '@roboticela/devkit';`,
-        name: assetId,
-        type: asset.type,
-        tier: "free",
-      },
-      files: {},
+      manifest: { ...manifest, version, delivery: "server-package" },
+      files,
     };
   }
 
+  return null;
+}
+
+/** Legacy flat layout: catalog/<id>/<framework>/ */
+function loadLegacyPayload(
+  assetId: string,
+  framework: string,
+  version: string
+): { manifest: Record<string, unknown>; files: Record<string, string> } | null {
   const candidates = [
-    join(CATALOG_DIR, assetId, framework, `v${resolved}`),
     join(CATALOG_DIR, assetId, framework),
     join(CATALOG_DIR, assetId, "nextjs-compact"),
     join(CATALOG_DIR, assetId),
@@ -135,7 +205,7 @@ export function loadAssetPayload(
 
   if (delivery === "module") {
     return {
-      manifest: { ...manifest, version: resolved, delivery: "module" },
+      manifest: { ...manifest, version, delivery: "module" },
       files: {},
     };
   }
@@ -155,9 +225,46 @@ export function loadAssetPayload(
   }
 
   return {
-    manifest: { ...manifest, version: resolved, delivery: "server-package" },
+    manifest: { ...manifest, version, delivery: "server-package" },
     files,
   };
+}
+
+export function loadAssetPayload(
+  assetId: string,
+  framework: string,
+  version = "latest"
+): { manifest: Record<string, unknown>; files: Record<string, string> } | null {
+  const asset = getCatalogAsset(assetId);
+  if (!asset) return null;
+
+  const resolved = resolveAssetVersion(asset, version);
+  if (!resolved) return null;
+
+  // Prefer typed versioned layout from catalog:release
+  const fromTyped = loadFromVersionDir(asset, resolved, framework);
+  if (fromTyped) return fromTyped;
+
+  // Free module fallback from catalog.json metadata (no on-disk snapshot yet)
+  if (asset.tier === "free" || asset.delivery === "module") {
+    const exportName = asset.exportName ?? toExportName(assetId);
+    return {
+      manifest: {
+        delivery: "module",
+        version: resolved,
+        exportName,
+        package: asset.package ?? "@roboticela/devkit",
+        styles: true,
+        usage: `import { ${exportName} } from '@roboticela/devkit';`,
+        name: assetId,
+        type: asset.type,
+        tier: "free",
+      },
+      files: {},
+    };
+  }
+
+  return loadLegacyPayload(assetId, framework, resolved);
 }
 
 function toExportName(assetId: string): string {
@@ -189,6 +296,13 @@ export function buildSignedManifest(
 export function serializeCatalogAsset(a: CatalogAssetMeta) {
   const latest = a.versions?.latest ?? a.latestVersion;
   const history = a.versions?.history ?? [{ version: latest }];
+  const onDisk = listOnDiskVersions(a);
+  const mergedHistory = [...history];
+  for (const v of onDisk) {
+    if (!mergedHistory.some((h) => h.version === v)) {
+      mergedHistory.push({ version: v });
+    }
+  }
   return {
     id: a.id,
     type: a.type,
@@ -200,7 +314,7 @@ export function serializeCatalogAsset(a: CatalogAssetMeta) {
     latestVersion: latest,
     versions: {
       latest,
-      history,
+      history: mergedHistory,
     },
     dependencies: a.dependencies ?? [],
     tags: a.tags ?? [],

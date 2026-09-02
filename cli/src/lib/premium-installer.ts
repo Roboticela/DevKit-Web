@@ -25,7 +25,7 @@ export async function installPremiumAsset(
   assetId: string,
   kind: PackageKind,
   cwd = process.cwd(),
-  options: { force?: boolean } = {}
+  options: { force?: boolean; version?: string } = {}
 ) {
   const config = readConfig(cwd);
 
@@ -46,7 +46,12 @@ export async function installPremiumAsset(
   const spinner = ora({ text: `Authorizing ${chalk.cyan(assetId)} from server…`, color: "cyan" }).start();
 
   try {
-    const signed = await requestPremiumAsset(projectId, assetId, config.template);
+    const signed = await requestPremiumAsset(
+      projectId,
+      assetId,
+      config.template,
+      options.version ?? "latest"
+    );
     const manifest = signed.manifest as {
       name?: string;
       version?: string;
