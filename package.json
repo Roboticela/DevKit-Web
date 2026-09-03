@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "devkit": "concurrently -k -n server,cli -c cyan,magenta \"npm run devkit:server\" \"npm run devkit:cli\"",
     "devkit:server": "npm run dev --prefix server",
-    "devkit:cli": "npm run dev --prefix cli",
+    "devkit:cli": "npm run dev:watch --prefix cli",
     "try": "node scripts/local-devkit.mjs",
     "devkit-test:setup": "node scripts/local-devkit.mjs"
   },
@@ -26,6 +27,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "concurrently": "^9.2.4",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
     "tailwindcss": "^4",

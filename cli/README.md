@@ -38,9 +38,9 @@ New installs use **latest**. `devkit.lock.json` pins versions for `sync`. You ca
 ## Quick start
 
 ```bash
+devkit login
 devkit create my-app
 cd my-app
-devkit login
 devkit add button
 devkit activate
 devkit add dashboard-page
@@ -48,9 +48,10 @@ npm run dev
 # premium → /devkit-premium/...
 ```
 
-Non-interactive:
+Non-interactive (must be logged in first):
 
 ```bash
+devkit login
 devkit create my-app --template nextjs-compact --preset bold -y --install
 ```
 
@@ -73,21 +74,38 @@ Premium assets install under `node_modules/@roboticela/premium-*` (compiled pack
 # Latest (default)
 devkit add button
 devkit add dashboard-page
+devkit create my-app --template nextjs-compact
 
-# Pin a catalog version
+# Pin a catalog version (packages and templates use the same @version syntax)
 devkit add button@1.0.1
 devkit add dashboard-page --version 1.0.0
+devkit create my-app --template nextjs-compact@1.0.1
+devkit create my-app --template nextjs-compact --version 1.0.1
 
 # Move installed packages to a version / latest
 devkit update button --to 1.0.1
 devkit update --all
 
+# Template scaffold only (does not touch installed packages)
+devkit update --template --check
+devkit update --template
+devkit update --template --to 1.0.1
+
 # CI: reinstall exact lockfile versions
 devkit sync
 ```
 
-Lockfile keeps older pins until you update. Catalog bumps do not require a CLI republish.
+Lockfile keeps older pins until you update. Catalog / template bumps do not require a CLI republish.
 
+### Template-only updates
+
+`devkit update --template` refreshes scaffold files from the live template while:
+
+- leaving installed catalog packages and `devkit.lock.json` component pins alone
+- never overwriting `devkit.config.json`, env files, or `.devkit/*`
+- writing only files that still match the last DevKit baseline (`.devkit/template.manifest.json`)
+- **reporting conflicts** for any file you edited (exit code `2`) — use `--force` only if you intend to overwrite them
+- optionally targeting a published version with `--to <ver>` (same idea as packages)
 ---
 
 ## Themes
@@ -110,7 +128,7 @@ Run `devkit --help` for the full flag list. Useful entry points:
 
 | Command | Description |
 |---------|-------------|
-| `devkit create [name]` | Scaffold from a live template |
+| `devkit create [name]` | Scaffold from a live template (**requires login**) |
 | `devkit init` | Add DevKit to an existing app |
 | `devkit dev` | Run the project `dev` script |
 
@@ -118,7 +136,8 @@ Run `devkit --help` for the full flag list. Useful entry points:
 
 | Flag | Description |
 |------|-------------|
-| `--template <id>` | Template id from the catalog |
+| `--template <id>` | Template id (`id` or `id@version`) |
+| `--version <ver>` | Template version (overrides `id@version`) |
 | `--preset <name>` | Theme id from the catalog |
 | `--primary <hex>` | Override primary color |
 | `--git` / `--no-git` | Git init (default: on) |
@@ -135,11 +154,11 @@ Run `devkit --help` for the full flag list. Useful entry points:
 | `devkit list` | Catalog or installed |
 | `devkit info <name>` | Metadata + version history |
 | `devkit sync` | Reinstall from lockfile |
-| `devkit update [names…]` | Bump packages or CLI |
+| `devkit update [names…]` | Bump packages, CLI (`--cli`), or template (`--template`) |
 
 **`add` options:** `--type <kind>` · `--variant <id>` · `--version <ver>` · `--dry-run`  
 **`list` options:** `--type` · `--installed` · `--template <id>`  
-**`update` options:** `--all` · `--cli` · `--check` · `-f` · `--to <ver>`  
+**`update` options:** `--all` · `--cli` · `--check` · `-f` · `--to <ver>` (packages **or** `--template`)  
 **`sync` / `remove`:** `-f` / `--keep-files`
 
 ### Account & license
@@ -176,7 +195,7 @@ devkit update --cli --check
 
 ## Templates
 
-Ids and labels come from the live catalog. Examples:
+Ids, labels, and **versions** come from the live catalog (published with `templates:release` on the server). Examples:
 
 | Id | Stack |
 |----|--------|
@@ -185,8 +204,11 @@ Ids and labels come from the live catalog. Examples:
 
 ```bash
 devkit create my-app --template nextjs-compact
+devkit create my-app --template nextjs-compact@1.0.1
+devkit update --template --to 1.0.1
 ```
 
+Same `@version` / `--version` / `--to` pattern as `devkit add button@1.0.1`.
 ---
 
 ## Environment
@@ -209,9 +231,9 @@ devkit doctor
 | Issue | Fix |
 |-------|-----|
 | Templates / themes / catalog fail | Check network / `DEVKIT_API_URL` if you override it · `devkit status` |
-| Can’t add packages | `devkit login` |
+| Can’t create / add packages | `devkit login` |
 | Premium fails | `devkit activate` then `devkit license` |
-| Wrong package version | `devkit add name@x.y.z` or `devkit update name --to x.y.z` |
+| Wrong package / template version | `devkit add name@x.y.z` · `devkit create --template id@x.y.z` · `devkit update --template --to x.y.z` |
 | Docs / theme studio | [devkit.roboticela.com](https://devkit.roboticela.com) |
 
 ---

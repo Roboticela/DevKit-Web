@@ -1,0 +1,15 @@
+{
+  "name": "hero-section",
+  "version": "1.0.5",
+  "type": "section",
+  "delivery": "server-package",
+  "route": "hero",
+  "devkitVersion": ">=4.5.0",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [
+    "button"
+  ]
+}

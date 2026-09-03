@@ -151,7 +151,18 @@ export function isSessionValid(session: StoredSession | null): boolean {
   return Date.now() < session.expiresAt - 30_000;
 }
 
-/** Require a valid login for any package install (free or premium). */
+/** Require a valid login without needing a project folder (e.g. create). */
+export function requireLoginGlobal(): StoredSession {
+  const session = readGlobalSession();
+  if (isSessionValid(session)) return session!;
+
+  const bin = cliBinName();
+  log.error(`Sign in required. Run: ${bin} login`);
+  log.info("Login is required to create projects and install packages.");
+  process.exit(1);
+}
+
+/** Require a valid login (create, add, sync, update packages). */
 export function requireLogin(cwd = process.cwd()): StoredSession {
   bindSessionToProject(cwd);
   const session = readSession(cwd);
@@ -159,7 +170,7 @@ export function requireLogin(cwd = process.cwd()): StoredSession {
 
   const bin = cliBinName();
   log.error(`Sign in required. Run: ${bin} login`);
-  log.info("Login is required for free components and premium assets.");
+  log.info("Login is required to create projects and install packages.");
   process.exit(1);
 }
 

@@ -12,7 +12,6 @@ import { resolveThemeCssPath } from "../lib/theme-path.js";
 import { log } from "../lib/logger.js";
 import { cliBinName } from "../lib/cli-meta.js";
 import { getApiBaseUrl } from "../lib/api-client.js";
-import chalk from "chalk";
 
 export async function initCommand(cwd = process.cwd()) {
   if (configExists(cwd)) {
@@ -61,7 +60,7 @@ export async function initCommand(cwd = process.cwd()) {
     /* list meta is enough */
   }
 
-  const { text, select } = await import("@clack/prompts");
+  const { text, isCancel, cancel } = await import("@clack/prompts");
   const siteName = (await text({ message: "Site name", placeholder: "My App" })) as string;
   const siteUrl = (await text({ message: "Site URL", placeholder: "https://myapp.com" })) as string;
 
@@ -73,16 +72,17 @@ export async function initCommand(cwd = process.cwd()) {
     process.exit(1);
   }
 
-  const preset = (await select({
-    message: "Theme preset (from server)",
-    options: remoteThemes.map((t) => ({
-      value: t.id,
-      label: t.label,
-      hint: t.hint,
-    })),
-  })) as string;
+  const { selectThemeWithLivePreview } = await import("../lib/theme-select.js");
+  const picked = await selectThemeWithLivePreview({
+    message: "Theme preset",
+    themes: remoteThemes,
+  });
+  if (isCancel(picked)) {
+    cancel("Cancelled.");
+    process.exit(0);
+  }
+  const preset = picked as string;
   const selectedTheme = remoteThemes.find((t) => t.id === preset)!;
-  log.info(`Preview: ${chalk.cyan(selectedTheme.previewUrl)}`);
 
   const selectedMeta = remoteTemplates.find((t) => t.id === template);
   const config = defaultConfig(template, siteName, siteUrl, selectedMeta?.version);

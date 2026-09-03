@@ -10,6 +10,7 @@ import { requireLogin } from "../lib/auth-store.js";
 import { log } from "../lib/logger.js";
 import { cliBinName } from "../lib/cli-meta.js";
 import type { PackageKind } from "../lib/component-entry.js";
+import { parseIdAtVersion } from "../lib/id-version.js";
 
 interface AddOptions {
   variant?: string;
@@ -168,14 +169,8 @@ export async function addCommand(names: string[], opts: AddOptions, cwd = proces
     }
 
   todo = names.map((nameAtVersion) => {
-      const at = nameAtVersion.lastIndexOf("@");
-      // Support scoped-looking names and name@version (button@1.0.1)
-      let name = nameAtVersion;
-      let version = opts.version ?? "latest";
-      if (at > 0) {
-        name = nameAtVersion.slice(0, at);
-        version = opts.version ?? nameAtVersion.slice(at + 1) ?? "latest";
-      }
+      const { id: name, version: fromSpec } = parseIdAtVersion(nameAtVersion);
+      const version = opts.version ?? fromSpec;
       const meta = catalog.find((c) => c.name === name);
       let kind = inferKind(name!, meta);
       if (meta?.kind) kind = meta.kind;

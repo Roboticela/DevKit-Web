@@ -10,6 +10,7 @@ import { infoCommand } from "./commands/info.js";
 import { syncCommand } from "./commands/sync.js";
 import { selfUpdateCommand } from "./commands/self-update.js";
 import { updatePackagesCommand } from "./commands/update-packages.js";
+import { updateTemplateCommand } from "./commands/update-template.js";
 import { doctorCommand } from "./commands/doctor.js";
 import { statusCommand } from "./commands/status.js";
 import { devCommand } from "./commands/dev.js";
@@ -47,8 +48,9 @@ if (isTest) {
 
 program
   .command("create [name]")
-  .description("Scaffold a project from a live template")
-  .option("--template <id>", "Template id")
+  .description("Scaffold a project from a live template (requires login)")
+  .option("--template <id>", "Template id (supports id@version)")
+  .option("--version <ver>", "Template version (overrides id@version)")
   .option("--preset <name>", "Theme id from the live catalog")
   .option("--primary <hex>", "Primary color (e.g. #0E7AFF)")
   .option("--git", "Initialize git (default)")
@@ -168,26 +170,43 @@ program
 
 program
   .command("update [names...]")
-  .description("Update installed packages, or the CLI with --cli")
+  .description("Update packages, the CLI, or the project template only")
   .option("--all", "Update all installed packages")
   .option("--cli", "Update this CLI binary only")
-  .option("--check", "With --cli: report newer version without installing")
-  .option("-f, --force", "Overwrite managed files on reinstall")
-  .option("--to <ver>", "Target version (packages; default: latest)")
+  .option("--template", "Update scaffold/template files only (keeps packages & user edits)")
+  .option("--check", "Report only (with --cli or --template); do not write")
+  .option("-f, --force", "Overwrite managed / conflicted files")
+  .option("--to <ver>", "Target version (packages or --template; default: latest)")
   .action(async (names: string[], opts) => {
-    const wantCli = opts.cli === true || opts.check === true;
+    const wantCli = opts.cli === true;
+    const wantTemplate = opts.template === true;
     const wantPackages = opts.all === true || (names?.length ?? 0) > 0;
+    const modes = [wantCli, wantTemplate, wantPackages].filter(Boolean).length;
 
-    if (wantCli && wantPackages) {
-      console.log(chalk.red("Use either package update or --cli, not both."));
+    if (modes > 1) {
+      console.log(chalk.red("Use only one of: package names/--all, --cli, or --template."));
       process.exit(1);
     }
 
-    if (wantCli || (!wantPackages && !opts.all)) {
-      if (!wantCli && !wantPackages) {
-        console.log(chalk.dim(`Tip: ${bin} update --all  or  ${bin} update <name>`));
-      }
+    if (wantTemplate) {
+      return updateTemplateCommand({
+        check: opts.check === true,
+        force: opts.force === true,
+        to: opts.to,
+      });
+    }
+
+    if (wantCli || opts.check === true) {
       return selfUpdateCommand({ check: opts.check === true });
+    }
+
+    if (!wantPackages) {
+      console.log(
+        chalk.dim(
+          `Tip: ${bin} update --all  ·  ${bin} update <name>  ·  ${bin} update --template  ·  ${bin} update --cli`
+        )
+      );
+      return selfUpdateCommand({ check: false });
     }
 
     return updatePackagesCommand(names ?? [], {
@@ -224,8 +243,9 @@ program.addHelpText(
   "after",
   `
 ${chalk.bold("Command options")}
-  create [name]
-    --template <id>     Template id from the catalog
+  create [name]         Requires login (${bin} login)
+    --template <id>     Template id (also id@version)
+    --version <ver>     Template version (overrides id@version)
     --preset <name>     Theme id from the catalog
     --primary <hex>     Primary brand color (e.g. #0E7AFF)
     --git / --no-git    Initialize git (default: on)
@@ -254,10 +274,11 @@ ${chalk.bold("Command options")}
 
   update [names...]
     --all               Update every installed package to latest (or --to)
+    --template          Update scaffold files only (packages & user edits stay)
     --cli               Update this CLI binary only (not the project)
-    --check             With --cli: report newer version, do not install
-    -f, --force         Overwrite managed files on reinstall
-    --to <ver>          Target catalog version (default: latest)
+    --check             With --cli or --template: report only, do not write
+    -f, --force         Overwrite managed / conflicted files
+    --to <ver>          Target version (packages or --template; default: latest)
 
   theme
     list                Themes from the catalog + preview URLs
@@ -266,7 +287,10 @@ ${chalk.bold("Command options")}
     preview [id]        Open docs theme studio (devkit.roboticela.com/theme)
 
 ${chalk.bold("Examples")}
+  ${bin} login
   ${bin} create my-app --template nextjs-compact --preset bold -y --install
+  ${bin} create my-app --template nextjs-compact@1.0.1 -y
+  ${bin} create my-app --template nextjs-compact --version 1.0.1 -y
   ${bin} add button modal
   ${bin} add button@1.0.1
   ${bin} add dashboard-page --version 1.0.0 --type page
@@ -274,6 +298,9 @@ ${chalk.bold("Examples")}
   ${bin} list --installed
   ${bin} update button --to 1.0.1
   ${bin} update --all
+  ${bin} update --template
+  ${bin} update --template --to 1.0.1
+  ${bin} update --template --check
   ${bin} update --cli --check
   ${bin} sync
   ${bin} theme list

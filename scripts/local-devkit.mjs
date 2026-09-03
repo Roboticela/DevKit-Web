@@ -14,6 +14,8 @@ import {
   readFileSync,
   writeFileSync,
   copyFileSync,
+  openSync,
+  closeSync,
 } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -68,6 +70,46 @@ function ensureServerEnv() {
   }
 }
 
+/**
+ * Start the API in the background.
+ * Avoid `npm.cmd` + detached on Windows — Node ≥20 throws spawn EINVAL.
+ */
+function spawnApiServer(logPath) {
+  const tsxCli = join(serverDir, "node_modules", "tsx", "dist", "cli.mjs");
+  const logFd = openSync(logPath, "w");
+
+  /** @type {import("node:child_process").ChildProcess} */
+  let child;
+  if (existsSync(tsxCli)) {
+    child = spawn(process.execPath, [tsxCli, "watch", "src/index.ts"], {
+      cwd: serverDir,
+      detached: true,
+      stdio: ["ignore", logFd, logFd],
+      env: process.env,
+      windowsHide: true,
+    });
+  } else {
+    // Fallback: shell required on Windows for .cmd shims
+    child = spawn("npm", ["run", "dev"], {
+      cwd: serverDir,
+      detached: true,
+      stdio: ["ignore", logFd, logFd],
+      env: process.env,
+      shell: true,
+      windowsHide: true,
+    });
+  }
+
+  // Parent no longer owns the log fds / child lifetime
+  try {
+    closeSync(logFd);
+  } catch {
+    /* already closed by child on some platforms */
+  }
+  child.unref();
+  return child;
+}
+
 async function main() {
   console.log();
   log("╔══════════════════════════════════════════════════╗");
@@ -101,34 +143,29 @@ async function main() {
     log(`→ Starting API on ${apiUrl}…`);
     mkdirSync(join(root, ".devkit-local"), { recursive: true });
     const out = join(root, ".devkit-local", "server.log");
-    const child = spawn(
-      process.platform === "win32" ? "npm.cmd" : "npm",
-      ["run", "dev"],
-      {
-        cwd: serverDir,
-        detached: true,
-        stdio: ["ignore", "pipe", "pipe"],
-        env: process.env,
-        shell: false,
-      }
-    );
-    const logStream = [];
-    child.stdout?.on("data", (d) => logStream.push(String(d)));
-    child.stderr?.on("data", (d) => logStream.push(String(d)));
-    child.unref();
-    writeFileSync(join(root, ".devkit-local", "server.pid"), String(child.pid ?? ""));
-    writeFileSync(out, "");
-    startedServer = true;
+    let child;
+    try {
+      child = spawnApiServer(out);
+    } catch (e) {
+      log(`  ⚠ Failed to start API: ${(e).message}`);
+      log(`  Start manually: cd server && npm run dev`);
+      child = null;
+    }
+    if (child?.pid) {
+      writeFileSync(join(root, ".devkit-local", "server.pid"), String(child.pid));
+      startedServer = true;
+    }
 
     const ok = await waitForHealth();
     if (!ok) {
-      writeFileSync(out, logStream.join(""));
       log("  ⚠ API did not become healthy in time.");
       log(`  Check Postgres + server/.env, then: cd server && npm run db:push && npm run dev`);
       log(`  Logs: ${out}`);
-      if (logStream.length) console.log(logStream.slice(-20).join(""));
+      if (existsSync(out)) {
+        const tail = readFileSync(out, "utf-8").trim().split(/\r?\n/).slice(-20);
+        if (tail.length) console.log(tail.join("\n"));
+      }
     } else {
-      writeFileSync(out, logStream.join(""));
       log("  ✓ API is healthy");
       // Best-effort schema push (idempotent)
       try {

@@ -48,13 +48,27 @@ export async function authLoginCommand(cwd = process.cwd()) {
 
   log.info(`API: ${chalk.dim(apiUrl)}`);
 
-  const device = await apiFetch<{
+  let device: {
     deviceCode: string;
     userCode: string;
     verificationUri: string;
     expiresIn: number;
     interval: number;
-  }>("/auth/device", { apiUrl });
+  };
+  try {
+    device = await apiFetch("/auth/device", { apiUrl, method: "POST", body: {} });
+  } catch (e) {
+    const err = e as { statusCode?: number; message?: string };
+    log.error(err.message ?? "Could not start device login");
+    if (err.statusCode === 404) {
+      log.info("Auth route missing — is the DevKit API the one on this URL?");
+    } else if (err.statusCode === 500) {
+      log.info("API error — usually the database is down. From server/: npm run db:push && check DATABASE_URL");
+    } else {
+      log.info(`Is the API running at ${apiUrl}? From repo root: npm run devkit`);
+    }
+    process.exit(1);
+  }
 
   if (isLocalTest) {
     const email = process.env.DEVKIT_TEST_EMAIL ?? "dev@roboticela.local";

@@ -1,6 +1,5 @@
 import { writeFileSync, readFileSync, existsSync } from "fs";
 import chalk from "chalk";
-import { execSync } from "child_process";
 import { readConfig, writeConfig } from "../lib/config.js";
 import { generateThemeCSS } from "../lib/theme.js";
 import { resolveThemeCssPath } from "../lib/theme-path.js";
@@ -11,6 +10,7 @@ import {
   themeStudioUrl,
   type RemoteTheme,
 } from "../lib/themes.js";
+import { openUrlQuiet } from "../lib/open-url.js";
 import { log } from "../lib/logger.js";
 
 function getCssPath(cwd: string): string {
@@ -44,9 +44,6 @@ export async function themeApplyCommand(cwd = process.cwd()) {
   );
   patchCss(getCssPath(cwd), css);
   log.success("Theme applied to CSS.");
-  if (config.theme?.preset) {
-    log.info(`Preview: ${chalk.cyan(themeStudioUrl(config.theme.preset))}`);
-  }
 }
 
 export async function themePreviewCommand(themeId?: string, cwd = process.cwd()) {
@@ -77,13 +74,7 @@ export async function themePreviewCommand(themeId?: string, cwd = process.cwd())
   }
 
   try {
-    const cmd =
-      process.platform === "win32"
-        ? `start "" "${previewUrl}"`
-        : process.platform === "darwin"
-          ? `open "${previewUrl}"`
-          : `xdg-open "${previewUrl}"`;
-    execSync(cmd, { stdio: "ignore" });
+    openUrlQuiet(previewUrl);
     log.success("Opened theme studio in your browser.");
   } catch {
     log.info(`Open manually: ${chalk.cyan(previewUrl)}`);
@@ -120,7 +111,6 @@ export async function themePresetCommand(preset: string, cwd = process.cwd()) {
   writeConfig(config, cwd);
   await themeApplyCommand(cwd);
   log.success(`Switched to preset: ${remote.id}`);
-  log.info(`Try it: ${chalk.cyan(remote.previewUrl)}`);
 }
 
 export async function themeSetCommand(key: string, value: string, cwd = process.cwd()) {
@@ -170,7 +160,6 @@ export async function themeListCommand(cwd = process.cwd()) {
           t.label.padEnd(14) +
           chalk.dim(t.hint)
       );
-      console.log(chalk.dim(`     ${t.previewUrl}`));
     }
   } catch (e) {
     log.error(`Could not load themes from server: ${(e as Error).message}`);

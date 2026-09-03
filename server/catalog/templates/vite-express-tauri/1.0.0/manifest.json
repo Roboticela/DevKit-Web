@@ -1,0 +1,14 @@
+{
+  "id": "vite-express-tauri",
+  "version": "1.0.0",
+  "label": "Wide Express (Vite + Express + Tauri)",
+  "hint": "Vite · Express · Tauri — Web + Desktop",
+  "cssPath": "src/index.css",
+  "installTargets": [
+    "root",
+    "server"
+  ],
+  "fileCount": 20,
+  "contentSha": "af92b6ab686b1e3a3fc2c3f448579415f227ef25cc5287933d30ec1b977148bf",
+  "releasedAt": "2026-09-03"
+}

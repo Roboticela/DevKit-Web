@@ -1,0 +1,51 @@
+{
+  "version": "1.0.1",
+  "updatedAt": "2026-09-03T05:55:33.924Z",
+  "templates": [
+    {
+      "id": "nextjs-compact",
+      "version": "1.0.0",
+      "latestVersion": "1.0.0",
+      "label": "NextJS Compact",
+      "hint": "Next.js · React · Tailwind — Web SSR/RSC",
+      "cssPath": "app/globals.css",
+      "installTargets": [
+        "root"
+      ],
+      "dir": "nextjs",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-03",
+            "contentSha": "7ee831964efa19e797e9c07ef38acc0b886edcf30dc1a68d6999146890cb6a5e"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vite-express-tauri",
+      "version": "1.0.0",
+      "latestVersion": "1.0.0",
+      "label": "Wide Express (Vite + Express + Tauri)",
+      "hint": "Vite · Express · Tauri — Web + Desktop",
+      "cssPath": "src/index.css",
+      "installTargets": [
+        "root",
+        "server"
+      ],
+      "dir": "vite-express-tauri",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-03",
+            "contentSha": "af92b6ab686b1e3a3fc2c3f448579415f227ef25cc5287933d30ec1b977148bf"
+          }
+        ]
+      }
+    }
+  ]
+}

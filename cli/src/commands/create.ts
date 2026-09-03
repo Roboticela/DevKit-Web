@@ -1,9 +1,10 @@
-import { intro, outro, text, select, multiselect, confirm, spinner } from "@clack/prompts";
+import { intro, outro, text, select, multiselect, confirm, spinner, isCancel, cancel } from "@clack/prompts";
 import chalk from "chalk";
 import { execSync } from "child_process";
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { join, dirname } from "path";
 import { downloadTemplate, listTemplates } from "../lib/template.js";
+import { recordTemplateBaseline } from "../lib/template-update.js";
 import { writeConfig, writeLock, defaultConfig } from "../lib/config.js";
 import { generateThemeCSS } from "../lib/theme.js";
 import { installComponent } from "../lib/installer.js";
@@ -12,13 +13,16 @@ import { log } from "../lib/logger.js";
 import { listComponents, type PackageKind } from "../lib/registry.js";
 import { isPremiumAssetId } from "../lib/premium-guard.js";
 import { cliBinName } from "../lib/cli-meta.js";
-import { isSessionValid, readSession } from "../lib/auth-store.js";
-import { getApiBaseUrl } from "../lib/api-client.js";
+import { requireLoginGlobal } from "../lib/auth-store.js";
 import { CLI_VERSION } from "../version.js";
 import { listThemes } from "../lib/themes.js";
+import { selectThemeWithLivePreview } from "../lib/theme-select.js";
+import { parseIdAtVersion } from "../lib/id-version.js";
 
 interface CreateOptions {
   template?: string;
+  /** Explicit template version (overrides id@version when both set). */
+  version?: string;
   preset?: string;
   primary?: string;
   git?: boolean;
@@ -46,6 +50,9 @@ async function getCreatePickerOptions(template: string, kind?: PackageKind): Pro
 }
 
 export async function createCommand(projectName: string | undefined, opts: CreateOptions) {
+  // Must be logged in before scaffolding (global session — no project yet)
+  requireLoginGlobal();
+
   console.log();
   const inner = 53;
   const verCentered = (() => {
@@ -72,16 +79,17 @@ export async function createCommand(projectName: string | undefined, opts: Creat
 
   if (!name || typeof name !== "string") { process.exit(0); }
 
-  log.info(`API: ${chalk.dim(getApiBaseUrl())}`);
-
   let templateOptions: { value: string; label: string; hint?: string }[] = [];
   try {
     const remote = await listTemplates();
-    templateOptions = remote.map((t) => ({
-      value: t.id,
-      label: t.label,
-      hint: t.version ? `v${t.version}${t.hint ? ` · ${t.hint}` : ""}` : t.hint,
-    }));
+    templateOptions = remote.map((t) => {
+      const ver = t.latestVersion ?? t.version;
+      return {
+        value: t.id,
+        label: t.label,
+        hint: ver ? `v${ver}${t.hint ? ` · ${t.hint}` : ""}` : t.hint,
+      };
+    });
   } catch (e) {
     log.error(`Could not load templates from server: ${(e as Error).message}`);
     log.info("Start the DevKit API (npm run try) or set DEVKIT_API_URL if you use a custom endpoint.");
@@ -92,10 +100,16 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     process.exit(1);
   }
 
-  const template = (opts.template ?? (opts.yes ? templateOptions[0]!.value : await select({
-    message: "Select a template (from server)",
-    options: templateOptions,
-  }))) as string;
+  const rawTemplate = (opts.template ??
+    (opts.yes ? templateOptions[0]!.value : await select({
+      message: "Select a template (from server)",
+      options: templateOptions,
+    }))) as string;
+
+  const parsed = parseIdAtVersion(rawTemplate);
+  const template = parsed.id;
+  const templateVersion =
+    opts.version && opts.version !== "latest" ? opts.version : parsed.version;
 
   if (!templateOptions.some((t) => t.value === template)) {
     log.error(`Unknown template '${template}'. Available: ${templateOptions.map((t) => t.value).join(", ")}`);
@@ -119,24 +133,27 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     log.error(`Could not load themes from server: ${(e as Error).message}`);
     process.exit(1);
   }
-  const themeOptions = remoteThemes.map((t) => ({
-    value: t.id,
-    label: t.label,
-    hint: t.hint,
-  }));
-  const defaultThemeId = themeOptions[0]?.value ?? "default";
+  const defaultThemeId = remoteThemes[0]?.id ?? "default";
 
-  const preset = (opts.preset ?? (opts.yes ? defaultThemeId : await select({
-    message: "Theme preset (from server — preview on devkit.roboticela.com/theme)",
-    options: themeOptions,
-  }))) as string;
+  let preset = opts.preset ?? (opts.yes ? defaultThemeId : undefined);
+  if (!preset) {
+    const picked = await selectThemeWithLivePreview({
+      message: "Theme preset",
+      themes: remoteThemes,
+      initialValue: defaultThemeId,
+    });
+    if (isCancel(picked)) {
+      cancel("Cancelled.");
+      process.exit(0);
+    }
+    preset = picked as string;
+  }
 
-  if (!themeOptions.some((t) => t.value === preset)) {
-    log.error(`Unknown theme '${preset}'. Available: ${themeOptions.map((t) => t.value).join(", ")}`);
+  if (!remoteThemes.some((t) => t.id === preset)) {
+    log.error(`Unknown theme '${preset}'. Available: ${remoteThemes.map((t) => t.id).join(", ")}`);
     process.exit(1);
   }
   const selectedTheme = remoteThemes.find((t) => t.id === preset)!;
-  log.info(`Theme preview: ${chalk.cyan(selectedTheme.previewUrl)}`);
 
   const primaryColor = opts.primary ?? (opts.yes ? undefined : await text({
     message: "Primary brand color (hex, leave blank to use preset)",
@@ -151,39 +168,35 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   if (opts.add) {
     selectedComponents = opts.add.split(",").map((s) => s.trim()).filter(Boolean);
   } else if (!opts.yes) {
-    if (!isSessionValid(readSession())) {
-      log.info(`Sign in to pick packages now, or add later: ${cliBinName()} login && ${cliBinName()} add`);
-    } else {
-      try {
-        const kinds: { kind: PackageKind; label: string }[] = [{ kind: "component", label: "components" }];
+    try {
+      const kinds: { kind: PackageKind; label: string }[] = [{ kind: "component", label: "components" }];
 
-        const selected: string[] = [];
-        for (const { kind, label } of kinds) {
-          const options = await getCreatePickerOptions(template, kind);
-          if (options.length === 0) {
-            log.warn(`No ${label} available for this template.`);
-            continue;
-          }
-          const picked = await multiselect({
-            message: `Add ${label} now? (space to select, enter to confirm)`,
-            options,
-            required: false,
-          }) as string[];
-          selected.push(...picked);
+      const selected: string[] = [];
+      for (const { kind, label } of kinds) {
+        const options = await getCreatePickerOptions(template, kind);
+        if (options.length === 0) {
+          log.warn(`No ${label} available for this template.`);
+          continue;
         }
-
-        const seen = new Set<string>();
-        selectedComponents = selected.filter((n) => {
-          if (seen.has(n)) return false;
-          seen.add(n);
-          return true;
-        });
-        if (selectedComponents.length === 0) {
-          log.info("No packages selected — you can always run 'devkit add' later.");
-        }
-      } catch (e) {
-        log.warn(`Could not load server catalog for picker: ${(e as Error).message}`);
+        const picked = await multiselect({
+          message: `Add ${label} now? (space to select, enter to confirm)`,
+          options,
+          required: false,
+        }) as string[];
+        selected.push(...picked);
       }
+
+      const seen = new Set<string>();
+      selectedComponents = selected.filter((n) => {
+        if (seen.has(n)) return false;
+        seen.add(n);
+        return true;
+      });
+      if (selectedComponents.length === 0) {
+        log.info(`No packages selected — you can always run '${cliBinName()} add' later.`);
+      }
+    } catch (e) {
+      log.warn(`Could not load server catalog for picker: ${(e as Error).message}`);
     }
   }
 
@@ -204,11 +217,17 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   s.start(`Fetching template: ${chalk.cyan(template)}`);
   let downloaded: Awaited<ReturnType<typeof downloadTemplate>>;
   try {
-    downloaded = await downloadTemplate(template, destDir, {
-      projectName: name,
-      siteName: siteName as string,
-      siteUrl: siteUrl as string,
-    });
+    downloaded = await downloadTemplate(
+      template,
+      destDir,
+      {
+        projectName: name,
+        siteName: siteName as string,
+        siteUrl: siteUrl as string,
+      },
+      templateVersion
+    );
+    recordTemplateBaseline(destDir, downloaded.id, downloaded.version, downloaded.writtenFiles);
     s.stop(chalk.green(`✓  Template fetched: ${downloaded.label} @${downloaded.version}`));
     if (downloaded.hint) log.step(downloaded.hint);
   } catch (e) {
@@ -280,10 +299,9 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     );
     try {
       const result = await installProjectDependencies(destDir, template, s, installTargets);
-      const parts = result.steps.join(" + ");
-      log.success(`All dependency installs finished (${parts})`);
+      s.stop(chalk.green(`✓  Dependencies installed (${result.steps.join(" + ")})`));
     } catch (e) {
-      log.warn(`npm install failed — ${(e as Error).message}`);
+      s.stop(chalk.yellow(`⚠  npm install failed — ${(e as Error).message}`));
       log.warn("You can finish manually:");
       log.step(`cd ${name} && npm install`);
       if (installTargets.includes("server")) {
@@ -298,18 +316,18 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     }
   }
 
-  // 6. git init
+  // 6. git init only (no add/commit — leave that to the developer)
   if (doGit) {
-    s.start("Initializing git repository…");
     try {
-      execSync("git init", { cwd: destDir, stdio: "pipe" });
-      execSync('git add . && git commit -m "chore: init project with DevKit"', {
-        cwd: destDir,
-        stdio: "pipe",
-      });
-      s.stop(chalk.green("✓  Git repository ready"));
-    } catch {
-      s.stop(chalk.yellow("⚠  git init failed — git may not be installed"));
+      execSync("git init", { cwd: destDir, stdio: "ignore" });
+      log.success("Initialized git repository");
+    } catch (e) {
+      const msg = (e as Error).message || "";
+      log.warn(
+        msg.toLowerCase().includes("not recognized") || msg.toLowerCase().includes("enoent")
+          ? "git init skipped — git is not installed or not on PATH"
+          : `git init skipped — ${msg.split("\n")[0]}`
+      );
     }
   }
 
@@ -319,28 +337,21 @@ export async function createCommand(projectName: string | undefined, opts: Creat
   ensureProjectIdentity(destDir);
   bindSessionToProject(destDir);
 
-  // 7. Add selected components (login required)
+  // 7. Add selected components
   if (selectedComponents.length > 0) {
-    if (!isSessionValid(readSession(destDir))) {
-      log.warn(`Skipped package install — sign in first: ${cliBinName()} login`);
-      log.info(`Then: ${cliBinName()} add ${selectedComponents.join(" ")}`);
-    } else {
-      for (const comp of selectedComponents) {
-        s.start(`Adding component: ${chalk.cyan(comp)}`);
-        try {
-          if (isPremiumAssetId(comp)) {
-            s.stop(chalk.yellow(`⚠  Skipped ${comp}: use ${cliBinName()} add after activate`));
-            continue;
-          }
-          await installComponent(comp, template, "latest", undefined, destDir);
-          s.stop(chalk.green(`✓  Added: ${comp}`));
-        } catch (e) {
-          s.stop(chalk.yellow(`⚠  Skipped ${comp}: ${(e as Error).message}`));
+    for (const comp of selectedComponents) {
+      s.start(`Adding component: ${chalk.cyan(comp)}`);
+      try {
+        if (isPremiumAssetId(comp)) {
+          s.stop(chalk.yellow(`⚠  Skipped ${comp}: use ${cliBinName()} add after activate`));
+          continue;
         }
+        await installComponent(comp, template, "latest", undefined, destDir);
+        s.stop(chalk.green(`✓  Added: ${comp}`));
+      } catch (e) {
+        s.stop(chalk.yellow(`⚠  Skipped ${comp}: ${(e as Error).message}`));
       }
     }
-  } else {
-    // no packages selected at create time
   }
 
   // ── Done ─────────────────────────────────────────────────────────────────
@@ -355,15 +366,11 @@ export async function createCommand(projectName: string | undefined, opts: Creat
     console.log(`  ${chalk.bold("Components")}  ${selectedComponents.join(", ")}`);
   }
   const cli = cliBinName();
-  const loggedIn = isSessionValid(readSession(destDir));
   console.log();
   console.log(chalk.bold("  Next steps:"));
   console.log(`    ${chalk.cyan("cd")} ${name}`);
   console.log(`    ${chalk.cyan("cp")} .env.example .env    ${chalk.gray("# Fill in your secrets")}`);
-  if (!loggedIn) {
-    console.log(`    ${chalk.cyan(`${cli} login`)}             ${chalk.gray("# Required before add (session never expires)")}`);
-  }
-  console.log(`    ${chalk.cyan(`${cli} add button`)}         ${chalk.gray("# Free component (requires login)")}`);
+  console.log(`    ${chalk.cyan(`${cli} add button`)}         ${chalk.gray("# Free component")}`);
   console.log(`    ${chalk.cyan(`${cli} activate`)}          ${chalk.gray("# Unlock premium")}`);
   console.log(`    ${chalk.cyan(`${cli} doctor`)}            ${chalk.gray("# Health check")}`);
   console.log(`    ${chalk.cyan(`${cli} dev`)}               ${chalk.gray("# Start the app")}`);

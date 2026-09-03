@@ -38,6 +38,13 @@ export interface CatalogAssetMeta {
   delivery?: "module" | "server-package";
   exportName?: string;
   package?: string;
+  peerDependencies?: Record<string, string>;
+  requires?: {
+    roboticela?: Array<Record<string, unknown>>;
+    bundled?: Array<Record<string, unknown>>;
+    internal?: Array<Record<string, unknown>>;
+    icons?: Record<string, unknown>;
+  };
 }
 
 interface CatalogFile {
@@ -131,19 +138,32 @@ function loadFromVersionDir(
   const versionDir = resolveVersionDir(asset, version);
   if (!versionDir) return null;
 
-  // Module: catalog/components/<id>/<ver>/manifest.json
+  // Theme-universal: catalog/{type}/<id>/<ver>/manifest.json (+ files.json)
   const moduleManifest = join(versionDir, "manifest.json");
   if (existsSync(moduleManifest)) {
     const manifest = JSON.parse(readFileSync(moduleManifest, "utf-8")) as Record<string, unknown>;
-    if (String(manifest.delivery ?? "module") === "module") {
+    const delivery = String(manifest.delivery ?? "module");
+    if (delivery === "module") {
       return {
         manifest: { ...manifest, version, delivery: "module" },
         files: {},
       };
     }
+    // Flat server-package (all themes / templates)
+    const filesPath = join(versionDir, "files.json");
+    const files: Record<string, string> = existsSync(filesPath)
+      ? JSON.parse(readFileSync(filesPath, "utf-8"))
+      : {};
+    if (Object.keys(files).length > 0 && !files["index.js"]) {
+      throw new Error(`Asset '${asset.id}@${version}' must ship compiled index.js only.`);
+    }
+    return {
+      manifest: { ...manifest, version, delivery: "server-package" },
+      files,
+    };
   }
 
-  // Server-package: catalog/pages/<id>/<ver>/<framework>/{manifest,files}.json
+  // Legacy: catalog/{type}/<id>/<ver>/<framework>/{manifest,files}.json
   const fwCandidates = [
     join(versionDir, framework),
     join(versionDir, "nextjs-compact"),
@@ -317,6 +337,8 @@ export function serializeCatalogAsset(a: CatalogAssetMeta) {
       history: mergedHistory,
     },
     dependencies: a.dependencies ?? [],
+    peerDependencies: a.peerDependencies,
+    requires: a.requires,
     tags: a.tags ?? [],
     delivery: a.delivery ?? (a.tier === "free" ? "module" : "server-package"),
     exportName: a.exportName,

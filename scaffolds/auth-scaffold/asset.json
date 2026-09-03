@@ -1,0 +1,20 @@
+{
+  "id": "auth-scaffold",
+  "type": "scaffold",
+  "tier": "premium",
+  "displayName": "Auth Scaffold",
+  "description": "Complete authentication flows: sign-in, sign-up, 2FA, password reset.",
+  "category": "authentication",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [
+    "text-field"
+  ],
+  "tags": [
+    "auth",
+    "security"
+  ],
+  "delivery": "server-package"
+}

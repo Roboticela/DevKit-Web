@@ -4,5 +4,18 @@
   "label": "NextJS Compact",
   "hint": "Next.js · React · Tailwind — Web SSR/RSC",
   "cssPath": "app/globals.css",
-  "installTargets": ["root"]
+  "installTargets": [
+    "root"
+  ],
+  "latestVersion": "1.0.0",
+  "versions": {
+    "latest": "1.0.0",
+    "history": [
+      {
+        "version": "1.0.0",
+        "releasedAt": "2026-09-03",
+        "contentSha": "7ee831964efa19e797e9c07ef38acc0b886edcf30dc1a68d6999146890cb6a5e"
+      }
+    ]
+  }
 }

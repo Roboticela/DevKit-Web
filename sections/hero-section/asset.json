@@ -1,0 +1,20 @@
+{
+  "id": "hero-section",
+  "type": "section",
+  "tier": "premium",
+  "displayName": "Hero Section",
+  "description": "Marketing hero section with headline, CTA, and visual.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [
+    "button"
+  ],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "delivery": "server-package"
+}
