@@ -10,7 +10,8 @@ import * as icons from './icons/index'
 export { icons }
 
 function isIconExport(value: unknown): value is Icon {
-  return typeof value === 'function'
+  if (typeof value === 'function') return true
+  return typeof value === 'object' && value !== null && 'render' in value
 }
 
 export const ICON_NAMES = Object.keys(icons)

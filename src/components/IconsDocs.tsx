@@ -1,19 +1,29 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { ICON_NAMES, describeIcon, icons } from '@/icons'
+import {
+  DkClipboardCopyDuplicate,
+  DkMagnifyingGlassFind,
+  DkTaskCompleteCheckmark,
+  ICON_NAMES,
+  describeIcon,
+  icons,
+} from '@/icons'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { cn } from '@/lib/cn'
-import { EASE, FOCUS_RING } from '@/lib/styles'
-import { Button } from './Button'
+import { EASE } from '@/lib/styles'
 import { Badge } from './Badge'
+import { Button } from './Button'
 import { CodeBlock } from './CodeBlock'
-import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
-import { DocsInlineCode, DocsSnippet, DocsUsage } from './DocsCard'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsInlineCode, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
+import { EmptyState } from './EmptyState'
 import { Modal } from './Modal'
-import { Body } from './Text'
+import { Pagination } from './Pagination'
+import { TextField } from './TextField'
+import { Body, Caption } from './Text'
 
 const PAGE_SIZE = 96
 
@@ -111,9 +121,7 @@ export function IconsDocs() {
         crumb="Components / Foundations / Icons"
         title="Icons"
         description={`${ALL_ICONS.length.toLocaleString()} Roboticela icons you can search by name or meaning. Add icons under src/icons/icons/ — one file per icon.`}
-      >
-        <DocsMetaBadges />
-      </DocsHeader>
+      />
 
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
@@ -144,43 +152,43 @@ export function IconsDocs() {
               'Do not scale below 16px for a primary action.',
             ]}
           />
-          <DocsSnippet>
-            {selected
-              ? usageSnippet(selected.name)
-              : `import { DkDashboardOverviewGrid } from '@/icons'\n\n<DkDashboardOverviewGrid size={18} />`}
-          </DocsSnippet>
+          <CodeBlock
+            className="overflow-hidden rounded-xl"
+            code={
+              selected
+                ? usageSnippet(selected.name)
+                : `import { DkDashboardOverviewGrid } from '@/icons'\n\n<DkDashboardOverviewGrid size={18} />`
+            }
+            fadeKey="icon-usage"
+          />
         </DocsUsage>
       </section>
 
       <section id="library" className="mt-10 scroll-mt-20">
-        <label className="relative block">
-          <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[15px] text-text-tertiary" aria-hidden>
-            ⌕
-          </span>
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search name or meaning"
-            className={cn(
-              'h-11 w-full rounded-[12px] border border-border-default bg-bg-elevated px-10 font-sans text-[15px] text-text-primary',
-              'placeholder:text-text-tertiary dark:bg-bg-secondary',
-              FOCUS_RING,
-            )}
+        <TextField
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search name or meaning"
+          aria-label="Search icons"
+          icon={<DkMagnifyingGlassFind size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+        />
+        {names.length === 0 ? (
+          <EmptyState
+            className="mt-6"
+            size="sm"
+            title={ALL_ICONS.length === 0 ? 'No icons yet' : 'No icons match'}
+            body={
+              ALL_ICONS.length === 0
+                ? 'Add one file per icon in src/icons/icons/, provider marks in src/icons/icons/provider/, and product logos in src/icons/icons/brand/.'
+                : 'Try a name or a meaning tag.'
+            }
           />
-        </label>
-        <p className="mt-3 mb-0 text-[13px] text-text-tertiary">
-          {names.length === 0
-            ? 'No icons match.'
-            : `Showing ${from.toLocaleString()}–${to.toLocaleString()} of ${names.length.toLocaleString()}`}
-        </p>
-
-        {visible.length === 0 ? (
-          <p className="mt-6 text-[15px] text-text-secondary">
-            No icons yet. Add one file per icon in src/icons/icons/, provider marks in src/icons/icons/provider/, and product logos in src/icons/icons/brand/.
-          </p>
         ) : (
           <>
+            <Caption className="mt-3">
+              Showing {from.toLocaleString()}–{to.toLocaleString()} of {names.length.toLocaleString()}
+            </Caption>
             <div className="mt-4 grid grid-cols-3 gap-2 min-[480px]:grid-cols-4 min-[735px]:grid-cols-6 min-[1069px]:grid-cols-8">
               {visible.map((item) => (
                 <button
@@ -198,7 +206,9 @@ export function IconsDocs() {
                   )}
                 >
                   <IconPreview name={item.name} />
-                  <span className="max-w-full truncate font-mono text-[10px] text-text-tertiary">{item.name}</span>
+                  <Caption as="span" className="max-w-full truncate text-center font-mono">
+                    {item.name}
+                  </Caption>
                   {item.tags.length > 0 ? (
                     <span className="flex max-w-full justify-center gap-1 overflow-hidden">
                       {item.tags.slice(0, 2).map((tag) => (
@@ -213,29 +223,16 @@ export function IconsDocs() {
             </div>
 
             {pageCount > 1 ? (
-              <div className="mt-6 flex items-center justify-center gap-3">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  fullWidth={false}
-                  disabled={currentPage <= 1}
-                  onClick={() => setPage((value) => Math.max(1, value - 1))}
-                >
-                  Previous
-                </Button>
-                <span className="text-[13px] text-text-tertiary">
-                  {currentPage} / {pageCount}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  fullWidth={false}
-                  disabled={currentPage >= pageCount}
-                  onClick={() => setPage((value) => Math.min(pageCount, value + 1))}
-                >
-                  Next
-                </Button>
-              </div>
+              <Pagination
+                className="mt-6"
+                page={currentPage}
+                pageCount={pageCount}
+                onChange={setPage}
+                variant="ghost"
+                size="sm"
+                align="center"
+                aria-label="Icon pages"
+              />
             ) : null}
           </>
         )}
@@ -264,24 +261,19 @@ export function IconsDocs() {
           title={selected.name}
           size="lg"
         >
-          <p className="m-0 text-[13px] text-text-tertiary">Roboticela Icon Library</p>
+          <Caption>Roboticela Icon Library</Caption>
 
           {selected.tags.length > 0 ? (
             <div className="mt-4 flex flex-wrap gap-2">
               {selected.tags.slice(0, 10).map((tag) => (
-                <button
+                <Badge
                   key={tag}
-                  type="button"
+                  size="sm"
+                  tone="neutral"
                   onClick={() => searchTag(tag)}
-                  className={cn(
-                    'rounded-[980px] border-0 bg-bg-tertiary px-2.5 py-1 text-[12px] font-medium leading-none text-text-secondary',
-                    'transition-colors duration-150',
-                    EASE,
-                    'hover:bg-bg-hover hover:text-text-primary',
-                  )}
                 >
                   {labelTag(tag)}
-                </button>
+                </Badge>
               ))}
             </div>
           ) : null}
@@ -299,7 +291,7 @@ export function IconsDocs() {
             {[16, 24, 32, 48].map((size) => (
               <div key={size} className="flex flex-col items-center gap-2 text-text-primary">
                 <IconPreview name={selected.name} size={size} />
-                <span className="text-[11px] text-text-tertiary">{size}</span>
+                <Caption>{size}</Caption>
               </div>
             ))}
           </div>
@@ -313,7 +305,13 @@ export function IconsDocs() {
                   variant="action"
                   size="sm"
                   aria-pressed={codeView === action.id}
-                  leading={done ? '✓' : '⎘'}
+                  leading={
+                    done ? (
+                      <DkTaskCompleteCheckmark size={14} strokeWidth={2} absoluteStrokeWidth className="text-success" />
+                    ) : (
+                      <DkClipboardCopyDuplicate size={14} strokeWidth={1.75} absoluteStrokeWidth />
+                    )
+                  }
                   onClick={() => void copyText(action.id, action.value)}
                 >
                   {done ? 'Copied' : action.label}
@@ -322,7 +320,7 @@ export function IconsDocs() {
             })}
           </div>
 
-          <p className="mt-6 mb-2 text-[12px] text-text-tertiary">
+          <Caption className="mt-6 mb-2">
             {codeView === 'name'
               ? 'Icon name'
               : codeView === 'import'
@@ -330,7 +328,7 @@ export function IconsDocs() {
                 : codeView === 'jsx'
                   ? 'JSX'
                   : 'Usage'}
-          </p>
+          </Caption>
           <div className="overflow-hidden rounded-xl">
             <CodeBlock code={shownCode} fadeKey={`${selected.name}-${codeView}`} />
           </div>

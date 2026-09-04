@@ -158,7 +158,7 @@ const PRIMITIVES: Record<string, Def> = {
     code: `<DocsCardGrid columns={3}>\n  <DocsCard>…</DocsCard>\n</DocsCardGrid>\n`,
     props: [
       CHILDREN,
-      p('columns', '2 | 3 | 4 | 6', '3', 'Desktop column count.'),
+      p('columns', '2 | 3 | 4 | 6', '3', 'Preferred column count. Six is compact and wraps to the width that fits.'),
       CLASS,
     ],
   },
@@ -281,10 +281,10 @@ const PRIMITIVES: Record<string, Def> = {
     title: 'State Grid',
     description: 'A grid of state cards. Matches the live states section on kit pages.',
     ...guide(
-      'State Grid is Card Grid with a 16px gap. Use three columns for most states, six for a compact button row.',
+      'State Grid is Card Grid with a 16px gap. Use three columns for most states, six for a compact button row that wraps to the width that actually fits.',
       [
         { title: 'Same as live states', body: 'This is the layout behind the States heading on a kit page.' },
-        { title: 'Six for buttons', body: 'Default through loading fits six columns from 1068px up.' },
+        { title: 'Six for buttons', body: 'Compact rows keep each tile at least 12rem so the control stays inside the card.' },
         { title: 'Cards only', body: 'Children should be State Card.' },
       ],
       ['Use three columns for field states.', 'Use six columns for button variants.', 'Keep labels short.'],
@@ -312,7 +312,7 @@ const PRIMITIVES: Record<string, Def> = {
     code: `<DocsStateGrid>\n  <DocsStateCard label="Default"><Button>Button</Button></DocsStateCard>\n</DocsStateGrid>\n`,
     props: [
       CHILDREN,
-      p('columns', '2 | 3 | 4 | 6', '3', 'Desktop column count.'),
+      p('columns', '2 | 3 | 4 | 6', '3', 'Preferred column count. Six is compact and wraps so each tile stays wide enough for the control.'),
       CLASS,
     ],
   },

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { DkSuccessCircleCheckmark } from '@/icons'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { brand } from '@/lib/devkit'
 import {
@@ -15,7 +14,7 @@ import { Badge } from './Badge'
 import { BuiltWithChips } from './BuiltWithChips'
 import { CollapsibleCode } from './CollapsibleCode'
 import { CompositionTree, type CompositionNode } from './CompositionTree'
-import { DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { LinkExpiredPage } from './LinkExpiredPage'
 import { PageStateThumb } from './PageStateThumb'
@@ -102,16 +101,10 @@ export function LinkExpiredDocs() {
     <article>
       <header id="overview" className="scroll-mt-20 animate-docs-header-in motion-reduce:animate-none">
         <Caption>Pages / Auth / Link Expired</Caption>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <Heading>Link Expired</Heading>
-          <Badge tone="verified" icon={<DkSuccessCircleCheckmark strokeWidth={2.5} absoluteStrokeWidth />}>
-            Stable
-          </Badge>
-        </div>
+        <Heading className="mt-2">Link Expired</Heading>
         <Subhead className="mt-2">
           Tell the person their email verification link timed out and send them back to restart the flow.
         </Subhead>
-        <DocsMetaBadges showStatus={false} />
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <Badge variant="outline" shape="rounded" tone="neutral">
             v1.0.0

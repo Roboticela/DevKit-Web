@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { DkSuccessCircleCheckmark } from '@/icons'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { brand } from '@/lib/devkit'
 import { adjacentDocs } from '@/lib/docs-catalog'
@@ -11,7 +10,7 @@ import { Badge } from './Badge'
 import { BuiltWithChips } from './BuiltWithChips'
 import { CollapsibleCode } from './CollapsibleCode'
 import { CompositionTree, type CompositionNode } from './CompositionTree'
-import { DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PageStateThumb } from './PageStateThumb'
 import { PropsTable, type PropRow } from './PropsTable'
@@ -81,17 +80,11 @@ export function SettingsDocs() {
     <article>
       <header id="overview" className="scroll-mt-20 animate-docs-header-in motion-reduce:animate-none">
         <Caption>Pages / App Shell / Settings</Caption>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <Heading>Settings</Heading>
-          <Badge tone="verified" icon={<DkSuccessCircleCheckmark strokeWidth={2.5} absoluteStrokeWidth />}>
-            Stable
-          </Badge>
-        </div>
+        <Heading className="mt-2">Settings</Heading>
         <Subhead className="mt-2">
           Account and workspace preferences inside the signed-in shell — notifications, profile rows, two-factor status,
           appearance, and sign out.
         </Subhead>
-        <DocsMetaBadges showStatus={false} />
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <Badge variant="outline" shape="rounded" tone="neutral">
             v1.0.0

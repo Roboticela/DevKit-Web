@@ -76,7 +76,6 @@ export const PAGES_NAV: DocsNavSection[] = [
         label: 'Product Detail',
         href: '/pages/product-detail',
         searchGroup: 'Commerce',
-        isNew: true,
       },
       { id: 'cart', label: 'Cart', href: '/pages/cart', searchGroup: 'Commerce' },
       { id: 'checkout', label: 'Checkout', href: '/pages/checkout', searchGroup: 'Commerce' },
@@ -93,7 +92,7 @@ export const PAGES_NAV: DocsNavSection[] = [
     label: 'Content',
     items: [
       { id: 'blog-index', label: 'Blog Index', href: '/pages/blog-index', searchGroup: 'Content' },
-      { id: 'blog-post', label: 'Blog Post', href: '/pages/blog-post', searchGroup: 'Content', isNew: true },
+      { id: 'blog-post', label: 'Blog Post', href: '/pages/blog-post', searchGroup: 'Content' },
       {
         id: 'documentation-article',
         label: 'Documentation Article',

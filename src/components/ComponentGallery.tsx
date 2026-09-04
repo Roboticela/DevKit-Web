@@ -98,16 +98,13 @@ import { SettingsList, SettingsRow } from './SettingsRow'
 import { SheetNav } from './SheetNav'
 import { NumberField, NUMBER_FIELD_VARIANT_LABEL, NUMBER_FIELD_VARIANTS } from './NumberField'
 import { RangeSlider, Slider, SLIDER_VARIANT_LABEL, SLIDER_VARIANTS } from './Slider'
-import { SiteFooter } from './SiteFooter'
-import { SiteNav } from './SiteNav'
-import { Skeleton } from './Skeleton'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
 import { Tabs, TABS_VARIANT_LABEL, TABS_VARIANTS } from './Tabs'
 import { ThemeIconToggle } from './ThemeIconToggle'
 import { ThemeToggle } from './ThemeToggle'
-import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
+import { Body, Caption, Eyebrow, Heading, Subhead } from './Text'
 import { QrCode } from './QrCode'
 import { TotpManualKey } from './TotpManualKey'
 import { VerificationMethodCard } from './VerificationMethodCard'
@@ -327,11 +324,11 @@ export function ComponentGallery() {
   const [password, setPassword] = useState('password')
   const [plan, setPlan] = useState('team')
   const [size, setSize] = useState('md')
-  const [country, setCountry] = useState<string | null>('PK')
-  const [addrCountry, setAddrCountry] = useState<string | null>('PK')
-  const [addrState, setAddrState] = useState<string | null>('PK-SD')
-  const [addrCounty, setAddrCounty] = useState<string | null>('PK-SD:karachi-south')
-  const [addrCity, setAddrCity] = useState<string | null>('PK-SD:karachi')
+  const [country, setCountry] = useState<string | null>('US')
+  const [addrCountry, setAddrCountry] = useState<string | null>('US')
+  const [addrState, setAddrState] = useState<string | null>('US-CA')
+  const [addrCounty, setAddrCounty] = useState<string | null>('US-CA:los-angeles')
+  const [addrCity, setAddrCity] = useState<string | null>('US-CA:los-angeles')
   const [language, setLanguage] = useState<string | null>('en-US')
   const [phone, setPhone] = useState('+14155552671')
   const [phonePk, setPhonePk] = useState('+923001234567')
@@ -1609,7 +1606,7 @@ export function ComponentGallery() {
               </div>
             </DemoCard>
             <DemoCard>
-              <StateLabel>Empty, skeleton, progress</StateLabel>
+              <StateLabel>Empty, progress</StateLabel>
               <EmptyState
                 icon={<DkMessageInboxTray size={32} strokeWidth={1.5} absoluteStrokeWidth />}
                 title="No messages"
@@ -1622,21 +1619,6 @@ export function ComponentGallery() {
                   title="No results"
                   body="Try a different search."
                 />
-              </div>
-              <div className="mt-6">
-                <Skeleton loading label="Loading profile">
-                  <div className="flex items-center gap-4">
-                    <Avatar name="Maya Chen" size="lg" />
-                    <div className="flex-1">
-                      <Label as="p">Maya Chen</Label>
-                      <Caption>Workspace owner</Caption>
-                    </div>
-                  </div>
-                </Skeleton>
-              </div>
-              <div className="mt-6 flex flex-col gap-3">
-                <Skeleton variant="outline" lines={3} />
-                <Skeleton variant="pill" className="h-8 w-[120px]" />
               </div>
               <Progress className="mt-6" label="Seat usage" value={72} />
               <Progress className="mt-5" variant="pill" tone="warning" label="Storage" value={88} />
@@ -1685,7 +1667,7 @@ export function ComponentGallery() {
           </div>
         </Section>
 
-        <Section id="chrome" title="Chrome" intro="Auth frame, success, site nav, and footer. These compose the smaller controls above.">
+        <Section id="chrome" title="Chrome" intro="Auth frame and success. These compose the smaller controls above.">
           <DemoCard className="overflow-hidden p-0">
             <StateLabel>Auth nav</StateLabel>
             <div className="relative h-[880px] overflow-auto bg-bg-primary max-[734px]:h-[720px]">
@@ -1749,14 +1731,6 @@ export function ComponentGallery() {
           </div>
         </Section>
       </main>
-
-      <div className="mt-8">
-        <SiteNav />
-        <div className="flex min-h-[200px] items-center justify-center bg-bg-secondary text-sm text-text-tertiary">
-          Page content sits under the bar.
-        </div>
-        <SiteFooter />
-      </div>
     </div>
   )
 }

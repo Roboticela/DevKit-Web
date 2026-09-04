@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { DkSuccessCircleCheckmark } from '@/icons'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { brand } from '@/lib/devkit'
 import {
@@ -16,7 +15,7 @@ import { Badge } from './Badge'
 import { BuiltWithChips } from './BuiltWithChips'
 import { CollapsibleCode } from './CollapsibleCode'
 import { CompositionTree, type CompositionNode } from './CompositionTree'
-import { DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PageStateThumb } from './PageStateThumb'
 import { PropsTable, type PropRow } from './PropsTable'
@@ -130,16 +129,10 @@ export function AnotherDeviceDocs() {
     <article>
       <header id="overview" className="scroll-mt-20 animate-docs-header-in motion-reduce:animate-none">
         <Caption>Pages / Auth / Another Device</Caption>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <Heading>Another Device</Heading>
-          <Badge tone="verified" icon={<DkSuccessCircleCheckmark strokeWidth={2.5} absoluteStrokeWidth />}>
-            Stable
-          </Badge>
-        </div>
+        <Heading className="mt-2">Another Device</Heading>
         <Subhead className="mt-2">
           Wait while a signed-in phone, tablet, or computer approves the sign-in or verification request.
         </Subhead>
-        <DocsMetaBadges showStatus={false} />
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <Badge variant="outline" shape="rounded" tone="neutral">
             v1.0.0

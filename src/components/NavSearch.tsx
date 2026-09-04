@@ -296,7 +296,7 @@ export function NavSearch({
     <label
       htmlFor={inputId}
       className={cn(
-        'relative flex min-w-0 shrink-0 items-center overflow-hidden',
+        'relative flex min-w-0 max-w-full shrink-0 items-center overflow-hidden',
         'transition-[width,background-color,border-color,box-shadow,color] duration-300',
         EASE,
         metric.field,

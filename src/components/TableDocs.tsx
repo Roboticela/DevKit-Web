@@ -278,17 +278,6 @@ export function TableStates() {
               preview="disabled"
             />
           </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
-            <DataTable
-              size="sm"
-              loading
-              loadingRows={3}
-              data={compact}
-              rowKey={(row) => row.id}
-              columns={tableColumns()}
-              minWidth="320px"
-            />
-          </DocsStateCard>
           <DocsStateCard label="Empty" align="stretch" wide className="bg-bg-primary">
             <DataTable
               size="sm"

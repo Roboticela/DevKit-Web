@@ -11,7 +11,7 @@ import { cn } from '@/lib/cn'
 import { Button, type ButtonSize, type ButtonVariant } from './Button'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -239,9 +239,7 @@ export function ButtonDocs() {
         crumb="Components / Actions / Button"
         title="Button"
         description="The main control for running an action. Use one primary button on a screen."
-      >
-        <DocsMetaBadges />
-      </DocsHeader>
+      />
 
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>

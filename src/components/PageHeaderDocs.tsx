@@ -283,14 +283,6 @@ export function PageHeaderStates() {
               }
             />
           </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
-            <PageHeader
-              title="Projects"
-              description="Everything currently in flight."
-              actions={<HeaderAction size="sm">New</HeaderAction>}
-              loading
-            />
-          </DocsStateCard>
           <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               title="Projects"

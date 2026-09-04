@@ -20,7 +20,7 @@ import {
 } from './Anchor'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -352,9 +352,7 @@ export function AnchorDocs() {
         crumb="Components / Navigation / Anchor"
         title="Anchor"
         description="A text link to another screen or to the open web. Use it when the person is going somewhere. Use a Button when they are doing something. Arrow is the circular chevron for View all, previous, and next."
-      >
-        <DocsMetaBadges />
-      </DocsHeader>
+      />
 
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>

@@ -5,7 +5,7 @@ import { cn } from '@/lib/cn'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsCard, DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
@@ -215,9 +215,7 @@ export function TextDocs() {
         crumb="Components / Typography / Text"
         title="Text"
         description="The full type scale in one place. Heading, subhead, body, caption, eyebrow, and label share these sizes and tones."
-      >
-        <DocsMetaBadges />
-      </DocsHeader>
+      />
 
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>

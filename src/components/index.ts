@@ -79,7 +79,7 @@ export type {
   CommandSearchVariant,
 } from './CommandPalette'
 export { DocsArticleStub } from './DocsArticleStub'
-export { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+export { DocsHeader, DocsSectionTitle } from './DocsCopy'
 export {
   DocsCard,
   DocsCardGrid,
@@ -452,8 +452,6 @@ export type {
 } from './SheetNav'
 export { SelectMenu, SelectSearch, SelectList, SelectEmpty, SelectOption } from './SelectMenu'
 export { SelectTrigger } from './SelectTrigger'
-export { SiteFooter } from './SiteFooter'
-export { SiteNav } from './SiteNav'
 export { Skeleton, SKELETON_MOTIONS, SKELETON_MOTION_LABEL, SKELETON_SHAPES, SKELETON_SHAPE_LABEL, SKELETON_SIZES, SKELETON_SIZE_LABEL, SKELETON_VARIANTS, SKELETON_VARIANT_LABEL } from './Skeleton'
 export type { SkeletonAutoProps, SkeletonBoneProps, SkeletonMotion, SkeletonProps, SkeletonShape, SkeletonSize, SkeletonVariant } from './Skeleton'
 export { NumberField, NUMBER_FIELD_SIZES, NUMBER_FIELD_STEPPERS, NUMBER_FIELD_UNITS, NUMBER_FIELD_VARIANTS, NUMBER_FIELD_VARIANT_LABEL, NUMBER_FIELD_UNIT_LABEL, NUMBER_FIELD_WIDTHS, NUMBER_FIELD_WIDTH_LABEL, NUMBER_FIELD_ALIGNS, NUMBER_FIELD_ALIGN_LABEL, NUMBER_FIELD_FIT_MAX } from './NumberField'

@@ -2680,10 +2680,10 @@ export const authNavGuide = {
         doItems={[
           'Pass navLinkTo and navLinkLabel for the peer auth page.',
           'Omit both when the flow has no alternate, such as setup.',
-          'Keep the bar on the page background. Do not frost it like Site Nav.',
+          'Keep the bar on the page background. Do not frost it like a marketing header.',
         ]}
         dontItems={[
-          'Do not put search, bag, or marketing links here. That is Site Nav.',
+          'Do not put search, bag, or marketing links here.',
           'Do not replace Anchor with a button or a second accent color.',
           'Do not rebuild the row with raw links and a custom switch.',
         ]}

@@ -67,7 +67,7 @@ export function DocsCardGrid({
         : columns === 4
           ? 'grid-cols-2 min-[735px]:grid-cols-4'
           : columns === 6
-            ? 'grid-cols-2 min-[480px]:grid-cols-3 min-[1068px]:grid-cols-6'
+            ? 'grid-cols-state-compact'
             : 'grid-cols-1 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3'
   if (preview) {
     return (
@@ -135,23 +135,35 @@ export function DocsStateCard({
   const preview = usePreviewMode()
   const brand = surface === 'brand'
 
+  const sample =
+    preview && wide ? (
+      <div className="w-full min-w-0">{children}</div>
+    ) : align === 'stretch' && !preview ? (
+      <div className={cn('w-full min-w-0', !wide && 'max-w-[320px]')}>{children}</div>
+    ) : preview ? (
+      children
+    ) : (
+      <div className="min-w-0 max-w-full">{children}</div>
+    )
+
   return (
     <div
       className={cn(
-        'flex flex-col gap-2',
+        'flex min-w-0 flex-col gap-2',
         preview && (wide ? 'w-full' : 'w-fit max-w-none shrink-0'),
+        !preview && 'w-full',
       )}
     >
       <div
         className={cn(
-          preview && wide ? 'block w-full' : 'flex',
+          preview && wide ? 'block w-full min-w-0' : 'flex min-w-0',
           preview
             ? cn(
                 wide ? 'w-full' : 'w-fit min-h-11',
                 brand && 'rounded-[12px] bg-brand-primary px-4 py-6',
               )
             : cn(
-                'rounded-[12px] px-4 py-6',
+                'w-full rounded-[12px] px-4 py-6',
                 size === 'lg' ? 'min-h-[168px]' : 'min-h-[100px]',
                 brand ? 'bg-brand-primary' : 'bg-bg-secondary',
               ),
@@ -163,13 +175,7 @@ export function DocsStateCard({
           className,
         )}
       >
-        {preview && wide ? (
-          <div className="w-full">{children}</div>
-        ) : align === 'stretch' && !preview ? (
-          <div className={cn('w-full', !wide && 'max-w-[320px]')}>{children}</div>
-        ) : (
-          children
-        )}
+        {sample}
       </div>
       <Caption
         align={preview ? 'start' : 'center'}

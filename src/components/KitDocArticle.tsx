@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react'
 import { adjacentDocs, DOCS_ITEMS, findDocContext, DOCS_NAV } from '@/lib/docs-catalog'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
-import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PropsTable, type PropRow } from './PropsTable'
 import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid } from './DocsCard'
@@ -74,6 +74,7 @@ export function KitDocArticle({
   props,
   fadeKey,
   wide = false,
+  stateColumns = 3,
   usage,
   accessibility,
 }: {
@@ -87,6 +88,7 @@ export function KitDocArticle({
   props: PropRow[]
   fadeKey?: string
   wide?: boolean
+  stateColumns?: 1 | 2 | 3 | 4 | 6
   usage?: ReactNode
   accessibility?: ReactNode
 }) {
@@ -102,9 +104,7 @@ export function KitDocArticle({
         crumb={`Components / ${ctx?.section.label ?? 'Library'} / ${title}`}
         title={title}
         description={description}
-      >
-        <DocsMetaBadges />
-      </DocsHeader>
+      />
 
       {usage ? (
         <section id="usage" className="mt-10 scroll-mt-20">
@@ -131,9 +131,14 @@ export function KitDocArticle({
         <section id="states" className="mt-12 scroll-mt-20">
           <DocsSectionTitle>States</DocsSectionTitle>
           {statesContent ?? (
-            <DocsStateGrid>
+            <DocsStateGrid columns={stateColumns}>
               {states!.map((item) => (
-                <DocsStateCard key={item.label} label={item.label}>
+                <DocsStateCard
+                  key={item.label}
+                  label={item.label}
+                  align={stateColumns === 1 ? 'stretch' : 'center'}
+                  wide={stateColumns === 1}
+                >
                   {item.node}
                 </DocsStateCard>
               ))}

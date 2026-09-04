@@ -60,7 +60,7 @@ export const LANGUAGES: Language[] = [
 export const AVAILABLE_LANGUAGE_IDS = ['en-US'] as const
 
 /** Currently shipping storefront countries. */
-export const AVAILABLE_COUNTRY_ISOS = ['PK'] as const
+export const AVAILABLE_COUNTRY_ISOS = ['US'] as const
 
 export function languageDisplayName(id: string | null | undefined) {
   if (!id) return 'Not set'

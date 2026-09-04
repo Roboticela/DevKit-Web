@@ -193,6 +193,11 @@ html[data-theme="dark"] {
   --color-gray-600: var(--gray-600);
   --color-gray-on-dark: var(--gray-on-dark);
 
+  --grid-template-columns-state-compact: repeat(
+    auto-fill,
+    minmax(min(100%, 12rem), 1fr)
+  );
+
   --ease-apple: cubic-bezier(0.28, 0.11, 0.32, 1);
 
   --animate-btn-spin: btn-spin 900ms linear infinite;

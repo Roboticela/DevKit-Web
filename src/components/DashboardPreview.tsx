@@ -29,7 +29,6 @@ import { Modal } from './Modal'
 import { PageHeader } from './PageHeader'
 import { Pagination } from './Pagination'
 import { Progress } from './Progress'
-import { Skeleton } from './Skeleton'
 import { StatCard } from './StatCard'
 import { Tabs } from './Tabs'
 import { Textarea } from './Textarea'
@@ -309,22 +308,30 @@ export function DashboardPreview({
 
         {page === 'customers' ? (
           <div className="flex flex-col gap-8">
-            <PageHeader title="Customers" description="Loading the latest accounts." loading />
-            <div className="rounded-[18px] border border-border-default bg-bg-elevated p-6 dark:bg-bg-secondary">
-              <div className="flex flex-col gap-4">
-                {Array.from({ length: 4 }, (_, index) => (
-                  <Skeleton key={index} loading label="Loading customer">
-                    <div className="flex items-center gap-4">
-                      <Avatar name="Alex Rivera" size="lg" />
-                      <div className="min-w-0 flex-1">
-                        <span className="block text-[15px] text-text-primary">Alex Rivera</span>
-                        <span className="block text-[12px] text-text-tertiary">Workspace owner</span>
-                      </div>
-                    </div>
-                  </Skeleton>
-                ))}
-              </div>
-            </div>
+            <PageHeader title="Customers" description="Accounts in this workspace." />
+            <DataTable
+              data={[
+                { id: '1', name: 'Alex Rivera', plan: 'Studio', updated: 'Aug 28' },
+                { id: '2', name: 'Sam Chen', plan: 'Team', updated: 'Aug 26' },
+                { id: '3', name: 'Jordan Lee', plan: 'Studio', updated: 'Aug 21' },
+                { id: '4', name: 'Riley Patel', plan: 'Free', updated: 'Aug 19' },
+              ]}
+              rowKey={(row) => row.id}
+              columns={[
+                {
+                  key: 'name',
+                  header: 'Customer',
+                  render: (row) => (
+                    <span className="inline-flex items-center gap-2">
+                      <Avatar name={row.name} size="sm" />
+                      <span>{row.name}</span>
+                    </span>
+                  ),
+                },
+                { key: 'plan', header: 'Plan' },
+                { key: 'updated', header: 'Updated', hideOnMobile: true },
+              ]}
+            />
           </div>
         ) : null}
 

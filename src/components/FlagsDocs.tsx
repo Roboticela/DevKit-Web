@@ -9,17 +9,20 @@ import {
 import { COUNTRIES, type Country } from '@/lib/countries'
 import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { cn } from '@/lib/cn'
-import { EASE, FOCUS_RING } from '@/lib/styles'
+import { EASE } from '@/lib/styles'
 import { Button } from './Button'
 import { CodeBlock } from './CodeBlock'
 import { CountryFlag } from './CountryFlag'
-import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
-import { DocsInlineCode, DocsSnippet, DocsUsage } from './DocsCard'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
+import { DocsInlineCode, DocsUsage } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
 import { DocsPager } from './DocsPager'
+import { EmptyState } from './EmptyState'
 import { Modal } from './Modal'
+import { Pagination } from './Pagination'
 import { PropsTable, type PropRow } from './PropsTable'
-import { Body } from './Text'
+import { TextField } from './TextField'
+import { Body, Caption } from './Text'
 
 const PAGE_SIZE = 96
 const SIZES = [16, 24, 32, 40] as const
@@ -136,9 +139,7 @@ export function FlagsDocs() {
         crumb="Components / Foundations / Country Flag"
         title="Country Flag"
         description={`${FLAGS.length.toLocaleString()} flag images, one for every ISO country code. Search by name, code, or dialing code.`}
-      >
-        <DocsMetaBadges />
-      </DocsHeader>
+      />
 
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
@@ -169,38 +170,35 @@ export function FlagsDocs() {
               'Do not rely on the flag as the only selected state in a menu.',
             ]}
           />
-          <DocsSnippet>{selected ? usageSnippet(selected.iso) : usageSnippet('US')}</DocsSnippet>
+          <CodeBlock
+            className="overflow-hidden rounded-xl"
+            code={selected ? usageSnippet(selected.iso) : usageSnippet('US')}
+            fadeKey="flag-usage"
+          />
         </DocsUsage>
       </section>
 
       <section id="library" className="mt-10 scroll-mt-20">
-        <label className="relative block">
-          <DkMagnifyingGlassFind
-            size={15}
-            strokeWidth={1.75}
-            absoluteStrokeWidth
-            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-text-tertiary"
+        <TextField
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search flags"
+          aria-label="Search flags"
+          icon={<DkMagnifyingGlassFind size={18} strokeWidth={1.6} absoluteStrokeWidth />}
+        />
+        {matches.length === 0 ? (
+          <EmptyState
+            className="mt-6"
+            size="sm"
+            title="No flags match"
+            body="Try a country name, ISO code, or dialing code."
           />
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search flags"
-            className={cn(
-              'h-11 w-full rounded-[12px] border border-border-default bg-bg-elevated px-10 font-sans text-[15px] text-text-primary',
-              'placeholder:text-text-tertiary dark:bg-bg-secondary',
-              FOCUS_RING,
-            )}
-          />
-        </label>
-        <p className="mt-3 mb-0 text-[13px] text-text-tertiary">
-          {matches.length === 0
-            ? 'No flags match.'
-            : `Showing ${from.toLocaleString()}–${to.toLocaleString()} of ${matches.length.toLocaleString()}`}
-        </p>
-
-        {visible.length === 0 ? null : (
+        ) : (
           <>
+            <Caption className="mt-3">
+              Showing {from.toLocaleString()}–{to.toLocaleString()} of {matches.length.toLocaleString()}
+            </Caption>
             <div className="mt-4 grid grid-cols-3 gap-2 min-[480px]:grid-cols-4 min-[735px]:grid-cols-6 min-[1069px]:grid-cols-8">
               {visible.map((country) => {
                 const active = selected?.iso === country.iso
@@ -220,38 +218,25 @@ export function FlagsDocs() {
                     )}
                   >
                     <CountryFlag iso={country.iso} size={28} alt="" className="shrink-0 rounded-[3px]" />
-                    <span className="max-w-full truncate text-center font-mono text-[10px] text-text-tertiary">
+                    <Caption as="span" className="max-w-full truncate text-center font-mono" tone="tertiary">
                       {country.iso}
-                    </span>
+                    </Caption>
                   </button>
                 )
               })}
             </div>
 
             {pageCount > 1 ? (
-              <div className="mt-6 flex items-center justify-center gap-3">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  fullWidth={false}
-                  disabled={currentPage <= 1}
-                  onClick={() => setPage((value) => Math.max(1, value - 1))}
-                >
-                  Previous
-                </Button>
-                <span className="text-[13px] text-text-tertiary">
-                  {currentPage} / {pageCount}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  fullWidth={false}
-                  disabled={currentPage >= pageCount}
-                  onClick={() => setPage((value) => Math.min(pageCount, value + 1))}
-                >
-                  Next
-                </Button>
-              </div>
+              <Pagination
+                className="mt-6"
+                page={currentPage}
+                pageCount={pageCount}
+                onChange={setPage}
+                variant="ghost"
+                size="sm"
+                align="center"
+                aria-label="Flag pages"
+              />
             ) : null}
           </>
         )}
@@ -284,9 +269,9 @@ export function FlagsDocs() {
           title={selected.name}
           size="lg"
         >
-          <p className="m-0 text-[13px] text-text-tertiary">
+          <Caption>
             {selected.iso} · +{selected.dial}
-          </p>
+          </Caption>
 
           <div className="mt-4 grid grid-cols-2 gap-2">
             <div className="flex h-32 items-center justify-center rounded-xl bg-white">
@@ -301,7 +286,7 @@ export function FlagsDocs() {
             {SIZES.map((size) => (
               <div key={size} className="flex flex-col items-center gap-2 text-text-primary">
                 <CountryFlag iso={selected.iso} size={size} alt="" className="rounded-[3px]" />
-                <span className="text-[11px] text-text-tertiary">{size}</span>
+                <Caption>{size}</Caption>
               </div>
             ))}
           </div>
@@ -330,7 +315,7 @@ export function FlagsDocs() {
             })}
           </div>
 
-          <p className="mt-6 mb-2 text-[12px] text-text-tertiary">
+          <Caption className="mt-6 mb-2">
             {codeView === 'name'
               ? 'Country name'
               : codeView === 'iso'
@@ -338,7 +323,7 @@ export function FlagsDocs() {
                 : codeView === 'jsx'
                   ? 'JSX'
                   : 'Usage'}
-          </p>
+          </Caption>
           <div className="overflow-hidden rounded-xl">
             <CodeBlock code={shownCode} fadeKey={`${selected.iso}-${codeView}`} />
           </div>

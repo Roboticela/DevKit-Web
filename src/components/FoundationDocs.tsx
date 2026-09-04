@@ -16,7 +16,7 @@ import {
   DocsUsage,
 } from './DocsCard'
 import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
-import { DocsHeader, DocsMetaBadges, DocsSectionTitle } from './DocsCopy'
+import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { Anchor } from './Anchor'
 import { Body, Caption, Heading, Subhead, type TextVariant } from './Text'
@@ -113,7 +113,7 @@ const WIDTHS = [
   { value: 760, use: 'Docs article' },
   { value: 900, use: 'Wide docs' },
   { value: 980, use: 'Text-focused marketing' },
-  { value: 1024, use: 'Marketing sections and site nav' },
+  { value: 1024, use: 'Wide sections' },
 ] as const
 
 function FoundationFrame({
@@ -135,9 +135,7 @@ function FoundationFrame({
 }) {
   return (
     <article>
-      <DocsHeader crumb={`Components / Foundations / ${title}`} title={title} description={description}>
-        <DocsMetaBadges />
-      </DocsHeader>
+      <DocsHeader crumb={`Components / Foundations / ${title}`} title={title} description={description} />
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
         {usage}
@@ -523,7 +521,7 @@ export function FoundationDocs({ slug }: { slug: string }) {
             intro="Layout has to reflow. If it only works at 1440px, it is not done."
             items={[
               'The page remains usable at 320px and at 200% zoom without clipping essential controls.',
-              'Landmarks belong on the shell: a banner for Site Nav, navigation for sidebars, main for the article.',
+              'Landmarks belong on the shell: a banner for the top bar, navigation for sidebars, main for the article.',
               'Do not trap keyboard focus in a column that is visually hidden on mobile.',
               'Sticky chrome stays 44px and does not cover the focused field when the keyboard opens.',
               'Prefer CSS grid and flex wrap over horizontal scroll for primary content.',

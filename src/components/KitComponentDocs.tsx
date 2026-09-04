@@ -446,9 +446,9 @@ import {
   type SheetNavTone,
   type SheetNavVariant,
 } from './SheetNav'
-import { SiteFooter } from './SiteFooter'
-import { SiteNav } from './SiteNav'
 import { Skeleton, SKELETON_MOTIONS, SKELETON_MOTION_LABEL, SKELETON_SHAPES, SKELETON_SHAPE_LABEL, SKELETON_SIZES, SKELETON_SIZE_LABEL, SKELETON_VARIANTS, SKELETON_VARIANT_LABEL } from './Skeleton'
+import { DataTable } from './DataTable'
+import { PageHeader } from './PageHeader'
 import {
   RangeSlider,
   Slider,
@@ -505,6 +505,7 @@ type DocDef = {
   statesContent?: ReactNode
   props: PropRow[]
   wide?: boolean
+  stateColumns?: 1 | 2 | 3 | 4 | 6
   usage?: ReactNode
   accessibility?: ReactNode
 }
@@ -1986,10 +1987,10 @@ function AddressStack({
   showCounty?: boolean
   showCity?: boolean
 }) {
-  const [country, setCountry] = useState<string | null>('PK')
-  const [state, setState] = useState<string | null>('PK-SD')
-  const [county, setCounty] = useState<string | null>('PK-SD:karachi-south')
-  const [city, setCity] = useState<string | null>('PK-SD:karachi')
+  const [country, setCountry] = useState<string | null>('US')
+  const [state, setState] = useState<string | null>('US-CA')
+  const [county, setCounty] = useState<string | null>('US-CA:los-angeles')
+  const [city, setCity] = useState<string | null>('US-CA:los-angeles')
 
   function changeCountry(next: string | null) {
     setCountry(next)
@@ -2199,7 +2200,7 @@ function CityStates() {
             <AddressStack showCounty showCity />
           </FieldState>
           <FieldState label="Disabled">
-            <CitySelect country="PK" state="PK-SD" value="PK-SD:karachi" onChange={() => undefined} disabled />
+            <CitySelect country="US" state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} disabled />
           </FieldState>
         </DocsStateGrid>
       </DocsStateGroup>
@@ -2207,7 +2208,7 @@ function CityStates() {
         <DocsStateGrid>
           {SELECT_VARIANTS.map((variant) => (
             <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
-              <CitySelect country="PK" state="PK-SD" value="PK-SD:karachi" onChange={() => undefined} variant={variant} />
+              <CitySelect country="US" state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} variant={variant} />
             </FieldState>
           ))}
         </DocsStateGrid>
@@ -2727,6 +2728,36 @@ function SkeletonStates() {
                 delta={{ value: '+12.4%', tone: 'up' }}
                 hint="vs last month"
               />
+            </Skeleton>
+          </DocsStateCard>
+          <DocsStateCard label="Page header" align="stretch" wide>
+            <Skeleton loading label="Loading header">
+              <PageHeader title="Projects" description="Everything currently in flight." />
+            </Skeleton>
+          </DocsStateCard>
+          <DocsStateCard label="Table" align="stretch" wide>
+            <Skeleton loading label="Loading table">
+              <DataTable
+                size="sm"
+                data={[
+                  { id: '1', name: 'Atlas Checkout', status: 'Live' },
+                  { id: '2', name: 'Northstar Auth', status: 'In review' },
+                ]}
+                rowKey={(row) => row.id}
+                columns={[
+                  { key: 'name', header: 'Name' },
+                  { key: 'status', header: 'Status' },
+                ]}
+                minWidth="320px"
+              />
+            </Skeleton>
+          </DocsStateCard>
+          <DocsStateCard label="Key value" align="stretch" wide>
+            <Skeleton loading label="Loading details">
+              <KeyValueGroup>
+                <KeyValueRow label="Email" value="alex@roboticela.com" />
+                <KeyValueRow label="Username" value="@alex" />
+              </KeyValueGroup>
             </Skeleton>
           </DocsStateCard>
         </DocsStateGrid>
@@ -6775,7 +6806,7 @@ function NavSearchStates() {
   return (
     <DocsStack gap={10}>
       <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+        <DocsStateGrid columns={2}>
           {NAV_SEARCH_VARIANTS.map((variant) => (
             <DocsStateCard key={variant} label={NAV_SEARCH_VARIANT_LABEL[variant]}>
               <NavSearchPlay
@@ -6790,7 +6821,7 @@ function NavSearchStates() {
       </DocsStateGroup>
 
       <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+        <DocsStateGrid columns={2}>
           {NAV_SEARCH_SIZES.map((size) => (
             <DocsStateCard key={size} label={NAV_SEARCH_SIZE_LABEL[size]}>
               <NavSearchPlay size={size} placeholder="Search" />
@@ -6800,7 +6831,7 @@ function NavSearchStates() {
       </DocsStateGroup>
 
       <DocsStateGroup title="State">
-        <DocsStateGrid>
+        <DocsStateGrid columns={2}>
           <DocsStateCard label="Empty">
             <NavSearchPlay placeholder="Search" />
           </DocsStateCard>
@@ -7699,9 +7730,6 @@ function StatCardStates() {
           <DocsStateCard label="Empty" align="stretch" wide className="bg-bg-primary">
             <StatCard label="Revenue" empty hint="No data yet" />
           </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
-            <StatCard label="Revenue" loading hint="vs last month" delta={{ value: '+12%', tone: 'up' }} />
-          </DocsStateCard>
           <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
             <StatCard
               label="Revenue"
@@ -7813,9 +7841,6 @@ function AvatarStates() {
           </DocsStateCard>
           <DocsStateCard label="Empty">
             <Avatar size="lg" />
-          </DocsStateCard>
-          <DocsStateCard label="Loading">
-            <Avatar name="Alex Rivera" size="lg" loading />
           </DocsStateCard>
           <DocsStateCard label="Disabled">
             <Avatar name="Alex Rivera" size="lg" disabled />
@@ -8668,12 +8693,6 @@ function KeyValueRowStates() {
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" disabled />
               <KeyValueRow label="Username" value="@alex" disabled />
-            </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide>
-            <KeyValueGroup>
-              <KeyValueRow label="Email" loading />
-              <KeyValueRow label="Username" loading />
             </KeyValueGroup>
           </DocsStateCard>
           <DocsStateCard label="Empty" align="stretch" wide>
@@ -9928,6 +9947,7 @@ const DOCS: Record<string, DocDef> = {
     title: 'Heading',
     description: 'The title of a page or section. Display is a hero. Levels 1, 2, and 3 follow the document outline.',
     wide: true,
+    stateColumns: 1,
     ...headingGuide,
     Demo: () => (
       <div className="flex w-full flex-col gap-2">
@@ -10528,7 +10548,7 @@ const DOCS: Record<string, DocDef> = {
 `,
     statesContent: <CityStates />,
     props: [
-      p('value', 'string | null', '—', 'City id, such as PK-SD:karachi.'),
+      p('value', 'string | null', '—', 'City id, such as US-CA:los-angeles.'),
       p('country', 'string | null', 'null', 'ISO country. Used when state is not set.'),
       p('state', 'string | null', 'null', 'ISO 3166-2 region. Takes priority over country.'),
       p('county', 'string | null', 'null', 'County id. Takes priority over state.'),
@@ -11687,7 +11707,6 @@ const DOCS: Record<string, DocDef> = {
 <Avatar name="Alex Rivera" tone="brand" />
 <Avatar name="Alex Rivera" shape="rounded" />
 <Avatar name="Alex Rivera" src="/photo.jpg" />
-<Avatar name="Alex Rivera" loading />
 <AvatarGroup max={3}>
   <Avatar name="Alex Rivera" />
   <Avatar name="Sam Chen" />
@@ -11756,7 +11775,6 @@ const DOCS: Record<string, DocDef> = {
   sparkline={[18, 22, 19, 26, 24, 31, 28, 36]}
 />
 <StatCard label="Open tickets" value="18" delta={{ value: '−2', tone: 'down', invert: true }} />
-<StatCard label="Revenue" loading />
 <StatCard label="Revenue" empty hint="No data yet" />
 `,
     statesContent: <StatCardStates />,
@@ -11808,7 +11826,6 @@ const DOCS: Record<string, DocDef> = {
   rowKey={(row) => row.id}
   onEdit={({ rowKey, column, value }) => save(rowKey, column, value)}
 />
-<DataTable loading data={rows} columns={columns} rowKey={(row) => row.id} />
 <DataTable data={[]} columns={columns} rowKey={(row) => row.id} />
 `,
     statesContent: <TableStates />,
@@ -11859,7 +11876,6 @@ const DOCS: Record<string, DocDef> = {
 <PageHeader layout="stack" title="Projects" actions={<Button>New</Button>} />
 <PageHeader align="center" size="lg" title="Projects" description="A calm place to ship." />
 <PageHeader onBack={back} title="Details" />
-<PageHeader loading title="Projects" description="Everything currently in flight." />
 `,
     statesContent: <PageHeaderStates />,
     props: [
@@ -12289,30 +12305,6 @@ const DOCS: Record<string, DocDef> = {
       p('tone', "'light' | 'dark'", "'light'", 'Surface treatment.'),
     ],
   },
-  'site-nav': {
-    title: 'Site Nav',
-    description: 'Marketing site header and mobile menu.',
-    Demo: () => (
-      <PreviewFrame>
-        <SiteNav />
-      </PreviewFrame>
-    ),
-    wide: true,
-    code: `<SiteNav active="Products" />\n`,
-    props: [p('active', 'string', "'Products'", 'Current top-level item.')],
-  },
-  'site-footer': {
-    title: 'Site Footer',
-    description: 'Marketing site footer with language.',
-    Demo: () => (
-      <PreviewFrame>
-        <SiteFooter />
-      </PreviewFrame>
-    ),
-    wide: true,
-    code: `<SiteFooter />\n`,
-    props: [],
-  },
   'dashboard-shell': {
     title: 'Dashboard Shell',
     description: 'Full-height sidebar with the brand, a top bar, and the main canvas.',
@@ -12345,6 +12337,7 @@ export function KitComponentDocs({ slug }: { slug: string }) {
       statesContent={def.statesContent}
       props={def.props}
       wide={def.wide}
+      stateColumns={def.stateColumns}
       usage={def.usage}
       accessibility={def.accessibility}
     />
