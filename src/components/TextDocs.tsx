@@ -214,7 +214,7 @@ export function TextDocs() {
       <DocsHeader
         crumb="Components / Typography / Text"
         title="Text"
-        description="The full type scale in one place. Heading, subhead, body, caption, eyebrow, and label share these sizes and tones."
+        description="A complete set of text styles designed to create beautiful, readable content that works perfectly on every device."
       />
 
       <section id="usage" className="mt-10 scroll-mt-20">
@@ -222,28 +222,28 @@ export function TextDocs() {
         <DocsUsage>
           <DocsProse>
             <Body>
-              Text is the full type scale in one component. Prefer Heading, Subhead, Body, Caption, Eyebrow, and Label
-              at the call site — they pick the right default tag and tone. Use Text when you are mapping a role from
-              data.
+              Our text system provides everything you need to create clear, beautiful content. From large headlines that grab attention 
+              to small captions for supporting details, each style is carefully crafted to work perfectly together and create a natural 
+              reading experience.
             </Body>
           </DocsProse>
           <DocsPrinciples
             items={[
-              { title: 'Role first', body: 'Choose display, h1, or caption for meaning. Size follows the viewport automatically.' },
+              { title: 'Smart sizing', body: 'Text automatically adjusts for different screen sizes, ensuring perfect readability on phones, tablets, and desktops.' },
               { title: 'Stack once', body: 'Eyebrow, heading, subhead, body. That order is the kit’s default reading path.' },
-              { title: 'Tone is color', body: 'Primary, secondary, and tertiary are the reading set. Semantic tones need matching words.' },
+              { title: 'Meaningful colors', body: 'Different text colors help distinguish between primary content, supporting information, and interactive elements.' },
             ]}
           />
           <DocsDoDont
             doItems={[
-              'Use Heading for titles and Body for paragraphs.',
-              'Pass as when the visual role and the HTML tag must differ.',
-              'Keep one display heading per screen.',
+              'Use heading styles for titles and body text for paragraphs to create clear structure.',
+              'Take advantage of automatic sizing that adapts to different devices.',
+              'Reserve large display text for the most important headline on each page.',
             ]}
             dontItems={[
-              'Do not skip heading levels to chase a size.',
-              'Do not set font-size or tracking on top of a variant.',
-              'Do not put essential instructions in a caption.',
+              'Keep heading levels in logical order to help users and screen readers navigate.',
+              'Stick to the provided text styles for consistent, professional typography.',
+              'Make sure important instructions use prominent text, not small captions.',
             ]}
           />
         </DocsUsage>

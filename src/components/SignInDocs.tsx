@@ -49,35 +49,35 @@ const DATA: PropRow[] = [
     type: '(payload: { email: string; password: string }) => void',
     required: 'Yes',
     defaultValue: '—',
-    description: 'Called with email and password when the form is submitted.',
+    description: 'This function is triggered when someone submits their login information.',
   },
   {
     name: 'errorMessage',
     type: 'string',
     required: 'No',
     defaultValue: 'undefined',
-    description: 'Inline error shown under the fields after a failed attempt.',
+    description: 'An error message that appears below the fields when sign in fails.',
   },
   {
     name: 'isLoading',
     type: 'boolean',
     required: 'No',
     defaultValue: 'false',
-    description: 'Puts the primary button in a signing-in state and disables inputs.',
+    description: 'Shows a loading indicator while the sign in process is happening.',
   },
   {
     name: 'locked',
     type: 'boolean',
     required: 'No',
     defaultValue: 'false',
-    description: 'Blocks the form after too many attempts and shows a lockout message.',
+    description: 'Temporarily prevents sign in attempts after multiple failed tries for security.',
   },
   {
     name: 'lastMethod',
     type: "'google' | 'passkey' | 'roboticela' | null",
     required: 'No',
     defaultValue: 'null',
-    description: 'Which method was used last. That button shows Last used.',
+    description: 'Remembers which sign in method the user used last time for convenience.',
   },
 ]
 
@@ -182,7 +182,7 @@ export function SignInDocs() {
         <Caption>Pages / Auth / Sign In</Caption>
         <Heading className="mt-2">Sign In</Heading>
         <Subhead className="mt-2">
-          A minimal authentication page with email or username, a password, Roboticela, passkey, Google, and other ways to sign in.
+          A clean, secure sign in experience that offers multiple convenient options including email, passkey, and popular social providers.
         </Subhead>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <Badge variant="outline" shape="rounded" tone="neutral">

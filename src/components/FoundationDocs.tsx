@@ -24,7 +24,7 @@ import { Body, Caption, Heading, Subhead, type TextVariant } from './Text'
 const COLOR_GROUPS = [
   {
     label: 'Brand',
-    note: 'The only interactive accent. Hover, active, disabled, and focus exist so a primary button never invents a second blue.',
+    note: 'Your main interactive color. We provide variations for hover, active, disabled, and focus states so everything looks polished.',
     tokens: [
       'brand-primary',
       'brand-primary-hover',
@@ -35,27 +35,27 @@ const COLOR_GROUPS = [
   },
   {
     label: 'Accent',
-    note: 'Teal is reserved for verified, active, and success badges. Never use it as a second call to action.',
+    note: 'A special teal color used exclusively for success messages, verified badges, and active status indicators.',
     tokens: ['accent-teal', 'accent-teal-subtle'],
   },
   {
     label: 'Semantic',
-    note: 'Status color is a supplement, not the message. Pair it with words.',
+    note: 'Status colors that enhance your messages. These always work together with clear text to communicate meaning.',
     tokens: ['success', 'success-subtle', 'warning', 'warning-subtle', 'danger', 'danger-hover', 'danger-subtle'],
   },
   {
     label: 'Text',
-    note: 'Primary for headlines, secondary for body, tertiary for captions. Disabled is not a body color.',
+    note: 'Text colors optimized for different purposes. Primary for headlines, secondary for body text, and tertiary for supporting information.',
     tokens: ['text-primary', 'text-secondary', 'text-tertiary', 'text-disabled', 'text-on-brand', 'text-link'],
   },
   {
     label: 'Background',
-    note: 'Secondary is a large surface. Tertiary is a nested control sitting on that surface.',
+    note: 'Background colors that create depth and organization. From the main background to subtle surfaces and interactive states.',
     tokens: ['bg-primary', 'bg-secondary', 'bg-tertiary', 'bg-elevated', 'bg-hover', 'bg-active'],
   },
   {
     label: 'Border',
-    note: 'Default for fields and cards. Subtle for table rows. Strong for a danger zone.',
+    note: 'Border colors for different contexts. From subtle separators to prominent borders for important sections.',
     tokens: ['border-default', 'border-subtle', 'border-strong', 'border-focus', 'border-danger'],
   },
 ]
@@ -159,42 +159,42 @@ export function FoundationDocs({ slug }: { slug: string }) {
       <FoundationFrame
         slug={slug}
         title="Colors"
-        description="Tokens for brand, status, type, surfaces, and borders. Use a token so light and dark stay correct."
+        description="A beautiful color palette that adapts perfectly to both light and dark themes, giving your interface a premium look."
         usage={
           <DocsUsage>
             <DocsProse>
               <Body>
-                Interactive color is a single accent: <DocsInlineCode>--brand-primary</DocsInlineCode>.
-                Teal is not a second brand. It marks verified, active, and success. Status red, orange, and green
-                appear only when the copy already states the outcome.
+                We use one primary color for all interactive elements like buttons and links, creating a consistent and familiar experience.
+                Teal is reserved for special success messages and verification badges. Status colors like red, orange, and green 
+                always appear alongside clear text to make sure everyone understands the message.
               </Body>
             </DocsProse>
             <DocsPrinciples
               items={[
                 {
-                  title: 'One accent',
-                  body: 'Buttons, links, toggles, and focus rings all use brand-primary. Never introduce a competing CTA color.',
+                  title: 'Consistent experience',
+                  body: 'Every button, link, and interactive element uses the same primary color, making your interface feel unified and professional.',
                 },
                 {
-                  title: 'Tokens, not hex',
-                  body: 'Never mix light-mode and dark-mode hex in the same view. The token swaps both themes.',
+                  title: 'Smart color system',
+                  body: 'Our colors automatically adjust between light and dark themes, so your content always looks perfect no matter which mode users prefer.',
                 },
                 {
-                  title: 'Layered surfaces',
-                  body: 'Secondary is a large surface. Tertiary is a nested field or chip sitting inside it.',
+                  title: 'Clear visual hierarchy',
+                  body: 'Different background layers help organize your content naturally, making it easy for users to focus on what matters most.',
                 },
               ]}
             />
             <DocsDoDont
               doItems={[
-                'Use brand-primary for the primary action and inline links.',
-                'Use danger only for destructive actions and errors.',
-                'Put text-on-brand on filled primary and danger buttons.',
+                'Use the primary color for your main action buttons and links.',
+                'Reserve red for delete actions and error messages only.',
+                'Make sure button text stands out clearly against its background.',
               ]}
               dontItems={[
-                'Do not use teal for buttons or links.',
-                'Do not set color with a raw hex when a token exists.',
-                'Do not place tertiary text on a tertiary background.',
+                'Avoid using teal for buttons or regular links.',
+                'Keep colors consistent across light and dark themes.',
+                'Make sure there is always enough contrast for easy reading.',
               ]}
             />
           </DocsUsage>
@@ -216,8 +216,8 @@ export function FoundationDocs({ slug }: { slug: string }) {
             <DocsSectionTitle>Contrast</DocsSectionTitle>
             <DocsProse className="mb-6">
               <Body>
-                These pairs are the approved reading combinations. Toggle the page theme and confirm each pair still
-                holds. If a surface is dark, use the dark-mode token — do not lighten the type by hand.
+                These color combinations are carefully chosen to ensure excellent readability in both light and dark themes. 
+                Switch between themes to see how they automatically adapt while maintaining perfect contrast and clarity.
               </Body>
             </DocsProse>
             <DocsCardGrid columns={2}>
@@ -229,13 +229,13 @@ export function FoundationDocs({ slug }: { slug: string }) {
         }
         a11y={
           <A11ySection
-            intro="Color is never the only signal. Contrast, wording, and focus have to work together."
+            intro="We design with everyone in mind. Colors work together with clear words and visual cues to create an accessible experience."
             items={[
-              'Body and heading text meet WCAG AA against their paired background in both themes.',
-              'Focus is a 2px brand ring, not a color shift alone.',
-              'Disabled text uses --text-disabled and is not the only cue — the control is also inert.',
-              'Error, warning, and success copy repeats the meaning in words, not only in hue.',
-              'Do not convey required, selected, or on/off with color alone.',
+              'All text is easy to read with excellent contrast in both light and dark themes.',
+              'Focused elements have a clear visual indicator, making keyboard navigation effortless.',
+              'Disabled elements are visually distinct and clearly cannot be interacted with.',
+              'Important messages always include both color and text to ensure everyone understands.',
+              'Required fields, selections, and toggles are clearly marked with more than just color.',
             ]}
           />
         }
@@ -248,42 +248,41 @@ export function FoundationDocs({ slug }: { slug: string }) {
       <FoundationFrame
         slug={slug}
         title="Typography"
-        description="The type scale for the kit. Size, weight, and tracking live here and the Text components apply them."
+        description="Beautiful, readable text styles that create a clear visual hierarchy and make your content easy to scan."
         usage={
           <DocsUsage>
             <DocsProse>
               <Body>
-                Use Heading, Subhead, and Body in that order. One display line per screen. Do not skip heading levels
-                to chase a size — change the visual level, or set <DocsInlineCode>as</DocsInlineCode> when
-                the HTML outline needs a different tag.
+                Text styles are organized in a natural hierarchy from large headlines to body text and captions. This helps users
+                quickly understand your content and navigate through it with ease. Each style is optimized for its specific purpose.
               </Body>
             </DocsProse>
             <DocsPrinciples
               items={[
                 {
-                  title: 'Role over size',
-                  body: 'Pick Display, H1, or Caption for meaning. The mobile size is already built in.',
+                  title: 'Clear purpose',
+                  body: 'Each text style has a specific purpose, from grabbing attention with headlines to providing details with body text.',
                 },
                 {
-                  title: 'One idea',
-                  body: 'A heading states the idea. A subhead supports it once. Body carries the rest.',
+                  title: 'Natural flow',
+                  body: 'Headlines introduce ideas, subheadings provide context, and body text explains the details in a smooth, logical order.',
                 },
                 {
-                  title: 'System font',
-                  body: 'SF Pro / system UI. No custom webfont. Tracking is already on the variant.',
+                  title: 'Native feel',
+                  body: 'We use your system fonts, so everything feels familiar and loads instantly without any extra downloads.',
                 },
               ]}
             />
             <DocsDoDont
               doItems={[
-                'Start with Heading, then Subhead, then Body.',
-                'Keep captions at 12px for meta only — not essential reading.',
-                'Use Label on fields and controls, not as a paragraph.',
+                'Start with clear headlines, followed by supportive subheadings and detailed body text.',
+                'Use small text for secondary information like timestamps and metadata.',
+                'Label your form fields clearly so everyone knows what to enter.',
               ]}
               dontItems={[
-                'Do not skip from h1 to h3 because h3 looks closer to the design.',
-                'Do not set font-size by hand when a Text variant exists.',
-                'Do not use display more than once in a viewport.',
+                'Avoid skipping heading levels, as this can confuse both users and screen readers.',
+                'Stick to the provided text styles for a consistent look throughout.',
+                'Use large display text sparingly to maintain its impact.',
               ]}
             />
             <Anchor href="/components/text" variant="standalone" size="md">
@@ -320,14 +319,14 @@ export function FoundationDocs({ slug }: { slug: string }) {
         }
         a11y={
           <A11ySection
-            intro="The visual scale and the document outline are separate. Keep both honest."
+            intro="Our typography is designed to work perfectly for everyone, including people using screen readers and other assistive technologies."
             items={[
-              'Heading renders a real h1–h3 (display is an h1). Do not fake headings with bold Body.',
-              'Do not skip levels. An h1 is followed by h2, not h3.',
-              'When the visual size and the outline disagree, keep the correct tag and pass as.',
-              'Caption at 12px is supporting copy. Do not put essential instructions there.',
-              'Danger and success tones are not enough — the sentence must still make sense in grayscale.',
-              'Line length stays near 692px for reading. Wider layouts are for chrome, not paragraphs.',
+              'All headings are properly structured so screen readers can navigate your content easily.',
+              'Heading levels follow a logical order, making it simple for everyone to understand the content structure.',
+              'Visual appearance and document structure work together to create a seamless experience.',
+              'Small text is reserved for secondary information, never for essential instructions.',
+              'Important messages are clear even without color, ensuring everyone gets the information.',
+              'Text width is optimized for comfortable reading, reducing eye strain and improving comprehension.',
             ]}
           />
         }
@@ -340,32 +339,32 @@ export function FoundationDocs({ slug }: { slug: string }) {
       <FoundationFrame
         slug={slug}
         title="Spacing"
-        description="The only spacing steps the kit uses. Pick the nearest value on this scale instead of inventing a new gap."
+        description="Consistent spacing that creates a clean, organized layout and helps users focus on your content."
         usage={
           <DocsUsage>
             <DocsProse>
               <Body>
-                Spacing is layout, not decoration. Related items sit 8–16px apart. Distinct groups sit 24–48px apart.
-                Section padding is 88px on small screens and 140px on desktop.
+                Thoughtful spacing makes your interface breathe and helps users understand which elements belong together.
+                Related items are close, while distinct sections have more space between them, creating a natural visual flow.
               </Body>
             </DocsProse>
             <DocsPrinciples
               items={[
-                { title: 'Closed scale', body: '4, 8, 12, 16, 24, 32, 48, 64, 96, 128. Nothing else.' },
-                { title: 'Inside, then out', body: 'Pad a card 32px. Separate cards 24px. Separate sections 88px or 140px.' },
-                { title: 'Touch first', body: 'Interactive rows and buttons stay at least 44px tall, matching fields.' },
+                { title: 'Consistent rhythm', body: 'A carefully crafted spacing scale creates visual harmony throughout your interface.' },
+                { title: 'Clear organization', body: 'Spacing helps users quickly distinguish between individual items, groups, and major sections.' },
+                { title: 'Touch friendly', body: 'All buttons and interactive elements are sized for easy tapping on any device.' },
               ]}
             />
             <DocsDoDont
               doItems={[
-                'Use 8px between an icon and its label.',
-                'Use 24px gutters on desktop grids, 16px on mobile.',
-                'Match vertical rhythm to the type: 12px under a caption, 24px under a heading.',
+                'Use comfortable spacing between icons and their labels for easy scanning.',
+                'Adjust spacing appropriately for different screen sizes.',
+                'Match spacing to text sizes for a balanced, professional look.',
               ]}
               dontItems={[
-                'Do not use odd values such as 10, 18, or 20.',
-                'Do not add drop shadows to fake separation — space and surface color do that.',
-                'Do not shrink a control below 44px to save a few pixels.',
+                'Stick to the spacing scale for consistent visual rhythm.',
+                'Use spacing itself to create depth instead of adding shadows.',
+                'Keep touch targets large enough for comfortable interaction.',
               ]}
             />
           </DocsUsage>
@@ -382,12 +381,12 @@ export function FoundationDocs({ slug }: { slug: string }) {
         }
         a11y={
           <A11ySection
-            intro="Space helps people parse a screen. It is not a substitute for headings, names, or focus."
+            intro="Spacing creates breathing room and helps organize content, while maintaining accessibility for everyone."
             items={[
-              'Keep at least 44×44px for pointer and touch targets.',
-              'Do not rely on proximity alone to show a control belongs to a label — associate them in the DOM.',
-              'Respect reduced motion; spacing does not animate independently of the kit easing.',
-              'On small screens, 22px edge padding keeps content off the device chrome.',
+              'All interactive elements are sized for comfortable touch and click interaction.',
+              'Labels and controls are properly associated for screen reader users.',
+              'Animations respect user preferences for reduced motion.',
+              'Content has comfortable margins on all screen sizes, ensuring nothing feels cramped.',
             ]}
           />
         }
@@ -400,33 +399,32 @@ export function FoundationDocs({ slug }: { slug: string }) {
       <FoundationFrame
         slug={slug}
         title="Radius"
-        description="Corner rounding for fields, cards, panels, and pills. Match the radius to what the object is."
+        description="Smooth, modern rounded corners that give your interface a polished, friendly appearance."
         usage={
           <DocsUsage>
             <DocsProse>
               <Body>
-                Radius signals what the object is. A pill is an action. An 8px corner is an input. An 18px corner is a
-                surface you look at, not a control you press. Nested radii step down — a 18px card contains 12px or 8px
-                children, never a larger radius inside a smaller one.
+                Rounded corners help users understand what they are looking at. Buttons have pill shapes, input fields have subtle rounding, 
+                and cards have smooth, welcoming corners. This creates a visual language that makes your interface intuitive and approachable.
               </Body>
             </DocsProse>
             <DocsPrinciples
               items={[
-                { title: 'Four values', body: '8, 12, 18, and 980. 980 reads as a pill at any size.' },
-                { title: 'Nested step-down', body: 'The inner radius is smaller than the outer, or they share the same step.' },
-                { title: 'No shadows', body: 'Elevation is background, not a drop shadow. Radius is enough to separate.' },
+                { title: 'Purposeful rounding', body: 'Each level of rounding has a specific purpose, from subtle inputs to friendly buttons.' },
+                { title: 'Visual harmony', body: 'Elements inside containers use appropriate rounding to create a polished, cohesive look.' },
+                { title: 'Clean design', body: 'Depth comes from colors and spacing rather than shadows, keeping the interface modern and flat.' },
               ]}
             />
             <DocsDoDont
               doItems={[
-                'Use 980px on Button, Switch, and other pill controls.',
-                'Use 8px on Text Field, Select, and 44px inputs.',
-                'Use 18px on modals, large cards, and product images.',
+                'Buttons and switches have fully rounded pill shapes for a friendly feel.',
+                'Input fields have subtle rounding that feels comfortable and approachable.',
+                'Large surfaces like cards and modals have generous rounding for a premium look.',
               ]}
               dontItems={[
-                'Do not mix a pill button with 8px siblings in an attached toolbar without flattening both.',
-                'Do not use 4px or 16px — they are not on the scale.',
-                'Do not round only one corner unless the layout is a clustered SegmentedToolbar.',
+                'Keep rounding consistent within button groups for a unified appearance.',
+                'Stick to the standard rounding values for visual consistency.',
+                'Use complete rounding on all corners unless elements are deliberately connected.',
               ]}
             />
           </DocsUsage>
@@ -444,9 +442,9 @@ export function FoundationDocs({ slug }: { slug: string }) {
         a11y={
           <A11ySection
             items={[
-              'Radius is visual only. It does not change hit area — keep 44px controls.',
-              'Focus rings follow the same radius as the control so the outline does not clip.',
-              'Do not reduce contrast at corners with extra borders; use --border-default.',
+              'Rounded corners are visual styling. All interactive elements maintain comfortable touch and click areas.',
+              'Focus indicators follow the same rounding as their elements for a polished appearance.',
+              'Borders maintain consistent contrast at corners for optimal visibility.',
             ]}
           />
         }
@@ -459,33 +457,32 @@ export function FoundationDocs({ slug }: { slug: string }) {
       <FoundationFrame
         slug={slug}
         title="Layout"
-        description="Breakpoints, content widths, and page padding. Start from the small screen and add columns as the viewport grows."
+        description="Responsive layouts that look beautiful on every device, from phones to large desktop screens."
         usage={
           <DocsUsage>
             <DocsProse>
               <Body>
-                Design the small screen, then add columns. Edge padding is 22px below 735px, 40px through tablet, and
-                up to 80px on desktop. Content never stretches past its max width — extra space becomes margin, not
-                wider type.
+                Our layouts are mobile first, meaning they look great on phones and automatically enhance for larger screens.
+                Content stays comfortable and readable at every size, with generous margins and intelligent spacing that adapts to your device.
               </Body>
             </DocsProse>
             <DocsPrinciples
               items={[
-                { title: 'Mobile first', body: 'Base styles are the small screen. min-[735px] and min-[1069px] add layout, not the other way around.' },
-                { title: 'One column to read', body: '692px for copy. 760px for docs. 1024px for marketing chrome.' },
-                { title: '12 columns', body: '24px gutters on desktop, 16px on mobile. Do not invent a 16-column grid.' },
+                { title: 'Start small', body: 'We design for mobile phones first, then enhance the experience for tablets and desktops.' },
+                { title: 'Comfortable reading', body: 'Text width is optimized for easy reading, preventing lines from becoming too long.' },
+                { title: 'Flexible grids', body: 'Content arranges itself intelligently, flowing naturally from one column on phones to multiple columns on larger screens.' },
               ]}
             />
             <DocsDoDont
               doItems={[
-                'Collapse navigation into a sheet below 735px.',
-                'Keep a single primary action visible without horizontal scroll.',
-                'Use full-width controls in forms on mobile; inline them from tablet up.',
+                'Navigation adapts beautifully from mobile menus to full navigation bars.',
+                'Important actions stay visible and accessible without scrolling.',
+                'Forms adjust intelligently, with full width fields on phones and side by side layouts on larger screens.',
               ]}
               dontItems={[
-                'Do not hide essential actions behind hover on a touch breakpoint.',
-                'Do not let paragraphs grow with the viewport past 692px.',
-                'Do not use a desktop-only sidebar as the only way to navigate.',
+                'Avoid hiding important actions in hover menus on touch devices.',
+                'Keep text comfortable to read by preventing lines from getting too wide.',
+                'Make sure navigation works well on all screen sizes, not just desktops.',
               ]}
             />
           </DocsUsage>
@@ -518,13 +515,13 @@ export function FoundationDocs({ slug }: { slug: string }) {
         }
         a11y={
           <A11ySection
-            intro="Layout has to reflow. If it only works at 1440px, it is not done."
+            intro="Our layouts work beautifully for everyone, on every device, including people using assistive technologies."
             items={[
-              'The page remains usable at 320px and at 200% zoom without clipping essential controls.',
-              'Landmarks belong on the shell: a banner for the top bar, navigation for sidebars, main for the article.',
-              'Do not trap keyboard focus in a column that is visually hidden on mobile.',
-              'Sticky chrome stays 44px and does not cover the focused field when the keyboard opens.',
-              'Prefer CSS grid and flex wrap over horizontal scroll for primary content.',
+              'Everything works perfectly even on small screens and with browser zoom, ensuring no one is left out.',
+              'Page structure is properly marked up so screen readers can navigate easily.',
+              'Keyboard navigation flows naturally and intuitively through the content.',
+              'Fixed headers and navigation never block important content when keyboards appear.',
+              'Content reflows naturally instead of forcing horizontal scrolling.',
             ]}
           />
         }

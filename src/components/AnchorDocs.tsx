@@ -351,7 +351,7 @@ export function AnchorDocs() {
       <DocsHeader
         crumb="Components / Navigation / Anchor"
         title="Anchor"
-        description="A text link to another screen or to the open web. Use it when the person is going somewhere. Use a Button when they are doing something. Arrow is the circular chevron for View all, previous, and next."
+        description="Beautiful, accessible links that help users navigate to new pages and destinations. Every link is clearly styled to show where it leads."
       />
 
       <section id="usage" className="mt-10 scroll-mt-20">
@@ -359,10 +359,9 @@ export function AnchorDocs() {
         <DocsUsage>
           <DocsProse>
             <Body>
-              Anchor is how the person leaves this screen for another. Inline sits in a sentence. Standalone is a
-              quiet trail after a headline — Learn more, with a chevron. Arrow is the circular chevron used for View
-              all products, and for previous and next. A destination on another site gets a launch icon, so it is
-              obvious the next step leaves the product.
+              Links help users navigate to new pages and content. They come in different styles for different purposes. Use inline 
+              links within sentences, standalone links after headings, or circular arrow buttons for navigation. External links 
+              automatically show an icon to let users know they will leave your site.
             </Body>
           </DocsProse>
           <DocsPrinciples
@@ -376,22 +375,22 @@ export function AnchorDocs() {
                 body: 'The label is the place or the promise. “Privacy Policy”, “Learn more”, not “Click here”.',
               },
               {
-                title: 'Mark the exit',
-                body: 'http(s) URLs and target="_blank" show a launch icon. The icon is extra — the words still make sense without it.',
+                title: 'Honest navigation',
+                body: 'External links show a small icon, giving users a heads up that clicking will take them to a different website.',
               },
             ]}
           />
           <DocsDoDont
             doItems={[
-              'Use inline inside Body or Caption so the link inherits the reading size.',
-              'Use standalone after a heading when the next step is a single destination.',
-              'Use arrow for View all, previous, and next. End is forward. Start is back.',
-              'Pass external when the URL is on another origin, even if it is stored as a relative path.',
+              'Use inline links within paragraphs and text to maintain a natural reading flow.',
+              'Place standalone links after headings when you want to guide users to additional content.',
+              'Use arrow buttons for navigation like viewing all items or moving between pages.',
+              'Mark external links clearly so users know when they are leaving your site.',
             ]}
             dontItems={[
-              'Do not use Anchor for an in-page action such as Save or Delete — that is a Button.',
-              'Do not hide that a link leaves the product. The launch icon is the signal.',
-              'Do not underline a whole paragraph. Link the phrase that names the destination.',
+              'Avoid using links for actions like saving or deleting. Those should be buttons.',
+              'Always be transparent when a link goes to an external website.',
+              'Keep links concise. Link just the relevant words, not entire paragraphs.',
             ]}
           />
         </DocsUsage>

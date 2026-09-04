@@ -238,7 +238,7 @@ export function ButtonDocs() {
       <DocsHeader
         crumb="Components / Actions / Button"
         title="Button"
-        description="The main control for running an action. Use one primary button on a screen."
+        description="Beautiful, responsive buttons that make it clear what action users should take."
       />
 
       <section id="usage" className="mt-10 scroll-mt-20">
@@ -246,28 +246,28 @@ export function ButtonDocs() {
         <DocsUsage>
           <DocsProse>
             <Body>
-              Button is the primary way to trigger an action. One primary per view. Secondary, action, and ghost sit
-              beside it. Danger is destructive only. Height is 44px at medium — the same as fields — so a form row
-              aligns.
+              Buttons help users take action with confidence. Use a bold primary button for your main action, with softer 
+              secondary and ghost buttons for alternatives. All buttons are sized perfectly for comfortable interaction 
+              on any device.
             </Body>
           </DocsProse>
           <DocsPrinciples
             items={[
-              { title: 'One primary', body: 'Filled brand-primary is the commit. Everything else is quieter on purpose.' },
+              { title: 'Clear priority', body: 'One bold primary button shows users the most important action, while other buttons support alternative choices.' },
               { title: 'Verb first', body: 'Continue, Save, Delete. Not “Click here” and not a raw icon without a word.' },
-              { title: 'Loading replaces', body: 'The label becomes a status string and the control is inert until the promise settles.' },
+              { title: 'Smart feedback', body: 'When processing an action, buttons show a friendly loading state so users know something is happening.' },
             ]}
           />
           <DocsDoDont
             doItems={[
-              'Use primary for the happy path, secondary for an alternate, ghost for dismiss.',
-              'Pass fullWidth={false} when the button sits in a toolbar. The default is full width for forms.',
-              'Use leading or trailing icons to reinforce a direction, not to decorate.',
+              'Use a primary button for the main action, secondary for alternatives, and ghost buttons for less important choices.',
+              'Buttons automatically adjust their width to fit perfectly in forms and toolbars.',
+              'Add icons to buttons when they help clarify the action, like arrows for navigation.',
             ]}
             dontItems={[
-              'Do not place two primary buttons in the same view.',
-              'Do not use danger for a routine cancel.',
-              'Do not leave a loading button pressable — loading already disables it.',
+              'Avoid using multiple primary buttons on the same screen, as it can confuse users about what to do first.',
+              'Reserve the red danger button for serious actions like deleting or removing items.',
+              'Loading buttons are automatically disabled, so users cannot accidentally click them multiple times.',
             ]}
           />
         </DocsUsage>
@@ -355,19 +355,19 @@ export function ButtonDocs() {
       <section id="accessibility" className="mt-8 scroll-mt-20">
         <DocsSectionTitle>Accessibility</DocsSectionTitle>
         <A11ySection
-          intro="A button is a native control. Do not recreate it with a clickable div."
+          intro="Our buttons are built to work perfectly for everyone, including people using keyboards and screen readers."
           items={[
-            'Uses a native button element, so role="button" is not required.',
-            'Tab to focus. Space or Enter to press. Focus is a 2px brand ring.',
-            'Disabled and loading are not focusable and cannot be activated.',
-            'Loading replaces the label with a status string and exposes a busy spinner.',
-            'Icon-only actions belong on Icon Button, which requires an accessible label.',
-            'fullWidth defaults to true for forms. Pass false in toolbars so the hit target is the pill, not the row.',
+            'Built with proper HTML button elements for maximum compatibility with assistive technologies.',
+            'Fully keyboard accessible. Press Tab to navigate, then Space or Enter to activate.',
+            'Clear focus indicators show exactly which button is selected when navigating with a keyboard.',
+            'Disabled and loading buttons are clearly marked and cannot be accidentally activated.',
+            'Loading states communicate progress with both visual spinners and screen reader announcements.',
+            'Button sizes are optimized for comfortable clicking and tapping on any device.',
           ]}
           keys={[
-            { keys: ['Tab'], action: 'Focus the button' },
-            { keys: ['Space'], action: 'Activate' },
-            { keys: ['Enter'], action: 'Activate' },
+            { keys: ['Tab'], action: 'Move focus to the button' },
+            { keys: ['Space'], action: 'Activate the button' },
+            { keys: ['Enter'], action: 'Activate the button' },
           ]}
         />
       </section>

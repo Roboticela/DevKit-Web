@@ -74,17 +74,17 @@ type Def = {
 const PRIMITIVES: Record<string, Def> = {
   'docs-card': {
     title: 'Card',
-    description: 'A rounded surface for principles, stacks, and other docs content.',
+    description: 'A beautiful rounded container that helps organize your content and makes everything easy to read.',
     ...guide(
-      'Use Card for a quiet surface in docs. Padding sm, md, and lg cover compact rows, principle cards, and type stacks.',
+      'Cards provide a clean surface to display your content. Choose from small, medium, or large sizes depending on how much space you need.',
       [
-        { title: 'Surface only', body: 'No border and no drop shadow. Background secondary does the separation.' },
-        { title: 'One idea', body: 'Put one principle, one stack, or one sample on a card. Do not mix jobs.' },
-        { title: 'Step down', body: 'Nested content uses 12px or 8px radius, never larger than the card.' },
+        { title: 'Clean and simple', body: 'Cards have a smooth background without borders or shadows. The subtle color helps them stand out naturally.' },
+        { title: 'Focus on one thing', body: 'Each card should present a single idea or piece of content to keep things clear and easy to understand.' },
+        { title: 'Smart spacing', body: 'Content inside cards uses smaller rounded corners to create a nice visual hierarchy.' },
       ],
-      ['Use padding lg for a type stack.', 'Keep copy short so the card stays even with its neighbors.', 'Pair cards in Card Grid.'],
-      ['Do not add a drop shadow.', 'Do not use Card as a pressable control.', 'Do not nest a larger radius inside a smaller one.'],
-      ['Card is a layout surface, not a landmark. Headings inside it must still be real heading tags.', 'Do not rely on the gray fill alone to show a grouping if the copy needs a heading.'],
+      ['Use large padding when you have more content to display.', 'Keep your text concise so cards look balanced together.', 'Cards work great when arranged in a grid layout.'],
+      ['Keep the design flat without adding extra shadows.', 'Cards are for displaying content, not interactive buttons.', 'Always use smaller corners inside larger ones for a polished look.'],
+      ['Cards help organize content visually. Make sure to use proper headings for screen readers.', 'The gray background is helpful but not enough on its own. Always include clear headings.'],
     ),
     Demo: () => (
       <DocsCard>
@@ -129,13 +129,13 @@ const PRIMITIVES: Record<string, Def> = {
   },
   'docs-card-grid': {
     title: 'Card Grid',
-    description: 'A responsive grid for docs cards. Use two, three, four, or six columns.',
+    description: 'An intelligent grid that arranges your cards beautifully across any screen size.',
     ...guide(
       'Card Grid lays out sibling cards. Two columns for do and don’t. Three for principles. Four for swatches. Six for compact state tiles.',
       [
-        { title: 'Count first', body: 'Pick columns from the number of siblings, not from the viewport.' },
-        { title: 'Collapse', body: 'The grid drops to one or two columns on small screens by itself.' },
-        { title: 'Same height', body: 'Keep card copy similar so the row reads as one set.' },
+        { title: 'Flexible layout', body: 'The grid adapts to show the right number of columns based on your content and screen size.' },
+        { title: 'Mobile friendly', body: 'On smaller devices, cards automatically stack into fewer columns for easy viewing.' },
+        { title: 'Balanced appearance', body: 'Cards with similar amounts of content look best together, creating a clean, uniform layout.' },
       ],
       ['Use two columns for Do Don’t.', 'Use three columns for Principles.', 'Use four columns for Swatch Grid.'],
       ['Do not force six columns on a mobile layout by hand.', 'Do not mix card jobs in one grid.', 'Do not add extra gap values.'],

@@ -54,28 +54,28 @@ const DATA: PropRow[] = [
     type: '(payload: { name: string; email: string; password: string }) => void',
     required: 'Yes',
     defaultValue: '—',
-    description: 'Called with name, email, and password when the form is submitted.',
+    description: 'This function is triggered when someone submits their registration information.',
   },
   {
     name: 'errorMessage',
     type: 'string',
     required: 'No',
     defaultValue: 'undefined',
-    description: 'Inline error shown under the fields after a failed attempt.',
+    description: 'An error message that appears below the fields when account creation fails.',
   },
   {
     name: 'isLoading',
     type: 'boolean',
     required: 'No',
     defaultValue: 'false',
-    description: 'Puts the primary button in a creating state and disables inputs.',
+    description: 'Shows a loading indicator while the account is being created.',
   },
   {
     name: 'lastMethod',
     type: "'google' | 'passkey' | 'roboticela' | null",
     required: 'No',
     defaultValue: 'null',
-    description: 'Which method was used last. That button shows Last used.',
+    description: 'Remembers which sign up method the user preferred last time for convenience.',
   },
 ]
 
@@ -180,7 +180,7 @@ export function CreateAccountDocs() {
         <Caption>Pages / Auth / Create Account</Caption>
         <Heading className="mt-2">Create Account</Heading>
         <Subhead className="mt-2">
-          A registration page with name, email, a password, Roboticela, passkey, Google, and other ways to continue.
+          A welcoming registration page that makes it quick and easy for new users to get started with multiple sign up options.
         </Subhead>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <Badge variant="outline" shape="rounded" tone="neutral">
