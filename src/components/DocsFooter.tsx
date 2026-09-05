@@ -5,6 +5,7 @@ import { Caption } from './Text'
 const LINKS = [
   { href: '/components/button', label: 'Docs' },
   { href: '/components/button', label: 'Components' },
+  { href: '/sections/hero-section', label: 'Sections' },
   { href: '/pages/sign-in', label: 'Pages' },
   { href: '/components/button', label: 'Guides' },
 ] as const

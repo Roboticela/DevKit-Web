@@ -7,7 +7,7 @@ import { DocsDemoPanel } from './DocsDemoPanel'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { PropsTable, type PropRow } from './PropsTable'
-import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid } from './DocsCard'
+import { DocsRelated, StateStack, StateCard, StateGrid } from './DocsCard'
 import { RelatedCard } from './RelatedCard'
 import { PREVIEW_INSET } from './PreviewMode'
 import { cn } from '@/lib/cn'
@@ -24,7 +24,7 @@ export function KitPreviewBody({
   wide?: boolean
 }) {
   return (
-    <DocsStack gap={10}>
+    <StateStack gap={10}>
       <div
         className={cn(
           'w-full',
@@ -42,24 +42,24 @@ export function KitPreviewBody({
             wide ? (
               <div className="flex w-full flex-col gap-8">
                 {states!.map((item) => (
-                  <DocsStateCard key={item.label} label={item.label} wide>
+                  <StateCard key={item.label} label={item.label} wide>
                     {item.node}
-                  </DocsStateCard>
+                  </StateCard>
                 ))}
               </div>
             ) : (
-              <DocsStateGrid>
+              <StateGrid>
                 {states!.map((item) => (
-                  <DocsStateCard key={item.label} label={item.label}>
+                  <StateCard key={item.label} label={item.label}>
                     {item.node}
-                  </DocsStateCard>
+                  </StateCard>
                 ))}
-              </DocsStateGrid>
+              </StateGrid>
             )
           )}
         </div>
       ) : null}
-    </DocsStack>
+    </StateStack>
   )
 }
 
@@ -131,18 +131,18 @@ export function KitDocArticle({
         <section id="states" className="mt-12 scroll-mt-20">
           <DocsSectionTitle>States</DocsSectionTitle>
           {statesContent ?? (
-            <DocsStateGrid columns={stateColumns}>
+            <StateGrid columns={stateColumns}>
               {states!.map((item) => (
-                <DocsStateCard
+                <StateCard
                   key={item.label}
                   label={item.label}
                   align={stateColumns === 1 ? 'stretch' : 'center'}
                   wide={stateColumns === 1}
                 >
                   {item.node}
-                </DocsStateCard>
+                </StateCard>
               ))}
-            </DocsStateGrid>
+            </StateGrid>
           )}
         </section>
       ) : null}

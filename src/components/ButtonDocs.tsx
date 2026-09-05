@@ -12,8 +12,12 @@ import { Button, type ButtonSize, type ButtonVariant } from './Button'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
-import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup, DocsUsage } from './DocsCard'
-import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
+import { DocsRelated, StateStack, StateCard, StateGrid, StateGroup, DocsUsage } from './DocsCard'
+import { Card, CardGrid } from './Card'
+import { Alert } from './Alert'
+import { DataTable } from './DataTable'
+import { Kbd } from './Kbd'
+import { RuleCard } from './RuleCard'
 import { DocsPager } from './DocsPager'
 import { Dropdown } from './Dropdown'
 import { PropsTable, type PropRow } from './PropsTable'
@@ -22,6 +26,21 @@ import { PREVIEW_INSET } from './PreviewMode'
 import { SegmentedControl } from './SegmentedControl'
 import { Switch } from './Switch'
 import { Body, Caption } from './Text'
+
+const SHORTCUT_COLUMNS = [
+  {
+    key: 'keys',
+    header: 'Key',
+    render: (row: { id: string; keys: string[]; action: string }) => (
+      <span className="inline-flex flex-wrap items-center gap-1">
+        {row.keys.map((key) => (
+          <Kbd key={key}>{key}</Kbd>
+        ))}
+      </span>
+    ),
+  },
+  { key: 'action', header: 'Action' },
+]
 
 type DemoVariant = 'primary' | 'secondary' | 'action' | 'ghost' | 'destructive'
 type DemoState = 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 'loading'
@@ -165,12 +184,12 @@ function DemoButton({
 
 export function ButtonStates() {
   return (
-    <DocsStack gap={8}>
+    <StateStack gap={8}>
       {VARIANTS.map((demoVariant) => (
-        <DocsStateGroup key={demoVariant} title={VARIANT_LABEL[demoVariant]}>
-          <DocsStateGrid columns={6}>
+        <StateGroup key={demoVariant} title={VARIANT_LABEL[demoVariant]}>
+          <StateGrid columns={6}>
             {STATES.map((item) => (
-              <DocsStateCard key={item.value} label={item.label} inert>
+              <StateCard key={item.value} label={item.label} inert>
                 <DemoButton
                   variant={demoVariant}
                   size="md"
@@ -178,18 +197,18 @@ export function ButtonStates() {
                   icon="right"
                   fullWidth={false}
                 />
-              </DocsStateCard>
+              </StateCard>
             ))}
-          </DocsStateGrid>
-        </DocsStateGroup>
+          </StateGrid>
+        </StateGroup>
       ))}
-    </DocsStack>
+    </StateStack>
   )
 }
 
 export function ButtonPreview() {
   return (
-    <DocsStack gap={10}>
+    <StateStack gap={10}>
       <div
         className={cn(
           'flex min-h-[min(52dvh,480px)] items-center justify-center',
@@ -206,7 +225,7 @@ export function ButtonPreview() {
         </div>
         <ButtonStates />
       </div>
-    </DocsStack>
+    </StateStack>
   )
 }
 
@@ -244,32 +263,28 @@ export function ButtonDocs() {
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
         <DocsUsage>
-          <DocsProse>
             <Body>
               Buttons help users take action with confidence. Use a bold primary button for your main action, with softer 
               secondary and ghost buttons for alternatives. All buttons are sized perfectly for comfortable interaction 
               on any device.
             </Body>
-          </DocsProse>
-          <DocsPrinciples
-            items={[
-              { title: 'Clear priority', body: 'One bold primary button shows users the most important action, while other buttons support alternative choices.' },
-              { title: 'Verb first', body: 'Continue, Save, Delete. Not “Click here” and not a raw icon without a word.' },
-              { title: 'Smart feedback', body: 'When processing an action, buttons show a friendly loading state so users know something is happening.' },
-            ]}
-          />
-          <DocsDoDont
-            doItems={[
+          <CardGrid columns={3} gap="sm">
+            <Card variant="subtle" size="sm" eyebrow="01" title="Clear priority" description="One bold primary button shows users the most important action, while other buttons support alternative choices." />
+            <Card variant="subtle" size="sm" eyebrow="02" title="Verb first" description="Continue, Save, Delete. Not “Click here” and not a raw icon without a word." />
+            <Card variant="subtle" size="sm" eyebrow="03" title="Smart feedback" description="When processing an action, buttons show a friendly loading state so users know something is happening." />
+          </CardGrid>
+          <CardGrid columns={2} gap="sm">
+            <RuleCard size="sm" tone="success" title="Do" items={[
               'Use a primary button for the main action, secondary for alternatives, and ghost buttons for less important choices.',
               'Buttons automatically adjust their width to fit perfectly in forms and toolbars.',
               'Add icons to buttons when they help clarify the action, like arrows for navigation.',
-            ]}
-            dontItems={[
+            ]} />
+            <RuleCard size="sm" tone="danger" title="Don’t" items={[
               'Avoid using multiple primary buttons on the same screen, as it can confuse users about what to do first.',
               'Reserve the red danger button for serious actions like deleting or removing items.',
               'Loading buttons are automatically disabled, so users cannot accidentally click them multiple times.',
-            ]}
-          />
+            ]} />
+          </CardGrid>
         </DocsUsage>
       </section>
 
@@ -354,22 +369,32 @@ export function ButtonDocs() {
 
       <section id="accessibility" className="mt-8 scroll-mt-20">
         <DocsSectionTitle>Accessibility</DocsSectionTitle>
-        <A11ySection
-          intro="Our buttons are built to work perfectly for everyone, including people using keyboards and screen readers."
-          items={[
-            'Built with proper HTML button elements for maximum compatibility with assistive technologies.',
-            'Fully keyboard accessible. Press Tab to navigate, then Space or Enter to activate.',
-            'Clear focus indicators show exactly which button is selected when navigating with a keyboard.',
-            'Disabled and loading buttons are clearly marked and cannot be accidentally activated.',
-            'Loading states communicate progress with both visual spinners and screen reader announcements.',
-            'Button sizes are optimized for comfortable clicking and tapping on any device.',
-          ]}
-          keys={[
-            { keys: ['Tab'], action: 'Move focus to the button' },
-            { keys: ['Space'], action: 'Activate the button' },
-            { keys: ['Enter'], action: 'Activate the button' },
-          ]}
-        />
+                <div className="flex flex-col gap-4">
+          <Alert title="Requirements">
+            <p className="m-0">{"Our buttons are built to work perfectly for everyone, including people using keyboards and screen readers."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"Built with proper HTML button elements for maximum compatibility with assistive technologies."}</li>
+              <li>{"Fully keyboard accessible. Press Tab to navigate, then Space or Enter to activate."}</li>
+              <li>{"Clear focus indicators show exactly which button is selected when navigating with a keyboard."}</li>
+              <li>{"Disabled and loading buttons are clearly marked and cannot be accidentally activated."}</li>
+              <li>{"Loading states communicate progress with both visual spinners and screen reader announcements."}</li>
+              <li>{"Button sizes are optimized for comfortable clicking and tapping on any device."}</li>
+            </ul>
+          </Alert>
+          <DataTable
+            size="sm"
+            variant="subtle"
+            minWidth="320px"
+            aria-label="Keyboard shortcuts"
+            data={[
+              { id: '0', keys: ["Tab"], action: "Move focus to the button" },
+              { id: '1', keys: ["Space"], action: "Activate the button" },
+              { id: '2', keys: ["Enter"], action: "Activate the button" },
+            ]}
+            rowKey={(row) => row.id}
+            columns={SHORTCUT_COLUMNS}
+          />
+        </div>
       </section>
 
       <section className="mt-12">

@@ -14,7 +14,7 @@ import {
 import { Avatar } from './Avatar'
 import { Badge } from './Badge'
 import { Button } from './Button'
-import { DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup } from './DocsCard'
+import { StateCard, StateGrid, StateGroup, StateStack } from './DocsCard'
 import { EmptyState } from './EmptyState'
 import { Caption } from './Text'
 
@@ -153,8 +153,8 @@ export function TableStates() {
   const noopSelect = () => undefined
 
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
         <div className="flex flex-col gap-6">
           {DATA_TABLE_VARIANTS.map((variant) => (
             <div key={variant} className="flex flex-col gap-2">
@@ -171,9 +171,9 @@ export function TableStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
+      <StateGroup title="Size">
         <div className="flex flex-col gap-6">
           {DATA_TABLE_SIZES.map((size) => (
             <div key={size} className="flex flex-col gap-2">
@@ -189,9 +189,9 @@ export function TableStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
+      <StateGroup title="Layout">
         <div className="flex flex-col gap-6">
           {DATA_TABLE_LAYOUTS.map((layout) => (
             <div key={layout} className="flex flex-col gap-2">
@@ -208,11 +208,11 @@ export function TableStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch" wide className="bg-bg-primary">
             <DataTable
               size="sm"
               data={compact.slice(0, 2)}
@@ -220,8 +220,8 @@ export function TableStates() {
               columns={tableColumns()}
               minWidth="320px"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" align="stretch" wide inert className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Hover" align="stretch" wide inert className="bg-bg-primary">
             <DataTable
               size="sm"
               data={compact.slice(0, 2)}
@@ -230,8 +230,8 @@ export function TableStates() {
               minWidth="320px"
               preview="hover"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Selected" align="stretch" wide inert className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Selected" align="stretch" wide inert className="bg-bg-primary">
             <DataTable
               size="sm"
               selectable
@@ -243,8 +243,8 @@ export function TableStates() {
               minWidth="320px"
               preview="selected"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" align="stretch" wide inert className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Focus" align="stretch" wide inert className="bg-bg-primary">
             <DataTable
               size="sm"
               selectable
@@ -256,8 +256,8 @@ export function TableStates() {
               minWidth="320px"
               preview="focus"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Pressed" align="stretch" wide inert className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Pressed" align="stretch" wide inert className="bg-bg-primary">
             <DataTable
               size="sm"
               data={compact.slice(0, 2)}
@@ -266,8 +266,8 @@ export function TableStates() {
               minWidth="320px"
               preview="active"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled row" align="stretch" wide inert className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled row" align="stretch" wide inert className="bg-bg-primary">
             <DataTable
               size="sm"
               data={compact.slice(0, 2)}
@@ -277,8 +277,8 @@ export function TableStates() {
               isRowDisabled={(row) => row.id === '1'}
               preview="disabled"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
             <DataTable
               size="sm"
               data={[]}
@@ -289,8 +289,8 @@ export function TableStates() {
                 <EmptyState size="sm" title="No projects" body="Create a project to get started." />
               }
             />
-          </DocsStateCard>
-          <DocsStateCard label="Editing" align="stretch" wide inert className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Editing" align="stretch" wide inert className="bg-bg-primary">
             <DataTable
               size="sm"
               editable
@@ -301,18 +301,18 @@ export function TableStates() {
               preview="editing"
               previewColumn="name"
             />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Editing">
+      <StateGroup title="Editing">
         <div className="flex flex-col gap-2">
           <Caption>Double-click or Return</Caption>
           <EditableTablePreview />
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Selection">
+      <StateGroup title="Selection">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <Caption>Multiple</Caption>
@@ -354,9 +354,9 @@ export function TableStates() {
             />
           </div>
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Sort">
+      <StateGroup title="Sort">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <Caption>Ascending</Caption>
@@ -385,9 +385,9 @@ export function TableStates() {
             />
           </div>
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Numeric">
+      <StateGroup title="Numeric">
         <DataTable
           size="sm"
           data={compact}
@@ -396,9 +396,9 @@ export function TableStates() {
           minWidth="520px"
           aria-label="Numeric"
         />
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Caption and footer">
+      <StateGroup title="Caption and footer">
         <DataTable
           size="sm"
           caption="Workspace"
@@ -414,9 +414,9 @@ export function TableStates() {
           minWidth="420px"
           aria-label="Caption and footer"
         />
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Sticky header">
+      <StateGroup title="Sticky header">
         <DataTable
           size="sm"
           stickyHeader
@@ -427,7 +427,7 @@ export function TableStates() {
           minWidth="520px"
           aria-label="Sticky header"
         />
-      </DocsStateGroup>
-    </DocsStack>
+      </StateGroup>
+    </StateStack>
   )
 }

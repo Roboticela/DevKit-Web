@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ComponentType, type ReactNode } from 'react'
+import { useState, type ComponentProps, type ComponentType, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import {
   DkClipboardCopyDuplicate,
@@ -196,7 +196,7 @@ import {
 } from './KeyValueRow'
 import { KitDocArticle, KitPreviewBody } from './KitDocArticle'
 import { PreviewFrame } from './PreviewMode'
-import { DocsStateCard, DocsStateGrid, DocsStateGroup, DocsStack } from './DocsCard'
+import { StateCard, StateGrid, StateGroup, StateStack } from './DocsCard'
 import {
   alertGuide,
   bodyGuide,
@@ -218,6 +218,22 @@ import {
   avatarPickerGuide,
   authNavGuide,
   badgeGuide,
+  cardGuide,
+  cardGridGuide,
+  stackGuide,
+  tokenGroupGuide,
+  stateCardGuide,
+  stateGridGuide,
+  stateGroupGuide,
+  swatchGuide,
+  swatchGridGuide,
+  contrastCardGuide,
+  radiusCardGuide,
+  scaleRowGuide,
+  relatedGuide,
+  ruleCardGuide,
+  inlineCodeGuide,
+  usageGuide,
   eyebrowGuide,
   fieldLabelGuide,
   headingGuide,
@@ -474,6 +490,242 @@ import {
   STAT_CARD_VARIANTS,
   STAT_CARD_VARIANT_LABEL,
 } from './StatCard'
+import {
+  Card,
+  CardGrid,
+  CARD_SIZES,
+  CARD_SIZE_LABEL,
+  CARD_TONES,
+  CARD_TONE_LABEL,
+  CARD_VARIANTS,
+  CARD_VARIANT_LABEL,
+  CARD_GRID_ALIGNS,
+  CARD_GRID_ALIGN_LABEL,
+  CARD_GRID_COLUMNS,
+  CARD_GRID_COLUMN_LABEL,
+  CARD_GRID_GAPS,
+  CARD_GRID_GAP_LABEL,
+  CARD_GRID_WIDTHS,
+  CARD_GRID_WIDTH_LABEL,
+  type CardPreview,
+  type CardSize,
+  type CardTone,
+  type CardVariant,
+} from './Card'
+import {
+  Stack,
+  STACK_ALIGNS,
+  STACK_ALIGN_LABEL,
+  STACK_DIRECTIONS,
+  STACK_DIRECTION_LABEL,
+  STACK_GAPS,
+  STACK_GAP_LABEL,
+  STACK_JUSTIFIES,
+  STACK_JUSTIFY_LABEL,
+  STACK_SIZES,
+  STACK_SIZE_LABEL,
+  STACK_TONES,
+  STACK_TONE_LABEL,
+  STACK_VARIANTS,
+  STACK_VARIANT_LABEL,
+  type StackPreview,
+} from './Stack'
+import {
+  Usage,
+  USAGE_GAPS,
+  USAGE_GAP_LABEL,
+  USAGE_LAYOUTS,
+  USAGE_LAYOUT_LABEL,
+  USAGE_SIZES,
+  USAGE_SIZE_LABEL,
+  USAGE_TONES,
+  USAGE_TONE_LABEL,
+  USAGE_VARIANTS,
+  USAGE_VARIANT_LABEL,
+  type UsagePreview,
+  type UsageProps,
+} from './Usage'
+import {
+  TokenGroup,
+  TOKEN_GROUP_COLUMNS,
+  TOKEN_GROUP_COLUMN_LABEL,
+  TOKEN_GROUP_GAPS,
+  TOKEN_GROUP_GAP_LABEL,
+  TOKEN_GROUP_SIZES,
+  TOKEN_GROUP_SIZE_LABEL,
+  TOKEN_GROUP_TONES,
+  TOKEN_GROUP_TONE_LABEL,
+  TOKEN_GROUP_VARIANTS,
+  TOKEN_GROUP_VARIANT_LABEL,
+  type TokenGroupPreview,
+  type TokenGroupProps,
+} from './TokenGroup'
+import {
+  StateCard as KitStateCard,
+  STATE_CARD_ALIGNS,
+  STATE_CARD_ALIGN_LABEL,
+  STATE_CARD_GAPS,
+  STATE_CARD_GAP_LABEL,
+  STATE_CARD_SIZES,
+  STATE_CARD_SIZE_LABEL,
+  STATE_CARD_TONES,
+  STATE_CARD_TONE_LABEL,
+  STATE_CARD_VARIANTS,
+  STATE_CARD_VARIANT_LABEL,
+  type StateCardPreview,
+  type StateCardProps,
+} from './StateCard'
+import {
+  StateGrid as KitStateGrid,
+  STATE_GRID_ALIGNS,
+  STATE_GRID_ALIGN_LABEL,
+  STATE_GRID_COLUMNS,
+  STATE_GRID_COLUMN_LABEL,
+  STATE_GRID_GAPS,
+  STATE_GRID_GAP_LABEL,
+  STATE_GRID_SIZES,
+  STATE_GRID_SIZE_LABEL,
+  STATE_GRID_TONES,
+  STATE_GRID_TONE_LABEL,
+  STATE_GRID_VARIANTS,
+  STATE_GRID_VARIANT_LABEL,
+  STATE_GRID_WIDTHS,
+  STATE_GRID_WIDTH_LABEL,
+  type StateGridPreview,
+  type StateGridProps,
+} from './StateGrid'
+import {
+  StateGroup as KitStateGroup,
+  STATE_GROUP_ALIGNS,
+  STATE_GROUP_ALIGN_LABEL,
+  STATE_GROUP_COLUMNS,
+  STATE_GROUP_COLUMN_LABEL,
+  STATE_GROUP_GAPS,
+  STATE_GROUP_GAP_LABEL,
+  STATE_GROUP_SIZES,
+  STATE_GROUP_SIZE_LABEL,
+  STATE_GROUP_TONES,
+  STATE_GROUP_TONE_LABEL,
+  STATE_GROUP_VARIANTS,
+  STATE_GROUP_VARIANT_LABEL,
+  STATE_GROUP_WIDTHS,
+  STATE_GROUP_WIDTH_LABEL,
+  type StateGroupPreview,
+  type StateGroupProps,
+} from './StateGroup'
+import {
+  Swatch,
+  SWATCH_SIZES,
+  SWATCH_SIZE_LABEL,
+  SWATCH_TONES,
+  SWATCH_TONE_LABEL,
+  SWATCH_VARIANTS,
+  SWATCH_VARIANT_LABEL,
+  type SwatchPreview,
+  type SwatchProps,
+} from './Swatch'
+import {
+  SwatchGrid,
+  SWATCH_GRID_ALIGNS,
+  SWATCH_GRID_ALIGN_LABEL,
+  SWATCH_GRID_COLUMNS,
+  SWATCH_GRID_COLUMN_LABEL,
+  SWATCH_GRID_GAPS,
+  SWATCH_GRID_GAP_LABEL,
+  SWATCH_GRID_SIZES,
+  SWATCH_GRID_SIZE_LABEL,
+  SWATCH_GRID_TONES,
+  SWATCH_GRID_TONE_LABEL,
+  SWATCH_GRID_VARIANTS,
+  SWATCH_GRID_VARIANT_LABEL,
+  SWATCH_GRID_WIDTHS,
+  SWATCH_GRID_WIDTH_LABEL,
+  type SwatchGridColumns,
+  type SwatchGridPreview,
+  type SwatchGridProps,
+} from './SwatchGrid'
+import {
+  ContrastCard,
+  CONTRAST_CARD_SIZES,
+  CONTRAST_CARD_SIZE_LABEL,
+  CONTRAST_CARD_TONES,
+  CONTRAST_CARD_TONE_LABEL,
+  CONTRAST_CARD_VARIANTS,
+  CONTRAST_CARD_VARIANT_LABEL,
+  type ContrastCardPreview,
+  type ContrastCardProps,
+} from './ContrastCard'
+import {
+  RadiusCard,
+  RADIUS_CARD_SCALE,
+  RADIUS_CARD_SIZES,
+  RADIUS_CARD_SIZE_LABEL,
+  RADIUS_CARD_TONES,
+  RADIUS_CARD_TONE_LABEL,
+  RADIUS_CARD_VALUE_LABEL,
+  RADIUS_CARD_VALUE_USE,
+  RADIUS_CARD_VARIANTS,
+  RADIUS_CARD_VARIANT_LABEL,
+  type RadiusCardPreview,
+  type RadiusCardProps,
+} from './RadiusCard'
+import {
+  ScaleRow,
+  SCALE_ROW_SIZES,
+  SCALE_ROW_SIZE_LABEL,
+  SCALE_ROW_TONES,
+  SCALE_ROW_TONE_LABEL,
+  SCALE_ROW_VARIANTS,
+  SCALE_ROW_VARIANT_LABEL,
+  SCALE_ROW_SPACE,
+  SCALE_ROW_WIDTHS,
+  type ScaleRowPreview,
+  type ScaleRowProps,
+} from './ScaleRow'
+import {
+  Related,
+  RELATED_ALIGNS,
+  RELATED_ALIGN_LABEL,
+  RELATED_COLUMNS,
+  RELATED_COLUMN_LABEL,
+  RELATED_GAPS,
+  RELATED_GAP_LABEL,
+  RELATED_SIZES,
+  RELATED_SIZE_LABEL,
+  RELATED_TONES,
+  RELATED_TONE_LABEL,
+  RELATED_VARIANTS,
+  RELATED_VARIANT_LABEL,
+  RELATED_WIDTHS,
+  RELATED_WIDTH_LABEL,
+  type RelatedColumns,
+  type RelatedItem,
+  type RelatedPreview,
+  type RelatedProps,
+} from './Related'
+import { RelatedCard } from './RelatedCard'
+import {
+  RuleCard,
+  RULE_CARD_SIZES,
+  RULE_CARD_SIZE_LABEL,
+  RULE_CARD_TONES,
+  RULE_CARD_TONE_LABEL,
+  RULE_CARD_VARIANTS,
+  RULE_CARD_VARIANT_LABEL,
+  type RuleCardPreview,
+  type RuleCardProps,
+} from './RuleCard'
+import {
+  InlineCode,
+  INLINE_CODE_SIZES,
+  INLINE_CODE_SIZE_LABEL,
+  INLINE_CODE_TONES,
+  INLINE_CODE_TONE_LABEL,
+  INLINE_CODE_VARIANTS,
+  INLINE_CODE_VARIANT_LABEL,
+  type InlineCodePreview,
+  type InlineCodeProps,
+} from './InlineCode'
 import { Switch, SwitchGroup, SwitchItem, SWITCH_VARIANTS, type SwitchVariant } from './Switch'
 import { Tabs, TABS_ALIGNS, TABS_SIZES, TABS_VARIANTS, TABS_ALIGN_LABEL, TABS_SIZE_LABEL, TABS_VARIANT_LABEL } from './Tabs'
 import { Body, Caption, Eyebrow, Heading, Label, Subhead } from './Text'
@@ -1115,31 +1367,31 @@ function ConfirmActionDemo() {
 
 function ConfirmActionStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {CONFIRM_ACTION_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={CONFIRM_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={CONFIRM_VARIANT_LABEL[variant]}>
               <ConfirmAction variant={variant} onConfirm={() => undefined} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid>
+      <StateGroup title="Tone">
+        <StateGrid>
           {CONFIRM_ACTION_TONES.map((tone) => (
-            <DocsStateCard key={`text-${tone}`} label={`Text, ${CONFIRM_TONE_LABEL[tone].toLowerCase()}`}>
+            <StateCard key={`text-${tone}`} label={`Text, ${CONFIRM_TONE_LABEL[tone].toLowerCase()}`}>
               <ConfirmAction
                 tone={tone}
                 label={tone === 'brand' ? 'Send' : tone === 'neutral' ? 'Archive' : 'Remove'}
                 confirmLabel={tone === 'brand' ? 'Send now?' : 'Confirm?'}
                 onConfirm={() => undefined}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
           {CONFIRM_ACTION_TONES.map((tone) => (
-            <DocsStateCard key={`solid-${tone}`} label={`Solid, ${CONFIRM_TONE_LABEL[tone].toLowerCase()}`}>
+            <StateCard key={`solid-${tone}`} label={`Solid, ${CONFIRM_TONE_LABEL[tone].toLowerCase()}`}>
               <ConfirmAction
                 variant="solid"
                 tone={tone}
@@ -1147,27 +1399,27 @@ function ConfirmActionStates() {
                 confirmLabel={tone === 'brand' ? 'Publish now?' : 'Confirm?'}
                 onConfirm={() => undefined}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {(['sm', 'md', 'lg'] as const).map((size) => (
-            <DocsStateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
+            <StateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
               <ConfirmAction variant="outline" size={size} onConfirm={() => undefined} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Loading">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Loading">
             <ConfirmAction variant="solid" loading onConfirm={() => undefined} />
-          </DocsStateCard>
-          <DocsStateCard label="Loading, brand">
+          </StateCard>
+          <StateCard label="Loading, brand">
             <ConfirmAction
               variant="solid"
               tone="brand"
@@ -1176,13 +1428,13 @@ function ConfirmActionStates() {
               loadingText="Sending…"
               onConfirm={() => undefined}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <ConfirmAction variant="outline" disabled onConfirm={() => undefined} />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -1204,9 +1456,9 @@ const TEXT_FIELD_SIZE_LABEL: Record<TextFieldSize, string> = {
 
 function FieldState({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <DocsStateCard label={label} align="stretch">
+    <StateCard label={label} align="stretch">
       {children}
-    </DocsStateCard>
+    </StateCard>
   )
 }
 
@@ -1599,9 +1851,9 @@ const TEXTAREA_SIZE_LABEL: Record<TextareaSize, string> = {
 
 function AreaState({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <DocsStateCard label={label} align="stretch" size="lg" wide>
+    <StateCard label={label} align="stretch" size="lg" wide>
       {children}
-    </DocsStateCard>
+    </StateCard>
   )
 }
 
@@ -2100,27 +2352,27 @@ function PhonePlay({
 
 function CountryStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {SELECT_VARIANTS.map((variant) => (
             <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
               <CountryPlay variant={variant} />
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+        </StateGrid>
+      </StateGroup>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {SELECT_SIZES.map((size) => (
             <FieldState key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
               <CountryPlay size={size} />
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
+        </StateGrid>
+      </StateGroup>
+      <StateGroup title="State">
+        <StateGrid>
           <FieldState label="Empty">
             <CountryPlay value={null} />
           </FieldState>
@@ -2133,113 +2385,113 @@ function CountryStates() {
           <FieldState label="Disabled">
             <CountryPlay disabled />
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
 function StateStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Cascade">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Cascade">
+        <StateGrid columns={2}>
           <FieldState label="Country, then region">
             <AddressStack />
           </FieldState>
           <FieldState label="Disabled">
             <StateSelect country="US" value="US-CA" onChange={() => undefined} disabled />
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+        </StateGrid>
+      </StateGroup>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {SELECT_VARIANTS.map((variant) => (
             <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
               <StateSelect country="US" value="US-CA" onChange={() => undefined} variant={variant} />
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
 function CountyStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Cascade">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Cascade">
+        <StateGrid columns={2}>
           <FieldState label="Country, region, county">
             <AddressStack showCounty />
           </FieldState>
           <FieldState label="Disabled">
             <CountySelect state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} disabled />
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+        </StateGrid>
+      </StateGroup>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {SELECT_VARIANTS.map((variant) => (
             <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
               <CountySelect state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} variant={variant} />
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
 function CityStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Cascade">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Cascade">
+        <StateGrid columns={2}>
           <FieldState label="Full address stack">
             <AddressStack showCounty showCity />
           </FieldState>
           <FieldState label="Disabled">
             <CitySelect country="US" state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} disabled />
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+        </StateGrid>
+      </StateGroup>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {SELECT_VARIANTS.map((variant) => (
             <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
               <CitySelect country="US" state="US-CA" value="US-CA:los-angeles" onChange={() => undefined} variant={variant} />
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
 function LanguageStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {SELECT_VARIANTS.map((variant) => (
             <FieldState key={variant} label={SELECT_VARIANT_LABEL[variant]}>
               <LanguagePlay variant={variant} />
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+        </StateGrid>
+      </StateGroup>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {SELECT_SIZES.map((size) => (
             <FieldState key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'}>
               <LanguagePlay size={size} />
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
+        </StateGrid>
+      </StateGroup>
+      <StateGroup title="State">
+        <StateGrid>
           <FieldState label="Filled">
             <LanguagePlay />
           </FieldState>
@@ -2249,17 +2501,17 @@ function LanguageStates() {
           <FieldState label="Disabled">
             <LanguagePlay disabled />
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
 function PhoneStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="State">
+        <StateGrid>
           <FieldState label="United States">
             <PhonePlay />
           </FieldState>
@@ -2275,9 +2527,9 @@ function PhoneStates() {
           <FieldState label="Disabled">
             <PhonePlay disabled />
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -2310,149 +2562,149 @@ function ProgressDemo() {
 
 function ProgressStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {PROGRESS_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={PROGRESS_VARIANT_LABEL[variant]} align="stretch">
+            <StateCard key={variant} label={PROGRESS_VARIANT_LABEL[variant]} align="stretch">
               <Progress variant={variant} label={PROGRESS_VARIANT_LABEL[variant]} value={64} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {PROGRESS_SIZES.map((size) => (
-            <DocsStateCard key={size} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+            <StateCard key={size} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
               <Progress size={size} label={PROGRESS_SIZE_LABEL[size]} value={64} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Pill size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Pill size">
+        <StateGrid columns={3}>
           {PROGRESS_SIZES.map((size) => (
-            <DocsStateCard key={`pill-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+            <StateCard key={`pill-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
               <Progress variant="pill" size={size} label={PROGRESS_SIZE_LABEL[size]} value={64} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid>
+      <StateGroup title="Tone">
+        <StateGrid>
           {PROGRESS_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={PROGRESS_TONE_LABEL[tone]} align="stretch">
+            <StateCard key={tone} label={PROGRESS_TONE_LABEL[tone]} align="stretch">
               <Progress tone={tone} label={PROGRESS_TONE_LABEL[tone]} value={tone === 'success' ? 100 : 64} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid>
+      <StateGroup title="On dark">
+        <StateGrid>
           {PROGRESS_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={PROGRESS_VARIANT_LABEL[variant]}
               align="stretch"
               className="bg-black"
             >
               <Progress variant={variant} label={PROGRESS_VARIANT_LABEL[variant]} value={64} onDark />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown">
-        <DocsStateGrid>
+      <StateGroup title="Unknown">
+        <StateGrid>
           {PROGRESS_VARIANTS.map((variant) => (
-            <DocsStateCard key={`unknown-${variant}`} label={PROGRESS_VARIANT_LABEL[variant]} align="stretch">
+            <StateCard key={`unknown-${variant}`} label={PROGRESS_VARIANT_LABEL[variant]} align="stretch">
               <Progress variant={variant} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Unknown size">
+        <StateGrid columns={3}>
           {PROGRESS_SIZES.map((size) => (
-            <DocsStateCard key={`unknown-size-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+            <StateCard key={`unknown-size-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
               <Progress size={size} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown pill size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Unknown pill size">
+        <StateGrid columns={3}>
           {PROGRESS_SIZES.map((size) => (
-            <DocsStateCard key={`unknown-pill-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
+            <StateCard key={`unknown-pill-${size}`} label={PROGRESS_SIZE_LABEL[size]} align="stretch">
               <Progress variant="pill" size={size} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown tone">
-        <DocsStateGrid>
+      <StateGroup title="Unknown tone">
+        <StateGrid>
           {PROGRESS_TONES.map((tone) => (
-            <DocsStateCard key={`unknown-tone-${tone}`} label={PROGRESS_TONE_LABEL[tone]} align="stretch">
+            <StateCard key={`unknown-tone-${tone}`} label={PROGRESS_TONE_LABEL[tone]} align="stretch">
               <Progress tone={tone} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown on dark">
-        <DocsStateGrid>
+      <StateGroup title="Unknown on dark">
+        <StateGrid>
           {PROGRESS_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`unknown-dark-${variant}`}
               label={PROGRESS_VARIANT_LABEL[variant]}
               align="stretch"
               className="bg-black"
             >
               <Progress variant={variant} label="Preparing" indeterminate onDark />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Empty" align="stretch">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Empty" align="stretch">
             <Progress label="Waiting" value={0} />
-          </DocsStateCard>
-          <DocsStateCard label="Partial" align="stretch">
+          </StateCard>
+          <StateCard label="Partial" align="stretch">
             <Progress label="Uploading" value={64} />
-          </DocsStateCard>
-          <DocsStateCard label="Complete" align="stretch">
+          </StateCard>
+          <StateCard label="Complete" align="stretch">
             <Progress label="Done" value={100} tone="success" />
-          </DocsStateCard>
-          <DocsStateCard label="Failed" align="stretch">
+          </StateCard>
+          <StateCard label="Failed" align="stretch">
             <Progress label="Upload failed" value={28} tone="danger" />
-          </DocsStateCard>
-          <DocsStateCard label="No percent" align="stretch">
+          </StateCard>
+          <StateCard label="No percent" align="stretch">
             <Progress label="Installing" value={38} showValue={false} />
-          </DocsStateCard>
-          <DocsStateCard label="Unlabeled" align="stretch">
+          </StateCard>
+          <StateCard label="Unlabeled" align="stretch">
             <Progress value={72} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch">
             <Progress label="Paused" value={41} disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Unknown unlabeled" align="stretch">
+          </StateCard>
+          <StateCard label="Unknown unlabeled" align="stretch">
             <Progress indeterminate />
-          </DocsStateCard>
-          <DocsStateCard label="Unknown disabled" align="stretch">
+          </StateCard>
+          <StateCard label="Unknown disabled" align="stretch">
             <Progress label="Preparing" indeterminate disabled />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -2485,155 +2737,155 @@ function ScoreRingDemo() {
 
 function ScoreRingStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {SCORE_RING_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={SCORE_RING_VARIANT_LABEL[variant]} className="bg-bg-primary">
+            <StateCard key={variant} label={SCORE_RING_VARIANT_LABEL[variant]} className="bg-bg-primary">
               <ScoreRing variant={variant} label={SCORE_RING_VARIANT_LABEL[variant]} score={72} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {SCORE_RING_SIZES.map((size) => (
-            <DocsStateCard key={size} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+            <StateCard key={size} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
               <ScoreRing size={size} label={SCORE_RING_SIZE_LABEL[size]} score={72} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Pill size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Pill size">
+        <StateGrid columns={3}>
           {SCORE_RING_SIZES.map((size) => (
-            <DocsStateCard key={`pill-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+            <StateCard key={`pill-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
               <ScoreRing variant="pill" size={size} label={SCORE_RING_SIZE_LABEL[size]} score={72} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid>
+      <StateGroup title="Tone">
+        <StateGrid>
           {SCORE_RING_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={SCORE_RING_TONE_LABEL[tone]} className="bg-bg-primary">
+            <StateCard key={tone} label={SCORE_RING_TONE_LABEL[tone]} className="bg-bg-primary">
               <ScoreRing
                 tone={tone}
                 label={SCORE_RING_TONE_LABEL[tone]}
                 score={tone === 'success' ? 100 : 72}
                 showCheck={tone === 'success'}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid>
+      <StateGroup title="On dark">
+        <StateGrid>
           {SCORE_RING_VARIANTS.map((variant) => (
-            <DocsStateCard key={`dark-${variant}`} label={SCORE_RING_VARIANT_LABEL[variant]} className="bg-black">
+            <StateCard key={`dark-${variant}`} label={SCORE_RING_VARIANT_LABEL[variant]} className="bg-black">
               <ScoreRing variant={variant} label={SCORE_RING_VARIANT_LABEL[variant]} score={72} onDark />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown">
-        <DocsStateGrid>
+      <StateGroup title="Unknown">
+        <StateGrid>
           {SCORE_RING_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`unknown-${variant}`}
               label={SCORE_RING_VARIANT_LABEL[variant]}
               className="bg-bg-primary"
             >
               <ScoreRing variant={variant} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Unknown size">
+        <StateGrid columns={3}>
           {SCORE_RING_SIZES.map((size) => (
-            <DocsStateCard key={`unknown-size-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+            <StateCard key={`unknown-size-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
               <ScoreRing size={size} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown pill size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Unknown pill size">
+        <StateGrid columns={3}>
           {SCORE_RING_SIZES.map((size) => (
-            <DocsStateCard key={`unknown-pill-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
+            <StateCard key={`unknown-pill-${size}`} label={SCORE_RING_SIZE_LABEL[size]} className="bg-bg-primary">
               <ScoreRing variant="pill" size={size} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown tone">
-        <DocsStateGrid>
+      <StateGroup title="Unknown tone">
+        <StateGrid>
           {SCORE_RING_TONES.map((tone) => (
-            <DocsStateCard key={`unknown-tone-${tone}`} label={SCORE_RING_TONE_LABEL[tone]} className="bg-bg-primary">
+            <StateCard key={`unknown-tone-${tone}`} label={SCORE_RING_TONE_LABEL[tone]} className="bg-bg-primary">
               <ScoreRing tone={tone} label="Preparing" indeterminate />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unknown on dark">
-        <DocsStateGrid>
+      <StateGroup title="Unknown on dark">
+        <StateGrid>
           {SCORE_RING_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`unknown-dark-${variant}`}
               label={SCORE_RING_VARIANT_LABEL[variant]}
               className="bg-black"
             >
               <ScoreRing variant={variant} label="Preparing" indeterminate onDark />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Empty" className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Empty" className="bg-bg-primary">
             <ScoreRing label="Waiting" score={0} />
-          </DocsStateCard>
-          <DocsStateCard label="Partial" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Partial" className="bg-bg-primary">
             <ScoreRing label="Profile" score={72} />
-          </DocsStateCard>
-          <DocsStateCard label="Complete" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Complete" className="bg-bg-primary">
             <ScoreRing label="Done" score={100} tone="success" />
-          </DocsStateCard>
-          <DocsStateCard label="Checked" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Checked" className="bg-bg-primary">
             <ScoreRing label="Verified" score={100} tone="success" showCheck />
-          </DocsStateCard>
-          <DocsStateCard label="Failed" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Failed" className="bg-bg-primary">
             <ScoreRing label="Failed" score={28} tone="danger" />
-          </DocsStateCard>
-          <DocsStateCard label="No percent" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No percent" className="bg-bg-primary">
             <ScoreRing label="Health" score={86} showValue={false} />
-          </DocsStateCard>
-          <DocsStateCard label="Unlabeled" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Unlabeled" className="bg-bg-primary">
             <ScoreRing score={72} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled" className="bg-bg-primary">
             <ScoreRing label="Paused" score={41} disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Unknown unlabeled" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Unknown unlabeled" className="bg-bg-primary">
             <ScoreRing indeterminate />
-          </DocsStateCard>
-          <DocsStateCard label="Unknown disabled" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Unknown disabled" className="bg-bg-primary">
             <ScoreRing label="Preparing" indeterminate disabled />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -2686,23 +2938,23 @@ function SkeletonLiveToggle() {
 
 function SkeletonStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Auto">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Toggle" align="stretch" wide>
+    <StateStack gap={10}>
+      <StateGroup title="Auto">
+        <StateGrid columns={2}>
+          <StateCard label="Toggle" align="stretch" wide>
             <SkeletonLiveToggle />
-          </DocsStateCard>
-          <DocsStateCard label="Button" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide>
             <Skeleton loading label="Loading action">
               <Button>Save changes</Button>
             </Skeleton>
-          </DocsStateCard>
-          <DocsStateCard label="Field" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Field" align="stretch" wide>
             <Skeleton loading label="Loading field">
               <TextField placeholder="Email address" />
             </Skeleton>
-          </DocsStateCard>
-          <DocsStateCard label="Avatar row" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Avatar row" align="stretch" wide>
             <Skeleton loading label="Loading profile">
               <div className="flex w-full items-center gap-3">
                 <Avatar name="Maya Chen" size="lg" />
@@ -2712,15 +2964,15 @@ function SkeletonStates() {
                 </div>
               </div>
             </Skeleton>
-          </DocsStateCard>
-          <DocsStateCard label="Alert" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Alert" align="stretch" wide>
             <Skeleton loading label="Loading alert">
               <Alert tone="info" title="Workspace is in sync">
                 Changes publish to every seat.
               </Alert>
             </Skeleton>
-          </DocsStateCard>
-          <DocsStateCard label="Stat card" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Stat card" align="stretch" wide>
             <Skeleton loading label="Loading stats">
               <StatCard
                 label="Revenue"
@@ -2729,13 +2981,13 @@ function SkeletonStates() {
                 hint="vs last month"
               />
             </Skeleton>
-          </DocsStateCard>
-          <DocsStateCard label="Page header" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Page header" align="stretch" wide>
             <Skeleton loading label="Loading header">
               <PageHeader title="Projects" description="Everything currently in flight." />
             </Skeleton>
-          </DocsStateCard>
-          <DocsStateCard label="Table" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Table" align="stretch" wide>
             <Skeleton loading label="Loading table">
               <DataTable
                 size="sm"
@@ -2751,114 +3003,114 @@ function SkeletonStates() {
                 minWidth="320px"
               />
             </Skeleton>
-          </DocsStateCard>
-          <DocsStateCard label="Key value" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Key value" align="stretch" wide>
             <Skeleton loading label="Loading details">
               <KeyValueGroup>
                 <KeyValueRow label="Email" value="alex@roboticela.com" />
                 <KeyValueRow label="Username" value="@alex" />
               </KeyValueGroup>
             </Skeleton>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {SKELETON_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={SKELETON_VARIANT_LABEL[variant]} align="stretch" wide>
+            <StateCard key={variant} label={SKELETON_VARIANT_LABEL[variant]} align="stretch" wide>
               <Skeleton variant={variant} lines={3} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Shape">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Shape">
+        <StateGrid columns={2}>
           {SKELETON_SHAPES.map((shape) => (
-            <DocsStateCard
+            <StateCard
               key={shape}
               label={SKELETON_SHAPE_LABEL[shape]}
               align={shape === 'circle' || shape === 'square' ? 'center' : 'stretch'}
               wide
             >
               <Skeleton shape={shape} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {SKELETON_SIZES.map((size) => (
-            <DocsStateCard key={size} label={SKELETON_SIZE_LABEL[size]} align="stretch">
+            <StateCard key={size} label={SKELETON_SIZE_LABEL[size]} align="stretch">
               <Skeleton size={size} lines={3} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Circle size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Circle size">
+        <StateGrid columns={3}>
           {SKELETON_SIZES.map((size) => (
-            <DocsStateCard key={`circle-${size}`} label={SKELETON_SIZE_LABEL[size]}>
+            <StateCard key={`circle-${size}`} label={SKELETON_SIZE_LABEL[size]}>
               <Skeleton shape="circle" size={size} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Motion">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Motion">
+        <StateGrid columns={3}>
           {SKELETON_MOTIONS.map((motion) => (
-            <DocsStateCard key={motion} label={SKELETON_MOTION_LABEL[motion]} align="stretch">
+            <StateCard key={motion} label={SKELETON_MOTION_LABEL[motion]} align="stretch">
               <Skeleton motion={motion} lines={3} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Line" align="stretch" wide>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Line" align="stretch" wide>
             <Skeleton />
-          </DocsStateCard>
-          <DocsStateCard label="Three lines" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Three lines" align="stretch" wide>
             <Skeleton lines={3} label="Loading article" />
-          </DocsStateCard>
-          <DocsStateCard label="Heading and lines" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Heading and lines" align="stretch" wide>
             <div className="flex w-full flex-col gap-3">
               <Skeleton shape="heading" />
               <Skeleton lines={3} />
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="Avatar row" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Avatar row" align="stretch" wide>
             <div className="flex w-full items-center gap-3">
               <Skeleton shape="circle" />
               <div className="min-w-0 flex-1">
                 <Skeleton lines={2} />
               </div>
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="Image and copy" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Image and copy" align="stretch" wide>
             <div className="flex w-full flex-col gap-3">
               <Skeleton shape="rect" size="sm" />
               <Skeleton shape="heading" size="sm" />
               <Skeleton lines={2} size="sm" />
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="Pill button" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Pill button" align="stretch" wide>
             <Skeleton variant="pill" className="h-11 w-[140px]" />
-          </DocsStateCard>
-          <DocsStateCard label="Outline circle">
+          </StateCard>
+          <StateCard label="Outline circle">
             <Skeleton variant="outline" shape="circle" size="lg" />
-          </DocsStateCard>
-          <DocsStateCard label="Static" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Static" align="stretch" wide>
             <Skeleton motion="none" lines={3} />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -2912,11 +3164,11 @@ function EmptyStateDemo() {
 
 function EmptyStateStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {EMPTY_STATE_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={EMPTY_STATE_VARIANT_LABEL[variant]}
               align="stretch"
@@ -2929,15 +3181,15 @@ function EmptyStateStates() {
                 title="No messages"
                 body="Mentions and reviews will show up here."
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {EMPTY_STATE_SIZES.map((size) => (
-            <DocsStateCard key={size} label={EMPTY_STATE_SIZE_LABEL[size]} align="stretch" wide size="lg" className="bg-bg-primary">
+            <StateCard key={size} label={EMPTY_STATE_SIZE_LABEL[size]} align="stretch" wide size="lg" className="bg-bg-primary">
               <EmptyState
                 size={size}
                 icon={<EmptyIcon />}
@@ -2945,15 +3197,15 @@ function EmptyStateStates() {
                 body="Create a project to get started."
                 action={<EmptyAction size={size === 'lg' ? 'md' : size}>New project</EmptyAction>}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {EMPTY_STATE_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={EMPTY_STATE_TONE_LABEL[tone]} align="stretch" wide className="bg-bg-primary">
+            <StateCard key={tone} label={EMPTY_STATE_TONE_LABEL[tone]} align="stretch" wide className="bg-bg-primary">
               <EmptyState
                 tone={tone}
                 icon={<EmptyIcon name={tone === 'danger' ? 'refresh' : tone === 'warning' ? 'lock' : 'inbox'} />}
@@ -2976,15 +3228,15 @@ function EmptyStateStates() {
                         : 'Mentions and reviews will show up here.'
                 }
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
           {EMPTY_STATE_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={EMPTY_STATE_VARIANT_LABEL[variant]}
               align="stretch"
@@ -2998,35 +3250,35 @@ function EmptyStateStates() {
                 body="Mentions and reviews will show up here."
                 onDark
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Title only" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Title only" align="stretch" wide className="bg-bg-primary">
             <EmptyState title="No projects" />
-          </DocsStateCard>
-          <DocsStateCard label="No icon" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No icon" align="stretch" wide className="bg-bg-primary">
             <EmptyState title="No projects" body="Create a project to get started." />
-          </DocsStateCard>
-          <DocsStateCard label="First use" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="First use" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               icon={<EmptyIcon name="grid" />}
               title="No projects"
               body="Create a project to get started."
               action={<EmptyAction>New project</EmptyAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="No results" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No results" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               icon={<EmptyIcon name="search" />}
               title="No results"
               body="Try a different search."
             />
-          </DocsStateCard>
-          <DocsStateCard label="Could not load" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Could not load" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               tone="danger"
               icon={<EmptyIcon name="refresh" />}
@@ -3034,16 +3286,16 @@ function EmptyStateStates() {
               body="Check the connection, then try again."
               action={<EmptyAction variant="secondary">Try again</EmptyAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="No access" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No access" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               tone="warning"
               icon={<EmptyIcon name="lock" />}
               title="No access"
               body="Ask an owner to invite you to this workspace."
             />
-          </DocsStateCard>
-          <DocsStateCard label="With secondary" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With secondary" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               icon={<EmptyIcon name="grid" />}
               title="No projects"
@@ -3051,8 +3303,8 @@ function EmptyStateStates() {
               action={<EmptyAction>New project</EmptyAction>}
               secondary={<EmptyAction variant="ghost">Import</EmptyAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Start" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Start" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               align="start"
               variant="outline"
@@ -3061,16 +3313,16 @@ function EmptyStateStates() {
               body="Mentions and reviews will show up here."
               action={<EmptyAction size="sm">Refresh</EmptyAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled action" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled action" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               icon={<EmptyIcon name="grid" />}
               title="No projects"
               body="You need permission to create one."
               action={<EmptyAction disabled>New project</EmptyAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Outline, action" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Outline, action" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               variant="outline"
               icon={<EmptyIcon />}
@@ -3078,8 +3330,8 @@ function EmptyStateStates() {
               body="New mentions and review requests will land here."
               action={<EmptyAction variant="secondary">View projects</EmptyAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               variant="pill"
               size="sm"
@@ -3087,8 +3339,8 @@ function EmptyStateStates() {
               title="No results"
               body="Try a different search."
             />
-          </DocsStateCard>
-          <DocsStateCard label="Ghost, large" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Ghost, large" align="stretch" wide className="bg-bg-primary">
             <EmptyState
               variant="ghost"
               size="lg"
@@ -3096,10 +3348,10 @@ function EmptyStateStates() {
               title="Inbox is clear"
               body="New mentions and review requests will land here."
             />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -3121,11 +3373,11 @@ function EmptyPopupDemo() {
 
 function EmptyPopupStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {EMPTY_POPUP_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={EMPTY_POPUP_VARIANT_LABEL[variant]}
               align="stretch"
@@ -3140,15 +3392,15 @@ function EmptyPopupStates() {
                   body="Try a different search."
                 />
               </div>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {EMPTY_POPUP_SIZES.map((size) => (
-            <DocsStateCard key={size} label={EMPTY_POPUP_SIZE_LABEL[size]} align="stretch" wide className="bg-bg-primary">
+            <StateCard key={size} label={EMPTY_POPUP_SIZE_LABEL[size]} align="stretch" wide className="bg-bg-primary">
               <div className="flex justify-center">
                 <EmptyPopup
                   size={size}
@@ -3158,15 +3410,15 @@ function EmptyPopupStates() {
                   action={<EmptyAction size="sm">Refresh</EmptyAction>}
                 />
               </div>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {EMPTY_POPUP_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={EMPTY_POPUP_TONE_LABEL[tone]} align="stretch" wide className="bg-bg-primary">
+            <StateCard key={tone} label={EMPTY_POPUP_TONE_LABEL[tone]} align="stretch" wide className="bg-bg-primary">
               <div className="flex justify-center">
                 <EmptyPopup
                   tone={tone}
@@ -3191,15 +3443,15 @@ function EmptyPopupStates() {
                   }
                 />
               </div>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Surface">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Surface">
+        <StateGrid columns={2}>
           {EMPTY_POPUP_SURFACES.map((surface) => (
-            <DocsStateCard
+            <StateCard
               key={surface}
               label={EMPTY_POPUP_SURFACE_LABEL[surface]}
               align="stretch"
@@ -3215,24 +3467,24 @@ function EmptyPopupStates() {
                   body="Try a different search."
                 />
               </div>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Title only" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Title only" align="stretch" wide className="bg-bg-primary">
             <div className="flex justify-center">
               <EmptyPopup title="No results" />
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="No icon" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No icon" align="stretch" wide className="bg-bg-primary">
             <div className="flex justify-center">
               <EmptyPopup title="No results" body="Try a different search." />
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="No notifications" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No notifications" align="stretch" wide className="bg-bg-primary">
             <div className="flex justify-center">
               <EmptyPopup
                 icon={<EmptyIcon name="inbox" />}
@@ -3240,8 +3492,8 @@ function EmptyPopupStates() {
                 body="You are all caught up."
               />
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="Could not load" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Could not load" align="stretch" wide className="bg-bg-primary">
             <div className="flex justify-center">
               <EmptyPopup
                 tone="danger"
@@ -3251,8 +3503,8 @@ function EmptyPopupStates() {
                 action={<EmptyAction size="sm" variant="secondary">Try again</EmptyAction>}
               />
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="Plain in a menu" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Plain in a menu" align="stretch" wide className="bg-bg-primary">
             <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-2xl border border-border-default bg-bg-elevated p-2.5 dark:bg-bg-secondary">
               <EmptyPopup
                 surface="plain"
@@ -3262,8 +3514,8 @@ function EmptyPopupStates() {
                 body="Try a different search."
               />
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="With secondary" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With secondary" align="stretch" wide className="bg-bg-primary">
             <div className="flex justify-center">
               <EmptyPopup
                 icon={<EmptyIcon name="grid" />}
@@ -3273,10 +3525,10 @@ function EmptyPopupStates() {
                 secondary={<EmptyAction size="sm" variant="ghost">Import</EmptyAction>}
               />
             </div>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -3345,11 +3597,11 @@ function LoadingScreenDemo() {
 
 function LoadingScreenStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {LOADING_SCREEN_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={LOADING_SCREEN_VARIANT_LABEL[variant]}
               align="stretch"
@@ -3357,15 +3609,15 @@ function LoadingScreenStates() {
               className="bg-bg-primary"
             >
               <LoadingState variant={variant} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {LOADING_SCREEN_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={LOADING_SCREEN_SIZE_LABEL[size]}
               align="stretch"
@@ -3377,15 +3629,15 @@ function LoadingScreenStates() {
                 size={size}
                 height={size === 'sm' ? 'h-[160px]' : size === 'lg' ? 'h-[260px]' : 'h-[200px]'}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Indicator">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Indicator">
+        <StateGrid columns={2}>
           {LOADING_SCREEN_INDICATORS.map((indicator) => (
-            <DocsStateCard
+            <StateCard
               key={indicator}
               label={LOADING_SCREEN_INDICATOR_LABEL[indicator]}
               align="stretch"
@@ -3393,15 +3645,15 @@ function LoadingScreenStates() {
               className="bg-bg-primary"
             >
               <LoadingState indicator={indicator} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
           {LOADING_SCREEN_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={LOADING_SCREEN_VARIANT_LABEL[variant]}
               align="stretch"
@@ -3409,52 +3661,52 @@ function LoadingScreenStates() {
               className="bg-black"
             >
               <LoadingState variant={variant} onDark />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Initial" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Initial" align="stretch" wide className="bg-bg-primary">
             <LoadingState preview="initial" />
-          </DocsStateCard>
-          <DocsStateCard label="Delayed" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Delayed" align="stretch" wide className="bg-bg-primary">
             <LoadingState preview="delayed" />
-          </DocsStateCard>
-          <DocsStateCard label="No mark" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No mark" align="stretch" wide className="bg-bg-primary">
             <LoadingState showLogo={false} />
-          </DocsStateCard>
-          <DocsStateCard label="No status" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No status" align="stretch" wide className="bg-bg-primary">
             <LoadingState showStatus={false} />
-          </DocsStateCard>
-          <DocsStateCard label="Bar" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Bar" align="stretch" wide className="bg-bg-primary">
             <LoadingState indicator="bar" />
-          </DocsStateCard>
-          <DocsStateCard label="Bar, delayed" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Bar, delayed" align="stretch" wide className="bg-bg-primary">
             <LoadingState indicator="bar" preview="delayed" />
-          </DocsStateCard>
-          <DocsStateCard label="Mark only" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Mark only" align="stretch" wide className="bg-bg-primary">
             <LoadingState indicator="none" showStatus={false} />
-          </DocsStateCard>
-          <DocsStateCard label="Outline, delayed" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Outline, delayed" align="stretch" wide className="bg-bg-primary">
             <LoadingState variant="outline" preview="delayed" />
-          </DocsStateCard>
-          <DocsStateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
             <LoadingState variant="pill" size="sm" height="h-[160px]" />
-          </DocsStateCard>
-          <DocsStateCard label="Ghost, large" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Ghost, large" align="stretch" wide className="bg-bg-primary">
             <LoadingState variant="ghost" size="lg" height="h-[260px]" />
-          </DocsStateCard>
-          <DocsStateCard label="Delayed on dark" align="stretch" wide className="bg-black">
+          </StateCard>
+          <StateCard label="Delayed on dark" align="stretch" wide className="bg-black">
             <LoadingState preview="delayed" onDark />
-          </DocsStateCard>
-          <DocsStateCard label="Bar on dark" align="stretch" wide className="bg-black">
+          </StateCard>
+          <StateCard label="Bar on dark" align="stretch" wide className="bg-black">
             <LoadingState indicator="bar" onDark />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -3470,92 +3722,92 @@ function LoaderDemo() {
 
 function LoaderStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {LOADER_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={LOADER_VARIANT_LABEL[variant]} className="bg-bg-primary">
+            <StateCard key={variant} label={LOADER_VARIANT_LABEL[variant]} className="bg-bg-primary">
               <Loader variant={variant} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {LOADER_SIZES.map((size) => (
-            <DocsStateCard key={size} label={LOADER_SIZE_LABEL[size]} className="bg-bg-primary">
+            <StateCard key={size} label={LOADER_SIZE_LABEL[size]} className="bg-bg-primary">
               <Loader size={size} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid>
+      <StateGroup title="Tone">
+        <StateGrid>
           {LOADER_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={LOADER_TONE_LABEL[tone]} className="bg-bg-primary">
+            <StateCard key={tone} label={LOADER_TONE_LABEL[tone]} className="bg-bg-primary">
               <Loader tone={tone} label={LOADER_TONE_LABEL[tone]} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid>
+      <StateGroup title="On dark">
+        <StateGrid>
           {LOADER_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={LOADER_VARIANT_LABEL[variant]}
               className="bg-black"
             >
               <Loader variant={variant} onDark />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Spinning" className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Spinning" className="bg-bg-primary">
             <Loader />
-          </DocsStateCard>
-          <DocsStateCard label="Static" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Static" className="bg-bg-primary">
             <Loader spinning={false} />
-          </DocsStateCard>
-          <DocsStateCard label="With label" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With label" className="bg-bg-primary">
             <Loader label="Saving" />
-          </DocsStateCard>
-          <DocsStateCard label="Inline" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Inline" className="bg-bg-primary">
             <Loader layout="inline" label="Loading messages" />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled" className="bg-bg-primary">
             <Loader label="Paused" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Default tone" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Default tone" className="bg-bg-primary">
             <Loader tone="default" label="Loading" />
-          </DocsStateCard>
-          <DocsStateCard label="Pill, small" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Pill, small" className="bg-bg-primary">
             <Loader variant="pill" size="sm" />
-          </DocsStateCard>
-          <DocsStateCard label="Ghost, large" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Ghost, large" className="bg-bg-primary">
             <Loader variant="ghost" size="lg" />
-          </DocsStateCard>
-          <DocsStateCard label="Outline, inline" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Outline, inline" className="bg-bg-primary">
             <Loader variant="outline" layout="inline" label="Refreshing" />
-          </DocsStateCard>
-          <DocsStateCard label="Danger" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Danger" className="bg-bg-primary">
             <Loader tone="danger" label="Retrying" />
-          </DocsStateCard>
-          <DocsStateCard label="Inline on dark" className="bg-black">
+          </StateCard>
+          <StateCard label="Inline on dark" className="bg-black">
             <Loader layout="inline" label="Loading" onDark />
-          </DocsStateCard>
-          <DocsStateCard label="Pill on dark" className="bg-black">
+          </StateCard>
+          <StateCard label="Pill on dark" className="bg-black">
             <Loader variant="pill" onDark />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -3637,72 +3889,72 @@ const CHECKBOX_SIZE_LABEL: Record<CheckboxSize, string> = {
 
 function CheckboxStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {CHECKBOX_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={CHECKBOX_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={CHECKBOX_VARIANT_LABEL[variant]}>
               <Checkbox variant={variant} label={CHECKBOX_VARIANT_LABEL[variant]} defaultChecked />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {CHECKBOX_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={CHECKBOX_TONE_LABEL[tone]}>
+            <StateCard key={tone} label={CHECKBOX_TONE_LABEL[tone]}>
               <Checkbox tone={tone} label={tone === 'danger' ? 'Delete this project' : 'Product updates'} defaultChecked />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {CHECKBOX_SIZES.map((size) => (
-            <DocsStateCard key={size} label={CHECKBOX_SIZE_LABEL[size]}>
+            <StateCard key={size} label={CHECKBOX_SIZE_LABEL[size]}>
               <Checkbox size={size} label={CHECKBOX_SIZE_LABEL[size]} defaultChecked />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Unchecked">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Unchecked">
             <Checkbox label="Off" />
-          </DocsStateCard>
-          <DocsStateCard label="Checked">
+          </StateCard>
+          <StateCard label="Checked">
             <Checkbox label="On" defaultChecked />
-          </DocsStateCard>
-          <DocsStateCard label="Mixed">
+          </StateCard>
+          <StateCard label="Mixed">
             <Checkbox label="Some" indeterminate />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" inert>
+          </StateCard>
+          <StateCard label="Hover" inert>
             <Checkbox label="Hover" preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" inert>
+          </StateCard>
+          <StateCard label="Focus" inert>
             <Checkbox label="Focus" preview="focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Active" inert>
+          </StateCard>
+          <StateCard label="Active" inert>
             <Checkbox label="Active" preview="active" />
-          </DocsStateCard>
-          <DocsStateCard label="Invalid">
+          </StateCard>
+          <StateCard label="Invalid">
             <Checkbox label="Required" invalid />
-          </DocsStateCard>
-          <DocsStateCard label="Invalid, on">
+          </StateCard>
+          <StateCard label="Invalid, on">
             <Checkbox label="Required" invalid defaultChecked />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <Checkbox label="Locked" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled, on">
+          </StateCard>
+          <StateCard label="Disabled, on">
             <Checkbox label="Locked" defaultChecked disabled />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -3794,76 +4046,76 @@ const RADIO_SIZE_LABEL: Record<RadioSize, string> = {
 
 function RadioStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {RADIO_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={RADIO_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={RADIO_VARIANT_LABEL[variant]}>
               <Radio variant={variant} label={RADIO_VARIANT_LABEL[variant]} checked />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {RADIO_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={RADIO_TONE_LABEL[tone]}>
+            <StateCard key={tone} label={RADIO_TONE_LABEL[tone]}>
               <Radio
                 tone={tone}
                 label={tone === 'danger' ? 'Delete the project' : 'Keep the project'}
                 checked
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {RADIO_SIZES.map((size) => (
-            <DocsStateCard key={size} label={RADIO_SIZE_LABEL[size]}>
+            <StateCard key={size} label={RADIO_SIZE_LABEL[size]}>
               <Radio size={size} label={RADIO_SIZE_LABEL[size]} checked />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Unchecked">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Unchecked">
             <Radio label="Off" />
-          </DocsStateCard>
-          <DocsStateCard label="Checked">
+          </StateCard>
+          <StateCard label="Checked">
             <Radio label="On" checked />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" inert>
+          </StateCard>
+          <StateCard label="Hover" inert>
             <Radio label="Hover" preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Hover, on" inert>
+          </StateCard>
+          <StateCard label="Hover, on" inert>
             <Radio label="Hover" checked preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" inert>
+          </StateCard>
+          <StateCard label="Focus" inert>
             <Radio label="Focus" preview="focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Active" inert>
+          </StateCard>
+          <StateCard label="Active" inert>
             <Radio label="Active" preview="active" />
-          </DocsStateCard>
-          <DocsStateCard label="Invalid">
+          </StateCard>
+          <StateCard label="Invalid">
             <Radio label="Required" invalid />
-          </DocsStateCard>
-          <DocsStateCard label="Invalid, on">
+          </StateCard>
+          <StateCard label="Invalid, on">
             <Radio label="Required" invalid checked />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <Radio label="Locked" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled, on">
+          </StateCard>
+          <StateCard label="Disabled, on">
             <Radio label="Locked" checked disabled />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -3969,75 +4221,75 @@ function SliderDemo() {
 
 function SliderStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {SLIDER_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
+            <StateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
               <StateSlider variant={variant} label={SLIDER_VARIANT_LABEL[variant]} showValue />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {SLIDER_SIZES.map((size) => (
-            <DocsStateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} align="stretch">
+            <StateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} align="stretch">
               <StateSlider size={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Range">
-        <DocsStateGrid>
+      <StateGroup title="Range">
+        <StateGrid>
           {SLIDER_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
+            <StateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
               <StateRange variant={variant} label={SLIDER_VARIANT_LABEL[variant]} showValue />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="With field">
-        <DocsStateGrid>
+      <StateGroup title="With field">
+        <StateGrid>
           {SLIDER_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
+            <StateCard key={variant} label={SLIDER_VARIANT_LABEL[variant]} align="stretch">
               <StateSlider variant={variant} label={SLIDER_VARIANT_LABEL[variant]} field="end" unit="percent" />
-            </DocsStateCard>
+            </StateCard>
           ))}
           {SLIDER_FIELDS.map((layout) => (
-            <DocsStateCard key={layout} label={SLIDER_FIELD_LABEL[layout]} align="stretch">
+            <StateCard key={layout} label={SLIDER_FIELD_LABEL[layout]} align="stretch">
               {layout === 'both' ? (
                 <StateRange label="Price" field={layout} unit="currency" />
               ) : (
                 <StateSlider label="Opacity" field={layout} unit="percent" />
               )}
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Field chrome">
-        <DocsStateGrid>
+      <StateGroup title="Field chrome">
+        <StateGrid>
           {NUMBER_FIELD_VARIANTS.map((fieldVariant) => (
-            <DocsStateCard key={fieldVariant} label={NUMBER_FIELD_VARIANT_LABEL[fieldVariant]} align="stretch">
+            <StateCard key={fieldVariant} label={NUMBER_FIELD_VARIANT_LABEL[fieldVariant]} align="stretch">
               <StateSlider
                 label={NUMBER_FIELD_VARIANT_LABEL[fieldVariant]}
                 field="end"
                 unit="percent"
                 fieldVariant={fieldVariant}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Field stepper">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Field stepper">
+        <StateGrid columns={2}>
           {NUMBER_FIELD_STEPPERS.map((fieldStepper) => (
-            <DocsStateCard key={fieldStepper} label={fieldStepper === 'stack' ? 'Stack' : 'Split'} align="stretch">
+            <StateCard key={fieldStepper} label={fieldStepper === 'stack' ? 'Stack' : 'Split'} align="stretch">
               <StateSlider
                 label={fieldStepper === 'stack' ? 'Opacity' : 'Quantity'}
                 field="end"
@@ -4045,30 +4297,30 @@ function SliderStates() {
                 fieldStepper={fieldStepper}
                 fieldAlign={fieldStepper === 'split' ? 'center' : undefined}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Field width">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Field width">
+        <StateGrid columns={2}>
           {NUMBER_FIELD_WIDTHS.map((fieldWidth) => (
-            <DocsStateCard key={fieldWidth} label={NUMBER_FIELD_WIDTH_LABEL[fieldWidth]} align="stretch">
+            <StateCard key={fieldWidth} label={NUMBER_FIELD_WIDTH_LABEL[fieldWidth]} align="stretch">
               <StateSlider
                 label={NUMBER_FIELD_WIDTH_LABEL[fieldWidth]}
                 field="end"
                 unit="percent"
                 fieldWidth={fieldWidth}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Field align">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Field align">
+        <StateGrid columns={3}>
           {NUMBER_FIELD_ALIGNS.map((fieldAlign) => (
-            <DocsStateCard key={fieldAlign} label={NUMBER_FIELD_ALIGN_LABEL[fieldAlign]} align="stretch">
+            <StateCard key={fieldAlign} label={NUMBER_FIELD_ALIGN_LABEL[fieldAlign]} align="stretch">
               <StateSlider
                 label={NUMBER_FIELD_ALIGN_LABEL[fieldAlign]}
                 field="end"
@@ -4076,84 +4328,84 @@ function SliderStates() {
                 fieldAlign={fieldAlign}
                 fieldWidth="fill"
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Field size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Field size">
+        <StateGrid columns={3}>
           {NUMBER_FIELD_SIZES.map((fieldSize) => (
-            <DocsStateCard key={fieldSize} label={fieldSize === 'sm' ? 'Small' : fieldSize === 'md' ? 'Medium' : 'Large'} align="stretch">
+            <StateCard key={fieldSize} label={fieldSize === 'sm' ? 'Small' : fieldSize === 'md' ? 'Medium' : 'Large'} align="stretch">
               <StateSlider
                 label={fieldSize === 'sm' ? 'Small' : fieldSize === 'md' ? 'Medium' : 'Large'}
                 field="end"
                 unit="percent"
                 fieldSize={fieldSize}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch">
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch">
             <StateSlider label="Volume" showValue />
-          </DocsStateCard>
-          <DocsStateCard label="On dark" align="stretch" className="bg-black">
+          </StateCard>
+          <StateCard label="On dark" align="stretch" className="bg-black">
             <StateSlider tone="onDark" label="Zoom" showValue initial={65} min={1} max={100} />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Rest" align="stretch">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Rest" align="stretch">
             <StateSlider label="Volume" showValue />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" inert align="stretch">
+          </StateCard>
+          <StateCard label="Hover" inert align="stretch">
             <StateSlider label="Volume" showValue preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" inert align="stretch">
+          </StateCard>
+          <StateCard label="Focus" inert align="stretch">
             <StateSlider label="Volume" showValue preview="focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Active" inert align="stretch">
+          </StateCard>
+          <StateCard label="Active" inert align="stretch">
             <StateSlider label="Volume" showValue preview="active" />
-          </DocsStateCard>
-          <DocsStateCard label="With ends" align="stretch">
+          </StateCard>
+          <StateCard label="With ends" align="stretch">
             <StateSlider label="Volume" showValue showEnds />
-          </DocsStateCard>
-          <DocsStateCard label="Marks" align="stretch">
+          </StateCard>
+          <StateCard label="Marks" align="stretch">
             <StateSlider label="Quality" marks={[0, 25, 50, 75, 100]} showEnds initial={50} />
-          </DocsStateCard>
-          <DocsStateCard label="Invalid" align="stretch">
+          </StateCard>
+          <StateCard label="Invalid" align="stretch">
             <StateSlider label="Required" invalid showValue initial={0} />
-          </DocsStateCard>
-          <DocsStateCard label="Valid" align="stretch">
+          </StateCard>
+          <StateCard label="Valid" align="stretch">
             <StateSlider label="Complete" valid showValue initial={100} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch">
             <StateSlider label="Locked" disabled showValue />
-          </DocsStateCard>
-          <DocsStateCard label="Field, invalid" align="stretch">
+          </StateCard>
+          <StateCard label="Field, invalid" align="stretch">
             <StateSlider label="Required" field="end" unit="percent" invalid />
-          </DocsStateCard>
-          <DocsStateCard label="Field, disabled" align="stretch">
+          </StateCard>
+          <StateCard label="Field, disabled" align="stretch">
             <StateSlider label="Locked" field="end" unit="percent" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Field, read only" align="stretch">
+          </StateCard>
+          <StateCard label="Field, read only" align="stretch">
             <StateSlider label="Locked field" field="end" unit="percent" fieldReadOnly />
-          </DocsStateCard>
-          <DocsStateCard label="Range, disabled" align="stretch">
+          </StateCard>
+          <StateCard label="Range, disabled" align="stretch">
             <StateRange label="Locked" disabled showValue />
-          </DocsStateCard>
-          <DocsStateCard label="Range, invalid" align="stretch">
+          </StateCard>
+          <StateCard label="Range, invalid" align="stretch">
             <StateRange label="Required" invalid showValue />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -4235,65 +4487,65 @@ function NumberFieldDemo() {
 
 function NumberFieldStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {NUMBER_FIELD_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={NUMBER_FIELD_VARIANT_LABEL[variant]} align="stretch">
+            <StateCard key={variant} label={NUMBER_FIELD_VARIANT_LABEL[variant]} align="stretch">
               <StateNumber variant={variant} unit="percent" aria-label={NUMBER_FIELD_VARIANT_LABEL[variant]} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {NUMBER_FIELD_SIZES.map((size) => (
-            <DocsStateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} align="stretch">
+            <StateCard key={size} label={size === 'sm' ? 'Small' : size === 'md' ? 'Medium' : 'Large'} align="stretch">
               <StateNumber size={size} unit="percent" aria-label={size} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Unit">
-        <DocsStateGrid>
+      <StateGroup title="Unit">
+        <StateGrid>
           {NUMBER_FIELD_UNITS.map((unit) => (
-            <DocsStateCard key={unit} label={NUMBER_FIELD_UNIT_LABEL[unit]} align="stretch">
+            <StateCard key={unit} label={NUMBER_FIELD_UNIT_LABEL[unit]} align="stretch">
               <StateNumber
                 unit={unit}
                 initial={unit === 'currency' ? 24 : unit === 'px' ? 16 : 48}
                 step={unit === 'currency' ? 0.5 : 1}
                 aria-label={NUMBER_FIELD_UNIT_LABEL[unit]}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Width">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Width">
+        <StateGrid columns={2}>
           {NUMBER_FIELD_WIDTHS.map((width) => (
-            <DocsStateCard key={width} label={NUMBER_FIELD_WIDTH_LABEL[width]} align="stretch">
+            <StateCard key={width} label={NUMBER_FIELD_WIDTH_LABEL[width]} align="stretch">
               <StateNumber width={width} unit="percent" aria-label={NUMBER_FIELD_WIDTH_LABEL[width]} />
-            </DocsStateCard>
+            </StateCard>
           ))}
           {NUMBER_FIELD_VARIANTS.map((variant) => (
-            <DocsStateCard key={`clip-${variant}`} label={`${NUMBER_FIELD_VARIANT_LABEL[variant]}, clipped`} align="stretch">
+            <StateCard key={`clip-${variant}`} label={`${NUMBER_FIELD_VARIANT_LABEL[variant]}, clipped`} align="stretch">
               <StateNumber
                 variant={variant}
                 initial={123456789012}
                 aria-label={`${NUMBER_FIELD_VARIANT_LABEL[variant]} overflow`}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Stepper">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Stepper">
+        <StateGrid columns={2}>
           {NUMBER_FIELD_STEPPERS.map((stepper) => (
-            <DocsStateCard key={stepper} label={stepper === 'stack' ? 'Stack' : 'Split'} align="stretch">
+            <StateCard key={stepper} label={stepper === 'stack' ? 'Stack' : 'Split'} align="stretch">
               <StateNumber
                 stepper={stepper}
                 initial={stepper === 'split' ? 2 : 48}
@@ -4302,46 +4554,46 @@ function NumberFieldStates() {
                 unit={stepper === 'stack' ? 'percent' : 'none'}
                 aria-label={stepper === 'stack' ? 'Opacity' : 'Quantity'}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Empty" align="stretch">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Empty" align="stretch">
             <StateNumber initial={null} placeholder="0" aria-label="Empty" />
-          </DocsStateCard>
-          <DocsStateCard label="Filled" align="stretch">
+          </StateCard>
+          <StateCard label="Filled" align="stretch">
             <StateNumber unit="percent" aria-label="Filled" />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" inert align="stretch">
+          </StateCard>
+          <StateCard label="Hover" inert align="stretch">
             <StateNumber unit="percent" preview="hover" aria-label="Hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" inert align="stretch">
+          </StateCard>
+          <StateCard label="Focus" inert align="stretch">
             <StateNumber unit="percent" preview="focus" aria-label="Focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Invalid" align="stretch">
+          </StateCard>
+          <StateCard label="Invalid" align="stretch">
             <StateNumber unit="percent" invalid initial={140} aria-label="Invalid" />
-          </DocsStateCard>
-          <DocsStateCard label="Valid" align="stretch">
+          </StateCard>
+          <StateCard label="Valid" align="stretch">
             <StateNumber unit="percent" valid aria-label="Valid" />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch">
             <StateNumber unit="percent" disabled aria-label="Disabled" />
-          </DocsStateCard>
-          <DocsStateCard label="Read only" align="stretch">
+          </StateCard>
+          <StateCard label="Read only" align="stretch">
             <StateNumber unit="percent" readOnly aria-label="Read only" />
-          </DocsStateCard>
-          <DocsStateCard label="At minimum" align="stretch">
+          </StateCard>
+          <StateCard label="At minimum" align="stretch">
             <StateNumber unit="percent" min={0} max={100} initial={0} aria-label="Minimum" />
-          </DocsStateCard>
-          <DocsStateCard label="At maximum" align="stretch">
+          </StateCard>
+          <StateCard label="At maximum" align="stretch">
             <StateNumber unit="percent" min={0} max={100} initial={100} aria-label="Maximum" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -4409,70 +4661,70 @@ function RangePlay({
 
 function DatePickerStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {DATE_PICKER_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={DATE_VARIANT_LABEL[variant]} align="stretch">
+            <StateCard key={variant} label={DATE_VARIANT_LABEL[variant]} align="stretch">
               <DatePlay variant={variant} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {DATE_PICKER_SIZES.map((size) => (
-            <DocsStateCard key={size} label={DATE_SIZE_LABEL[size]} align="stretch">
+            <StateCard key={size} label={DATE_SIZE_LABEL[size]} align="stretch">
               <DatePlay size={size} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Mode">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Single" align="stretch">
+      <StateGroup title="Mode">
+        <StateGrid columns={2}>
+          <StateCard label="Single" align="stretch">
             <DatePlay />
-          </DocsStateCard>
-          <DocsStateCard label="Range" align="stretch">
+          </StateCard>
+          <StateCard label="Range" align="stretch">
             <RangePlay />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Empty" align="stretch">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Empty" align="stretch">
             <DatePlay value={null} placeholder="Select a date" />
-          </DocsStateCard>
-          <DocsStateCard label="Filled" align="stretch">
+          </StateCard>
+          <StateCard label="Filled" align="stretch">
             <DatePlay />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" align="stretch" inert>
+          </StateCard>
+          <StateCard label="Hover" align="stretch" inert>
             <DatePlay preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Open" align="stretch" inert>
+          </StateCard>
+          <StateCard label="Open" align="stretch" inert>
             <DatePlay preview="open" />
-          </DocsStateCard>
-          <DocsStateCard label="Invalid" align="stretch">
+          </StateCard>
+          <StateCard label="Invalid" align="stretch">
             <DatePlay invalid />
-          </DocsStateCard>
-          <DocsStateCard label="Valid" align="stretch">
+          </StateCard>
+          <StateCard label="Valid" align="stretch">
             <DatePlay valid />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch">
             <DatePlay disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled, empty" align="stretch">
+          </StateCard>
+          <StateCard label="Disabled, empty" align="stretch">
             <DatePlay value={null} placeholder="Select a date" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Compact" align="stretch">
+          </StateCard>
+          <StateCard label="Compact" align="stretch">
             <DatePlay compact />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -4506,37 +4758,37 @@ const OTP_SIZE_LABEL: Record<OtpBoxesSize, string> = {
 
 function OtpStateCard({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <DocsStateCard label={label} align="stretch" size="lg" wide>
+    <StateCard label={label} align="stretch" size="lg" wide>
       {children}
-    </DocsStateCard>
+    </StateCard>
   )
 }
 
 function OtpStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStack gap={4}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateStack gap={4}>
           {OTP_BOXES_VARIANTS.map((variant) => (
             <OtpStateCard key={variant} label={OTP_VARIANT_LABEL[variant]}>
               <OtpBoxes variant={variant} value={OTP_PARTIAL} onChange={OTP_NOOP} />
             </OtpStateCard>
           ))}
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStack gap={4}>
+      <StateGroup title="Size">
+        <StateStack gap={4}>
           {OTP_BOXES_SIZES.map((size) => (
             <OtpStateCard key={size} label={OTP_SIZE_LABEL[size]}>
               <OtpBoxes size={size} value={OTP_PARTIAL} onChange={OTP_NOOP} />
             </OtpStateCard>
           ))}
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="Length">
-        <DocsStack gap={4}>
+      <StateGroup title="Length">
+        <StateStack gap={4}>
           <OtpStateCard label="Four">
             <OtpBoxes length={4} value={['1', '9', '', '']} onChange={OTP_NOOP} />
           </OtpStateCard>
@@ -4551,11 +4803,11 @@ function OtpStates() {
               onChange={OTP_NOOP}
             />
           </OtpStateCard>
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStack gap={4}>
+      <StateGroup title="State">
+        <StateStack gap={4}>
           <OtpStateCard label="Empty">
             <OtpBoxes value={OTP_EMPTY} onChange={OTP_NOOP} />
           </OtpStateCard>
@@ -4589,9 +4841,9 @@ function OtpStates() {
           <OtpStateCard label="Disabled, filled">
             <OtpBoxes value={OTP_FULL} onChange={OTP_NOOP} disabled />
           </OtpStateCard>
-        </DocsStack>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -4628,29 +4880,29 @@ const QR_SIZE_LABEL: Record<QrCodeSize, string> = {
 
 function QrStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStack gap={4}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateStack gap={4}>
           {QR_CODE_VARIANTS.map((variant) => (
             <OtpStateCard key={variant} label={QR_VARIANT_LABEL[variant]}>
               <QrCode content={SAMPLE_TOTP_CONTENT} variant={variant} className="mt-0" />
             </OtpStateCard>
           ))}
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStack gap={4}>
+      <StateGroup title="Size">
+        <StateStack gap={4}>
           {QR_CODE_SIZES.map((size) => (
             <OtpStateCard key={size} label={QR_SIZE_LABEL[size]}>
               <QrCode content={SAMPLE_TOTP_CONTENT} size={size} className="mt-0" />
             </OtpStateCard>
           ))}
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="Content">
-        <DocsStack gap={4}>
+      <StateGroup title="Content">
+        <StateStack gap={4}>
           <OtpStateCard label="TOTP — authenticator setup">
             <QrCode content={SAMPLE_TOTP_CONTENT} alt="Authenticator QR code" className="mt-0" />
           </OtpStateCard>
@@ -4663,22 +4915,22 @@ function QrStates() {
           <OtpStateCard label="Text — plain message">
             <QrCode content={SAMPLE_TEXT_CONTENT} alt="Roboticela message" className="mt-0" />
           </OtpStateCard>
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="Logo">
-        <DocsStack gap={4}>
+      <StateGroup title="Logo">
+        <StateStack gap={4}>
           <OtpStateCard label="Brand logo — default">
             <QrCode content={SAMPLE_URL_CONTENT} className="mt-0" />
           </OtpStateCard>
           <OtpStateCard label="No logo">
             <QrCode content={SAMPLE_URL_CONTENT} logo={false} className="mt-0" />
           </OtpStateCard>
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStack gap={4}>
+      <StateGroup title="State">
+        <StateStack gap={4}>
           <OtpStateCard label="Default">
             <QrCode content={SAMPLE_TOTP_CONTENT} className="mt-0" />
           </OtpStateCard>
@@ -4694,9 +4946,9 @@ function QrStates() {
           <OtpStateCard label="Disabled">
             <QrCode content={SAMPLE_TOTP_CONTENT} disabled className="mt-0" />
           </OtpStateCard>
-        </DocsStack>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -4754,9 +5006,9 @@ function FieldLabelDemo() {
 
 function FieldLabelStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={1}>
+    <StateStack gap={10}>
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
           {FIELD_LABEL_SIZES.map((size) => (
             <FieldState key={size} label={FIELD_LABEL_SIZE_LABEL[size]}>
               <FormField
@@ -4780,11 +5032,11 @@ function FieldLabelStates() {
               </FormField>
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Necessity">
-        <DocsStateGrid columns={1}>
+      <StateGroup title="Necessity">
+        <StateGrid columns={1}>
           <FieldState label="Default">
             <FormField htmlFor="docs-label-default" label="Display name">
               <TextField
@@ -4808,11 +5060,11 @@ function FieldLabelStates() {
               />
             </FormField>
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={1}>
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
           {FIELD_LABEL_TONES.map((tone) => (
             <FieldState key={tone} label={FIELD_LABEL_TONE_LABEL[tone]}>
               <FormField
@@ -4833,11 +5085,11 @@ function FieldLabelStates() {
               </FormField>
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Hint">
-        <DocsStateGrid columns={1}>
+      <StateGroup title="Hint">
+        <StateGrid columns={1}>
           {FIELD_HINT_TONES.map((tone) => (
             <FieldState key={tone} label={FIELD_HINT_TONE_LABEL[tone]}>
               <FormField
@@ -4867,11 +5119,11 @@ function FieldLabelStates() {
               </FormField>
             </FieldState>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={1}>
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
           {FORM_FIELD_LAYOUTS.map((layout) => (
             <FieldState key={layout} label={FORM_FIELD_LAYOUT_LABEL[layout]}>
               <FormField
@@ -4907,11 +5159,11 @@ function FieldLabelStates() {
               </FormField>
             </FieldRow>
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={1}>
+      <StateGroup title="State">
+        <StateGrid columns={1}>
           <FieldState label="Empty">
             <FormField htmlFor="docs-label-empty" label="Display name" hint="Shown on your public profile.">
               <TextField
@@ -5009,9 +5261,9 @@ function FieldLabelStates() {
               />
             </FormField>
           </FieldState>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -5059,17 +5311,17 @@ function RecoveryStateCard({
   children: ReactNode
 }) {
   return (
-    <DocsStateCard label={label} align="stretch" size="lg" wide inert={inert}>
+    <StateCard label={label} align="stretch" size="lg" wide inert={inert}>
       {children}
-    </DocsStateCard>
+    </StateCard>
   )
 }
 
 function RecoveryStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {RECOVERY_INPUT_VARIANTS.map((variant) => (
             <RecoveryStateCard key={variant} label={RECOVERY_VARIANT_LABEL[variant]}>
               <RecoveryInput
@@ -5080,11 +5332,11 @@ function RecoveryStates() {
               />
             </RecoveryStateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {RECOVERY_INPUT_SIZES.map((size) => (
             <RecoveryStateCard key={size} label={RECOVERY_SIZE_LABEL[size]}>
               <RecoveryInput
@@ -5095,11 +5347,11 @@ function RecoveryStates() {
               />
             </RecoveryStateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Mode">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Mode">
+        <StateGrid columns={2}>
           {RECOVERY_INPUT_MODES.map((mode) => (
             <RecoveryStateCard key={mode} label={RECOVERY_MODE_LABEL[mode]}>
               <RecoveryInput
@@ -5110,11 +5362,11 @@ function RecoveryStates() {
               />
             </RecoveryStateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Length">
-        <DocsStack gap={4}>
+      <StateGroup title="Length">
+        <StateStack gap={4}>
           <RecoveryStateCard label="Eight, backup code">
             <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} />
           </RecoveryStateCard>
@@ -5127,11 +5379,11 @@ function RecoveryStates() {
           <RecoveryStateCard label="Twenty-eight, recovery key">
             <RecoveryInput mode="groups" length={28} value={RECOVERY_APPLE} onChange={RECOVERY_NOOP} />
           </RecoveryStateCard>
-        </DocsStack>
-      </DocsStateGroup>
+        </StateStack>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
+      <StateGroup title="State">
+        <StateGrid>
           <RecoveryStateCard label="Empty">
             <RecoveryInput value="" onChange={RECOVERY_NOOP} />
           </RecoveryStateCard>
@@ -5168,11 +5420,11 @@ function RecoveryStates() {
           <RecoveryStateCard label="Disabled, filled">
             <RecoveryInput value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} disabled />
           </RecoveryStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Groups, state">
-        <DocsStateGrid>
+      <StateGroup title="Groups, state">
+        <StateGrid>
           <RecoveryStateCard label="Empty">
             <RecoveryInput mode="groups" value="" onChange={RECOVERY_NOOP} />
           </RecoveryStateCard>
@@ -5191,11 +5443,11 @@ function RecoveryStates() {
           <RecoveryStateCard label="Invalid">
             <RecoveryInput mode="groups" value={RECOVERY_SAMPLE} onChange={RECOVERY_NOOP} invalid />
           </RecoveryStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Codes list">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Codes list">
+        <StateGrid columns={2}>
           <RecoveryStateCard label="Subtle">
             <RecoveryCodesList codes={['XK4M-92QP', 'L7TN-3W8D', 'P0AV-61CK', 'H9QE-44BM']} />
           </RecoveryStateCard>
@@ -5221,9 +5473,9 @@ function RecoveryStates() {
               ]}
             />
           </RecoveryStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -5265,55 +5517,55 @@ function BreadcrumbDemo() {
 
 function BreadcrumbStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {BREADCRUMB_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={BREADCRUMB_VARIANT_LABEL[variant]} align="stretch" wide className="bg-bg-primary">
+            <StateCard key={variant} label={BREADCRUMB_VARIANT_LABEL[variant]} align="stretch" wide className="bg-bg-primary">
               <Breadcrumbs variant={variant} items={BREADCRUMB_PATH} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {BREADCRUMB_SIZES.map((size) => (
-            <DocsStateCard key={size} label={BREADCRUMB_SIZE_LABEL[size]} align="stretch" wide>
+            <StateCard key={size} label={BREADCRUMB_SIZE_LABEL[size]} align="stretch" wide>
               <Breadcrumbs size={size} items={BREADCRUMB_PATH} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Separator">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Separator">
+        <StateGrid columns={2}>
           {BREADCRUMB_SEPARATORS.map((separator) => (
-            <DocsStateCard key={separator} label={BREADCRUMB_SEPARATOR_LABEL[separator]} align="stretch" wide>
+            <StateCard key={separator} label={BREADCRUMB_SEPARATOR_LABEL[separator]} align="stretch" wide>
               <Breadcrumbs separator={separator} items={BREADCRUMB_PATH} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch" wide>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch" wide>
             <Breadcrumbs items={BREADCRUMB_PATH} />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Hover" align="stretch" wide inert>
             <Breadcrumbs items={BREADCRUMB_PATH} preview="hover" previewIndex={0} />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Focus" align="stretch" wide inert>
             <Breadcrumbs items={BREADCRUMB_PATH} preview="focus" previewIndex={0} />
-          </DocsStateCard>
-          <DocsStateCard label="Active" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Active" align="stretch" wide inert>
             <Breadcrumbs items={BREADCRUMB_PATH} preview="active" previewIndex={0} />
-          </DocsStateCard>
-          <DocsStateCard label="Current" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Current" align="stretch" wide>
             <Breadcrumbs items={[{ label: 'Settings' }]} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide>
             <Breadcrumbs
               items={[
                 { label: 'Projects', onClick: () => undefined },
@@ -5321,8 +5573,8 @@ function BreadcrumbStates() {
                 { label: 'Settings' },
               ]}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Collapsed" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Collapsed" align="stretch" wide>
             <Breadcrumbs
               maxItems={4}
               items={[
@@ -5334,8 +5586,8 @@ function BreadcrumbStates() {
                 { label: 'Settings' },
               ]}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Icons" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Icons" align="stretch" wide>
             <Breadcrumbs
               items={[
                 { label: 'Home', icon: crumbGlyph('home'), iconOnly: true, onClick: () => undefined },
@@ -5343,16 +5595,16 @@ function BreadcrumbStates() {
                 { label: 'Atlas', icon: crumbGlyph('open') },
               ]}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Pill, hover" align="stretch" wide inert className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Pill, hover" align="stretch" wide inert className="bg-bg-primary">
             <Breadcrumbs variant="pill" items={BREADCRUMB_PATH} preview="hover" previewIndex={0} />
-          </DocsStateCard>
-          <DocsStateCard label="Fill, current" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Fill, current" align="stretch" wide className="bg-bg-primary">
             <Breadcrumbs variant="fill" items={BREADCRUMB_PATH} />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -5434,8 +5686,8 @@ function TabsStates() {
   const [mail, setMail] = useState('unread')
 
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
         <div className="flex flex-col gap-6">
           {TABS_VARIANTS.map((variant) => (
             <div key={variant} className="flex flex-col gap-2">
@@ -5449,9 +5701,9 @@ function TabsStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
+      <StateGroup title="Size">
         <div className="flex flex-col gap-6">
           {TABS_SIZES.map((size) => (
             <div key={size} className="flex flex-col gap-2">
@@ -5460,9 +5712,9 @@ function TabsStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Content">
+      <StateGroup title="Content">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <Caption>Icon and label</Caption>
@@ -5508,12 +5760,12 @@ function TabsStates() {
             />
           </div>
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
           {TABS_VARIANTS.flatMap((variant) => [
-            <DocsStateCard
+            <StateCard
               key={`${variant}-hover`}
               label={`${TABS_VARIANT_LABEL[variant]}, hover`}
               inert
@@ -5522,8 +5774,8 @@ function TabsStates() {
               className="overflow-visible py-8"
             >
               <TabsPlay variant={variant} preview="hover" label={`${TABS_VARIANT_LABEL[variant]} hover`} />
-            </DocsStateCard>,
-            <DocsStateCard
+            </StateCard>,
+            <StateCard
               key={`${variant}-focus`}
               label={`${TABS_VARIANT_LABEL[variant]}, focus`}
               inert
@@ -5532,9 +5784,9 @@ function TabsStates() {
               className="overflow-visible py-8"
             >
               <TabsPlay variant={variant} preview="focus" label={`${TABS_VARIANT_LABEL[variant]} focus`} />
-            </DocsStateCard>,
+            </StateCard>,
           ])}
-          <DocsStateCard label="Disabled tab" align="stretch" wide>
+          <StateCard label="Disabled tab" align="stretch" wide>
             <TabsPlay
               value={value}
               onChange={setValue}
@@ -5545,14 +5797,14 @@ function TabsStates() {
               ]}
               label="Disabled tab"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" inert align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled" inert align="stretch" wide>
             <TabsPlay disabled label="Disabled" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
+      <StateGroup title="Layout">
         <div className="flex flex-col gap-6">
           {TABS_ALIGNS.map((align) => (
             <div key={align} className="flex flex-col gap-2">
@@ -5584,8 +5836,8 @@ function TabsStates() {
             </SidebarWidth>
           </div>
         </div>
-      </DocsStateGroup>
-    </DocsStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -5626,8 +5878,8 @@ function IconTabStates() {
   const items = ICON_TAB_ITEMS
 
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
         <div className="flex flex-col gap-6">
           {ICON_TAB_VARIANTS.map((variant) => (
             <div key={variant} className="flex flex-col gap-2">
@@ -5644,9 +5896,9 @@ function IconTabStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
+      <StateGroup title="Layout">
         <div className="flex flex-col gap-6">
           {ICON_TAB_LAYOUTS.map((layout) => (
             <div key={layout} className="flex flex-col gap-2">
@@ -5665,9 +5917,9 @@ function IconTabStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
+      <StateGroup title="Size">
         <div className="flex flex-col gap-6">
           {ICON_TAB_SIZES.map((size) => (
             <div key={size} className="flex flex-col gap-2">
@@ -5684,9 +5936,9 @@ function IconTabStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Content">
+      <StateGroup title="Content">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <Caption>Badge</Caption>
@@ -5746,41 +5998,41 @@ function IconTabStates() {
             </TabBarWidth>
           </div>
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={3}>
-          <DocsStateCard label="Default">
+      <StateGroup title="State">
+        <StateGrid columns={3}>
+          <StateCard label="Default">
             <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" />
-          </DocsStateCard>
-          <DocsStateCard label="Hover">
+          </StateCard>
+          <StateCard label="Hover">
             <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus">
+          </StateCard>
+          <StateCard label="Focus">
             <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" preview="focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Selected">
+          </StateCard>
+          <StateCard label="Selected">
             <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" active />
-          </DocsStateCard>
-          <DocsStateCard label="Fill selected">
+          </StateCard>
+          <StateCard label="Fill selected">
             <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" variant="fill" active />
-          </DocsStateCard>
-          <DocsStateCard label="Pill selected">
+          </StateCard>
+          <StateCard label="Pill selected">
             <IconTab icon={<DkAppDashboardLayoutTiles />} label="Home" variant="pill" active />
-          </DocsStateCard>
-          <DocsStateCard label="Badge">
+          </StateCard>
+          <StateCard label="Badge">
             <IconTab icon={<DkMessageInboxTray />} label="Inbox" badge={3} active />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <IconTab icon={<DkPadlockSecureClosed />} label="Locked" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Danger">
+          </StateCard>
+          <StateCard label="Danger">
             <IconTab icon={<DkLogoutExitSession />} label="Log out" tone="danger" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Bar">
+      <StateGroup title="Bar">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <Caption>Disabled item</Caption>
@@ -5811,8 +6063,8 @@ function IconTabStates() {
             </TabBarWidth>
           </div>
         </div>
-      </DocsStateGroup>
-    </DocsStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -5852,8 +6104,8 @@ function PaginationStates() {
   const noop = () => undefined
 
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
         <div className="flex flex-col gap-6">
           {PAGINATION_VARIANTS.map((variant) => (
             <div key={variant} className="flex flex-col gap-2">
@@ -5868,9 +6120,9 @@ function PaginationStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
+      <StateGroup title="Layout">
         <div className="flex flex-col gap-6">
           {PAGINATION_LAYOUTS.map((layout) => (
             <div key={layout} className="flex flex-col gap-2">
@@ -5885,9 +6137,9 @@ function PaginationStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
+      <StateGroup title="Size">
         <div className="flex flex-col gap-6">
           {PAGINATION_SIZES.map((size) => (
             <div key={size} className="flex flex-col gap-2">
@@ -5902,9 +6154,9 @@ function PaginationStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Window">
+      <StateGroup title="Window">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <Caption>Few pages</Caption>
@@ -5943,38 +6195,38 @@ function PaginationStates() {
             />
           </div>
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch" wide>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch" wide>
             <Pagination page={3} pageCount={5} onChange={noop} />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Hover" align="stretch" wide inert>
             <Pagination page={3} pageCount={5} onChange={noop} preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Focus" align="stretch" wide inert>
             <Pagination page={3} pageCount={5} onChange={noop} preview="focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Active" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Active" align="stretch" wide inert>
             <Pagination page={3} pageCount={5} onChange={noop} preview="active" />
-          </DocsStateCard>
-          <DocsStateCard label="First page" align="stretch" wide>
+          </StateCard>
+          <StateCard label="First page" align="stretch" wide>
             <Pagination page={1} pageCount={5} onChange={noop} />
-          </DocsStateCard>
-          <DocsStateCard label="Last page" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Last page" align="stretch" wide>
             <Pagination page={5} pageCount={5} onChange={noop} />
-          </DocsStateCard>
-          <DocsStateCard label="Single page" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Single page" align="stretch" wide>
             <Pagination page={1} pageCount={1} onChange={noop} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide>
             <Pagination page={3} pageCount={5} onChange={noop} disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Loading" align="stretch" wide>
             <Pagination page={3} pageCount={5} onChange={noop} loading />
-          </DocsStateCard>
-          <DocsStateCard label="Next hover" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Next hover" align="stretch" wide inert>
             <Pagination
               page={3}
               pageCount={5}
@@ -5982,17 +6234,17 @@ function PaginationStates() {
               preview="hover"
               previewTarget="next"
             />
-          </DocsStateCard>
-          <DocsStateCard label="First and last" align="stretch" wide>
+          </StateCard>
+          <StateCard label="First and last" align="stretch" wide>
             <Pagination page={12} pageCount={48} onChange={noop} showFirstLast />
-          </DocsStateCard>
-          <DocsStateCard label="Full width" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Full width" align="stretch" wide>
             <Pagination page={3} pageCount={5} onChange={noop} fullWidth />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Align">
+      <StateGroup title="Align">
         <div className="flex flex-col gap-6">
           {PAGINATION_ALIGNS.map((align) => (
             <div key={align} className="flex flex-col gap-2">
@@ -6007,8 +6259,8 @@ function PaginationStates() {
             </div>
           ))}
         </div>
-      </DocsStateGroup>
-    </DocsStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -6153,11 +6405,11 @@ function CommandPalettePreview({
 
 function CommandPaletteStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {COMMAND_PALETTE_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={COMMAND_PALETTE_VARIANT_LABEL[variant]}
               align="stretch"
@@ -6170,15 +6422,15 @@ function CommandPaletteStates() {
                 items={variant === 'nav' ? NAV_ITEMS : COMMAND_ITEMS}
                 query={variant === 'command' ? 'set' : ''}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {COMMAND_PALETTE_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={COMMAND_PALETTE_SIZE_LABEL[size]}
               align="stretch"
@@ -6187,67 +6439,67 @@ function CommandPaletteStates() {
               className="overflow-hidden p-0"
             >
               <CommandPalettePreview size={size} query="new" />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Idle" align="stretch" wide size="lg" className="overflow-hidden p-0">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Idle" align="stretch" wide size="lg" className="overflow-hidden p-0">
             <CommandPalettePreview />
-          </DocsStateCard>
-          <DocsStateCard label="Typing" align="stretch" wide size="lg" className="overflow-hidden p-0">
+          </StateCard>
+          <StateCard label="Typing" align="stretch" wide size="lg" className="overflow-hidden p-0">
             <CommandPalettePreview query="set" />
-          </DocsStateCard>
-          <DocsStateCard label="Selected" align="stretch" wide size="lg" className="overflow-hidden p-0">
+          </StateCard>
+          <StateCard label="Selected" align="stretch" wide size="lg" className="overflow-hidden p-0">
             <CommandPalettePreview query="a" index={1} />
-          </DocsStateCard>
-          <DocsStateCard label="Empty" align="stretch" wide size="lg" className="overflow-hidden p-0">
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide size="lg" className="overflow-hidden p-0">
             <CommandPalettePreview query="xyz" />
-          </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide size="lg" className="overflow-hidden p-0">
+          </StateCard>
+          <StateCard label="Loading" align="stretch" wide size="lg" className="overflow-hidden p-0">
             <CommandPalettePreview query="set" loading />
-          </DocsStateCard>
-          <DocsStateCard label="Spotlight typing" align="stretch" wide size="lg" className="overflow-hidden p-0">
+          </StateCard>
+          <StateCard label="Spotlight typing" align="stretch" wide size="lg" className="overflow-hidden p-0">
             <CommandPalettePreview variant="spotlight" query="button" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Search trigger">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Search trigger">
+        <StateGrid columns={2}>
           {COMMAND_SEARCH_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={COMMAND_SEARCH_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={COMMAND_SEARCH_VARIANT_LABEL[variant]}>
               <CommandSearch
                 variant={variant}
                 placeholder="Search"
                 shortcut={variant === 'outline' || variant === 'pill' ? '⌘K' : false}
                 onClick={() => undefined}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-          <DocsStateCard label="Disabled">
+          <StateCard label="Disabled">
             <CommandSearch placeholder="Search" disabled onClick={() => undefined} />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Trigger size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Trigger size">
+        <StateGrid columns={3}>
           {COMMAND_SEARCH_SIZES.map((size) => (
-            <DocsStateCard key={size} label={COMMAND_SEARCH_SIZE_LABEL[size]}>
+            <StateCard key={size} label={COMMAND_SEARCH_SIZE_LABEL[size]}>
               <CommandSearch
                 size={size}
                 placeholder="Search"
                 shortcut={size === 'sm' ? '⌘K' : false}
                 onClick={() => undefined}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -6422,11 +6674,11 @@ function ModalPreview({
 
 function ModalStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {MODAL_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={MODAL_VARIANT_LABEL[variant]}
               align="stretch"
@@ -6435,15 +6687,15 @@ function ModalStates() {
               className="p-0 overflow-hidden"
             >
               <ModalPreview variant={variant} tone={variant === 'alert' ? 'danger' : 'default'} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {MODAL_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={MODAL_SIZE_LABEL[size]}
               align="stretch"
@@ -6452,15 +6704,15 @@ function ModalStates() {
               className="p-0 overflow-hidden"
             >
               <ModalPreview size={size} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {MODAL_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={MODAL_TONE_LABEL[tone]}
               align="stretch"
@@ -6469,37 +6721,37 @@ function ModalStates() {
               className="p-0 overflow-hidden"
             >
               <ModalPreview variant="alert" tone={tone} icon />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview />
-          </DocsStateCard>
-          <DocsStateCard label="With icon" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="With icon" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview icon />
-          </DocsStateCard>
-          <DocsStateCard label="Title only" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Title only" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview description="" title="Invite teammate" />
-          </DocsStateCard>
-          <DocsStateCard label="No close" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="No close" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview showClose={false} dismissible={false} />
-          </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Loading" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview loading dismissible={false} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled action" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Disabled action" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview
               actions={[
                 { label: 'Send invite', tone: 'primary', disabled: true },
                 { label: 'Cancel', tone: 'cancel' },
               ]}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Form" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Form" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview>
               <TextField
                 icon={<DkEnvelopeMessageMail size={18} strokeWidth={1.6} absoluteStrokeWidth />}
@@ -6507,8 +6759,8 @@ function ModalStates() {
                 defaultValue="sam@roboticela.com"
               />
             </ModalPreview>
-          </DocsStateCard>
-          <DocsStateCard label="Scrolling" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Scrolling" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview size="sm" description="Read the terms before you continue.">
               <p className="m-0">
                 This workspace is for your team. Invited people can view projects, leave comments, and create new
@@ -6518,16 +6770,16 @@ function ModalStates() {
                 Sending an invite does not bill a seat until they accept. You can revoke the link at any time.
               </p>
             </ModalPreview>
-          </DocsStateCard>
-          <DocsStateCard label="Destructive alert" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Destructive alert" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview variant="alert" tone="danger" icon />
-          </DocsStateCard>
-          <DocsStateCard label="Action sheet" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Action sheet" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ModalPreview variant="action" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -6658,11 +6910,11 @@ function ConfirmPreview({
 
 function ConfirmDialogStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {CONFIRM_DIALOG_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={CONFIRM_DIALOG_VARIANT_LABEL[variant]}
               align="stretch"
@@ -6671,15 +6923,15 @@ function ConfirmDialogStates() {
               className="p-0 overflow-hidden"
             >
               <ConfirmPreview variant={variant} tone={variant === 'alert' || variant === 'action' ? 'danger' : 'brand'} icon={variant === 'dialog' || variant === 'sheet'} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {CONFIRM_DIALOG_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={CONFIRM_DIALOG_SIZE_LABEL[size]}
               align="stretch"
@@ -6688,15 +6940,15 @@ function ConfirmDialogStates() {
               className="p-0 overflow-hidden"
             >
               <ConfirmPreview size={size} icon />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {CONFIRM_DIALOG_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={CONFIRM_DIALOG_TONE_LABEL[tone]}
               align="stretch"
@@ -6705,26 +6957,26 @@ function ConfirmDialogStates() {
               className="p-0 overflow-hidden"
             >
               <ConfirmPreview tone={tone} icon />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview />
-          </DocsStateCard>
-          <DocsStateCard label="With icon" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="With icon" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview icon />
-          </DocsStateCard>
-          <DocsStateCard label="Title only" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Title only" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview body={false} />
-          </DocsStateCard>
-          <DocsStateCard label="Single action" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Single action" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview showCancel={false} tone="brand" icon />
-          </DocsStateCard>
-          <DocsStateCard label="Three actions" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Three actions" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview
               tone="warning"
               icon
@@ -6733,25 +6985,25 @@ function ConfirmDialogStates() {
               confirmLabel="Save"
               secondaryLabel="Don’t save"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Loading" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview loading icon />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled confirm" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Disabled confirm" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview confirmDisabled icon />
-          </DocsStateCard>
-          <DocsStateCard label="Locked" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Locked" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview dismissible={false} icon />
-          </DocsStateCard>
-          <DocsStateCard label="With close" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="With close" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview variant="dialog" tone="brand" icon showClose />
-          </DocsStateCard>
-          <DocsStateCard label="Action sheet" align="stretch" wide size="lg" className="p-0 overflow-hidden">
+          </StateCard>
+          <StateCard label="Action sheet" align="stretch" wide size="lg" className="p-0 overflow-hidden">
             <ConfirmPreview variant="action" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -6804,63 +7056,63 @@ function NavSearchDemo() {
 function NavSearchStates() {
   const [iconOpen, setIconOpen] = useState(false)
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {NAV_SEARCH_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={NAV_SEARCH_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={NAV_SEARCH_VARIANT_LABEL[variant]}>
               <NavSearchPlay
                 variant={variant}
                 placeholder="Search"
                 onActivate={variant === 'icon' ? () => setIconOpen(true) : undefined}
                 active={variant === 'icon' ? iconOpen : undefined}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {NAV_SEARCH_SIZES.map((size) => (
-            <DocsStateCard key={size} label={NAV_SEARCH_SIZE_LABEL[size]}>
+            <StateCard key={size} label={NAV_SEARCH_SIZE_LABEL[size]}>
               <NavSearchPlay size={size} placeholder="Search" />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Empty">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Empty">
             <NavSearchPlay placeholder="Search" />
-          </DocsStateCard>
-          <DocsStateCard label="Hover">
+          </StateCard>
+          <StateCard label="Hover">
             <NavSearchPlay placeholder="Search" preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus">
+          </StateCard>
+          <StateCard label="Focus">
             <NavSearchPlay value="Projects" preview="focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Filled">
+          </StateCard>
+          <StateCard label="Filled">
             <NavSearchPlay value="Projects" />
-          </DocsStateCard>
-          <DocsStateCard label="Loading">
+          </StateCard>
+          <StateCard label="Loading">
             <NavSearchPlay value="Alex" loading />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <NavSearchPlay value="Projects" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Shortcut">
+          </StateCard>
+          <StateCard label="Shortcut">
             <NavSearchPlay placeholder="Search" shortcut="⌘K" />
-          </DocsStateCard>
-          <DocsStateCard label="Icon, hover">
+          </StateCard>
+          <StateCard label="Icon, hover">
             <NavSearchPlay variant="icon" placeholder="Search" preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Icon, expanded">
+          </StateCard>
+          <StateCard label="Icon, expanded">
             <NavSearchPlay variant="icon" expanded placeholder="Search" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
       <CommandPalette
         open={iconOpen}
         onClose={() => setIconOpen(false)}
@@ -6868,7 +7120,7 @@ function NavSearchStates() {
         placeholder="Search commands…"
         onSelect={() => setIconOpen(false)}
       />
-    </DocsStack>
+    </StateStack>
   )
 }
 
@@ -6995,11 +7247,11 @@ function SidebarItemPlay({
   preview?: SidebarItemPreview
 }) {
   return (
-    <DocsStateCard label={label} align="stretch">
+    <StateCard label={label} align="stretch">
       <div className="w-full max-w-[240px]">
         <SidebarNavItem item={item} active={active} preview={preview} />
       </div>
-    </DocsStateCard>
+    </StateCard>
   )
 }
 
@@ -7029,11 +7281,11 @@ function SidebarStates() {
   }
 
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {SIDEBAR_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={SIDEBAR_VARIANT_LABEL[variant]}
               align="stretch"
@@ -7044,15 +7296,15 @@ function SidebarStates() {
               <div className="h-[360px] w-full">
                 <SidebarPlay variant={variant} canvas />
               </div>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {SIDEBAR_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={SIDEBAR_SIZE_LABEL[size]}
               align="stretch"
@@ -7063,14 +7315,14 @@ function SidebarStates() {
               <div className="h-[360px] w-full">
                 <SidebarPlay size={size} canvas />
               </div>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Mode">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard
+      <StateGroup title="Mode">
+        <StateGrid columns={2}>
+          <StateCard
             label="Expanded"
             align="stretch"
             wide
@@ -7080,8 +7332,8 @@ function SidebarStates() {
             <div className="h-[360px] w-full">
               <SidebarPlay canvas collapsible />
             </div>
-          </DocsStateCard>
-          <DocsStateCard
+          </StateCard>
+          <StateCard
             label="Rail"
             align="stretch"
             wide
@@ -7091,12 +7343,12 @@ function SidebarStates() {
             <div className="h-[360px] w-full">
               <SidebarPlay canvas collapsed collapsible />
             </div>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Item">
-        <DocsStateGrid>
+      <StateGroup title="Item">
+        <StateGrid>
           <SidebarItemPlay label="Default" item={overview} />
           <SidebarItemPlay label="Hover" item={overview} preview="hover" />
           <SidebarItemPlay label="Focus" item={overview} preview="focus" />
@@ -7105,12 +7357,12 @@ function SidebarStates() {
           <SidebarItemPlay label="Disabled" item={locked} />
           <SidebarItemPlay label="Badge" item={inbox} />
           <SidebarItemPlay label="Danger" item={logout} />
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Composition">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard
+      <StateGroup title="Composition">
+        <StateGrid columns={2}>
+          <StateCard
             label="Search"
             align="stretch"
             wide
@@ -7120,8 +7372,8 @@ function SidebarStates() {
             <div className="h-[360px] w-full">
               <SidebarPlay canvas search />
             </div>
-          </DocsStateCard>
-          <DocsStateCard
+          </StateCard>
+          <StateCard
             label="Account"
             align="stretch"
             wide
@@ -7131,8 +7383,8 @@ function SidebarStates() {
             <div className="h-[360px] w-full">
               <SidebarPlay canvas account />
             </div>
-          </DocsStateCard>
-          <DocsStateCard
+          </StateCard>
+          <StateCard
             label="Collapsible groups"
             align="stretch"
             wide
@@ -7142,8 +7394,8 @@ function SidebarStates() {
             <div className="h-[360px] w-full">
               <SidebarPlay canvas collapsibleSections />
             </div>
-          </DocsStateCard>
-          <DocsStateCard
+          </StateCard>
+          <StateCard
             label="Brand and canvas"
             align="stretch"
             wide
@@ -7153,10 +7405,10 @@ function SidebarStates() {
             <div className="h-[360px] w-full">
               <SidebarPlay canvas account collapsible />
             </div>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -7180,21 +7432,21 @@ function AuthNavDemo() {
 
 function AuthNavStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Trailing link">
+    <StateStack gap={10}>
+      <StateGroup title="Trailing link">
         <div className="flex w-full flex-col gap-8">
-          <DocsStateCard label="Create one" align="stretch" wide>
+          <StateCard label="Create one" align="stretch" wide>
             <AuthNavPreview navLinkTo="/pages/create-account" navLinkLabel="Create one" />
-          </DocsStateCard>
-          <DocsStateCard label="Sign in" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Sign in" align="stretch" wide>
             <AuthNavPreview navLinkTo="/pages/sign-in" navLinkLabel="Sign in" />
-          </DocsStateCard>
-          <DocsStateCard label="Theme only" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Theme only" align="stretch" wide>
             <AuthNavPreview />
-          </DocsStateCard>
+          </StateCard>
         </div>
-      </DocsStateGroup>
-    </DocsStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -7277,157 +7529,157 @@ function RemovableBadgePlay() {
 
 function BadgeStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid>
           {BADGE_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={BADGE_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={BADGE_VARIANT_LABEL[variant]}>
               <Badge variant={variant}>New</Badge>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {BADGE_SIZES.map((size) => (
-            <DocsStateCard key={size} label={BADGE_SIZE_LABEL[size]}>
+            <StateCard key={size} label={BADGE_SIZE_LABEL[size]}>
               <Badge size={size}>New</Badge>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Tone">
+        <StateGrid columns={3}>
           {BADGE_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={BADGE_TONE_LABEL[tone]}>
+            <StateCard key={tone} label={BADGE_TONE_LABEL[tone]}>
               <Badge tone={tone}>{BADGE_TONE_LABEL[tone]}</Badge>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Fill">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Fill">
+        <StateGrid columns={3}>
           {BADGE_TONES.map((tone) => (
-            <DocsStateCard key={`fill-${tone}`} label={BADGE_TONE_LABEL[tone]}>
+            <StateCard key={`fill-${tone}`} label={BADGE_TONE_LABEL[tone]}>
               <Badge variant="fill" tone={tone}>
                 {BADGE_TONE_LABEL[tone]}
               </Badge>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Outline">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Outline">
+        <StateGrid columns={3}>
           {BADGE_TONES.map((tone) => (
-            <DocsStateCard key={`outline-${tone}`} label={BADGE_TONE_LABEL[tone]}>
+            <StateCard key={`outline-${tone}`} label={BADGE_TONE_LABEL[tone]}>
               <Badge variant="outline" tone={tone}>
                 {BADGE_TONE_LABEL[tone]}
               </Badge>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Ghost">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Ghost">
+        <StateGrid columns={3}>
           {BADGE_TONES.map((tone) => (
-            <DocsStateCard key={`ghost-${tone}`} label={BADGE_TONE_LABEL[tone]}>
+            <StateCard key={`ghost-${tone}`} label={BADGE_TONE_LABEL[tone]}>
               <Badge variant="ghost" tone={tone} dot>
                 {BADGE_TONE_LABEL[tone]}
               </Badge>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Shape">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Shape">
+        <StateGrid columns={2}>
           {BADGE_SHAPES.map((shape) => (
-            <DocsStateCard key={shape} label={BADGE_SHAPE_LABEL[shape]}>
+            <StateCard key={shape} label={BADGE_SHAPE_LABEL[shape]}>
               <Badge shape={shape} tone="neutral">
                 Category
               </Badge>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid>
-          <DocsStateCard label="Default">
+      <StateGroup title="State">
+        <StateGrid>
+          <StateCard label="Default">
             <Badge>New</Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Dot">
+          </StateCard>
+          <StateCard label="Dot">
             <Badge tone="verified" dot>
               Live
             </Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Pulse">
+          </StateCard>
+          <StateCard label="Pulse">
             <Badge tone="verified" dot pulse>
               Live
             </Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Icon">
+          </StateCard>
+          <StateCard label="Icon">
             <Badge tone="success" icon={<DkSuccessCircleCheckmark {...BADGE_GLYPH} />}>
               Verified
             </Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Warning icon">
+          </StateCard>
+          <StateCard label="Warning icon">
             <Badge tone="warning" icon={<DkWarningTriangleAlert {...BADGE_GLYPH} />}>
               Review
             </Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Count">
+          </StateCard>
+          <StateCard label="Count">
             <Badge variant="fill" tone="danger" count={3} />
-          </DocsStateCard>
-          <DocsStateCard label="Overflow">
+          </StateCard>
+          <StateCard label="Overflow">
             <Badge variant="fill" tone="danger" count={128} />
-          </DocsStateCard>
-          <DocsStateCard label="Count, brand">
+          </StateCard>
+          <StateCard label="Count, brand">
             <Badge variant="fill" count={12} />
-          </DocsStateCard>
-          <DocsStateCard label="Dot only">
+          </StateCard>
+          <StateCard label="Dot only">
             <Badge tone="success" dot />
-          </DocsStateCard>
-          <DocsStateCard label="Loading">
+          </StateCard>
+          <StateCard label="Loading">
             <Badge loading>Saving</Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <Badge disabled>Paused</Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Removable">
+          </StateCard>
+          <StateCard label="Removable">
             <RemovableBadgePlay />
-          </DocsStateCard>
-          <DocsStateCard label="Pill, large">
+          </StateCard>
+          <StateCard label="Pill, large">
             <Badge variant="pill" size="lg" tone="neutral">
               Pro
             </Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Ghost, small">
+          </StateCard>
+          <StateCard label="Ghost, small">
             <Badge variant="ghost" size="sm" tone="warning" dot>
               Away
             </Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Rounded">
+          </StateCard>
+          <StateCard label="Rounded">
             <Badge shape="rounded" tone="brand">
               Docs
             </Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Long label">
+          </StateCard>
+          <StateCard label="Long label">
             <Badge tone="neutral">In review · waiting</Badge>
-          </DocsStateCard>
-          <DocsStateCard label="Fill, verified">
+          </StateCard>
+          <StateCard label="Fill, verified">
             <Badge variant="fill" tone="verified">
               Active
             </Badge>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -7446,6 +7698,4667 @@ function StatIcon({ name = 'revenue' }: { name?: 'revenue' | 'people' | 'inbox' 
       <DkPaperBanknoteCurrency strokeWidth={1.75} absoluteStrokeWidth />
     )
   return node
+}
+
+const CARD_COPY = {
+  eyebrow: 'Workspace',
+  title: 'Team library',
+  description: 'Shared files, comments, and reviews in one place.',
+}
+
+function CardPhoto({ onDark = false }: { onDark?: boolean }) {
+  return (
+    <span
+      className={cn('block h-full w-full', onDark ? 'bg-[#3a3a3c]' : 'bg-bg-tertiary dark:bg-bg-active')}
+    />
+  )
+}
+
+function CardDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {CARD_VARIANTS.map((variant) => (
+        <Card
+          key={variant}
+          variant={variant}
+          eyebrow={CARD_COPY.eyebrow}
+          title={CARD_COPY.title}
+          description={CARD_COPY.description}
+          icon={<DkAppDashboardLayoutTiles {...glyph} />}
+        />
+      ))}
+    </div>
+  )
+}
+
+function CardTile({
+  variant,
+  size,
+  tone,
+  ...rest
+}: {
+  variant?: CardVariant
+  size?: CardSize
+  tone?: CardTone
+} & Omit<ComponentProps<typeof Card>, 'title' | 'description' | 'eyebrow'>) {
+  return (
+    <Card
+      variant={variant}
+      size={size}
+      tone={tone}
+      eyebrow={CARD_COPY.eyebrow}
+      title={CARD_COPY.title}
+      description={CARD_COPY.description}
+      {...rest}
+    />
+  )
+}
+
+const CARD_CHROME: { label: string; preview?: CardPreview; selected?: boolean; disabled?: boolean; loading?: boolean }[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function CardStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
+          {CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          {CARD_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardTile size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
+          {CARD_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          {CARD_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={CARD_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardTile tone={tone} icon={<DkAppDashboardLayoutTiles {...glyph} />} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {CARD_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${CARD_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={2}>
+            {CARD_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={CARD_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <CardTile variant={variant} tone={tone} icon={<DkAppDashboardLayoutTiles {...glyph} />} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
+          {CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <CardTile variant={variant} onDark icon={<DkAppDashboardLayoutTiles {...glyph} />} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Media">
+        <StateGrid columns={2}>
+          {CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`media-${variant}`}
+              label={CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardTile variant={variant} media={<CardPhoto />} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          <StateCard label="Icon" align="stretch" wide className="bg-bg-primary">
+            <CardTile icon={<DkAppDashboardLayoutTiles {...glyph} />} />
+          </StateCard>
+          <StateCard label="Media and icon" align="stretch" wide className="bg-bg-primary">
+            <Card
+              media={<CardPhoto />}
+              icon={<DkFileFolderDirectory {...glyph} />}
+              eyebrow={CARD_COPY.eyebrow}
+              title={CARD_COPY.title}
+              description={CARD_COPY.description}
+            />
+          </StateCard>
+          <StateCard label="Title only" align="stretch" wide className="bg-bg-primary">
+            <Card title={CARD_COPY.title} />
+          </StateCard>
+          <StateCard label="Eyebrow" align="stretch" wide className="bg-bg-primary">
+            <Card eyebrow={CARD_COPY.eyebrow} title={CARD_COPY.title} />
+          </StateCard>
+          <StateCard label="Badge" align="stretch" wide className="bg-bg-primary">
+            <Card
+              eyebrow={CARD_COPY.eyebrow}
+              title={CARD_COPY.title}
+              description={CARD_COPY.description}
+            >
+              <Badge tone="verified">Live</Badge>
+            </Card>
+          </StateCard>
+          <StateCard label="Footer" align="stretch" wide className="bg-bg-primary">
+            <CardTile
+              footer={
+                <Button size="sm" fullWidth={false}>
+                  Open
+                </Button>
+              }
+            />
+          </StateCard>
+          <StateCard label="Media and footer" align="stretch" wide className="bg-bg-primary">
+            <CardTile
+              media={<CardPhoto />}
+              footer={
+                <Button size="sm" fullWidth={false}>
+                  Open
+                </Button>
+              }
+            />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <CardTile href="#card" icon={<DkAppDashboardLayoutTiles {...glyph} />} description="Open the library." />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <CardTile
+              onClick={() => undefined}
+              icon={<DkFileFolderDirectory {...glyph} />}
+              description="Choose this workspace."
+            />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {CARD_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardTile
+                href="#card"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+                media={item.loading ? <CardPhoto /> : undefined}
+                icon={<DkAppDashboardLayoutTiles {...glyph} />}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <Card title={CARD_COPY.title} />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <CardTile href="#card" icon={<DkAppDashboardLayoutTiles {...glyph} />} description="Open the library." />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <CardTile
+              onClick={() => undefined}
+              icon={<DkFileFolderDirectory {...glyph} />}
+              description="Choose this workspace."
+            />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <CardTile selected tone="brand" icon={<DkAppDashboardLayoutTiles {...glyph} />} />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <CardTile disabled tone="danger" href="#card" icon={<DkWarningTriangleAlert {...glyph} />} />
+          </StateCard>
+          <StateCard label="Loading, media" align="stretch" wide className="bg-bg-primary">
+            <Card loading media={<CardPhoto />} eyebrow={CARD_COPY.eyebrow} title={CARD_COPY.title} />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Height">
+        <StateGrid columns={1}>
+          <StateCard label="Equal height" align="stretch" wide className="bg-bg-primary">
+            <div className="grid grid-cols-1 items-stretch gap-3 min-[735px]:grid-cols-2">
+              <Card
+                fullHeight
+                eyebrow="Inbox"
+                title="Notes"
+                description="A short line."
+                footer={
+                  <Button size="sm" fullWidth={false}>
+                    Open
+                  </Button>
+                }
+              />
+              <Card
+                fullHeight
+                eyebrow={CARD_COPY.eyebrow}
+                title={CARD_COPY.title}
+                description="Shared files, comments, and reviews in one place. Keep the row even when one card has more to say."
+                footer={
+                  <Button size="sm" fullWidth={false}>
+                    Open
+                  </Button>
+                }
+              />
+            </div>
+          </StateCard>
+          <StateCard label="Unequal height" align="stretch" wide className="bg-bg-primary">
+            <div className="grid grid-cols-1 items-start gap-3 min-[735px]:grid-cols-2">
+              <Card eyebrow="Inbox" title="Notes" description="A short line." />
+              <Card
+                eyebrow={CARD_COPY.eyebrow}
+                title={CARD_COPY.title}
+                description="Shared files, comments, and reviews in one place. Keep the row even when one card has more to say."
+              />
+            </div>
+          </StateCard>
+          <StateCard label="Mixed height" align="stretch" wide className="bg-bg-primary">
+            <div className="grid h-[260px] grid-cols-1 items-stretch gap-3 min-[735px]:h-[220px] min-[735px]:grid-cols-2">
+              <Card
+                fullHeight
+                eyebrow="Inbox"
+                title="Notes"
+                description="This card fills the row."
+                footer={
+                  <Button size="sm" fullWidth={false}>
+                    Open
+                  </Button>
+                }
+              />
+              <Card eyebrow={CARD_COPY.eyebrow} title={CARD_COPY.title} description="This card hugs its copy." />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Width">
+        <StateGrid columns={1}>
+          <StateCard label="Equal width" align="stretch" wide className="bg-bg-primary">
+            <div className="grid grid-cols-1 gap-3 min-[735px]:grid-cols-2">
+              <Card eyebrow="Inbox" title="Notes" description="A short line." />
+              <Card eyebrow={CARD_COPY.eyebrow} title={CARD_COPY.title} description={CARD_COPY.description} />
+            </div>
+          </StateCard>
+          <StateCard label="Unequal width" align="stretch" wide className="bg-bg-primary">
+            <div className="flex flex-wrap items-start gap-3">
+              <Card fullWidth={false} eyebrow="Inbox" title="Notes" />
+              <Card
+                fullWidth={false}
+                className="max-w-[280px]"
+                eyebrow={CARD_COPY.eyebrow}
+                title={CARD_COPY.title}
+                description={CARD_COPY.description}
+              />
+            </div>
+          </StateCard>
+          <StateCard label="Mixed width" align="stretch" wide className="bg-bg-primary">
+            <div className="flex flex-col items-stretch gap-3 min-[735px]:flex-row">
+              <Card fullWidth={false} fullHeight eyebrow="Inbox" title="Notes" description="Hugs the title." />
+              <Card
+                fullHeight
+                className="min-[735px]:flex-1"
+                eyebrow={CARD_COPY.eyebrow}
+                title={CARD_COPY.title}
+                description="Fills the rest of the row."
+              />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {CARD_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={CARD_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {CARD_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <CardTile
+                  variant={variant}
+                  href="#card"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const CARD_GRID_ITEMS = [
+  { eyebrow: 'Inbox', title: 'Notes', description: 'A short line.' },
+  { eyebrow: 'Workspace', title: 'Team library', description: 'Shared files, comments, and reviews in one place.' },
+  { eyebrow: 'Review', title: 'Design crit', description: 'Comments and files for this week.' },
+  { eyebrow: 'Archive', title: 'Old projects', description: 'Work that has already shipped.' },
+] as const
+
+type SampleCardOptions = {
+  footer?: boolean
+  variant?: CardVariant
+  size?: CardSize
+  tone?: CardTone
+  onDark?: boolean
+  media?: boolean
+  icon?: boolean
+  loading?: boolean
+  disabled?: boolean
+  selected?: boolean
+  preview?: CardPreview
+  href?: boolean
+}
+
+function sampleCards(count = 3, options: SampleCardOptions = {}) {
+  const pressable =
+    options.href || options.preview === 'hover' || options.preview === 'focus' || options.preview === 'active'
+  return CARD_GRID_ITEMS.slice(0, count).map((item) => (
+    <Card
+      key={item.title}
+      variant={options.variant}
+      size={options.size}
+      tone={options.tone}
+      onDark={options.onDark}
+      loading={options.loading}
+      disabled={options.disabled}
+      selected={options.selected}
+      preview={options.preview}
+      href={pressable ? '#card-grid' : undefined}
+      media={options.media ? <CardPhoto onDark={options.onDark} /> : undefined}
+      icon={options.icon ? <DkAppDashboardLayoutTiles {...glyph} /> : undefined}
+      eyebrow={item.eyebrow}
+      title={item.title}
+      description={item.description}
+      footer={
+        options.footer ? (
+          <Button size="sm" fullWidth={false}>
+            Open
+          </Button>
+        ) : undefined
+      }
+    />
+  ))
+}
+
+function CardGridDemo() {
+  return (
+    <CardGrid columns={3} className="w-full">
+      {sampleCards(3)}
+    </CardGrid>
+  )
+}
+
+function CardGridStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2}>{sampleCards(2, { variant })}</CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {CARD_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2}>{sampleCards(2, { size })}</CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {CARD_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2}>{sampleCards(2, { variant: 'pill', size })}</CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {CARD_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={CARD_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2}>{sampleCards(2, { tone, icon: true })}</CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {CARD_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${CARD_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {CARD_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={CARD_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <CardGrid columns={2}>{sampleCards(2, { variant, tone, icon: true })}</CardGrid>
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <CardGrid columns={2}>{sampleCards(2, { variant, onDark: true, icon: true })}</CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Media">
+        <StateGrid columns={1}>
+          {CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`media-${variant}`}
+              label={CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2}>{sampleCards(2, { variant, media: true })}</CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          <StateCard label="Icon" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { icon: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Media and icon" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { media: true, icon: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Title only" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>
+              {CARD_GRID_ITEMS.slice(0, 2).map((item) => (
+                <Card key={item.title} title={item.title} />
+              ))}
+            </CardGrid>
+          </StateCard>
+          <StateCard label="Footer" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { footer: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Media and footer" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { media: true, footer: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Mixed appearance" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={3}>
+              {CARD_GRID_ITEMS.slice(0, 3).map((item, index) => (
+                <Card
+                  key={item.title}
+                  variant={CARD_VARIANTS[index]}
+                  eyebrow={item.eyebrow}
+                  title={item.title}
+                  description={item.description}
+                  icon={<DkAppDashboardLayoutTiles {...glyph} />}
+                />
+              ))}
+            </CardGrid>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {CARD_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2}>
+                {sampleCards(2, {
+                  href: true,
+                  preview: item.preview,
+                  selected: item.selected,
+                  disabled: item.disabled,
+                  loading: item.loading,
+                  media: item.loading,
+                  icon: true,
+                })}
+              </CardGrid>
+            </StateCard>
+          ))}
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { href: true, icon: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>
+              {CARD_GRID_ITEMS.slice(0, 2).map((item) => (
+                <Card key={item.title} title={item.title} />
+              ))}
+            </CardGrid>
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { selected: true, tone: 'brand', icon: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { disabled: true, tone: 'danger', href: true, icon: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Loading, media" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={2}>{sampleCards(2, { loading: true, media: true })}</CardGrid>
+          </StateCard>
+          <StateCard label="Mixed" align="stretch" wide className="bg-bg-primary">
+            <CardGrid columns={3}>
+              <Card
+                preview="hover"
+                href="#card-grid"
+                eyebrow={CARD_GRID_ITEMS[0].eyebrow}
+                title={CARD_GRID_ITEMS[0].title}
+                description={CARD_GRID_ITEMS[0].description}
+                icon={<DkAppDashboardLayoutTiles {...glyph} />}
+              />
+              <Card
+                selected
+                eyebrow={CARD_GRID_ITEMS[1].eyebrow}
+                title={CARD_GRID_ITEMS[1].title}
+                description={CARD_GRID_ITEMS[1].description}
+                icon={<DkAppDashboardLayoutTiles {...glyph} />}
+              />
+              <Card
+                disabled
+                href="#card-grid"
+                eyebrow={CARD_GRID_ITEMS[2].eyebrow}
+                title={CARD_GRID_ITEMS[2].title}
+                description={CARD_GRID_ITEMS[2].description}
+                icon={<DkFileFolderDirectory {...glyph} />}
+              />
+            </CardGrid>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {CARD_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={CARD_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {CARD_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <CardGrid columns={2}>
+                  {sampleCards(2, {
+                    variant,
+                    href: true,
+                    preview: item.preview,
+                    selected: item.selected,
+                    disabled: item.disabled,
+                    loading: item.loading,
+                    icon: true,
+                  })}
+                </CardGrid>
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="Columns">
+        <StateGrid columns={1}>
+          {CARD_GRID_COLUMNS.map((columns) => (
+            <StateCard
+              key={columns}
+              label={CARD_GRID_COLUMN_LABEL[columns]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={columns}>{sampleCards(columns === 1 ? 2 : columns)}</CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Height">
+        <StateGrid columns={1}>
+          {CARD_GRID_ALIGNS.map((align) => (
+            <StateCard
+              key={align}
+              label={CARD_GRID_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2} align={align}>
+                {sampleCards(2, { footer: true })}
+              </CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Width">
+        <StateGrid columns={1}>
+          {CARD_GRID_WIDTHS.map((widths) => (
+            <StateCard
+              key={widths}
+              label={CARD_GRID_WIDTH_LABEL[widths]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2} widths={widths} align="start">
+                {sampleCards(2)}
+              </CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={1}>
+          {CARD_GRID_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={CARD_GRID_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <CardGrid columns={2} gap={gap}>
+                {sampleCards(2)}
+              </CardGrid>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
+  )
+}
+
+const STACK_ITEMS = [
+  { title: 'Notes', description: 'A short line.' },
+  { title: 'Library', description: 'Shared files in one place.' },
+  { title: 'Review', description: 'Comments for this week.' },
+] as const
+
+function stackCards(count = 3) {
+  return STACK_ITEMS.slice(0, count).map((item) => (
+    <Card key={item.title} size="sm" title={item.title} description={item.description} />
+  ))
+}
+
+const STACK_CHROME: { label: string; preview?: StackPreview; selected?: boolean; disabled?: boolean; loading?: boolean }[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function StackDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {STACK_VARIANTS.map((variant) => (
+        <Stack key={variant} variant={variant} gap="sm">
+          {stackCards(2)}
+        </Stack>
+      ))}
+    </div>
+  )
+}
+
+function StackStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
+          {STACK_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={STACK_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack variant={variant} gap="sm">
+                {stackCards(2)}
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          {STACK_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={STACK_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack variant="subtle" size={size} gap="sm">
+                {stackCards(2)}
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
+          {STACK_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={STACK_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack variant="pill" size={size} gap="sm">
+                {stackCards(2)}
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          {STACK_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={STACK_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack variant="subtle" tone={tone} gap="sm">
+                {stackCards(2)}
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {STACK_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${STACK_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={2}>
+            {STACK_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={STACK_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <Stack variant={variant} tone={tone} gap="sm">
+                  {stackCards(2)}
+                </Stack>
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
+          {STACK_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={STACK_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <Stack variant={variant} onDark gap="sm">
+                <Card size="sm" onDark title="Notes" description="A short line." />
+                <Card size="sm" onDark title="Library" description="Shared files in one place." />
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Direction">
+        <StateGrid columns={1}>
+          {STACK_DIRECTIONS.map((direction) => (
+            <StateCard
+              key={direction}
+              label={STACK_DIRECTION_LABEL[direction]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack direction={direction} variant="subtle" gap="sm">
+                {stackCards(direction === 'horizontal' ? 2 : 3)}
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Align">
+        <StateGrid columns={2}>
+          {STACK_ALIGNS.map((align) => (
+            <StateCard
+              key={align}
+              label={STACK_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack variant="subtle" align={align} gap="sm">
+                <Card size="sm" fullWidth={align !== 'stretch'} title="Notes" />
+                <Card size="sm" title="Library" description="Shared files in one place." />
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Justify">
+        <StateGrid columns={1}>
+          {STACK_JUSTIFIES.map((justify) => (
+            <StateCard
+              key={justify}
+              label={STACK_JUSTIFY_LABEL[justify]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack direction="horizontal" variant="subtle" justify={justify} gap="sm" wrap>
+                <Card size="sm" fullWidth={false} title="Notes" />
+                <Card size="sm" fullWidth={false} title="Library" />
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={2}>
+          {STACK_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={STACK_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack variant="subtle" gap={gap}>
+                {stackCards(2)}
+              </Stack>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          <StateCard label="Wrap" align="stretch" wide className="bg-bg-primary">
+            <Stack direction="horizontal" variant="subtle" gap="sm" wrap className="max-w-[280px]">
+              {stackCards(3)}
+            </Stack>
+          </StateCard>
+          <StateCard label="Actions" align="stretch" wide className="bg-bg-primary">
+            <Stack direction="horizontal" gap="sm" align="center">
+              <Button size="sm" fullWidth={false}>
+                Save
+              </Button>
+              <Button size="sm" variant="secondary" fullWidth={false}>
+                Cancel
+              </Button>
+            </Stack>
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <Stack variant="subtle" fullWidth={false} gap="sm">
+              <Card size="sm" fullWidth={false} title="Notes" />
+              <Card size="sm" fullWidth={false} title="Library" />
+            </Stack>
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex h-[220px] items-stretch gap-3">
+              <Stack variant="subtle" fullHeight gap="sm" className="flex-1">
+                {stackCards(2)}
+              </Stack>
+              <Stack variant="outline" fullHeight justify="between" gap="sm" className="flex-1">
+                <Card size="sm" title="Notes" description="A short line." />
+                <Card size="sm" title="Library" description="Pushed to the end of the column." />
+              </Stack>
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {STACK_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <Stack
+                variant="subtle"
+                href="#stack"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+                gap="sm"
+              >
+                {stackCards(2)}
+              </Stack>
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <Stack variant="subtle" gap="sm" />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <Stack variant="subtle" href="#stack" gap="sm">
+              {stackCards(2)}
+            </Stack>
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <Stack variant="subtle" onClick={() => undefined} gap="sm">
+              {stackCards(2)}
+            </Stack>
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <Stack variant="subtle" selected tone="brand" gap="sm">
+              {stackCards(2)}
+            </Stack>
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <Stack variant="subtle" disabled tone="danger" href="#stack" gap="sm">
+              {stackCards(2)}
+            </Stack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {STACK_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={STACK_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {STACK_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <Stack
+                  variant={variant}
+                  href="#stack"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                  gap="sm"
+                >
+                  {stackCards(2)}
+                </Stack>
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const USAGE_PROSE =
+  'Usage is the how-to block for a feature or a flow. Start with one paragraph that says what to do, then list the three rules, then close with do and don’t. Keep the copy long enough to read as a sentence, not a label.'
+const USAGE_PRINCIPLES = [
+  {
+    title: 'Order',
+    body: 'Body, then principles, then do and don’t. Related links sit outside the block so this group stays one job.',
+  },
+  {
+    title: 'One card per line',
+    body: 'Each principle and each do or don’t card fills the row. The number sits beside the copy so the line can run without wrapping into a tight column.',
+  },
+  {
+    title: 'One job',
+    body: 'A usage block explains the thing on the page. Do not mix a metric, a form, or a live demo into it.',
+  },
+]
+const USAGE_DO = [
+  'Start with one short paragraph that a person can read after the heading.',
+  'Put three principles on their own rows, then close with do and don’t.',
+]
+const USAGE_DONT = [
+  'Do not pack three principles into one row. The copy wraps and the block feels cramped.',
+  'Do not skip Body to jump to do and don’t.',
+]
+
+function UsageTile(props: UsageProps) {
+  return (
+    <Usage
+      prose={USAGE_PROSE}
+      principles={USAGE_PRINCIPLES}
+      doItems={USAGE_DO}
+      dontItems={USAGE_DONT}
+      {...props}
+    />
+  )
+}
+
+const USAGE_CHROME: { label: string; preview?: UsagePreview; selected?: boolean; disabled?: boolean; loading?: boolean }[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function UsageDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {USAGE_VARIANTS.map((variant) => (
+        <UsageTile key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function UsageStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {USAGE_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={USAGE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <UsageTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {USAGE_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={USAGE_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <UsageTile variant="subtle" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {USAGE_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={USAGE_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <UsageTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {USAGE_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={USAGE_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <UsageTile variant="subtle" tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {USAGE_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${USAGE_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {USAGE_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={USAGE_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <UsageTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {USAGE_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={USAGE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <UsageTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          {USAGE_LAYOUTS.map((layout) => (
+            <StateCard
+              key={layout}
+              label={USAGE_LAYOUT_LABEL[layout]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <UsageTile variant="subtle" layout={layout} />
+            </StateCard>
+          ))}
+          <StateCard label="Title" align="stretch" wide className="bg-bg-primary">
+            <UsageTile variant="subtle" eyebrow="Library" title="How to share a file" />
+          </StateCard>
+          <StateCard label="Body only" align="stretch" wide className="bg-bg-primary">
+            <Usage variant="subtle" prose={USAGE_PROSE} />
+          </StateCard>
+          <StateCard label="Principles only" align="stretch" wide className="bg-bg-primary">
+            <Usage variant="subtle" principles={USAGE_PRINCIPLES} />
+          </StateCard>
+          <StateCard label="Do and don’t only" align="stretch" wide className="bg-bg-primary">
+            <Usage variant="subtle" doItems={USAGE_DO} dontItems={USAGE_DONT} />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <Usage variant="subtle" fullWidth={false} prose={USAGE_PROSE} principles={USAGE_PRINCIPLES.slice(0, 1)} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[280px] items-stretch">
+              <UsageTile variant="subtle" fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={1}>
+          {USAGE_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={USAGE_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <UsageTile variant="subtle" gap={gap} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {USAGE_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <UsageTile
+                variant="subtle"
+                href="#usage"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <Usage variant="subtle" />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <UsageTile variant="subtle" href="#usage" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <UsageTile variant="subtle" onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <UsageTile variant="subtle" selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <UsageTile variant="subtle" disabled tone="danger" href="#usage" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {USAGE_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={USAGE_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {USAGE_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <UsageTile
+                  variant={variant}
+                  href="#usage"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const TOKEN_GROUP_SAMPLES = ['brand-primary', 'text-primary', 'bg-secondary', 'border-default'] as const
+
+function TokenChip({ token, onDark }: { token: string; onDark?: boolean }) {
+  return (
+    <div
+      className={cn(
+        'min-w-0 overflow-hidden rounded-[12px] border',
+        onDark ? 'border-[#38383a]' : 'border-border-default',
+      )}
+    >
+      <div
+        className={cn('h-12 border-b', onDark ? 'border-[#2c2c2e]' : 'border-border-subtle')}
+        style={{ background: `var(--${token})` }}
+      />
+      <p
+        className={cn(
+          'm-0 truncate px-2 py-1.5 font-mono text-[11px]',
+          onDark ? 'text-[#a1a1a6]' : 'text-text-secondary',
+        )}
+      >
+        --{token}
+      </p>
+    </div>
+  )
+}
+
+function tokenChips(onDark?: boolean) {
+  return TOKEN_GROUP_SAMPLES.map((token) => <TokenChip key={token} token={token} onDark={onDark} />)
+}
+
+function TokenGroupTile({
+  title = 'Brand',
+  note = 'The only interactive accent.',
+  columns = 4,
+  onDark,
+  children,
+  ...props
+}: TokenGroupProps) {
+  return (
+    <TokenGroup title={title} note={note} columns={columns} onDark={onDark} {...props}>
+      {children ?? tokenChips(onDark)}
+    </TokenGroup>
+  )
+}
+
+const TOKEN_GROUP_CHROME: {
+  label: string
+  preview?: TokenGroupPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function TokenGroupDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {TOKEN_GROUP_VARIANTS.map((variant) => (
+        <TokenGroupTile key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function TokenGroupStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={TOKEN_GROUP_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <TokenGroupTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={TOKEN_GROUP_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <TokenGroupTile variant="subtle" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={TOKEN_GROUP_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <TokenGroupTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={TOKEN_GROUP_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <TokenGroupTile variant="subtle" tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {TOKEN_GROUP_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${TOKEN_GROUP_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {TOKEN_GROUP_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={TOKEN_GROUP_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <TokenGroupTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={TOKEN_GROUP_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <TokenGroupTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_COLUMNS.map((columns) => (
+            <StateCard
+              key={columns}
+              label={TOKEN_GROUP_COLUMN_LABEL[columns]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <TokenGroupTile variant="subtle" columns={columns} />
+            </StateCard>
+          ))}
+          <StateCard label="Title" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" note="" />
+          </StateCard>
+          <StateCard label="Note" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" title="" />
+          </StateCard>
+          <StateCard label="Samples only" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" title="" note="" />
+          </StateCard>
+          <StateCard label="Ungrouped children" align="stretch" wide className="bg-bg-primary">
+            <TokenGroup variant="subtle" title="Brand" note="The only interactive accent.">
+              <div className="flex w-full flex-col gap-3">{tokenChips()}</div>
+            </TokenGroup>
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" fullWidth={false} columns={2} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[240px] items-stretch">
+              <TokenGroupTile variant="subtle" fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={TOKEN_GROUP_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <TokenGroupTile variant="subtle" gap={gap} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {TOKEN_GROUP_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <TokenGroupTile
+                variant="subtle"
+                href="#token-group"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <TokenGroup variant="subtle" />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" href="#token-group" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <TokenGroupTile variant="subtle" disabled tone="danger" href="#token-group" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {TOKEN_GROUP_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={TOKEN_GROUP_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {TOKEN_GROUP_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <TokenGroupTile
+                  variant={variant}
+                  href="#token-group"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+function StateCardSample({ onDark }: { onDark?: boolean }) {
+  return (
+    <span
+      className={cn(
+        'inline-flex h-11 items-center justify-center rounded-[980px] px-[22px] text-[17px] font-medium leading-none text-white',
+        onDark ? 'bg-[#3b9eff]' : 'bg-brand-primary',
+      )}
+    >
+      Button
+    </span>
+  )
+}
+
+function StateCardTile({
+  label = 'Default',
+  onDark,
+  children,
+  ...props
+}: StateCardProps) {
+  return (
+    <KitStateCard label={label} onDark={onDark} {...props}>
+      {children ?? <StateCardSample onDark={onDark} />}
+    </KitStateCard>
+  )
+}
+
+const STATE_CARD_CHROME: {
+  label: string
+  preview?: StateCardPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function StateCardDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {STATE_CARD_VARIANTS.map((variant) => (
+        <StateCardTile key={variant} variant={variant} label={STATE_CARD_VARIANT_LABEL[variant]} />
+      ))}
+    </div>
+  )
+}
+
+function StateCardStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
+          {STATE_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={STATE_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateCardTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          {STATE_CARD_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={STATE_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateCardTile size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
+          {STATE_CARD_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={STATE_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateCardTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          {STATE_CARD_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={STATE_CARD_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateCardTile tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {STATE_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${STATE_CARD_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={2}>
+            {STATE_CARD_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={STATE_CARD_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <StateCardTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
+          {STATE_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={STATE_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <StateCardTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          {STATE_CARD_ALIGNS.map((align) => (
+            <StateCard
+              key={align}
+              label={STATE_CARD_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              {align === 'stretch' ? (
+                <StateCardTile align="stretch" label="Stretch">
+                  <TextField placeholder="Email" />
+                </StateCardTile>
+              ) : (
+                <StateCardTile align={align} label={STATE_CARD_ALIGN_LABEL[align]} />
+              )}
+            </StateCard>
+          ))}
+          <StateCard label="Wide" align="stretch" wide className="bg-bg-primary">
+            <StateCardTile align="stretch" wide label="Wide">
+              <TextField placeholder="Email" />
+            </StateCardTile>
+          </StateCard>
+          <StateCard label="Label" align="stretch" wide className="bg-bg-primary">
+            <KitStateCard variant="subtle" label="Default" />
+          </StateCard>
+          <StateCard label="Sample only" align="stretch" wide className="bg-bg-primary">
+            <KitStateCard>
+              <StateCardSample />
+            </KitStateCard>
+          </StateCard>
+          <StateCard label="Inert" align="stretch" wide className="bg-bg-primary">
+            <StateCardTile inert label="Inert" />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <StateCardTile fullWidth={false} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[240px] items-stretch">
+              <StateCardTile fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={2}>
+          {STATE_CARD_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={STATE_CARD_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateCardTile gap={gap} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {STATE_CARD_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateCardTile
+                href="#state-card"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <KitStateCard />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <StateCardTile href="#state-card" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <StateCardTile onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <StateCardTile selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <StateCardTile disabled tone="danger" href="#state-card" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {STATE_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={STATE_CARD_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {STATE_CARD_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <StateCardTile
+                  variant={variant}
+                  href="#state-card"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const STATE_GRID_LABELS = ['Default', 'Hover', 'Focus', 'Active', 'Disabled', 'Loading'] as const
+
+function tileCount(columns: 1 | 2 | 3 | 4 | 6 = 3) {
+  if (columns === 1) return 2
+  if (columns === 6) return 6
+  return columns
+}
+
+function sampleStateCards(count = 3, options: Omit<StateCardProps, 'label' | 'children'> = {}) {
+  const { onDark, ...rest } = options
+  return STATE_GRID_LABELS.slice(0, count).map((label) => (
+    <KitStateCard key={label} label={label} onDark={onDark} {...rest}>
+      <StateCardSample onDark={onDark} />
+    </KitStateCard>
+  ))
+}
+
+function StateGridTile({
+  columns = 3,
+  onDark,
+  children,
+  ...props
+}: StateGridProps) {
+  return (
+    <KitStateGrid columns={columns} onDark={onDark} {...props}>
+      {children ?? sampleStateCards(tileCount(columns), { onDark })}
+    </KitStateGrid>
+  )
+}
+
+const STATE_GRID_CHROME: {
+  label: string
+  preview?: StateGridPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function StateGridDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {STATE_GRID_VARIANTS.map((variant) => (
+        <StateGridTile key={variant} variant={variant} columns={3} />
+      ))}
+    </div>
+  )
+}
+
+function StateGridStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {STATE_GRID_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={STATE_GRID_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant={variant} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {STATE_GRID_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={STATE_GRID_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant="subtle" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {STATE_GRID_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={STATE_GRID_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant="pill" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {STATE_GRID_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={STATE_GRID_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant="subtle" tone={tone} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {STATE_GRID_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${STATE_GRID_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {STATE_GRID_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={STATE_GRID_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <StateGridTile variant={variant} tone={tone} columns={2} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {STATE_GRID_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={STATE_GRID_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <StateGridTile variant={variant} onDark columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          <StateCard label="Mixed appearance" align="stretch" wide className="bg-bg-primary">
+            <KitStateGrid columns={3}>
+              {STATE_CARD_VARIANTS.slice(0, 3).map((variant) => (
+                <KitStateCard key={variant} variant={variant} label={STATE_CARD_VARIANT_LABEL[variant]}>
+                  <StateCardSample />
+                </KitStateCard>
+              ))}
+            </KitStateGrid>
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <KitStateGrid variant="subtle" columns={2} />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <StateGridTile variant="subtle" fullWidth={false} columns={2} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[240px] items-stretch">
+              <StateGridTile variant="subtle" fullHeight columns={2} />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Columns">
+        <StateGrid columns={1}>
+          {STATE_GRID_COLUMNS.map((columns) => (
+            <StateCard
+              key={columns}
+              label={STATE_GRID_COLUMN_LABEL[columns]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant="subtle" columns={columns} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Height">
+        <StateGrid columns={1}>
+          {STATE_GRID_ALIGNS.map((align) => (
+            <StateCard
+              key={align}
+              label={STATE_GRID_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant="subtle" align={align} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Width">
+        <StateGrid columns={1}>
+          {STATE_GRID_WIDTHS.map((widths) => (
+            <StateCard
+              key={widths}
+              label={STATE_GRID_WIDTH_LABEL[widths]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant="subtle" widths={widths} align="start" columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={1}>
+          {STATE_GRID_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={STATE_GRID_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile variant="subtle" gap={gap} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {STATE_GRID_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGridTile
+                variant="subtle"
+                columns={2}
+                href="#state-grid"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <StateGridTile variant="subtle" columns={2} href="#state-grid" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <StateGridTile variant="subtle" columns={2} onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <StateGridTile variant="subtle" columns={2} selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <StateGridTile variant="subtle" columns={2} disabled tone="danger" href="#state-grid" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {STATE_GRID_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={STATE_GRID_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {STATE_GRID_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <StateGridTile
+                  variant={variant}
+                  columns={2}
+                  href="#state-grid"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+function StateGroupTile({
+  title = 'Appearance',
+  columns = 3,
+  onDark,
+  children,
+  ...props
+}: StateGroupProps) {
+  return (
+    <KitStateGroup title={title} columns={columns} onDark={onDark} {...props}>
+      {children ?? sampleStateCards(tileCount(columns), { onDark })}
+    </KitStateGroup>
+  )
+}
+
+const STATE_GROUP_CHROME: {
+  label: string
+  preview?: StateGroupPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function StateGroupDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {STATE_GROUP_VARIANTS.map((variant) => (
+        <StateGroupTile key={variant} variant={variant} columns={3} />
+      ))}
+    </div>
+  )
+}
+
+function StateGroupStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {STATE_GROUP_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={STATE_GROUP_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant={variant} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {STATE_GROUP_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={STATE_GROUP_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant="subtle" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {STATE_GROUP_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={STATE_GROUP_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant="pill" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {STATE_GROUP_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={STATE_GROUP_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant="subtle" tone={tone} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {STATE_GROUP_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${STATE_GROUP_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {STATE_GROUP_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={STATE_GROUP_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <StateGroupTile variant={variant} tone={tone} columns={2} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {STATE_GROUP_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={STATE_GROUP_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <StateGroupTile variant={variant} onDark columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          <StateCard label="Title" align="stretch" wide className="bg-bg-primary">
+            <KitStateGroup variant="subtle" title="Appearance" />
+          </StateCard>
+          <StateCard label="Grid only" align="stretch" wide className="bg-bg-primary">
+            <KitStateGroup variant="subtle" columns={2} title="">
+              {sampleStateCards(2)}
+            </KitStateGroup>
+          </StateCard>
+          <StateCard label="Ungrouped children" align="stretch" wide className="bg-bg-primary">
+            <KitStateGroup variant="subtle" title="Appearance">
+              <KitStateGrid columns={2}>{sampleStateCards(2)}</KitStateGrid>
+            </KitStateGroup>
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <KitStateGroup variant="subtle" />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <StateGroupTile variant="subtle" fullWidth={false} columns={2} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[240px] items-stretch">
+              <StateGroupTile variant="subtle" fullHeight columns={2} />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Columns">
+        <StateGrid columns={1}>
+          {STATE_GROUP_COLUMNS.map((columns) => (
+            <StateCard
+              key={columns}
+              label={STATE_GROUP_COLUMN_LABEL[columns]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant="subtle" columns={columns} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Height">
+        <StateGrid columns={1}>
+          {STATE_GROUP_ALIGNS.map((align) => (
+            <StateCard
+              key={align}
+              label={STATE_GROUP_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant="subtle" align={align} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Width">
+        <StateGrid columns={1}>
+          {STATE_GROUP_WIDTHS.map((widths) => (
+            <StateCard
+              key={widths}
+              label={STATE_GROUP_WIDTH_LABEL[widths]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant="subtle" widths={widths} align="start" columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={1}>
+          {STATE_GROUP_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={STATE_GROUP_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile variant="subtle" gap={gap} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {STATE_GROUP_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <StateGroupTile
+                variant="subtle"
+                columns={2}
+                href="#state-group"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <StateGroupTile variant="subtle" columns={2} href="#state-group" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <StateGroupTile variant="subtle" columns={2} onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <StateGroupTile variant="subtle" columns={2} selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <StateGroupTile variant="subtle" columns={2} disabled tone="danger" href="#state-group" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {STATE_GROUP_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={STATE_GROUP_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {STATE_GROUP_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <StateGroupTile
+                  variant={variant}
+                  columns={2}
+                  href="#state-group"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+function SwatchTile({
+  token = 'brand-primary',
+  ...props
+}: SwatchProps) {
+  return <Swatch token={token} {...props} />
+}
+
+const SWATCH_CHROME: {
+  label: string
+  preview?: SwatchPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+const SWATCH_SAMPLE_TOKENS = [
+  'brand-primary',
+  'text-primary',
+  'bg-secondary',
+  'border-default',
+  'success',
+  'danger',
+] as const
+
+function SwatchDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {SWATCH_VARIANTS.map((variant) => (
+        <SwatchTile key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function SwatchStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
+          {SWATCH_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={SWATCH_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          {SWATCH_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={SWATCH_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchTile size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
+          {SWATCH_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={SWATCH_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          {SWATCH_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={SWATCH_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchTile tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {SWATCH_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${SWATCH_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={2}>
+            {SWATCH_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={SWATCH_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <SwatchTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
+          {SWATCH_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={SWATCH_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <SwatchTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          {SWATCH_SAMPLE_TOKENS.map((token) => (
+            <StateCard key={token} label={token} align="stretch" wide className="bg-bg-primary">
+              <SwatchTile token={token} />
+            </StateCard>
+          ))}
+          <StateCard label="Fill only" align="stretch" wide className="bg-bg-primary">
+            <SwatchTile named={false} />
+          </StateCard>
+          <StateCard label="Custom name" align="stretch" wide className="bg-bg-primary">
+            <SwatchTile name="Brand" />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <SwatchTile fullWidth={false} className="w-[160px]" />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[200px] items-stretch">
+              <SwatchTile fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {SWATCH_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchTile
+                href="#swatch"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <Swatch />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <SwatchTile href="#swatch" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <SwatchTile onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <SwatchTile selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <SwatchTile disabled tone="danger" href="#swatch" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {SWATCH_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={SWATCH_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {SWATCH_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <SwatchTile
+                  variant={variant}
+                  href="#swatch"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const SWATCH_GRID_FAMILY = ['brand-primary', 'success', 'warning', 'danger'] as const
+const SWATCH_GRID_SIX = [
+  'brand-primary',
+  'brand-primary-hover',
+  'success',
+  'warning',
+  'danger',
+  'text-primary',
+] as const
+
+function swatchGridTokens(columns: SwatchGridColumns): string[] {
+  if (columns === 1) return ['brand-primary', 'success']
+  if (columns === 3) return ['brand-primary', 'success', 'warning']
+  if (columns === 6) return [...SWATCH_GRID_SIX]
+  return [...SWATCH_GRID_FAMILY]
+}
+
+function SwatchGridTile({
+  tokens,
+  columns = 4,
+  ...props
+}: SwatchGridProps) {
+  return <SwatchGrid tokens={tokens ?? swatchGridTokens(columns)} columns={columns} {...props} />
+}
+
+const SWATCH_GRID_CHROME: {
+  label: string
+  preview?: SwatchGridPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function SwatchGridDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {SWATCH_GRID_VARIANTS.map((variant) => (
+        <SwatchGridTile key={variant} variant={variant} columns={4} />
+      ))}
+    </div>
+  )
+}
+
+function SwatchGridStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={SWATCH_GRID_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile variant={variant} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={SWATCH_GRID_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile variant="subtle" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={SWATCH_GRID_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile variant="pill" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={SWATCH_GRID_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile variant="subtle" tone={tone} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {SWATCH_GRID_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${SWATCH_GRID_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {SWATCH_GRID_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={SWATCH_GRID_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <SwatchGridTile variant={variant} tone={tone} columns={2} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={SWATCH_GRID_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <SwatchGridTile variant={variant} onDark columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          <StateCard label="Mixed appearance" align="stretch" wide className="bg-bg-primary">
+            <SwatchGrid columns={2}>
+              <Swatch token="brand-primary" variant="outline" />
+              <Swatch token="success" variant="subtle" />
+              <Swatch token="warning" variant="fill" />
+              <Swatch token="danger" variant="pill" />
+            </SwatchGrid>
+          </StateCard>
+          <StateCard label="Fill only" align="stretch" wide className="bg-bg-primary">
+            <SwatchGridTile named={false} columns={2} />
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <SwatchGrid variant="subtle" tokens={[]} columns={2} />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <SwatchGridTile variant="subtle" fullWidth={false} columns={2} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[240px] items-stretch">
+              <SwatchGridTile variant="subtle" fullHeight columns={2} />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Columns">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_COLUMNS.map((columns) => (
+            <StateCard
+              key={columns}
+              label={SWATCH_GRID_COLUMN_LABEL[columns]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile variant="subtle" columns={columns} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Height">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_ALIGNS.map((align) => (
+            <StateCard
+              key={align}
+              label={SWATCH_GRID_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              {align === 'start' ? (
+                <SwatchGrid variant="subtle" columns={2} align="start">
+                  <Swatch token="brand-primary" />
+                  <Swatch token="success" named={false} />
+                </SwatchGrid>
+              ) : (
+                <SwatchGridTile variant="subtle" align={align} columns={2} />
+              )}
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Width">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_WIDTHS.map((widths) => (
+            <StateCard
+              key={widths}
+              label={SWATCH_GRID_WIDTH_LABEL[widths]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile variant="subtle" widths={widths} align="start" columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={SWATCH_GRID_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile variant="subtle" gap={gap} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {SWATCH_GRID_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <SwatchGridTile
+                variant="subtle"
+                columns={2}
+                href="#swatch-grid"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <SwatchGridTile variant="subtle" columns={2} href="#swatch-grid" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <SwatchGridTile variant="subtle" columns={2} onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <SwatchGridTile variant="subtle" columns={2} selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <SwatchGridTile variant="subtle" columns={2} disabled tone="danger" href="#swatch-grid" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {SWATCH_GRID_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={SWATCH_GRID_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {SWATCH_GRID_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <SwatchGridTile
+                  variant={variant}
+                  columns={2}
+                  href="#swatch-grid"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+function ContrastCardTile({
+  fg = 'text-primary',
+  bg = 'bg-primary',
+  label = 'Headline on page',
+  ...props
+}: ContrastCardProps) {
+  return <ContrastCard fg={fg} bg={bg} label={label} {...props} />
+}
+
+const CONTRAST_CARD_CHROME: {
+  label: string
+  preview?: ContrastCardPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+const CONTRAST_CARD_PAIRS = [
+  { fg: 'text-primary', bg: 'bg-primary', label: 'Headline on page' },
+  { fg: 'text-secondary', bg: 'bg-primary', label: 'Body on page' },
+  { fg: 'text-tertiary', bg: 'bg-secondary', label: 'Caption on card' },
+  { fg: 'text-on-brand', bg: 'brand-primary', label: 'Label on primary' },
+  { fg: 'text-link', bg: 'bg-primary', label: 'Inline link' },
+  { fg: 'danger', bg: 'danger-subtle', label: 'Error on banner' },
+] as const
+
+function ContrastCardDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {CONTRAST_CARD_VARIANTS.map((variant) => (
+        <ContrastCardTile key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function ContrastCardStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
+          {CONTRAST_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={CONTRAST_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ContrastCardTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          {CONTRAST_CARD_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={CONTRAST_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ContrastCardTile variant="subtle" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
+          {CONTRAST_CARD_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={CONTRAST_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ContrastCardTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          {CONTRAST_CARD_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={CONTRAST_CARD_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ContrastCardTile variant="subtle" tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {CONTRAST_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${CONTRAST_CARD_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={2}>
+            {CONTRAST_CARD_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={CONTRAST_CARD_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <ContrastCardTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
+          {CONTRAST_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={CONTRAST_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <ContrastCardTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          {CONTRAST_CARD_PAIRS.map((pair) => (
+            <StateCard key={pair.label} label={pair.label} align="stretch" wide className="bg-bg-primary">
+              <ContrastCardTile fg={pair.fg} bg={pair.bg} label={pair.label} />
+            </StateCard>
+          ))}
+          <StateCard label="Sample only" align="stretch" wide className="bg-bg-primary">
+            <ContrastCardTile named={false} />
+          </StateCard>
+          <StateCard label="Custom sample" align="stretch" wide className="bg-bg-primary">
+            <ContrastCardTile sample="Aa Bb Cc 0123" label="Glyphs" />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <ContrastCardTile fullWidth={false} className="w-[240px]" />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[200px] items-stretch">
+              <ContrastCardTile fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {CONTRAST_CARD_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ContrastCardTile
+                variant="subtle"
+                href="#contrast-card"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <ContrastCard />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <ContrastCardTile variant="subtle" href="#contrast-card" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <ContrastCardTile variant="subtle" onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <ContrastCardTile variant="subtle" selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <ContrastCardTile variant="subtle" disabled tone="danger" href="#contrast-card" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {CONTRAST_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={CONTRAST_CARD_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {CONTRAST_CARD_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <ContrastCardTile
+                  variant={variant}
+                  href="#contrast-card"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+function RadiusCardTile({
+  value = 18,
+  label = 'Panel',
+  use = 'Large cards, images, and dialogs.',
+  ...props
+}: RadiusCardProps) {
+  return <RadiusCard value={value} label={label} use={use} {...props} />
+}
+
+const RADIUS_CARD_CHROME: {
+  label: string
+  preview?: RadiusCardPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function RadiusCardDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {RADIUS_CARD_VARIANTS.map((variant) => (
+        <RadiusCardTile key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function RadiusCardStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
+          {RADIUS_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={RADIUS_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RadiusCardTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          {RADIUS_CARD_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={RADIUS_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RadiusCardTile size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
+          {RADIUS_CARD_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={RADIUS_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RadiusCardTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          {RADIUS_CARD_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={RADIUS_CARD_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RadiusCardTile tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {RADIUS_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${RADIUS_CARD_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={2}>
+            {RADIUS_CARD_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={RADIUS_CARD_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <RadiusCardTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
+          {RADIUS_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={RADIUS_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <RadiusCardTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          {RADIUS_CARD_SCALE.map((value) => (
+            <StateCard
+              key={value}
+              label={RADIUS_CARD_VALUE_LABEL[value]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RadiusCardTile
+                value={value}
+                label={RADIUS_CARD_VALUE_LABEL[value]}
+                use={RADIUS_CARD_VALUE_USE[value]}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Sample only" align="stretch" wide className="bg-bg-primary">
+            <RadiusCardTile named={false} />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <RadiusCardTile fullWidth={false} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[200px] items-stretch">
+              <RadiusCardTile fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {RADIUS_CARD_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RadiusCardTile
+                href="#radius-card"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <RadiusCard />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <RadiusCardTile href="#radius-card" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <RadiusCardTile onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <RadiusCardTile selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <RadiusCardTile disabled tone="danger" href="#radius-card" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {RADIUS_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={RADIUS_CARD_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {RADIUS_CARD_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <RadiusCardTile
+                  variant={variant}
+                  href="#radius-card"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+function ScaleRowTile({
+  value = 692,
+  bar = 692,
+  caption = 'Single column copy',
+  ...props
+}: ScaleRowProps) {
+  return <ScaleRow value={value} bar={bar} caption={caption} {...props} />
+}
+
+const SCALE_ROW_CHROME: {
+  label: string
+  preview?: ScaleRowPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function ScaleRowDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {SCALE_ROW_VARIANTS.map((variant) => (
+        <ScaleRowTile key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function ScaleRowStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {SCALE_ROW_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={SCALE_ROW_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ScaleRowTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {SCALE_ROW_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={SCALE_ROW_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ScaleRowTile variant="subtle" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {SCALE_ROW_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={SCALE_ROW_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ScaleRowTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {SCALE_ROW_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={SCALE_ROW_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ScaleRowTile variant="subtle" tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {SCALE_ROW_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${SCALE_ROW_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {SCALE_ROW_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={SCALE_ROW_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <ScaleRowTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {SCALE_ROW_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={SCALE_ROW_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <ScaleRowTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          {SCALE_ROW_WIDTHS.map((item) => (
+            <StateCard
+              key={item.value}
+              label={String(item.value)}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ScaleRowTile value={item.value} bar={item.value} caption={item.caption} />
+            </StateCard>
+          ))}
+          <StateCard label="Spacing scale" align="stretch" wide className="bg-bg-primary">
+            <Stack gap="sm">
+              {SCALE_ROW_SPACE.map((item) => (
+                <ScaleRow
+                  key={item.value}
+                  value={item.value}
+                  width={item.value}
+                  caption={item.caption}
+                />
+              ))}
+            </Stack>
+          </StateCard>
+          <StateCard label="True size" align="stretch" wide className="bg-bg-primary">
+            <ScaleRow value={32} width={32} caption="Card padding" />
+          </StateCard>
+          <StateCard label="Bar only" align="stretch" wide className="bg-bg-primary">
+            <ScaleRowTile named={false} />
+          </StateCard>
+          <StateCard label="Custom max" align="stretch" wide className="bg-bg-primary">
+            <ScaleRowTile value={692} bar={692} max={760} caption="Copy on a 760 max" />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <ScaleRowTile fullWidth={false} className="w-[320px]" />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[120px] items-stretch">
+              <ScaleRowTile variant="subtle" fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {SCALE_ROW_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <ScaleRowTile
+                variant="subtle"
+                href="#scale-row"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <ScaleRow />
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <ScaleRowTile variant="subtle" href="#scale-row" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <ScaleRowTile variant="subtle" onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <ScaleRowTile variant="subtle" selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <ScaleRowTile variant="subtle" disabled tone="danger" href="#scale-row" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {SCALE_ROW_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={SCALE_ROW_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {SCALE_ROW_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <ScaleRowTile
+                  variant={variant}
+                  href="#scale-row"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const RELATED_FAMILY: RelatedItem[] = [
+  { href: '/components/card', title: 'Card', description: 'A quiet surface for a title and supporting copy.' },
+  { href: '/components/stack', title: 'Stack', description: 'A row or column of items with even space.' },
+  { href: '/components/table', title: 'Table', description: 'A structured list of records with headers and sort.' },
+  { href: '/components/badge', title: 'Badge', description: 'A short status, count, or category on a row.' },
+]
+
+const RELATED_SIX: RelatedItem[] = [
+  ...RELATED_FAMILY,
+  { href: '/components/button', title: 'Button', description: 'The main control for running an action.' },
+  { href: '/components/anchor', title: 'Anchor', description: 'A text link to another screen or the open web.' },
+]
+
+function relatedItems(columns: RelatedColumns): RelatedItem[] {
+  if (columns === 1) return RELATED_FAMILY.slice(0, 2)
+  if (columns === 3) return RELATED_FAMILY.slice(0, 3)
+  if (columns === 6) return RELATED_SIX
+  return [...RELATED_FAMILY]
+}
+
+function RelatedTile({
+  items,
+  columns = 3,
+  ...props
+}: RelatedProps) {
+  return <Related items={items ?? relatedItems(columns)} columns={columns} {...props} />
+}
+
+const RELATED_CHROME: {
+  label: string
+  preview?: RelatedPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function RelatedDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {RELATED_VARIANTS.map((variant) => (
+        <RelatedTile key={variant} variant={variant} columns={3} />
+      ))}
+    </div>
+  )
+}
+
+function RelatedStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {RELATED_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={RELATED_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile variant={variant} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {RELATED_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={RELATED_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile variant="subtle" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {RELATED_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={RELATED_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile variant="pill" size={size} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {RELATED_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={RELATED_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile variant="subtle" tone={tone} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {RELATED_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${RELATED_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {RELATED_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={RELATED_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <RelatedTile variant={variant} tone={tone} columns={2} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {RELATED_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={RELATED_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <RelatedTile variant={variant} onDark columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={1}>
+          <StateCard label="One card" align="stretch" wide className="bg-bg-primary">
+            <Related variant="subtle" columns={2} items={RELATED_FAMILY.slice(0, 1)} />
+          </StateCard>
+          <StateCard label="Two cards" align="stretch" wide className="bg-bg-primary">
+            <RelatedTile variant="subtle" columns={2} />
+          </StateCard>
+          <StateCard label="Three cards" align="stretch" wide className="bg-bg-primary">
+            <RelatedTile variant="subtle" columns={3} />
+          </StateCard>
+          <StateCard label="Children" align="stretch" wide className="bg-bg-primary">
+            <Related variant="subtle" columns={2}>
+              <RelatedCard href="/components/card" title="Card" description="A quiet surface for a title and supporting copy." />
+              <RelatedCard href="/components/stack" title="Stack" description="A row or column of items with even space." />
+            </Related>
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <Related variant="subtle" items={[]} columns={2} />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <RelatedTile variant="subtle" fullWidth={false} columns={2} />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[240px] items-stretch">
+              <RelatedTile variant="subtle" fullHeight columns={2} />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Columns">
+        <StateGrid columns={1}>
+          {RELATED_COLUMNS.map((columns) => (
+            <StateCard
+              key={columns}
+              label={RELATED_COLUMN_LABEL[columns]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile variant="subtle" columns={columns} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Height">
+        <StateGrid columns={1}>
+          {RELATED_ALIGNS.map((align) => (
+            <StateCard
+              key={align}
+              label={RELATED_ALIGN_LABEL[align]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              {align === 'start' ? (
+                <Related variant="subtle" columns={2} align="start">
+                  <RelatedCard href="/components/card" title="Card" description="A quiet surface." />
+                  <RelatedCard
+                    href="/components/stack"
+                    title="Stack"
+                    description="A row or column of items with even space between them. Use it to group cards, actions, or fields."
+                  />
+                </Related>
+              ) : (
+                <RelatedTile variant="subtle" align={align} columns={2} />
+              )}
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Width">
+        <StateGrid columns={1}>
+          {RELATED_WIDTHS.map((widths) => (
+            <StateCard
+              key={widths}
+              label={RELATED_WIDTH_LABEL[widths]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile variant="subtle" widths={widths} align="start" columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Gap">
+        <StateGrid columns={1}>
+          {RELATED_GAPS.map((gap) => (
+            <StateCard
+              key={gap}
+              label={RELATED_GAP_LABEL[gap]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile variant="subtle" gap={gap} columns={2} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={1}>
+          {RELATED_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RelatedTile
+                variant="subtle"
+                columns={2}
+                href="#related"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <RelatedTile variant="subtle" columns={2} href="#related" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <RelatedTile variant="subtle" columns={2} onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <RelatedTile variant="subtle" columns={2} selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <RelatedTile variant="subtle" columns={2} disabled tone="danger" href="#related" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {RELATED_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={RELATED_VARIANT_LABEL[variant]}>
+          <StateGrid columns={1}>
+            {RELATED_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <RelatedTile
+                  variant={variant}
+                  columns={2}
+                  href="#related"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const RULE_DO = [
+  'Use brand primary for the primary action.',
+  'Use danger only for destructive actions.',
+  'Keep each line a complete instruction.',
+]
+
+const RULE_DONT = [
+  'Do not mix do items into a don’t card.',
+  'Do not use this for a changelog.',
+  'Do not rebuild the list with divs.',
+]
+
+function RuleCardTile({
+  items,
+  tone = 'success',
+  ...props
+}: RuleCardProps) {
+  return <RuleCard items={items ?? (tone === 'danger' ? RULE_DONT : RULE_DO)} tone={tone} {...props} />
+}
+
+const RULE_CARD_CHROME: {
+  label: string
+  preview?: RuleCardPreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function RuleCardDemo() {
+  return (
+    <div className="grid w-full gap-4 min-[735px]:grid-cols-2">
+      {RULE_CARD_VARIANTS.map((variant) => (
+        <RuleCardTile key={variant} variant={variant} />
+      ))}
+    </div>
+  )
+}
+
+function RuleCardStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
+          {RULE_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={RULE_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RuleCardTile variant={variant} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          {RULE_CARD_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={RULE_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RuleCardTile variant="subtle" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
+          {RULE_CARD_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={RULE_CARD_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RuleCardTile variant="pill" size={size} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
+          {RULE_CARD_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={RULE_CARD_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RuleCardTile variant="subtle" tone={tone} />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {RULE_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${RULE_CARD_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={2}>
+            {RULE_CARD_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={RULE_CARD_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <RuleCardTile variant={variant} tone={tone} />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
+          {RULE_CARD_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={RULE_CARD_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <RuleCardTile variant={variant} onDark />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          <StateCard label="Do" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile />
+          </StateCard>
+          <StateCard label="Don’t" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile tone="danger" />
+          </StateCard>
+          <StateCard label="One item" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile items={['Use brand primary for the primary action.']} />
+          </StateCard>
+          <StateCard label="List only" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile named={false} />
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <RuleCard />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile fullWidth={false} className="w-[280px]" />
+          </StateCard>
+          <StateCard label="Full height" align="stretch" wide className="bg-bg-primary">
+            <div className="flex min-h-[220px] items-stretch">
+              <RuleCardTile fullHeight />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {RULE_CARD_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <RuleCardTile
+                variant="subtle"
+                href="#rule-card"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile variant="subtle" href="#rule-card" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile variant="subtle" onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile variant="subtle" selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <RuleCardTile variant="subtle" disabled tone="danger" href="#rule-card" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {RULE_CARD_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={RULE_CARD_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {RULE_CARD_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <RuleCardTile
+                  variant={variant}
+                  href="#rule-card"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
+}
+
+const INLINE_CODE_SAMPLES = [
+  { label: 'Prop', code: 'as' },
+  { label: 'Token', code: '--brand-primary' },
+  { label: 'Path', code: '@/icons' },
+  { label: 'String', code: 'variant="subtle"' },
+  { label: 'Import', code: 'import { Card }' },
+  { label: 'Boolean', code: 'true' },
+] as const
+
+function InlineCodeTile({
+  code = 'as',
+  ...props
+}: InlineCodeProps) {
+  return <InlineCode code={code} {...props} />
+}
+
+function InlineCodeLine({
+  code = 'as',
+  ...props
+}: InlineCodeProps) {
+  return (
+    <Body>
+      Pass <InlineCodeTile code={code} {...props} /> when the visual size and the document outline disagree.
+    </Body>
+  )
+}
+
+const INLINE_CODE_CHROME: {
+  label: string
+  preview?: InlineCodePreview
+  selected?: boolean
+  disabled?: boolean
+  loading?: boolean
+}[] = [
+  { label: 'Default' },
+  { label: 'Hover', preview: 'hover' },
+  { label: 'Focus', preview: 'focus' },
+  { label: 'Active', preview: 'active' },
+  { label: 'Selected', selected: true },
+  { label: 'Disabled', disabled: true },
+  { label: 'Loading', loading: true },
+]
+
+function InlineCodeDemo() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      {INLINE_CODE_VARIANTS.map((variant) => (
+        <InlineCodeLine key={variant} variant={variant} code='variant="subtle"' />
+      ))}
+    </div>
+  )
+}
+
+function InlineCodeStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={1}>
+          {INLINE_CODE_VARIANTS.map((variant) => (
+            <StateCard
+              key={variant}
+              label={INLINE_CODE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <InlineCodeLine variant={variant} code='variant="subtle"' />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={1}>
+          {INLINE_CODE_SIZES.map((size) => (
+            <StateCard
+              key={size}
+              label={INLINE_CODE_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <InlineCodeLine variant="subtle" size={size} code="--brand-primary" />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Pill size">
+        <StateGrid columns={1}>
+          {INLINE_CODE_SIZES.map((size) => (
+            <StateCard
+              key={`pill-${size}`}
+              label={INLINE_CODE_SIZE_LABEL[size]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <InlineCodeLine variant="pill" size={size} code="--brand-primary" />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {INLINE_CODE_TONES.map((tone) => (
+            <StateCard
+              key={tone}
+              label={INLINE_CODE_TONE_LABEL[tone]}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <InlineCodeLine variant="subtle" tone={tone} code="as" />
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      {INLINE_CODE_VARIANTS.map((variant) => (
+        <StateGroup key={variant} title={`${INLINE_CODE_VARIANT_LABEL[variant]} tone`}>
+          <StateGrid columns={1}>
+            {INLINE_CODE_TONES.map((tone) => (
+              <StateCard
+                key={`${variant}-${tone}`}
+                label={INLINE_CODE_TONE_LABEL[tone]}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <InlineCodeLine variant={variant} tone={tone} code='variant="subtle"' />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+
+      <StateGroup title="On dark">
+        <StateGrid columns={1}>
+          {INLINE_CODE_VARIANTS.map((variant) => (
+            <StateCard
+              key={`dark-${variant}`}
+              label={INLINE_CODE_VARIANT_LABEL[variant]}
+              align="stretch"
+              wide
+              className="bg-black"
+            >
+              <Body className="!text-[#a1a1a6]">
+                Pass <InlineCodeTile variant={variant} onDark code='variant="subtle"' /> when the visual size and the
+                document outline disagree.
+              </Body>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          {INLINE_CODE_SAMPLES.map((sample) => (
+            <StateCard key={sample.label} label={sample.label} align="stretch" wide className="bg-bg-primary">
+              <InlineCodeLine code={sample.code} variant="subtle" />
+            </StateCard>
+          ))}
+          <StateCard label="In a sentence" align="stretch" wide className="bg-bg-primary">
+            <InlineCodeLine />
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+            <InlineCode variant="subtle" />
+          </StateCard>
+          <StateCard label="Hug width" align="stretch" wide className="bg-bg-primary">
+            <InlineCodeTile variant="subtle" code="--brand-primary" />
+          </StateCard>
+          <StateCard label="Full width" align="stretch" wide className="bg-bg-primary">
+            <InlineCodeTile variant="subtle" code="import { Card } from '@/components'" fullWidth />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          {INLINE_CODE_CHROME.map((item) => (
+            <StateCard
+              key={item.label}
+              label={item.label}
+              align="stretch"
+              wide
+              className="bg-bg-primary"
+            >
+              <InlineCodeLine
+                variant="subtle"
+                href="#inline-code"
+                preview={item.preview}
+                selected={item.selected}
+                disabled={item.disabled}
+                loading={item.loading}
+              />
+            </StateCard>
+          ))}
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
+            <InlineCodeLine variant="subtle" href="#inline-code" />
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
+            <InlineCodeLine variant="subtle" onClick={() => undefined} />
+          </StateCard>
+          <StateCard label="Selected, brand" align="stretch" wide className="bg-bg-primary">
+            <InlineCodeLine variant="subtle" selected tone="brand" />
+          </StateCard>
+          <StateCard label="Disabled, danger" align="stretch" wide className="bg-bg-primary">
+            <InlineCodeLine variant="subtle" disabled tone="danger" href="#inline-code" />
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      {INLINE_CODE_VARIANTS.map((variant) => (
+        <StateGroup key={`state-${variant}`} title={INLINE_CODE_VARIANT_LABEL[variant]}>
+          <StateGrid columns={2}>
+            {INLINE_CODE_CHROME.map((item) => (
+              <StateCard
+                key={`${variant}-${item.label}`}
+                label={item.label}
+                align="stretch"
+                wide
+                className="bg-bg-primary"
+              >
+                <InlineCodeLine
+                  variant={variant}
+                  href="#inline-code"
+                  preview={item.preview}
+                  selected={item.selected}
+                  disabled={item.disabled}
+                  loading={item.loading}
+                />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      ))}
+    </StateStack>
+  )
 }
 
 function StatCardDemo() {
@@ -7469,11 +12382,11 @@ function StatCardDemo() {
 
 function StatCardStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {STAT_CARD_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={STAT_CARD_VARIANT_LABEL[variant]}
               align="stretch"
@@ -7487,15 +12400,15 @@ function StatCardStates() {
                 delta={{ value: '+12%', tone: 'up' }}
                 hint="vs last month"
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {STAT_CARD_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={STAT_CARD_SIZE_LABEL[size]}
               align="stretch"
@@ -7509,15 +12422,15 @@ function StatCardStates() {
                 delta={{ value: '+12%', tone: 'up' }}
                 hint="vs last month"
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Pill size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Pill size">
+        <StateGrid columns={2}>
           {STAT_CARD_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={`pill-${size}`}
               label={STAT_CARD_SIZE_LABEL[size]}
               align="stretch"
@@ -7532,15 +12445,15 @@ function StatCardStates() {
                 delta={{ value: '+12%', tone: 'up' }}
                 hint="vs last month"
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {STAT_CARD_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={STAT_CARD_TONE_LABEL[tone]}
               align="stretch"
@@ -7576,15 +12489,15 @@ function StatCardStates() {
                 }}
                 hint="vs last month"
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
           {STAT_CARD_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={STAT_CARD_VARIANT_LABEL[variant]}
               align="stretch"
@@ -7601,15 +12514,15 @@ function StatCardStates() {
                 hint="vs last month"
                 sparkline={STAT_SPARK}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Delta">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Delta">
+        <StateGrid columns={2}>
           {STAT_CARD_DELTA_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={STAT_CARD_DELTA_LABEL[tone]}
               align="stretch"
@@ -7634,9 +12547,9 @@ function StatCardStates() {
                 hint="vs last month"
                 sparkline={tone === 'down' || tone === 'warning' ? STAT_SPARK_DOWN : STAT_SPARK}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-          <DocsStateCard label="Inverted down" align="stretch" wide className="bg-bg-primary">
+          <StateCard label="Inverted down" align="stretch" wide className="bg-bg-primary">
             <StatCard
               icon={<StatIcon name="inbox" />}
               label="Open tickets"
@@ -7645,8 +12558,8 @@ function StatCardStates() {
               hint="this week"
               sparkline={STAT_SPARK_DOWN}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Inverted up" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Inverted up" align="stretch" wide className="bg-bg-primary">
             <StatCard
               icon={<StatIcon name="inbox" />}
               label="Open tickets"
@@ -7655,14 +12568,14 @@ function StatCardStates() {
               hint="this week"
               sparkline={[12, 14, 13, 16, 18, 20, 22, 24]}
             />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
           {STAT_CARD_ALIGNS.map((align) => (
-            <DocsStateCard
+            <StateCard
               key={align}
               label={STAT_CARD_ALIGN_LABEL[align]}
               align="stretch"
@@ -7679,26 +12592,26 @@ function StatCardStates() {
                 hint="vs last month"
                 sparkline={STAT_SPARK}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Value only" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Value only" align="stretch" wide className="bg-bg-primary">
             <StatCard label="Revenue" value="$48,290" />
-          </DocsStateCard>
-          <DocsStateCard label="Delta only" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Delta only" align="stretch" wide className="bg-bg-primary">
             <StatCard label="Revenue" value="$48,290" delta={{ value: '+12%', tone: 'up' }} />
-          </DocsStateCard>
-          <DocsStateCard label="Hint only" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Hint only" align="stretch" wide className="bg-bg-primary">
             <StatCard label="Revenue" value="$48,290" hint="Month to date" />
-          </DocsStateCard>
-          <DocsStateCard label="Unit" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Unit" align="stretch" wide className="bg-bg-primary">
             <StatCard label="Session length" value="12.4" unit="min" delta={{ value: '+0.8', tone: 'up' }} hint="vs last week" />
-          </DocsStateCard>
-          <DocsStateCard label="Icon" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Icon" align="stretch" wide className="bg-bg-primary">
             <StatCard
               icon={<StatIcon name="people" />}
               label="Active users"
@@ -7706,8 +12619,8 @@ function StatCardStates() {
               delta={{ value: '+4%', tone: 'up' }}
               hint="vs last week"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Sparkline" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Sparkline" align="stretch" wide className="bg-bg-primary">
             <StatCard
               label="Revenue"
               value="$48,290"
@@ -7715,8 +12628,8 @@ function StatCardStates() {
               hint="vs last month"
               sparkline={STAT_SPARK}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Icon and sparkline" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Icon and sparkline" align="stretch" wide className="bg-bg-primary">
             <StatCard
               icon={<StatIcon />}
               label="Revenue"
@@ -7726,11 +12639,11 @@ function StatCardStates() {
               hint="vs last month"
               sparkline={STAT_SPARK}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Empty" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide className="bg-bg-primary">
             <StatCard label="Revenue" empty hint="No data yet" />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
             <StatCard
               label="Revenue"
               value="$48,290"
@@ -7738,8 +12651,8 @@ function StatCardStates() {
               hint="vs last month"
               disabled
             />
-          </DocsStateCard>
-          <DocsStateCard label="Link" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide className="bg-bg-primary">
             <StatCard
               icon={<StatIcon name="chart" />}
               label="Revenue"
@@ -7748,8 +12661,8 @@ function StatCardStates() {
               hint="Open report"
               href="#stat-card"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Button" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Button" align="stretch" wide className="bg-bg-primary">
             <StatCard
               icon={<StatIcon name="people" />}
               label="Active users"
@@ -7758,10 +12671,10 @@ function StatCardStates() {
               hint="Open list"
               onClick={() => undefined}
             />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -7777,96 +12690,96 @@ function AvatarDemo() {
 
 function AvatarStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={3}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={3}>
           {AVATAR_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={AVATAR_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={AVATAR_VARIANT_LABEL[variant]}>
               <Avatar name="Alex Rivera" size="lg" variant={variant} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {AVATAR_SIZES.map((size) => (
-            <DocsStateCard key={size} label={AVATAR_SIZE_LABEL[size]}>
+            <StateCard key={size} label={AVATAR_SIZE_LABEL[size]}>
               <Avatar name="Alex Rivera" size={size} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Tone">
+        <StateGrid columns={3}>
           {AVATAR_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={AVATAR_TONE_LABEL[tone]}>
+            <StateCard key={tone} label={AVATAR_TONE_LABEL[tone]}>
               <Avatar name="Alex Rivera" size="lg" tone={tone} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Presence">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Presence">
+        <StateGrid columns={3}>
           {AVATAR_STATUSES.filter((status) => status !== 'none').map((status) => (
-            <DocsStateCard key={status} label={AVATAR_STATUS_LABEL[status]}>
+            <StateCard key={status} label={AVATAR_STATUS_LABEL[status]}>
               <Avatar name="Alex Rivera" size="lg" status={status} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Shape">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Shape">
+        <StateGrid columns={2}>
           {AVATAR_SHAPES.map((shape) => (
-            <DocsStateCard key={shape} label={AVATAR_SHAPE_LABEL[shape]}>
+            <StateCard key={shape} label={AVATAR_SHAPE_LABEL[shape]}>
               <Avatar name="Alex Rivera" size="lg" shape={shape} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={3}>
-          <DocsStateCard label="Initials">
+      <StateGroup title="State">
+        <StateGrid columns={3}>
+          <StateCard label="Initials">
             <Avatar name="Alex Rivera" size="lg" />
-          </DocsStateCard>
-          <DocsStateCard label="Photo">
+          </StateCard>
+          <StateCard label="Photo">
             <Avatar name="Alex Rivera" size="lg" src="/favicon.svg" />
-          </DocsStateCard>
-          <DocsStateCard label="Icon">
+          </StateCard>
+          <StateCard label="Icon">
             <Avatar name="Alex Rivera" size="lg" icon={<DkPersonUserProfile strokeWidth={1.5} absoluteStrokeWidth />} />
-          </DocsStateCard>
-          <DocsStateCard label="Empty">
+          </StateCard>
+          <StateCard label="Empty">
             <Avatar size="lg" />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <Avatar name="Alex Rivera" size="lg" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Single name">
+          </StateCard>
+          <StateCard label="Single name">
             <Avatar name="Alex" size="lg" />
-          </DocsStateCard>
-          <DocsStateCard label="Rounded, online">
+          </StateCard>
+          <StateCard label="Rounded, online">
             <Avatar name="Sam Chen" size="lg" shape="rounded" status="online" />
-          </DocsStateCard>
-          <DocsStateCard label="Ghost, busy">
+          </StateCard>
+          <StateCard label="Ghost, busy">
             <Avatar name="Jordan Lee" size="lg" variant="ghost" status="busy" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Group">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Three faces" wide>
+      <StateGroup title="Group">
+        <StateGrid columns={2}>
+          <StateCard label="Three faces" wide>
             <AvatarGroup>
               <Avatar name="Alex Rivera" />
               <Avatar name="Sam Chen" />
               <Avatar name="Jordan Lee" />
             </AvatarGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Overflow" wide>
+          </StateCard>
+          <StateCard label="Overflow" wide>
             <AvatarGroup max={3}>
               <Avatar name="Alex Rivera" />
               <Avatar name="Sam Chen" />
@@ -7874,10 +12787,10 @@ function AvatarStates() {
               <Avatar name="Riley Patel" />
               <Avatar name="Morgan Diaz" />
             </AvatarGroup>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -7937,11 +12850,11 @@ function ListRowDemo() {
 
 function ListRowStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {LIST_ROW_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={LIST_ROW_VARIANT_LABEL[variant]}
               align="stretch"
@@ -7967,15 +12880,15 @@ function ListRowStates() {
                   onClick={() => undefined}
                 />
               </ListSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {LIST_ROW_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={LIST_ROW_SIZE_LABEL[size]}
               align="stretch"
@@ -8002,15 +12915,15 @@ function ListRowStates() {
                   onClick={() => undefined}
                 />
               </ListSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {LIST_ROW_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={LIST_ROW_TONE_LABEL[tone]}
               align="stretch"
@@ -8048,13 +12961,13 @@ function ListRowStates() {
                   onClick={() => undefined}
                 />
               </ListSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
           {(
             [
               ['Default', undefined],
@@ -8063,7 +12976,7 @@ function ListRowStates() {
               ['Active', 'active'],
             ] as const
           ).map(([label, preview]) => (
-            <DocsStateCard key={label} label={label} align="stretch" wide className="bg-bg-primary">
+            <StateCard key={label} label={label} align="stretch" wide className="bg-bg-primary">
               <ListSample>
                 <ListRow
                   leading={<ListFace />}
@@ -8074,15 +12987,15 @@ function ListRowStates() {
                   onClick={() => undefined}
                 />
               </ListSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-          <DocsStateCard label="Selected" align="stretch" wide className="bg-bg-primary">
+          <StateCard label="Selected" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow title="English" value="United States" selected onClick={() => undefined} />
               <ListRow title="Español" value="España" onClick={() => undefined} />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow
                 leading={<ListFace />}
@@ -8092,19 +13005,19 @@ function ListRowStates() {
                 disabled
               />
             </ListSample>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Title" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          <StateCard label="Title" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow title="About" chevron onClick={() => undefined} />
               <ListRow title="Legal" chevron onClick={() => undefined} />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Subtitle" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Subtitle" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow
                 leading={<ListFace />}
@@ -8114,14 +13027,14 @@ function ListRowStates() {
                 onClick={() => undefined}
               />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Value" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Value" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow title="Language" value="English" chevron onClick={() => undefined} />
               <ListRow title="Region" value="United States" chevron onClick={() => undefined} />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Mark" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Mark" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow
                 leading={
@@ -8144,8 +13057,8 @@ function ListRowStates() {
                 onClick={() => undefined}
               />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Switch" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Switch" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow
                 title="Product alerts"
@@ -8156,8 +13069,8 @@ function ListRowStates() {
                 trailing={<Switch size="sm" checked={false} onChange={() => undefined} label="Weekly digest" />}
               />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Badge" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Badge" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow
                 leading={<ListFace />}
@@ -8168,8 +13081,8 @@ function ListRowStates() {
                 onClick={() => undefined}
               />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Actions" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Actions" align="stretch" wide className="bg-bg-primary">
             <ListSample>
               <ListRow
                 leading={<Avatar name="Alex Work" size="md" status="away" />}
@@ -8183,16 +13096,16 @@ function ListRowStates() {
                 }
               />
             </ListSample>
-          </DocsStateCard>
-          <DocsStateCard label="Section" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Section" align="stretch" wide className="bg-bg-primary">
             <ListSample header="Account" footer="Used to sign in and reset your password.">
               <ListRow title="Email" value="alex@roboticela.com" chevron onClick={() => undefined} />
               <ListRow title="Phone" value="+1 (415) 555-2671" chevron onClick={() => undefined} />
             </ListSample>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -8305,11 +13218,11 @@ function SettingsRowDemo() {
 
 function SettingsRowStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {SETTINGS_ROW_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={SETTINGS_ROW_VARIANT_LABEL[variant]}
               align="stretch"
@@ -8330,14 +13243,14 @@ function SettingsRowStates() {
                   control={<SettingsSwitch label="Alerts" checked />}
                 />
               </SettingsSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Control" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
+          <StateCard label="Control" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow
                 label="Product alerts"
@@ -8349,43 +13262,43 @@ function SettingsRowStates() {
                 control={<SettingsSwitch label="Weekly digest" checked={false} />}
               />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Navigation" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Navigation" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow label="General" onClick={() => undefined} />
               <SettingsRow label="Privacy" onClick={() => undefined} />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Value" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Value" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow label="Language" value="English" onClick={() => undefined} />
               <SettingsRow label="Region" value="United States" onClick={() => undefined} />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Selection" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Selection" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow layout="selection" label="English" value="United States" selected onClick={() => undefined} />
               <SettingsRow layout="selection" label="Español" value="España" onClick={() => undefined} />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Action" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Action" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow layout="action" tone="brand" label="Add account" onClick={() => undefined} />
               <SettingsRow layout="action" tone="danger" label="Delete account" onClick={() => undefined} />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Action, centered" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Action, centered" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow layout="action" align="center" tone="danger" label="Sign out" onClick={() => undefined} />
             </SettingsSample>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {SETTINGS_ROW_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={SETTINGS_ROW_SIZE_LABEL[size]}
               align="stretch"
@@ -8405,15 +13318,15 @@ function SettingsRowStates() {
                   control={<SettingsSwitch label="Product alerts" checked />}
                 />
               </SettingsSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Icon">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Icon">
+        <StateGrid columns={2}>
           {SETTINGS_ROW_ICON_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={SETTINGS_ROW_ICON_TONE_LABEL[tone]}
               align="stretch"
@@ -8442,15 +13355,15 @@ function SettingsRowStates() {
                   onClick={() => undefined}
                 />
               </SettingsSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {SETTINGS_ROW_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={SETTINGS_ROW_TONE_LABEL[tone]}
               align="stretch"
@@ -8467,13 +13380,13 @@ function SettingsRowStates() {
                   onClick={() => undefined}
                 />
               </SettingsSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
           {(
             [
               ['Default', undefined],
@@ -8482,7 +13395,7 @@ function SettingsRowStates() {
               ['Active', 'active'],
             ] as const
           ).map(([label, preview]) => (
-            <DocsStateCard key={label} label={label} align="stretch" wide className="bg-bg-primary">
+            <StateCard key={label} label={label} align="stretch" wide className="bg-bg-primary">
               <SettingsSample>
                 <SettingsRow
                   icon={<DkPersonUserProfile {...SETTINGS_GLYPH} />}
@@ -8493,15 +13406,15 @@ function SettingsRowStates() {
                   onClick={() => undefined}
                 />
               </SettingsSample>
-            </DocsStateCard>
+            </StateCard>
           ))}
-          <DocsStateCard label="Selected" align="stretch" wide className="bg-bg-primary">
+          <StateCard label="Selected" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow layout="selection" label="English" value="United States" selected onClick={() => undefined} />
               <SettingsRow layout="selection" label="Español" value="España" onClick={() => undefined} />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow
                 icon={<DkPadlockSecureClosed {...SETTINGS_GLYPH} />}
@@ -8512,8 +13425,8 @@ function SettingsRowStates() {
                 onClick={() => undefined}
               />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Loading" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow
                 icon={<DkGlobeWorldEarth {...SETTINGS_GLYPH} />}
@@ -8524,8 +13437,8 @@ function SettingsRowStates() {
                 onClick={() => undefined}
               />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Description" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Description" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow
                 label="Email notifications"
@@ -8533,8 +13446,8 @@ function SettingsRowStates() {
                 control={<SettingsSwitch label="Email notifications" checked />}
               />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Badge" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Badge" align="stretch" wide className="bg-bg-primary">
             <SettingsSample>
               <SettingsRow
                 icon={<DkEnvelopeMessageMail {...SETTINGS_GLYPH} />}
@@ -8544,16 +13457,16 @@ function SettingsRowStates() {
                 onClick={() => undefined}
               />
             </SettingsSample>
-          </DocsStateCard>
-          <DocsStateCard label="Section" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Section" align="stretch" wide className="bg-bg-primary">
             <SettingsSample header="Account" footer="Used to sign in and reset your password.">
               <SettingsRow label="Email" value="alex@roboticela.com" onClick={() => undefined} />
               <SettingsRow label="Phone" value="+1 (415) 555-2671" onClick={() => undefined} />
             </SettingsSample>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -8572,49 +13485,49 @@ function KeyValueRowDemo() {
 
 function KeyValueRowStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {KEY_VALUE_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={KEY_VALUE_VARIANT_LABEL[variant]} align="stretch" wide>
+            <StateCard key={variant} label={KEY_VALUE_VARIANT_LABEL[variant]} align="stretch" wide>
               <KeyValueGroup variant={variant}>
                 <KeyValueRow label="Plan" value="Studio" />
                 <KeyValueRow label="Seats" value="8" />
               </KeyValueGroup>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {KEY_VALUE_SIZES.map((size) => (
-            <DocsStateCard key={size} label={KEY_VALUE_SIZE_LABEL[size]} align="stretch" wide>
+            <StateCard key={size} label={KEY_VALUE_SIZE_LABEL[size]} align="stretch" wide>
               <KeyValueGroup size={size}>
                 <KeyValueRow label="Plan" value="Studio" />
                 <KeyValueRow label="Seats" value="8" />
               </KeyValueGroup>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
           {KEY_VALUE_LAYOUTS.map((layout) => (
-            <DocsStateCard key={layout} label={KEY_VALUE_LAYOUT_LABEL[layout]} align="stretch" wide>
+            <StateCard key={layout} label={KEY_VALUE_LAYOUT_LABEL[layout]} align="stretch" wide>
               <KeyValueGroup>
                 <KeyValueRow layout={layout} label="Address" value="1 Infinite Loop, Cupertino" />
               </KeyValueGroup>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {KEY_VALUE_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={KEY_VALUE_TONE_LABEL[tone]} align="stretch" wide>
+            <StateCard key={tone} label={KEY_VALUE_TONE_LABEL[tone]} align="stretch" wide>
               <KeyValueGroup>
                 <KeyValueRow
                   tone={tone}
@@ -8632,15 +13545,15 @@ function KeyValueRowStates() {
                   }
                 />
               </KeyValueGroup>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
           {KEY_VALUE_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={KEY_VALUE_VARIANT_LABEL[variant]}
               align="stretch"
@@ -8651,87 +13564,87 @@ function KeyValueRowStates() {
                 <KeyValueRow label="Plan" value="Studio" />
                 <KeyValueRow label="Seats" value="8" />
               </KeyValueGroup>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Rest" align="stretch" wide>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Rest" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" />
               <KeyValueRow label="Username" value="@alex" />
               <KeyValueRow label="Plan" value="Studio" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Hover" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Hover" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="hover" />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Active" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Active" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="active" />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Focus" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Focus" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="focus" />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Selected" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Selected" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" selected />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" disabled />
               <KeyValueRow label="Username" value="@alex" disabled />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Empty" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Empty" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Website" empty />
               <KeyValueRow label="Company" placeholder="Add a company" empty />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Copied" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Copied" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" copyable preview="copied" />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Invalid" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Invalid" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex" invalid hint="Enter a valid email." />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Copyable" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Copyable" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" copyable />
               <KeyValueRow label="Username" value="@alex" copyable />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Link" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Link" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Website" value="roboticela.com" href="#live-demo" />
               <KeyValueRow label="Docs" value="Open" onClick={() => undefined} />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Hint" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Hint" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alex@roboticela.com" hint="Used for receipts." />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Leading" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Leading" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow
                 label="Email"
@@ -8744,22 +13657,22 @@ function KeyValueRowStates() {
                 leading={<DkAtSign strokeWidth={1.75} absoluteStrokeWidth />}
               />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Badge" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Badge" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Plan" value={<Badge tone="primary">Pro</Badge>} />
               <KeyValueRow label="Status" value={<Badge tone="verified">Active</Badge>} />
             </KeyValueGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Truncated" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Truncated" align="stretch" wide>
             <KeyValueGroup>
               <KeyValueRow label="Email" value="alexandra.rivera.workspace@roboticela.com" />
               <KeyValueRow label="Username" value="@alex" />
             </KeyValueGroup>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -8775,21 +13688,21 @@ function ProfileButtonDemo() {
 
 function ProfileButtonStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={3}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={3}>
           {PROFILE_BUTTON_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={PROFILE_BUTTON_VARIANT_LABEL[variant]}>
+            <StateCard key={variant} label={PROFILE_BUTTON_VARIANT_LABEL[variant]}>
               <ProfileButton name="Alex Rivera" variant={variant} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
           {PROFILE_BUTTON_LAYOUTS.map((layout) => (
-            <DocsStateCard key={layout} label={PROFILE_BUTTON_LAYOUT_LABEL[layout]} wide>
+            <StateCard key={layout} label={PROFILE_BUTTON_LAYOUT_LABEL[layout]} wide>
               <ProfileButton
                 name="Alex Rivera"
                 subtitle="alex@roboticela.com"
@@ -8797,102 +13710,102 @@ function ProfileButtonStates() {
                 variant={layout === 'avatar' ? 'fill' : layout === 'identity' ? 'ghost' : 'subtle'}
                 size={layout === 'identity' ? 'md' : 'sm'}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {PROFILE_BUTTON_SIZES.map((size) => (
-            <DocsStateCard key={size} label={PROFILE_BUTTON_SIZE_LABEL[size]}>
+            <StateCard key={size} label={PROFILE_BUTTON_SIZE_LABEL[size]}>
               <ProfileButton name="Alex Rivera" size={size} layout="menu" variant="subtle" />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Presence">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Presence">
+        <StateGrid columns={2}>
           {AVATAR_STATUSES.filter((status) => status !== 'none').map((status) => (
-            <DocsStateCard key={status} label={AVATAR_STATUS_LABEL[status]}>
+            <StateCard key={status} label={AVATAR_STATUS_LABEL[status]}>
               <ProfileButton name="Alex Rivera" status={status} size="md" />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Shape">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Shape">
+        <StateGrid columns={2}>
           {AVATAR_SHAPES.map((shape) => (
-            <DocsStateCard key={shape} label={AVATAR_SHAPE_LABEL[shape]}>
+            <StateCard key={shape} label={AVATAR_SHAPE_LABEL[shape]}>
               <ProfileButton name="Alex Rivera" shape={shape} size="md" />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Tone">
+        <StateGrid columns={3}>
           {AVATAR_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={AVATAR_TONE_LABEL[tone]}>
+            <StateCard key={tone} label={AVATAR_TONE_LABEL[tone]}>
               <ProfileButton name="Alex Rivera" tone={tone} variant="ghost" size="md" />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Face">
-        <DocsStateGrid columns={3}>
-          <DocsStateCard label="Initials">
+      <StateGroup title="Face">
+        <StateGrid columns={3}>
+          <StateCard label="Initials">
             <ProfileButton name="Alex Rivera" size="md" />
-          </DocsStateCard>
-          <DocsStateCard label="Photo">
+          </StateCard>
+          <StateCard label="Photo">
             <ProfileButton name="Alex Rivera" src="/favicon.svg" size="md" />
-          </DocsStateCard>
-          <DocsStateCard label="Icon">
+          </StateCard>
+          <StateCard label="Icon">
             <ProfileButton
               name="Alex Rivera"
               size="md"
               icon={<DkPersonUserProfile strokeWidth={1.5} absoluteStrokeWidth />}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Empty">
+          </StateCard>
+          <StateCard label="Empty">
             <ProfileButton size="md" />
-          </DocsStateCard>
-          <DocsStateCard label="Single name">
+          </StateCard>
+          <StateCard label="Single name">
             <ProfileButton name="Alex" size="md" />
-          </DocsStateCard>
-          <DocsStateCard label="Badge">
+          </StateCard>
+          <StateCard label="Badge">
             <ProfileButton name="Alex Rivera" size="md" badge={3} />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={3}>
-          <DocsStateCard label="Rest">
+      <StateGroup title="State">
+        <StateGrid columns={3}>
+          <StateCard label="Rest">
             <ProfileButton name="Alex Rivera" size="md" />
-          </DocsStateCard>
-          <DocsStateCard label="Hover">
+          </StateCard>
+          <StateCard label="Hover">
             <ProfileButton name="Alex Rivera" size="md" preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Focus">
+          </StateCard>
+          <StateCard label="Focus">
             <ProfileButton name="Alex Rivera" size="md" preview="focus" />
-          </DocsStateCard>
-          <DocsStateCard label="Active">
+          </StateCard>
+          <StateCard label="Active">
             <ProfileButton name="Alex Rivera" size="md" preview="active" />
-          </DocsStateCard>
-          <DocsStateCard label="Open">
+          </StateCard>
+          <StateCard label="Open">
             <ProfileButton name="Alex Rivera" layout="menu" variant="subtle" open />
-          </DocsStateCard>
-          <DocsStateCard label="Loading">
+          </StateCard>
+          <StateCard label="Loading">
             <ProfileButton name="Alex Rivera" size="md" loading />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <ProfileButton name="Alex Rivera" size="md" disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Identity, open">
+          </StateCard>
+          <StateCard label="Identity, open">
             <ProfileButton
               name="Alex Rivera"
               subtitle="alex@roboticela.com"
@@ -8902,13 +13815,13 @@ function ProfileButtonStates() {
               status="online"
               open
             />
-          </DocsStateCard>
-          <DocsStateCard label="Menu, hover">
+          </StateCard>
+          <StateCard label="Menu, hover">
             <ProfileButton name="Alex Rivera" layout="menu" variant="pill" size="md" preview="hover" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -8925,19 +13838,19 @@ function AvatarPickerDemo() {
 
 function AvatarPickerStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Add photo">
+    <StateStack gap={10}>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Add photo">
             <AvatarPicker name="Alex Rivera" onFile={() => undefined} />
-          </DocsStateCard>
-          <DocsStateCard label="Edit photo">
+          </StateCard>
+          <StateCard label="Edit photo">
             <AvatarPicker name="Alex Rivera" src="/favicon.svg" onFile={() => undefined} onEdit={() => undefined} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled">
+          </StateCard>
+          <StateCard label="Disabled">
             <AvatarPicker name="Alex Rivera" disabled onFile={() => undefined} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled, photo">
+          </StateCard>
+          <StateCard label="Disabled, photo">
             <AvatarPicker
               name="Alex Rivera"
               src="/favicon.svg"
@@ -8945,10 +13858,10 @@ function AvatarPickerStates() {
               onFile={() => undefined}
               onEdit={() => undefined}
             />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -9037,41 +13950,41 @@ const PROVIDER_STATE_LABEL: Record<SocialLoginProvider, string> = {
 
 function SocialStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Status">
+    <StateStack gap={10}>
+      <StateGroup title="Status">
         <div className="flex w-full flex-col gap-8">
-          <DocsStateCard label="Default" align="stretch" wide>
+          <StateCard label="Default" align="stretch" wide>
             <SocialProviderStack providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS} />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide>
             <SocialProviderStack providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS} disabled />
-          </DocsStateCard>
-          <DocsStateCard label="Last used (Google)" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Last used (Google)" align="stretch" wide>
             <SocialProviderStack
               providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS}
               lastUsedProvider="google"
               passkeyLabel="Sign in with Passkey"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Last used (Passkey)" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Last used (Passkey)" align="stretch" wide>
             <SocialProviderStack
               providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS}
               lastUsedProvider="passkey"
               passkeyLabel="Sign in with Passkey"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Last used (Roboticela)" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Last used (Roboticela)" align="stretch" wide>
             <SocialProviderStack
               providers={SOCIAL_LOGIN_PRIMARY_PROVIDERS}
               lastUsedProvider="roboticela"
               passkeyLabel="Sign in with Passkey"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Other ways list" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Other ways list" align="stretch" wide>
             <SocialProviderStack providers={SOCIAL_LOGIN_MORE_PROVIDERS} />
-          </DocsStateCard>
+          </StateCard>
           {SOCIAL_LOGIN_PROVIDERS.map((provider) => (
-            <DocsStateCard
+            <StateCard
               key={provider}
               label={`Loading (${PROVIDER_STATE_LABEL[provider]})`}
               align="stretch"
@@ -9082,11 +13995,11 @@ function SocialStates() {
                 loadingProvider={provider}
                 passkeyLabel="Sign in with Passkey"
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
         </div>
-      </DocsStateGroup>
-    </DocsStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -9156,11 +14069,11 @@ const METHOD_STATE_SAMPLE = METHOD_DOC_SAMPLES[0]
 
 function MethodStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Method">
+    <StateStack gap={10}>
+      <StateGroup title="Method">
         <div className="flex w-full flex-col gap-8">
           {METHOD_DOC_SAMPLES.map((sample) => (
-            <DocsStateCard key={sample.key} label={sample.title} align="stretch" wide>
+            <StateCard key={sample.key} label={sample.title} align="stretch" wide>
               <VerificationMethodCard
                 icon={sample.icon}
                 title={sample.title}
@@ -9169,37 +14082,37 @@ function MethodStates() {
                 hint={'hint' in sample ? sample.hint : undefined}
                 selected={sample.key === 'email'}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
+      <StateGroup title="State">
         <div className="flex w-full flex-col gap-8">
-          <DocsStateCard label="Rest" align="stretch" wide>
+          <StateCard label="Rest" align="stretch" wide>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
               subtitle={METHOD_STATE_SAMPLE.subtitle}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Selected" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Selected" align="stretch" wide>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
               subtitle={METHOD_STATE_SAMPLE.subtitle}
               selected
             />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Hover" align="stretch" wide inert>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
               subtitle={METHOD_STATE_SAMPLE.subtitle}
               preview="hover"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Hover, selected" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Hover, selected" align="stretch" wide inert>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
@@ -9207,16 +14120,16 @@ function MethodStates() {
               selected
               preview="hover"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Focus" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Focus" align="stretch" wide inert>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
               subtitle={METHOD_STATE_SAMPLE.subtitle}
               preview="focus"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Focus, selected" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Focus, selected" align="stretch" wide inert>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
@@ -9224,16 +14137,16 @@ function MethodStates() {
               selected
               preview="focus"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Active" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Active" align="stretch" wide inert>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
               subtitle={METHOD_STATE_SAMPLE.subtitle}
               preview="active"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Active, selected" align="stretch" wide inert>
+          </StateCard>
+          <StateCard label="Active, selected" align="stretch" wide inert>
             <VerificationMethodCard
               icon={METHOD_STATE_SAMPLE.icon}
               title={METHOD_STATE_SAMPLE.title}
@@ -9241,8 +14154,8 @@ function MethodStates() {
               selected
               preview="active"
             />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide>
             <VerificationMethodCard
               icon={METHOD_DOC_SAMPLES[3].icon}
               title={METHOD_DOC_SAMPLES[3].title}
@@ -9250,8 +14163,8 @@ function MethodStates() {
               disabled
               hint={METHOD_DOC_SAMPLES[3].hint}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled, selected" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled, selected" align="stretch" wide>
             <VerificationMethodCard
               icon={METHOD_DOC_SAMPLES[3].icon}
               title={METHOD_DOC_SAMPLES[3].title}
@@ -9260,13 +14173,13 @@ function MethodStates() {
               disabled
               hint={METHOD_DOC_SAMPLES[3].hint}
             />
-          </DocsStateCard>
+          </StateCard>
         </div>
-      </DocsStateGroup>
+      </StateGroup>
 
-      <DocsStateGroup title="Group">
+      <StateGroup title="Group">
         <div className="flex w-full flex-col gap-8">
-          <DocsStateCard label="Default" align="stretch" wide>
+          <StateCard label="Default" align="stretch" wide>
             <RadioGroup label="Verification method" className="gap-3">
               {METHOD_DOC_SAMPLES.filter((sample) => !('disabled' in sample && sample.disabled)).map(
                 (sample) => (
@@ -9280,8 +14193,8 @@ function MethodStates() {
                 ),
               )}
             </RadioGroup>
-          </DocsStateCard>
-          <DocsStateCard label="Full list" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Full list" align="stretch" wide>
             <RadioGroup label="Verification method" className="gap-3">
               {METHOD_DOC_SAMPLES.map((sample) => (
                 <VerificationMethodCard
@@ -9295,8 +14208,8 @@ function MethodStates() {
                 />
               ))}
             </RadioGroup>
-          </DocsStateCard>
-          <DocsStateCard label="None selected" align="stretch" wide>
+          </StateCard>
+          <StateCard label="None selected" align="stretch" wide>
             <RadioGroup label="Verification method" className="gap-3">
               {METHOD_DOC_SAMPLES.filter((sample) => !('disabled' in sample && sample.disabled)).map(
                 (sample) => (
@@ -9309,10 +14222,10 @@ function MethodStates() {
                 ),
               )}
             </RadioGroup>
-          </DocsStateCard>
+          </StateCard>
         </div>
-      </DocsStateGroup>
-    </DocsStack>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -9418,23 +14331,23 @@ function AlertDemo() {
 
 function AlertStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {ALERT_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={ALERT_VARIANT_LABEL[variant]} align="stretch" wide>
+            <StateCard key={variant} label={ALERT_VARIANT_LABEL[variant]} align="stretch" wide>
               <Alert variant={variant} title={ALERT_COPY.title}>
                 {ALERT_COPY.body}
               </Alert>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {ALERT_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={ALERT_TONE_LABEL[tone]} align="stretch" wide>
+            <StateCard key={tone} label={ALERT_TONE_LABEL[tone]} align="stretch" wide>
               <Alert
                 tone={tone}
                 title={
@@ -9459,53 +14372,53 @@ function AlertStates() {
                         ? 'The workspace will pause from 01:00 to 03:00 UTC.'
                         : ALERT_COPY.body}
               </Alert>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {ALERT_SIZES.map((size) => (
-            <DocsStateCard key={size} label={ALERT_SIZE_LABEL[size]} align="stretch" wide>
+            <StateCard key={size} label={ALERT_SIZE_LABEL[size]} align="stretch" wide>
               <Alert size={size} title={ALERT_COPY.title}>
                 {ALERT_COPY.body}
               </Alert>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Title and body" align="stretch" wide>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Title and body" align="stretch" wide>
             <Alert title={ALERT_COPY.title}>{ALERT_COPY.body}</Alert>
-          </DocsStateCard>
-          <DocsStateCard label="Title only" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Title only" align="stretch" wide>
             <Alert title="Backup complete" />
-          </DocsStateCard>
-          <DocsStateCard label="Body only" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Body only" align="stretch" wide>
             <Alert>{ALERT_COPY.body}</Alert>
-          </DocsStateCard>
-          <DocsStateCard label="No icon" align="stretch" wide>
+          </StateCard>
+          <StateCard label="No icon" align="stretch" wide>
             <Alert icon={false} title={ALERT_COPY.title}>
               {ALERT_COPY.body}
             </Alert>
-          </DocsStateCard>
-          <DocsStateCard label="Dismiss" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Dismiss" align="stretch" wide>
             <AlertDismissPlay />
-          </DocsStateCard>
-          <DocsStateCard label="Action" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Action" align="stretch" wide>
             <Alert title="Invite expired" action={<AlertAction />}>
               Send a new link to join this workspace.
             </Alert>
-          </DocsStateCard>
-          <DocsStateCard label="Outline, warning" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Outline, warning" align="stretch" wide>
             <Alert variant="outline" tone="warning" title="Quota at 88%">
               Storage is almost full.
             </Alert>
-          </DocsStateCard>
-          <DocsStateCard label="Solid, danger" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Solid, danger" align="stretch" wide>
             <Alert
               variant="solid"
               tone="danger"
@@ -9515,13 +14428,13 @@ function AlertStates() {
             >
               Update the card on file.
             </Alert>
-          </DocsStateCard>
-          <DocsStateCard label="Ghost, success" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Ghost, success" align="stretch" wide>
             <Alert variant="ghost" tone="success" title="Saved">
               Your changes are live.
             </Alert>
-          </DocsStateCard>
-          <DocsStateCard label="Neutral, dismiss" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Neutral, dismiss" align="stretch" wide>
             <Alert
               tone="neutral"
               title="Maintenance tonight"
@@ -9529,10 +14442,10 @@ function AlertStates() {
             >
               The workspace will pause from 01:00 to 03:00 UTC.
             </Alert>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -9616,11 +14529,11 @@ function SheetNavDemo() {
 
 function SheetNavStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {SHEET_NAV_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={SHEET_NAV_VARIANT_LABEL[variant]}
               align="stretch"
@@ -9628,15 +14541,15 @@ function SheetNavStates() {
               className="bg-bg-primary"
             >
               <SheetNavPreview variant={variant} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
           {SHEET_NAV_LAYOUTS.map((layout) => (
-            <DocsStateCard
+            <StateCard
               key={layout}
               label={SHEET_NAV_LAYOUT_LABEL[layout]}
               align="stretch"
@@ -9652,15 +14565,15 @@ function SheetNavStates() {
                 doneLabel={layout === 'prominent' ? 'Add' : undefined}
                 body={layout !== 'large'}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {SHEET_NAV_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={SHEET_NAV_SIZE_LABEL[size]}
               align="stretch"
@@ -9668,15 +14581,15 @@ function SheetNavStates() {
               className="bg-bg-primary"
             >
               <SheetNavPreview size={size} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {SHEET_NAV_TONES.map((tone) => (
-            <DocsStateCard
+            <StateCard
               key={tone}
               label={SHEET_NAV_TONE_LABEL[tone]}
               align="stretch"
@@ -9688,31 +14601,31 @@ function SheetNavStates() {
                 title={tone === 'danger' ? 'This photo' : 'Edit profile'}
                 doneLabel={tone === 'danger' ? 'Delete' : 'Done'}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-          <DocsStateCard
+          <StateCard
             label="Prominent, brand"
             align="stretch"
             wide
             className="bg-bg-primary"
           >
             <SheetNavPreview layout="prominent" doneLabel="Add" />
-          </DocsStateCard>
-          <DocsStateCard
+          </StateCard>
+          <StateCard
             label="Prominent, danger"
             align="stretch"
             wide
             className="bg-bg-primary"
           >
             <SheetNavPreview layout="prominent" tone="danger" title="This photo" doneLabel="Delete" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
           {SHEET_NAV_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={SHEET_NAV_VARIANT_LABEL[variant]}
               align="stretch"
@@ -9720,56 +14633,56 @@ function SheetNavStates() {
               className="bg-black"
             >
               <SheetNavPreview variant={variant} onDark title="Move and Scale" />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview />
-          </DocsStateCard>
-          <DocsStateCard label="Subtitle" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Subtitle" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview subtitle="Name, photo, and username" />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled Done" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled Done" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview doneDisabled />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled Cancel" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled Cancel" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview cancelDisabled />
-          </DocsStateCard>
-          <DocsStateCard label="Loading" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Loading" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview loading loadingText="Saving" />
-          </DocsStateCard>
-          <DocsStateCard label="Hover" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Hover" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview preview="hover" />
-          </DocsStateCard>
-          <DocsStateCard label="Pressed" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Pressed" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview preview="active" />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview preview="disabled" />
-          </DocsStateCard>
-          <DocsStateCard label="No trailing" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="No trailing" align="stretch" wide className="bg-bg-primary">
             <SheetNavFrame>
               <SheetNav title="Filters" onCancel={() => undefined} />
             </SheetNavFrame>
-          </DocsStateCard>
-          <DocsStateCard label="Long title" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Long title" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview title="Edit your public profile and username" />
-          </DocsStateCard>
-          <DocsStateCard label="Close, no Done" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Close, no Done" align="stretch" wide className="bg-bg-primary">
             <SheetNavFrame>
               <SheetNav title="Info" layout="close" onCancel={() => undefined} />
             </SheetNavFrame>
-          </DocsStateCard>
-          <DocsStateCard label="Back, nested" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Back, nested" align="stretch" wide className="bg-bg-primary">
             <SheetNavPreview layout="back" title="Details" cancelLabel="Album" doneLabel="Select" />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -9789,45 +14702,45 @@ function DividerStates() {
   )
 
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {DIVIDER_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={DIVIDER_VARIANT_LABEL[variant]} align="stretch" wide>
+            <StateCard key={variant} label={DIVIDER_VARIANT_LABEL[variant]} align="stretch" wide>
               <Divider variant={variant} flush />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Labeled">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Labeled">
+        <StateGrid columns={2}>
           {DIVIDER_VARIANTS.map((variant) => (
-            <DocsStateCard key={variant} label={DIVIDER_VARIANT_LABEL[variant]} align="stretch" wide>
+            <StateCard key={variant} label={DIVIDER_VARIANT_LABEL[variant]} align="stretch" wide>
               <Divider variant={variant} flush>
                 or continue with
               </Divider>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {DIVIDER_SIZES.map((size) => (
-            <DocsStateCard key={size} label={DIVIDER_SIZE_LABEL[size]} align="stretch" wide>
+            <StateCard key={size} label={DIVIDER_SIZE_LABEL[size]} align="stretch" wide>
               <Divider size={size} flush>
                 or continue with
               </Divider>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {DIVIDER_TONES.map((tone) => (
-            <DocsStateCard key={tone} label={DIVIDER_TONE_LABEL[tone]} align="stretch" wide>
+            <StateCard key={tone} label={DIVIDER_TONE_LABEL[tone]} align="stretch" wide>
               <Divider tone={tone} flush>
                 {tone === 'success'
                   ? 'Verified'
@@ -9839,27 +14752,27 @@ function DividerStates() {
                         ? 'DevKit'
                         : 'or continue with'}
               </Divider>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Align">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Align">
+        <StateGrid columns={2}>
           {DIVIDER_ALIGNS.map((align) => (
-            <DocsStateCard key={align} label={DIVIDER_ALIGN_LABEL[align]} align="stretch" wide>
+            <StateCard key={align} label={DIVIDER_ALIGN_LABEL[align]} align="stretch" wide>
               <Divider align={align} flush>
                 {align === 'start' ? 'Today' : align === 'end' ? 'Optional' : 'or continue with'}
               </Divider>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Orientation">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Orientation">
+        <StateGrid columns={2}>
           {DIVIDER_ORIENTATIONS.map((orientation) => (
-            <DocsStateCard key={orientation} label={DIVIDER_ORIENTATION_LABEL[orientation]} align="stretch" wide>
+            <StateCard key={orientation} label={DIVIDER_ORIENTATION_LABEL[orientation]} align="stretch" wide>
               {orientation === 'horizontal' ? (
                 <Divider flush>or continue with</Divider>
               ) : (
@@ -9871,28 +14784,28 @@ function DividerStates() {
                   <Caption>All</Caption>
                 </div>
               )}
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Default" align="stretch" wide>
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Default" align="stretch" wide>
             <Divider flush />
-          </DocsStateCard>
-          <DocsStateCard label="Labeled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Labeled" align="stretch" wide>
             <Divider flush>or continue with</Divider>
-          </DocsStateCard>
-          <DocsStateCard label="Icon" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Icon" align="stretch" wide>
             <Divider flush icon={sparkle} />
-          </DocsStateCard>
-          <DocsStateCard label="Icon and label" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Icon and label" align="stretch" wide>
             <Divider flush icon={sparkle}>
               New
             </Divider>
-          </DocsStateCard>
-          <DocsStateCard label="Inset" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Inset" align="stretch" wide>
             <div className="w-full overflow-hidden rounded-[12px] bg-bg-elevated dark:bg-bg-tertiary">
               <p className="m-0 px-4 py-3 text-[15px] text-text-primary">Notifications</p>
               <Divider inset flush />
@@ -9900,45 +14813,45 @@ function DividerStates() {
               <Divider inset flush />
               <p className="m-0 px-4 py-3 text-[15px] text-text-primary">Haptics</p>
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="Fade, labeled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Fade, labeled" align="stretch" wide>
             <Divider variant="fade" flush>
               or continue with
             </Divider>
-          </DocsStateCard>
-          <DocsStateCard label="Start, section" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Start, section" align="stretch" wide>
             <Divider align="start" flush>
               Today
             </Divider>
-          </DocsStateCard>
-          <DocsStateCard label="Dashed" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Dashed" align="stretch" wide>
             <Divider variant="dashed" flush>
               or
             </Divider>
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide>
             <Divider disabled flush>
               or continue with
             </Divider>
-          </DocsStateCard>
-          <DocsStateCard label="Long label" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Long label" align="stretch" wide>
             <Divider flush>or continue with email, passkey, or a provider</Divider>
-          </DocsStateCard>
-          <DocsStateCard label="Vertical, labeled" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Vertical, labeled" align="stretch" wide>
             <div className="flex h-[140px] justify-center">
               <Divider orientation="vertical" flush>
                 or
               </Divider>
             </div>
-          </DocsStateCard>
-          <DocsStateCard label="Danger zone" align="stretch" wide>
+          </StateCard>
+          <StateCard label="Danger zone" align="stretch" wide>
             <Divider tone="danger" align="start" flush>
               Danger zone
             </Divider>
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -10339,7 +15252,7 @@ const DOCS: Record<string, DocDef> = {
       p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
       p('disabled', 'boolean', 'false', 'Prevents entry. Explain why in nearby copy.'),
       p('autoComplete', 'string', 'undefined', 'Native autocomplete. Use email, username, name, and similar tokens.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the input.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state without focusing the input.'),
     ],
   },
   textarea: {
@@ -10367,7 +15280,7 @@ const DOCS: Record<string, DocDef> = {
       p('count', 'boolean', 'false', 'Show a character count even without maxLength.'),
       p('hint', 'ReactNode', 'undefined', 'Caption on the composer footer, opposite the count.'),
       p("resize", "'y' | 'none'", 'well/composer: none, else y', 'Whether the field can be stretched.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the field.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state without focusing the field.'),
     ],
   },
   'password-field': {
@@ -10395,7 +15308,7 @@ const DOCS: Record<string, DocDef> = {
       p('invalid', 'boolean', 'false', 'Danger border, icon, and aria-invalid.'),
       p('valid', 'boolean', 'false', 'Success border and icon. Ignored when invalid.'),
       p('autoComplete', 'string', "'current-password'", 'Use current-password on sign-in and new-password on create account.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state in docs without focusing the field.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Force a visual state without focusing the field.'),
     ],
   },
   'password-reveal': {
@@ -10629,7 +15542,7 @@ const DOCS: Record<string, DocDef> = {
       p("variant", "'outline' | 'subtle' | 'ghost'", "'outline'", 'Unchecked chrome. Outline for forms, subtle on a card, ghost in a list.'),
       p("size", "'sm' | 'md' | 'lg'", "'md'", 'Box size. The row stays at least 44px tall.'),
       p("tone", "'brand' | 'danger'", "'brand'", 'Fill when on. Danger is for a destructive acknowledgement only.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
       p('disabled', 'boolean', 'false', 'Prevents press.'),
     ],
   },
@@ -10657,7 +15570,7 @@ const DOCS: Record<string, DocDef> = {
       p("variant", "'outline' | 'subtle' | 'ghost'", "'outline'", 'Unchecked chrome. Outline for forms, subtle on a card, ghost in a list.'),
       p("size", "'sm' | 'md' | 'lg'", "'md'", 'Circle size. The row stays at least 44px tall.'),
       p("tone", "'brand' | 'danger'", "'brand'", 'Ring and disc when selected. Danger is for a destructive choice only.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
       p('name', 'string', 'undefined', 'Shared name for every option in the set.'),
       p('disabled', 'boolean', 'false', 'Prevents press.'),
     ],
@@ -10721,7 +15634,7 @@ const DOCS: Record<string, DocDef> = {
       p('invalid', 'boolean', 'false', 'Error after submit. Sets aria-invalid and a danger fill.'),
       p('valid', 'boolean', 'false', 'Success fill. Ignored when invalid.'),
       p('disabled', 'boolean', 'false', 'Prevents press and keyboard.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
     ],
   },
   'number-field': {
@@ -10760,7 +15673,7 @@ const DOCS: Record<string, DocDef> = {
       p('valid', 'boolean', 'false', 'Success border. Ignored when invalid.'),
       p('disabled', 'boolean', 'false', 'Prevents typing and stepping.'),
       p('readOnly', 'boolean', 'false', 'Shows the value. Arrows do not run.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for state tiles.'),
     ],
   },
   'date-picker': {
@@ -10796,7 +15709,7 @@ const DOCS: Record<string, DocDef> = {
       p('min', 'string', "'1900-01-01'", 'Earliest ISO date that can be chosen.'),
       p('max', 'string', 'today', 'Latest ISO date that can be chosen.'),
       p('disabled', 'boolean', 'false', 'Prevents opening the calendar.'),
-      p("preview", "'hover' | 'open'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'open'", 'undefined', 'Forced visual for state tiles.'),
     ],
   },
   'otp-boxes': {
@@ -10826,7 +15739,7 @@ const DOCS: Record<string, DocDef> = {
       p('error', 'boolean', 'false', 'Alias for invalid.'),
       p('shaking', 'boolean', 'false', 'Shake the row when the code is rejected.'),
       p('masked', 'boolean', 'false', 'Hide digits as discs.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for state tiles.'),
       p('disabled', 'boolean', 'false', 'Prevents entry.'),
       p('onComplete', '(code: string) => void', 'undefined', 'Called when every box is filled.'),
     ],
@@ -10862,7 +15775,7 @@ const DOCS: Record<string, DocDef> = {
       p('shaking', 'boolean', 'false', 'Shake when the code is rejected.'),
       p('masked', 'boolean', 'false', 'Hide characters as discs.'),
       p('readOnly', 'boolean', 'false', 'Show a code without allowing edits.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for state tiles.'),
       p('disabled', 'boolean', 'false', 'Prevents entry.'),
       p('label', 'ReactNode', "'Recovery code'", 'Caption above the field.'),
       p('hint', 'ReactNode', 'undefined', 'Caption under the field. Uses the invalid or valid tone when set.'),
@@ -11102,7 +16015,7 @@ const DOCS: Record<string, DocDef> = {
       p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the page. Subtle, outline, and pill sit in a panel.'),
       p("size", "'sm' | 'md' | 'lg'", "'md'", 'Mark, spinner, and padding. Small is for a card. Large is a full page boot.'),
       p("indicator", "'spinner' | 'bar' | 'none'", "'spinner'", 'Spinner is the branded boot. Bar matches Progress. None is the mark alone.'),
-      p("preview", "'initial' | 'delayed'", 'undefined', 'Forced visual for docs tiles. Skips the timer.'),
+      p("preview", "'initial' | 'delayed'", 'undefined', 'Forced visual for state tiles. Skips the timer.'),
       p('showLogo', 'boolean', 'true', 'Show the brand mark above the indicator.'),
       p('showStatus', 'boolean', 'true', 'Show the caption. The accessible name becomes Loading when hidden.'),
       p('onDark', 'boolean', 'false', 'Type and chrome for a black surface.'),
@@ -11208,13 +16121,13 @@ const DOCS: Record<string, DocDef> = {
       p('showHandle', 'boolean', 'true on sheet', 'The grabber on a sheet.'),
       p('dismissible', 'boolean', 'true', 'Backdrop and Escape close the overlay. Off while saving.'),
       p('loading', 'boolean', 'false', 'Sets aria-busy and blocks dismiss. Mark the busy action with loading too.'),
-      p('embedded', 'boolean', 'false', 'Render in place for docs. No portal, no scroll lock, no focus trap.'),
+      p('embedded', 'boolean', 'false', 'Render in place. No portal, no scroll lock, no focus trap.'),
     ],
   },
   'command-palette': {
     title: 'Command Palette',
     description:
-      'Type to find and run a command without leaving the page. Use it for docs search, a marketing header, or a system jump with a keyboard shortcut.',
+      'Type to find and run a command without leaving the page. Use it for in-app search, a marketing header, or a system jump with a keyboard shortcut.',
     ...commandPaletteGuide,
     Demo: CommandPaletteDemo,
     wide: true,
@@ -11233,7 +16146,7 @@ const DOCS: Record<string, DocDef> = {
     props: [
       p('open', 'boolean', '—', 'Whether the overlay is shown.'),
       p('onClose', '() => void', '—', 'Backdrop, Escape, Cancel, and a completed select.'),
-      p('items', 'CommandItem[]', 'undefined', 'Flat list. Filtered by the query and grouped by item.group. If omitted with groups, the docs catalog is searched.'),
+      p('items', 'CommandItem[]', 'undefined', 'Flat list. Filtered by the query and grouped by item.group. If omitted with groups, the component catalog is searched.'),
       p('groups', 'CommandGroup[]', 'undefined', 'Pre-grouped results. Shown as-is. Wins over items.'),
       p('query', 'string', 'uncontrolled', 'The field value. Pass with onQueryChange to control it.'),
       p('onQueryChange', '(value: string) => void', 'undefined', 'Called as the person types.'),
@@ -11247,8 +16160,8 @@ const DOCS: Record<string, DocDef> = {
       p('footer', 'ReactNode', 'undefined', 'Custom footer. Command shows keyboard hints by default.'),
       p('showFooter', 'boolean', 'true on command', 'Keyboard hint row. Off on spotlight, nav, and sheet.'),
       p('cancelLabel', 'string', "'Cancel'", 'Trailing dismiss on nav. Anchor without href, brand blue.'),
-      p('index', 'number', 'uncontrolled', 'Active result. Pass for a docs tile.'),
-      p('embedded', 'boolean', 'false', 'Render in place for docs. No portal and no scroll lock.'),
+      p('index', 'number', 'uncontrolled', 'Active result. Pass for a state tile.'),
+      p('embedded', 'boolean', 'false', 'Render in place. No portal and no scroll lock.'),
       p('CommandSearch.variant', "'pill' | 'subtle' | 'outline' | 'ghost' | 'icon'", "'outline'", 'Nav Search chrome. Outline is the default trigger. Icon is the marketing glass.'),
       p("CommandSearch.size", "'sm' | 'md' | 'lg'", "'sm'", 'Trigger height. Small is a 52px bar.'),
       p('CommandSearch.icon', 'boolean', 'false', 'Same as variant="icon". Marketing header glass.'),
@@ -11292,7 +16205,7 @@ const DOCS: Record<string, DocDef> = {
       p('loading', 'boolean', 'false', 'Spinner on the confirm. Blocks dismiss. Cancel is disabled.'),
       p('loadingText', 'string', "'Working…'", 'Accessible name while the confirm is busy.'),
       p('confirmDisabled', 'boolean', 'false', 'Dims the confirm until a condition is met.'),
-      p('embedded', 'boolean', 'false', 'Render in place for docs. No portal, no scroll lock, no focus trap.'),
+      p('embedded', 'boolean', 'false', 'Render in place. No portal, no scroll lock, no focus trap.'),
     ],
   },
   'avatar-editor': {
@@ -11366,7 +16279,7 @@ const DOCS: Record<string, DocDef> = {
       p("align", "'start' | 'stretch'", "'start'", 'Start hugs the labels. Stretch shares the row equally.'),
       p('fullWidth', 'boolean', 'false', 'Stretch the well to the row. Underline is already full width.'),
       p('disabled', 'boolean', 'false', 'Dims the whole list. Arrow keys do not move.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for docs tiles. Skips the pointer.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced visual for state tiles. Skips the pointer.'),
       p('aria-label', 'string', 'undefined', 'Accessible name when there is no nearby heading.'),
     ],
   },
@@ -11408,7 +16321,7 @@ const DOCS: Record<string, DocDef> = {
       p('active', 'boolean', 'false', 'On IconTab. Selected appearance.'),
       p('badge', 'number | string', 'undefined', 'Count on the icon, or after the label when inline.'),
       p("tone", "'default' | 'danger'", "'default'", 'Danger is a destructive destination such as Log out.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
       p('aria-label', 'string', 'undefined', 'On IconTabBar. Accessible name when there is no nearby heading.'),
     ],
   },
@@ -11434,7 +16347,7 @@ const DOCS: Record<string, DocDef> = {
       p("size", "'sm' | 'md' | 'lg'", "'md'", 'Type, icon, and crumb height.'),
       p("separator", "'chevron' | 'slash' | 'dot'", "'chevron'", 'Mark between crumbs. Chevron is the default.'),
       p('maxItems', 'number', 'undefined', 'Collapse the middle into an overflow when the path is longer. Minimum 3.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual on previewIndex for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual on previewIndex for state tiles.'),
       p('previewIndex', 'number', '0', 'Which crumb receives preview. Use -1 for the overflow.'),
       p('aria-label', 'string', "'Breadcrumb'", 'Accessible name of the navigation.'),
     ],
@@ -11477,7 +16390,7 @@ const DOCS: Record<string, DocDef> = {
       p('lastLabel', 'string', "'Last page'", 'Accessible name for last.'),
       p('formatCompact', '(page, pageCount) => string', "'3 of 12'", 'Compact layout copy.'),
       p('fullWidth', 'boolean', 'false', 'Previous on the start edge, next on the end edge.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
       p("previewTarget", "'page' | 'previous' | 'next' | 'first' | 'last'", "'page'", 'Which control receives preview.'),
       p('aria-label', 'string', "'Pagination'", 'Accessible name of the navigation.'),
     ],
@@ -11566,7 +16479,7 @@ const DOCS: Record<string, DocDef> = {
       p('leading', 'ReactNode', 'undefined', 'Replace the leading action.'),
       p('trailing', 'ReactNode', 'undefined', 'Replace the trailing action.'),
       p('onDark', 'boolean', 'false', 'Type and chrome for a black surface.'),
-      p("preview", "'hover' | 'active' | 'disabled'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'active' | 'disabled'", 'undefined', 'Forced visual for state tiles.'),
     ],
   },
   'nav-search': {
@@ -11602,14 +16515,14 @@ const DOCS: Record<string, DocDef> = {
       p('onActivate', '() => void', 'undefined', 'Turns the field into a trigger, such as opening Command Palette. Click, Enter, or Space.'),
       p('active', 'boolean', 'false', 'Forced open chrome on a trigger, while the palette is shown.'),
       p('readOnly', 'boolean', 'false', 'The field cannot be typed. Implied when onActivate is set.'),
-      p("preview", "'hover' | 'focus'", 'undefined', 'Forced hover or focus for docs tiles.'),
+      p("preview", "'hover' | 'focus'", 'undefined', 'Forced hover or focus for state tiles.'),
       p('name', 'string', 'undefined', 'Native input name.'),
       p('id', 'string', 'undefined', 'Native input id. Generated when omitted.'),
       p('className', 'string', 'undefined', 'Extra classes on the field.'),
     ],
   },
   'profile-button': {
-    title: 'Profile Button',
+    title: 'Profile Button', 
     description:
       'The account control in a header. Press it to open the account menu. Use a face in a toolbar, or add the name and email on a settings row.',
     ...profileButtonGuide,
@@ -11649,7 +16562,7 @@ const DOCS: Record<string, DocDef> = {
       p('loading', 'boolean', 'false', 'Replaces the face with a spinner. Sets aria-busy.'),
       p('disabled', 'boolean', 'false', 'Dims the control and blocks press.'),
       p('fullWidth', 'boolean', 'false', 'Stretch labeled, menu, and identity to the container.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
     ],
   },
   badge: {
@@ -11751,6 +16664,94 @@ const DOCS: Record<string, DocDef> = {
       p('disabled', 'boolean', 'false', 'Dims the camera. Use this while the editor is saving.'),
       p('accept', 'string', "'image/jpeg,image/png,image/webp,image/gif'", 'File types the dialog allows.'),
       p('ref', 'Ref<AvatarPickerHandle>', 'undefined', 'Call ref.open() to show the file dialog from a parent.'),
+    ],
+  },
+  card: {
+    title: 'Card',
+    description:
+      'A quiet surface for a title, supporting copy, and optional media or actions. Use it for a project, a feature, or a destination.',
+    ...cardGuide,
+    Demo: CardDemo,
+    wide: true,
+    code: `<Card title="Team library" description="Shared files, comments, and reviews in one place." />
+<Card variant="subtle" title="Team library" description="Shared files, comments, and reviews in one place." />
+<Card variant="outline" title="Team library" description="Shared files, comments, and reviews in one place." />
+<Card variant="ghost" title="Team library" description="Shared files, comments, and reviews in one place." />
+<Card variant="pill" title="Team library" description="Shared files, comments, and reviews in one place." />
+<Card
+  media={<img src="/cover.jpg" alt="" />}
+  icon={<Tiles />}
+  eyebrow="Workspace"
+  title="Team library"
+  description="Shared files, comments, and reviews in one place."
+/>
+<Card title="Team library" description="Shared files in one place." href="/library" />
+<Card title="Team library" loading />
+<div className="grid grid-cols-2 items-stretch gap-4">
+  <Card fullHeight title="Notes" description="A short line." />
+  <Card fullHeight title="Team library" description="Shared files, comments, and reviews in one place." />
+</div>
+<Card fullWidth={false} title="Notes" />
+`,
+    statesContent: <CardStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'fill'", 'Chrome. Fill is the default tile. Ghost in a dense grid. Pill is the rounder tile.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Padding and type. Small is a sidebar. Large is a featured object.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Tile tint and icon color. Default stays neutral. Tone is for a semantic card, not a second CTA.'),
+      p('title', 'string', 'undefined', 'Name of the object. Also the accessible name.'),
+      p('description', 'ReactNode', 'undefined', 'One supporting line under the title.'),
+      p('eyebrow', 'string', 'undefined', 'Short uppercase kicker above the title.'),
+      p('icon', 'ReactNode', 'undefined', 'Leading mark in a well. Ghost draws the glyph with no well.'),
+      p('media', 'ReactNode', 'undefined', 'Full bleed picture or video at the top. Clipped to the card radius.'),
+      p('children', 'ReactNode', 'undefined', 'Optional body under the description, such as a badge row.'),
+      p('footer', 'ReactNode', 'undefined', 'Actions under the body. Use only when the card itself is not pressable.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the card hugs its copy.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row. Footer sits at the bottom.'),
+      p('selected', 'boolean', 'false', 'Marks the card as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for media and copy. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the tile. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the card into a link to the destination.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the card into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome and type for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'card-grid': {
+    title: 'Card Grid',
+    description:
+      'A responsive set of cards. Choose equal or unequal height, equal or mixed width, and two to four columns.',
+    ...cardGridGuide,
+    Demo: CardGridDemo,
+    wide: true,
+    code: `<CardGrid columns={3}>
+  <Card title="Notes" description="A short line." />
+  <Card title="Team library" description="Shared files, comments, and reviews in one place." />
+  <Card title="Design crit" description="Comments and files for this week." />
+</CardGrid>
+<CardGrid columns={2} align="stretch">
+  <Card title="Notes" description="A short line." />
+  <Card title="Team library" description="Shared files, comments, and reviews in one place." />
+</CardGrid>
+<CardGrid columns={2} align="start">
+  <Card title="Notes" description="A short line." />
+  <Card title="Team library" description="Shared files, comments, and reviews in one place." />
+</CardGrid>
+<CardGrid columns={2} widths="fit">
+  <Card title="Notes" />
+  <Card title="Team library" description="Shared files in one place." />
+</CardGrid>
+<CardGrid columns={2} widths="mixed">
+  <Card title="Notes" />
+  <Card title="Team library" description="Fills the rest of the row." />
+</CardGrid>
+`,
+    statesContent: <CardGridStates />,
+    props: [
+      p('children', 'ReactNode', '—', 'The cards in the set. Prefer Card.'),
+      p('columns', '1 | 2 | 3 | 4', '3', 'Preferred column count. Collapses on smaller screens.'),
+      p("align", "'stretch' | 'start'", "'stretch'", 'Stretch is equal height. Start lets each card hug its copy.'),
+      p("widths", "'equal' | 'fit' | 'mixed'", "'equal'", 'Equal shares the row. Fit hugs copy. Mixed keeps the first card compact.'),
+      p("gap", "'sm' | 'md' | 'lg'", "'md'", 'Space between cards. Small is 12px. Medium is 16px. Large is 24px.'),
     ],
   },
   'stat-card': {
@@ -11856,7 +16857,7 @@ const DOCS: Record<string, DocDef> = {
       p('stickyHeader', 'boolean', 'false', 'Pins the header while the body scrolls.'),
       p('maxHeight', 'string', "'320px' when sticky", 'Scrollport height when the header is sticky.'),
       p('minWidth', 'string', "'520px'", 'Minimum table width before horizontal scroll.'),
-      p("preview", "'hover' | 'selected' | 'focus' | 'active' | 'disabled' | 'loading' | 'empty' | 'editing'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'selected' | 'focus' | 'active' | 'disabled' | 'loading' | 'empty' | 'editing'", 'undefined', 'Forced visual for state tiles.'),
       p('previewRow', 'number', '0', 'Which row the preview applies to.'),
       p('previewColumn', 'string', 'first editable', 'Which column the editing preview applies to.'),
     ],
@@ -11940,7 +16941,7 @@ const DOCS: Record<string, DocDef> = {
       p('chevron', 'boolean', 'true when tappable', 'Disclosure chevron. Defaults on when href or onClick is set. Hidden when selected.'),
       p('selected', 'boolean', 'false', 'Marks the current choice. Shows a check and a brand tint.'),
       p('disabled', 'boolean', 'false', 'Dims the row and removes it from the click cycle.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
       p('href', 'string', 'undefined', 'Renders the row as a link.'),
       p('onClick', '() => void', 'undefined', 'Renders the row as a button.'),
       p('header', 'ReactNode', 'undefined', 'ListGroup only. Caption above the group.'),
@@ -12010,7 +17011,7 @@ const DOCS: Record<string, DocDef> = {
       p('loading', 'boolean', 'false', 'Replaces the trailing control with a spinner and sets aria-busy.'),
       p('danger', 'boolean', 'false', 'Alias for tone="danger".'),
       p("align", "'start' | 'center'", "'start'", 'Action layout only. Center is Sign out.'),
-      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active'", 'undefined', 'Forced visual for state tiles.'),
       p('href', 'string', 'undefined', 'Renders the row as a link.'),
       p('onClick', '() => void', 'undefined', 'Renders the row as a button when there is no nested control.'),
       p('header', 'ReactNode', 'undefined', 'SettingsList only. Caption above the group.'),
@@ -12067,7 +17068,7 @@ const DOCS: Record<string, DocDef> = {
       p('invalid', 'boolean', 'false', 'Danger type on the value. Sets aria-invalid. Pair with a hint.'),
       p('disabled', 'boolean', 'false', 'Dims the row. It is not operable.'),
       p('onDark', 'boolean', 'false', 'Type and chrome for a black surface. Inherited from the group.'),
-      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'copied'", 'undefined', 'Forced visual for docs tiles.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'copied'", 'undefined', 'Forced visual for state tiles.'),
       p('KeyValueGroup.variant', 'same as row', "'fill'", 'Paints the card. Rows inside inherit it.'),
       p('KeyValueGroup.size', 'same as row', "'md'", 'Default size for rows in the group.'),
       p('KeyValueGroup.label', 'string', 'undefined', 'Accessible name of the group.'),
@@ -12104,6 +17105,542 @@ const DOCS: Record<string, DocDef> = {
       p('flush', 'boolean', 'false', 'Removes the outer margin so the rule can sit in a list or toolbar.'),
       p('disabled', 'boolean', 'false', 'Dims the rule. The divider is never operable.'),
       p('decorative', 'boolean', 'true when unlabeled', 'Hides the rule from assistive tech. Labeled rules are separators by default.'),
+    ],
+  },
+  stack: {
+    title: 'Stack',
+    description: 'A row or column of items with even space between them. Use it to group cards, actions, or fields.',
+    ...stackGuide,
+    Demo: StackDemo,
+    wide: true,
+    code: `<Stack>
+  <Card title="Notes" description="A short line." />
+  <Card title="Library" description="Shared files in one place." />
+</Stack>
+<Stack variant="subtle">
+  <Card title="Notes" description="A short line." />
+  <Card title="Library" description="Shared files in one place." />
+</Stack>
+<Stack variant="outline" gap="lg">
+  <Card title="Notes" description="A short line." />
+  <Card title="Library" description="Shared files in one place." />
+</Stack>
+<Stack direction="horizontal" gap="sm">
+  <Button size="sm">Save</Button>
+  <Button size="sm" variant="secondary">Cancel</Button>
+</Stack>
+<Stack variant="pill" selected>
+  <Card title="Notes" description="A short line." />
+</Stack>
+<Stack loading />
+`,
+    statesContent: <StackStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome. Ghost is layout only. Fill, subtle, outline, and pill paint a surface around the group.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the stack is painted. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint. Default stays neutral. Tone is for a semantic group, not a second CTA.'),
+      p("direction", "'vertical' | 'horizontal'", "'vertical'", 'Vertical is a page or a form. Horizontal is a toolbar.'),
+      p("align", "'start' | 'center' | 'end' | 'stretch'", "'stretch'", 'Cross axis. Stretch makes children share the row or column.'),
+      p("justify", "'start' | 'center' | 'end' | 'between'", "'start'", 'Main axis. Between pushes items to the edges of a horizontal row.'),
+      p("gap", "'sm' | 'md' | 'lg' | 'xl' | '2xl'", "'md'", 'Space between items. Small is 12px. Medium is 16px. Large is 24px. Extra large is 32px. 2X large is 40px.'),
+      p('wrap', 'boolean', 'false', 'Lets a horizontal stack break onto the next line.'),
+      p('children', 'ReactNode', 'undefined', 'The items in the stack.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the stack hugs its items.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted stack as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the items. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the stack. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the stack into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the stack into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  usage: {
+    title: 'Usage',
+    description: 'A how-to block: a short paragraph, three principles, then do and don’t. Use it to explain a feature or a flow.',
+    ...usageGuide,
+    Demo: UsageDemo,
+    wide: true,
+    code: `<Usage
+  prose="Usage is the how-to block for a feature or a flow. Start with one paragraph that says what to do."
+  principles={[
+    { title: 'Order', body: 'Body, then principles, then do and don’t. Related links sit outside the block.' },
+    { title: 'One card per line', body: 'Each principle and each do or don’t card fills the row so the copy can run.' },
+    { title: 'One job', body: 'A usage block explains the thing on the page. Do not mix a form into it.' },
+  ]}
+  doItems={[
+    'Start with one short paragraph that a person can read after the heading.',
+    'Put three principles on their own rows, then close with do and don’t.',
+  ]}
+  dontItems={[
+    'Do not pack three principles into one row.',
+    'Do not skip Body to jump to do and don’t.',
+  ]}
+/>
+<Usage variant="subtle" />
+<Usage variant="outline" layout="split" />
+<Usage variant="pill" selected />
+<Usage loading />
+`,
+    statesContent: <UsageStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome. Ghost is layout only. Fill, subtle, outline, and pill paint a surface around the group.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the block is painted. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint. Default stays neutral. Tone is for a semantic group, not a second CTA.'),
+      p("layout", "'split' | 'stack'", "'stack'", 'Stack is one card per row at full width. Split puts principles in a row and do and don’t in a pair from 1069px.'),
+      p("gap", "'sm' | 'md' | 'lg' | 'xl' | '2xl'", "'lg'", 'Space between parts. Large is 24px, the default rhythm.'),
+      p('prose', 'ReactNode', 'undefined', 'The opening paragraph. A string becomes Body.'),
+      p("principles", '{ title: string; body: string }[]', 'undefined', 'Three short rules. The index is order, not rank.'),
+      p('doItems', 'string[]', 'undefined', 'The do list. Each item is a complete instruction.'),
+      p('dontItems', 'string[]', 'undefined', 'The don’t list. Start items with Do not.'),
+      p('title', 'string', 'undefined', 'Optional name above Body, such as How to share a file.'),
+      p('eyebrow', 'string', 'undefined', 'Optional kicker above the title.'),
+      p('children', 'ReactNode', 'undefined', 'Extra content after do and don’t.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the block hugs its copy.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted usage block as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the block. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the block into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the block into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'token-group': {
+    title: 'Token Group',
+    description: 'A labeled family of samples with an optional note. Use it for a color set, a spacing scale, or a radius set.',
+    ...tokenGroupGuide,
+    Demo: TokenGroupDemo,
+    wide: true,
+    code: `<TokenGroup title="Brand" note="The only interactive accent." columns={4}>
+  {samples}
+</TokenGroup>
+<TokenGroup variant="subtle" title="Brand" note="The only interactive accent." columns={4}>
+  {samples}
+</TokenGroup>
+<TokenGroup variant="outline" title="Brand" columns={4}>
+  {samples}
+</TokenGroup>
+<TokenGroup variant="pill" selected title="Brand" columns={4}>
+  {samples}
+</TokenGroup>
+<TokenGroup loading />
+`,
+    statesContent: <TokenGroupStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome. Ghost is layout only. Fill, subtle, outline, and pill paint a surface around the group.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the group is painted. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint. Default stays neutral. Tone is for a semantic family, not a second CTA.'),
+      p("columns", '1 | 2 | 3 | 4', 'undefined', 'Wraps sibling samples in a responsive grid. Omit when the child already is a grid.'),
+      p("gap", "'sm' | 'md' | 'lg' | 'xl' | '2xl'", "'md'", 'Space between the heading and the samples. Medium is 16px.'),
+      p('title', 'string', 'undefined', 'Family name. Renders as an h3.'),
+      p('note', 'string', 'undefined', 'One supporting sentence under the title.'),
+      p('children', 'ReactNode', 'undefined', 'The samples: chips, bars, or radius cards.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the group hugs its samples.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted group as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the group. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the group into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the group into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'state-card': {
+    title: 'State Card',
+    description: 'A labeled tile that shows one control state on a quiet surface. Use it to sample a button, a field, or a row.',
+    ...stateCardGuide,
+    Demo: StateCardDemo,
+    wide: true,
+    code: `<StateCard label="Default">
+  <Button>Button</Button>
+</StateCard>
+<StateCard variant="fill" label="Fill">
+  <Button>Button</Button>
+</StateCard>
+<StateCard variant="outline" label="Outline">
+  <Button>Button</Button>
+</StateCard>
+<StateCard variant="pill" selected label="Selected">
+  <Button>Button</Button>
+</StateCard>
+<StateCard loading />
+`,
+    statesContent: <StateCardStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'subtle'", 'Chrome. Subtle is the quiet tile. Fill, outline, ghost, and pill change the surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when painted, and the minimum height of the sample well. Large is for taller samples.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint. Default stays neutral. Tone is for a semantic sample, not a second CTA.'),
+      p("align", "'center' | 'start' | 'stretch'", "'center'", 'How the sample sits in the well. Stretch wraps fields at 320px.'),
+      p("gap", "'sm' | 'md' | 'lg' | 'xl' | '2xl'", "'sm'", 'Space between the sample and the caption. Small is 12px.'),
+      p('label', 'string', 'undefined', 'Caption under the sample. The state name, not a sentence.'),
+      p('children', 'ReactNode', 'undefined', 'The sample control. One control per tile.'),
+      p('inert', 'boolean', 'false', 'Blocks pointer events on the sample. Use it when the control is only a preview.'),
+      p('wide', 'boolean', 'false', 'When stretch, fill the tile instead of capping at 320px.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the tile hugs the sample.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted tile as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the tile. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the tile into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the tile into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'state-grid': {
+    title: 'State Grid',
+    description: 'A responsive set of state cards. Use three columns for fields, six for compact controls.',
+    ...stateGridGuide,
+    Demo: StateGridDemo,
+    wide: true,
+    code: `<StateGrid>
+  <StateCard label="Default">{sample}</StateCard>
+  <StateCard label="Disabled">{sample}</StateCard>
+  <StateCard label="Loading">{sample}</StateCard>
+</StateGrid>
+<StateGrid variant="subtle" columns={2}>
+  <StateCard label="Default">{sample}</StateCard>
+  <StateCard label="Hover">{sample}</StateCard>
+</StateGrid>
+<StateGrid variant="outline" columns={6}>
+  {samples}
+</StateGrid>
+<StateGrid variant="pill" selected>
+  {samples}
+</StateGrid>
+<StateGrid loading />
+`,
+    statesContent: <StateGridStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome around the set. Ghost is layout only. Fill, subtle, outline, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the set is painted. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint. Default stays neutral. Tone is for a semantic set, not a second CTA.'),
+      p("columns", '1 | 2 | 3 | 4 | 6', '3', 'Preferred column count. Six is compact and wraps so each tile stays at least 12rem.'),
+      p("align", "'stretch' | 'start'", "'stretch'", 'Stretch is equal height. Start lets each tile hug its sample.'),
+      p("widths", "'equal' | 'fit' | 'mixed'", "'equal'", 'Equal shares the row. Fit hugs copy. Mixed keeps the first tile compact.'),
+      p("gap", "'sm' | 'md' | 'lg'", "'md'", 'Space between tiles. Small is 12px. Medium is 16px. Large is 24px.'),
+      p('children', 'ReactNode', 'undefined', 'The tiles in the set. Prefer State Card.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the set hugs its tiles.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted set as chosen.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the tiles. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the set. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the set into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the set into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'state-group': {
+    title: 'State Group',
+    description: 'A caption plus a grid of state cards for one axis, such as appearance, size, or tone.',
+    ...stateGroupGuide,
+    Demo: StateGroupDemo,
+    wide: true,
+    code: `<StateGroup title="Appearance" columns={3}>
+  <StateCard label="Default">{sample}</StateCard>
+  <StateCard label="Disabled">{sample}</StateCard>
+  <StateCard label="Loading">{sample}</StateCard>
+</StateGroup>
+<StateGroup variant="subtle" title="Size" columns={2}>
+  {samples}
+</StateGroup>
+<StateGroup variant="outline" title="Tone" columns={3}>
+  {samples}
+</StateGroup>
+<StateGroup variant="pill" selected title="State">
+  {samples}
+</StateGroup>
+<StateGroup loading />
+`,
+    statesContent: <StateGroupStates />,
+    props: [
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome around the group. Ghost is layout only. Fill, subtle, outline, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the group is painted. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint. Default stays neutral. Tone is for a semantic group, not a second CTA.'),
+      p('title', 'string', 'undefined', 'Group caption. Appearance, Size, Tone, or State. Not a heading.'),
+      p("columns", '1 | 2 | 3 | 4 | 6', 'undefined', 'Wraps State Cards in a State Grid. Omit when the child is already a State Grid.'),
+      p("align", "'stretch' | 'start'", "'stretch'", 'Stretch is equal height. Start lets each tile hug its sample. Used when columns is set.'),
+      p("widths", "'equal' | 'fit' | 'mixed'", "'equal'", 'Equal shares the row. Fit hugs copy. Mixed keeps the first tile compact. Used when columns is set.'),
+      p("gap", "'sm' | 'md' | 'lg' | 'xl' | '2xl'", "'sm'", 'Space between the caption and the grid. Small is 12px.'),
+      p('children', 'ReactNode', 'undefined', 'State Cards, or a State Grid when columns is omitted.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the group hugs its tiles.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted group as chosen.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the group. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the group into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the group into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  swatch: {
+    title: 'Swatch',
+    description: 'A color chip that shows the token fill and its CSS variable name. Use it for a palette sample.',
+    ...swatchGuide,
+    Demo: SwatchDemo,
+    wide: true,
+    code: `<Swatch token="brand-primary" />
+<Swatch token="success" variant="subtle" />
+<Swatch token="danger" variant="pill" />
+<Swatch token="text-primary" named={false} />
+<Swatch loading />
+`,
+    statesContent: <SwatchStates />,
+    props: [
+      p('token', 'string', 'undefined', 'CSS variable name without the leading dashes, such as brand-primary.'),
+      p('name', 'string', 'undefined', 'Caption under the fill. Defaults to --token.'),
+      p('named', 'boolean', 'true', 'Shows the token name. Pass false for a fill-only chip.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'outline'", 'Chrome. Outline is the default chip. Ghost is layout only. Fill, subtle, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Height of the fill. Small is 40px. Medium is 64px. Large is 96px.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Chrome tint around the sample. The fill always comes from the token.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the chip hugs a set width.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted chip as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the chip. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the chip into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the chip into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'swatch-grid': {
+    title: 'Swatch Grid',
+    description: 'A four column grid of color swatches for a token family. Use it inside Token Group.',
+    ...swatchGridGuide,
+    Demo: SwatchGridDemo,
+    wide: true,
+    code: `<SwatchGrid tokens={['brand-primary', 'success', 'warning', 'danger']} />
+<SwatchGrid variant="subtle" tokens={['brand-primary', 'success']} columns={2} />
+<SwatchGrid variant="outline" tokens={['brand-primary', 'success', 'warning', 'danger', 'text-primary', 'bg-secondary']} columns={6} />
+<SwatchGrid variant="pill" selected tokens={['brand-primary', 'success', 'warning', 'danger']} />
+<SwatchGrid loading />
+`,
+    statesContent: <SwatchGridStates />,
+    props: [
+      p('tokens', 'string[]', 'undefined', 'Token names without the leading dashes. Each name becomes a Swatch.'),
+      p('named', 'boolean', 'true', 'Shows the token name on each chip. Pass false for fill-only chips.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome around the set. Ghost is layout only. Fill, subtle, outline, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the set is painted, and the height of each fill. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint around the set. The fill always comes from each token.'),
+      p("columns", '1 | 2 | 3 | 4 | 6', '4', 'Preferred column count. Four is the default. Six is compact and wraps so each chip stays at least 12rem.'),
+      p("align", "'stretch' | 'start'", "'stretch'", 'Stretch is equal height. Start lets each chip hug its fill.'),
+      p("widths", "'equal' | 'fit' | 'mixed'", "'equal'", 'Equal shares the row. Fit hugs copy. Mixed keeps the first chip compact.'),
+      p("gap", "'sm' | 'md' | 'lg'", "'md'", 'Space between chips. Small is 12px. Medium is 16px. Large is 24px.'),
+      p('children', 'ReactNode', 'undefined', 'Extra Swatch nodes after tokens, or instead of tokens.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the set hugs its chips.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted set as chosen.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the chips. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the set. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the set into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the set into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'contrast-card': {
+    title: 'Contrast Card',
+    description: 'A reading pair of foreground and background tokens, shown at body size.',
+    ...contrastCardGuide,
+    Demo: ContrastCardDemo,
+    wide: true,
+    code: `<ContrastCard fg="text-primary" bg="bg-primary" label="Headline on page" />
+<ContrastCard fg="text-on-brand" bg="brand-primary" label="Label on primary" variant="subtle" />
+<ContrastCard fg="danger" bg="danger-subtle" label="Error on banner" variant="pill" />
+<ContrastCard fg="text-primary" bg="bg-primary" named={false} />
+<ContrastCard loading />
+`,
+    statesContent: <ContrastCardStates />,
+    props: [
+      p('fg', 'string', 'undefined', 'Foreground token without the leading dashes, such as text-primary.'),
+      p('bg', 'string', 'undefined', 'Background token without the leading dashes, such as bg-primary.'),
+      p('label', 'string', 'undefined', 'Use case under the sample, such as Headline on page. Not a heading.'),
+      p('sample', 'string', "'The quick brown fox'", 'Reading sample at body size.'),
+      p('named', 'boolean', 'true', 'Shows the use-case label. Pass false for the sample only.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome around the pair. Ghost is layout only. Fill, subtle, outline, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the card is painted, and the height of the sample well. Ghost has no outer padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Chrome tint around the pair. The pair always comes from the tokens.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the card hugs a set width.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted card as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the card. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the card into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the card into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'radius-card': {
+    title: 'Radius Card',
+    description: 'A sample corner next to its name, pixel value, and intended use.',
+    ...radiusCardGuide,
+    Demo: RadiusCardDemo,
+    wide: true,
+    code: `<RadiusCard value={18} label="Panel" use="Large cards, images, and dialogs." />
+<RadiusCard value={8} label="Control" use="Text fields, compact menus, and 44px inputs." />
+<RadiusCard value={980} label="Pill" use="Buttons, switches, and chip-like controls." variant="pill" />
+<RadiusCard value={12} named={false} />
+<RadiusCard loading />
+`,
+    statesContent: <RadiusCardStates />,
+    props: [
+      p('value', 'number', 'undefined', 'Corner radius in pixels. The scale is 8, 12, 18, and 980.'),
+      p('label', 'string', 'undefined', 'Job name: Control, Card, Panel, or Pill. Not Small or Large.'),
+      p('use', 'string', 'undefined', 'Where this radius belongs.'),
+      p('named', 'boolean', 'true', 'Shows the name, pixel value, and use. Pass false for the sample only.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'subtle'", 'Chrome around the sample. Subtle is the default surface. Ghost is layout only. Fill, outline, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the card is painted, and the size of the sample block. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Chrome tint around the sample. The corner always comes from value.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the card hugs the sample and copy.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted card as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the card. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the card into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the card into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'scale-row': {
+    title: 'Scale Row',
+    description: 'A bar for a content width relative to a max, or a spacing step at its true pixel size.',
+    ...scaleRowGuide,
+    Demo: ScaleRowDemo,
+    wide: true,
+    code: `<ScaleRow value={692} bar={692} caption="Single column copy" />
+<ScaleRow value={1024} bar={1024} caption="Marketing sections" />
+<ScaleRow value={32} width={32} caption="Card padding" />
+<ScaleRow value={692} bar={692} named={false} />
+<ScaleRow loading />
+`,
+    statesContent: <ScaleRowStates />,
+    props: [
+      p('value', 'number | string', 'undefined', 'Leading label, usually the pixel width. Shown in mono.'),
+      p('bar', 'number', 'undefined', 'Length used to compute the percent. Ignored when width is set.'),
+      p('max', 'number', '1024', 'Denominator for the percent. Use 1024 for layout widths.'),
+      p('width', 'number', 'undefined', 'True pixel width of the bar. Use this for spacing steps.'),
+      p('caption', 'string', 'undefined', 'Use case under the bar.'),
+      p('named', 'boolean', 'true', 'Shows the value and caption. Pass false for the bar only.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome around the row. Ghost is layout only. Fill, subtle, outline, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the row is painted, and the height of the bar. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Chrome tint around the row. The bar always uses brand-primary.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the sample hugs a set width.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted row as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the row. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the row into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the row into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'related': {
+    title: 'Related',
+    description: 'A three column grid of sibling links. Use it at the end of a page for nearby components.',
+    ...relatedGuide,
+    Demo: RelatedDemo,
+    wide: true,
+    code: `<Related
+  items={[
+    { href: '/components/card', title: 'Card', description: 'A quiet surface for a title and supporting copy.' },
+    { href: '/components/stack', title: 'Stack', description: 'A row or column of items with even space.' },
+    { href: '/components/table', title: 'Table', description: 'A structured list of records with headers and sort.' },
+  ]}
+/>
+<Related variant="subtle" columns={2} items={[{ href: '/components/card', title: 'Card', description: 'A quiet surface for a title and supporting copy.' }]} />
+<Related loading />
+`,
+    statesContent: <RelatedStates />,
+    props: [
+      p('items', 'RelatedItem[]', 'undefined', 'Sibling links. Each item is href, title, and description, and becomes a Related Card.'),
+      p('children', 'ReactNode', 'undefined', 'Extra Related Card nodes after items, or instead of items.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome around the set. Ghost is layout only. Fill, subtle, outline, and pill paint a surface.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the set is painted. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Surface tint around the set.'),
+      p("columns", '1 | 2 | 3 | 4 | 6', '3', 'Preferred column count. Three is the default. Six is compact and wraps so each card stays at least 12rem.'),
+      p("align", "'stretch' | 'start'", "'stretch'", 'Stretch is equal height. Start lets each card hug its copy.'),
+      p("widths", "'equal' | 'fit' | 'mixed'", "'equal'", 'Equal shares the row. Fit hugs copy. Mixed keeps the first card compact.'),
+      p("gap", "'sm' | 'md' | 'lg'", "'sm'", 'Space between cards. Small is 12px. Medium is 16px. Large is 24px.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the set hugs its cards.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted set as chosen.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the cards. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the set. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the set into a link. Inner cards are not links when the set is pressable.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the set into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'rule-card': {
+    title: 'Rule Card',
+    description: 'A do or don’t list with a success or danger tone. Use it inside Usage, or on its own.',
+    ...ruleCardGuide,
+    Demo: RuleCardDemo,
+    wide: true,
+    code: `<RuleCard items={['Use brand primary for the primary action.', 'Use danger only for destructive actions.']} />
+<RuleCard tone="danger" items={['Do not mix do items into a don’t card.']} />
+<RuleCard variant="outline" items={['Keep each line a complete instruction.']} />
+<RuleCard loading />
+`,
+    statesContent: <RuleCardStates />,
+    props: [
+      p('title', 'string', 'Do, Don’t, or Rule', 'Caption above the list. Defaults from tone: Do, Don’t, Rule, Brand, or Warning.'),
+      p('items', 'string[]', 'undefined', 'Rules in the list. Each item is one complete instruction.'),
+      p('named', 'boolean', 'true', 'Shows the title. Pass false for the list only.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'subtle'", 'Chrome around the list. Subtle is the default surface. Ghost is layout only. Fill, outline, and pill paint chrome.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Inner padding when the card is painted. Ghost has no padding.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'success'", 'Title, dots, and surface tint. Success is Do. Danger is Don’t.'),
+      p('fullWidth', 'boolean', 'true', 'Fill the row. Pass false so the card hugs a set width.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a grid or a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted card as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse placeholders for the parts. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the card. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the card into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the card into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
+    ],
+  },
+  'inline-code': {
+    title: 'Inline Code',
+    description: 'A highlighted token, prop, or import path inside a sentence.',
+    ...inlineCodeGuide,
+    Demo: InlineCodeDemo,
+    wide: true,
+    code: `<Body>
+  Pass <InlineCode>as</InlineCode> when the visual size and the document outline disagree.
+</Body>
+<InlineCode code="--brand-primary" />
+<InlineCode variant="subtle" code="@/icons" />
+<InlineCode loading />
+`,
+    statesContent: <InlineCodeStates />,
+    props: [
+      p('code', 'string', 'undefined', 'Source to highlight. Use this or a string child.'),
+      p('children', 'ReactNode', 'undefined', 'String children are highlighted. Other nodes render as written.'),
+      p("variant", "'fill' | 'subtle' | 'outline' | 'ghost' | 'pill'", "'ghost'", 'Chrome around the sample. Ghost is layout only and sits in Body. Fill, subtle, outline, and pill paint a chip.'),
+      p("size", "'sm' | 'md' | 'lg'", "'md'", 'Type size. Medium is 13px, the same as Code Panel.'),
+      p("tone", "'default' | 'brand' | 'success' | 'warning' | 'danger'", "'default'", 'Chrome tint. Syntax color stays brand, teal, and tertiary unless the fill is a solid tone.'),
+      p('fullWidth', 'boolean', 'false', 'Hug the sample. Pass true so the chip fills the row.'),
+      p('fullHeight', 'boolean', 'false', 'Fill the parent height in a flex row.'),
+      p('selected', 'boolean', 'false', 'Marks a painted sample as chosen in a set.'),
+      p('loading', 'boolean', 'false', 'Pulse a placeholder. Sets aria-busy.'),
+      p('disabled', 'boolean', 'false', 'Dims the sample. Press is blocked.'),
+      p('href', 'string', 'undefined', 'Turns the sample into a link.'),
+      p('onClick', 'MouseEventHandler', 'undefined', 'Turns the sample into a button. Ignored when href is set.'),
+      p('onDark', 'boolean', 'false', 'Chrome and highlight colors for a black surface.'),
+      p("preview", "'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'selected'", 'undefined', 'Forced visual for state tiles.'),
     ],
   },
   'brand-logo': {
@@ -12254,7 +17791,7 @@ const DOCS: Record<string, DocDef> = {
     props: [
       p('selected', 'boolean', 'false', 'Selected checkmark appearance.'),
       p('disabled', 'boolean', 'false', 'Dims the card and blocks selection.'),
-      p('preview', "'hover' | 'focus' | 'active'", 'undefined', 'Forced interaction state for docs and visual QA.'),
+      p('preview', "'hover' | 'focus' | 'active'", 'undefined', 'Forced interaction state for visual QA.'),
       p('icon', 'ReactNode', '—', 'Method icon shown in the leading badge.'),
       p('title', 'string', '—', 'Method name.'),
       p('subtitle', 'string', '—', 'Short description.'),

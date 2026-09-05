@@ -1,34 +1,73 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
-import { Body, Caption, Label } from './Text'
+import {
+  Card,
+  CARD_GRID_ALIGNS,
+  CARD_GRID_ALIGN_LABEL,
+  CARD_GRID_GAPS,
+  CARD_GRID_GAP_LABEL,
+  CARD_GRID_WIDTHS,
+  CARD_GRID_WIDTH_LABEL,
+  CARD_SIZES,
+  CARD_SIZE_LABEL,
+  CARD_TONES,
+  CARD_TONE_LABEL,
+  CARD_VARIANTS,
+  CARD_VARIANT_LABEL,
+  type CardGridAlign,
+  type CardGridGap,
+  type CardGridWidths,
+  type CardPreview,
+  type CardProps,
+  type CardSize,
+  type CardTone,
+  type CardVariant,
+} from './Card'
+import { TokenGroup } from './TokenGroup'
+import { RuleCard } from './RuleCard'
+import { InlineCode } from './InlineCode'
+import { Caption, Label } from './Text'
 import { PREVIEW_INSET, usePreviewMode } from './PreviewMode'
 
-export function DocsCard({
-  children,
-  className,
-  padding = 'md',
-}: {
-  children: ReactNode
-  className?: string
+export type DocsCardVariant = CardVariant
+export type DocsCardSize = CardSize
+export type DocsCardTone = CardTone
+export type DocsCardPreview = CardPreview
+export type DocsCardProps = CardProps & {
   padding?: 'none' | 'sm' | 'md' | 'lg'
-}) {
-  const preview = usePreviewMode()
-  const pad =
-    padding === 'none' || preview
-      ? ''
-      : padding === 'sm'
-        ? 'p-4'
-        : padding === 'lg'
-          ? 'px-5 py-8 min-[735px]:px-8 min-[735px]:py-12'
-          : 'p-6'
+}
+
+export const DOCS_CARD_VARIANTS = CARD_VARIANTS
+export const DOCS_CARD_SIZES = CARD_SIZES
+export const DOCS_CARD_TONES = CARD_TONES
+export const DOCS_CARD_VARIANT_LABEL = CARD_VARIANT_LABEL
+export const DOCS_CARD_SIZE_LABEL = CARD_SIZE_LABEL
+export const DOCS_CARD_TONE_LABEL = CARD_TONE_LABEL
+
+function sizeFromPadding(padding: 'none' | 'sm' | 'md' | 'lg'): CardSize {
+  if (padding === 'sm') return 'sm'
+  if (padding === 'lg') return 'lg'
+  return 'md'
+}
+
+export function DocsCard({
+  variant = 'subtle',
+  size,
+  padding = 'md',
+  className,
+  children,
+  ...rest
+}: DocsCardProps) {
   return (
-    <div className={cn(!preview && 'rounded-[18px] bg-bg-secondary', pad, className)}>
-      {children}
-    </div>
+    <Card variant={variant} size={size ?? sizeFromPadding(padding)} className={className} {...rest}>
+      {className && children != null ? <div className={className}>{children}</div> : children}
+    </Card>
   )
 }
+
+DocsCard.displayName = 'DocsCard'
 
 export function DocsStack({
   children,
@@ -39,45 +78,108 @@ export function DocsStack({
   gap?: 3 | 4 | 6 | 8 | 10
   className?: string
 }) {
-  const gaps = {
-    3: 'gap-3',
-    4: 'gap-4',
-    6: 'gap-6',
-    8: 'gap-8',
-    10: 'gap-10',
-  } as const
+  const gaps = { 3: 'gap-3', 4: 'gap-4', 6: 'gap-6', 8: 'gap-8', 10: 'gap-10' } as const
   return <div className={cn('flex flex-col', gaps[gap], className)}>{children}</div>
+}
+
+export type DocsCardGridColumns = 1 | 2 | 3 | 4 | 6
+export type DocsCardGridAlign = CardGridAlign
+export type DocsCardGridWidths = CardGridWidths
+export type DocsCardGridGap = CardGridGap
+
+export const DOCS_CARD_GRID_COLUMNS: DocsCardGridColumns[] = [1, 2, 3, 4, 6]
+export const DOCS_CARD_GRID_ALIGNS = CARD_GRID_ALIGNS
+export const DOCS_CARD_GRID_WIDTHS = CARD_GRID_WIDTHS
+export const DOCS_CARD_GRID_GAPS = CARD_GRID_GAPS
+
+export const DOCS_CARD_GRID_COLUMN_LABEL: Record<DocsCardGridColumns, string> = {
+  1: 'One',
+  2: 'Two',
+  3: 'Three',
+  4: 'Four',
+  6: 'Six',
+}
+
+export const DOCS_CARD_GRID_ALIGN_LABEL = CARD_GRID_ALIGN_LABEL
+export const DOCS_CARD_GRID_WIDTH_LABEL = CARD_GRID_WIDTH_LABEL
+export const DOCS_CARD_GRID_GAP_LABEL = CARD_GRID_GAP_LABEL
+
+const docsColumnClass: Record<DocsCardGridColumns, string> = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 min-[735px]:grid-cols-2',
+  3: 'grid-cols-1 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3',
+  4: 'grid-cols-2 min-[735px]:grid-cols-4',
+  6: 'grid-cols-state-compact',
+}
+
+const docsMixedClass: Record<DocsCardGridColumns, string> = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 min-[735px]:grid-cols-[auto_minmax(0,1fr)]',
+  3: 'grid-cols-1 min-[735px]:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)]',
+  4: 'grid-cols-2 min-[735px]:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]',
+  6: 'grid-cols-state-compact',
+}
+
+const docsGapClass: Record<DocsCardGridGap, string> = {
+  sm: 'gap-3',
+  md: 'gap-4',
+  lg: 'gap-6',
+}
+
+function isDocsCardElement(node: unknown): node is ReactElement<DocsCardProps> {
+  return isValidElement(node) && node.type === DocsCard
+}
+
+function mapDocsCardGridItems(children: ReactNode, align: DocsCardGridAlign, widths: DocsCardGridWidths) {
+  return Children.map(children, (child, index) => {
+    if (!isDocsCardElement(child)) return child
+    const hug = widths === 'fit' || (widths === 'mixed' && index === 0)
+    return cloneElement(child, {
+      fullHeight: align === 'stretch' ? true : child.props.fullHeight,
+      fullWidth: hug ? false : child.props.fullWidth,
+      className: cn(widths === 'mixed' && index > 0 && 'min-w-0 min-[735px]:flex-1', child.props.className),
+    })
+  })
 }
 
 export function DocsCardGrid({
   children,
   columns = 3,
+  align = 'stretch',
+  widths = 'equal',
+  gap = 'sm',
   className,
 }: {
   children: ReactNode
-  columns?: 1 | 2 | 3 | 4 | 6
+  columns?: DocsCardGridColumns
+  align?: DocsCardGridAlign
+  widths?: DocsCardGridWidths
+  gap?: DocsCardGridGap
   className?: string
 }) {
-  const preview = usePreviewMode()
-  const cols =
-    columns === 1
-      ? 'grid-cols-1'
-      : columns === 2
-        ? 'grid-cols-1 min-[735px]:grid-cols-2'
-        : columns === 4
-          ? 'grid-cols-2 min-[735px]:grid-cols-4'
-          : columns === 6
-            ? 'grid-cols-state-compact'
-            : 'grid-cols-1 min-[480px]:grid-cols-2 min-[735px]:grid-cols-3'
-  if (preview) {
-    return (
-      <div className={cn('flex flex-wrap items-start gap-x-10 gap-y-8', PREVIEW_INSET, className)}>
-        {children}
-      </div>
-    )
-  }
-  return <div className={cn('grid gap-3', cols, className)}>{children}</div>
+  const items = mapDocsCardGridItems(children, align, widths)
+  const packed = widths === 'fit'
+  const mixed = widths === 'mixed'
+
+  return (
+    <div
+      className={cn(
+        packed ? 'flex flex-wrap' : 'grid',
+        !packed && (mixed ? docsMixedClass[columns] : docsColumnClass[columns]),
+        packed && align === 'stretch' && 'items-stretch',
+        packed && align === 'start' && 'items-start',
+        !packed && align === 'stretch' && 'items-stretch [&>*]:h-full',
+        !packed && align === 'start' && 'items-start',
+        docsGapClass[gap],
+        className,
+      )}
+    >
+      {items}
+    </div>
+  )
 }
+
+DocsCardGrid.displayName = 'DocsCardGrid'
 
 export function DocsUsage({ children, className }: { children: ReactNode; className?: string }) {
   return (
@@ -97,19 +199,9 @@ export function DocsTokenGroup({
   children: ReactNode
 }) {
   return (
-    <div>
-      {title ? (
-        <Caption as="h3" className="mb-1 font-medium">
-          {title}
-        </Caption>
-      ) : null}
-      {note ? (
-        <Body size="sm" className="mb-4 max-w-[692px]">
-          {note}
-        </Body>
-      ) : null}
+    <TokenGroup title={title} note={note}>
       {children}
-    </div>
+    </TokenGroup>
   )
 }
 
@@ -394,30 +486,6 @@ export function DocsRelated({ children }: { children: ReactNode }) {
   return <div className="grid grid-cols-1 gap-3 min-[735px]:grid-cols-3">{children}</div>
 }
 
-export function DocsPrincipleCard({
-  index,
-  title,
-  body,
-}: {
-  index: number
-  title: string
-  body: string
-}) {
-  return (
-    <DocsCard>
-      <Caption as="span" className="tabular-nums text-brand-primary">
-        {String(index).padStart(2, '0')}
-      </Caption>
-      <Label as="p" className="mt-3">
-        {title}
-      </Label>
-      <Body size="sm" className="mt-2">
-        {body}
-      </Body>
-    </DocsCard>
-  )
-}
-
 export function DocsRuleCard({
   tone,
   title,
@@ -427,29 +495,14 @@ export function DocsRuleCard({
   title: string
   items: string[]
 }) {
-  return (
-    <DocsCard>
-      <Caption as="p" className={cn('font-medium', tone === 'success' ? 'text-success' : 'text-danger')}>
-        {title}
-      </Caption>
-      <ul className="mt-3 m-0 flex list-none flex-col gap-2.5 p-0">
-        {items.map((item) => (
-          <li key={item} className="flex gap-2.5">
-            <span
-              className={cn(
-                'mt-[9px] size-1.5 shrink-0 rounded-full',
-                tone === 'success' ? 'bg-success' : 'bg-danger',
-              )}
-              aria-hidden
-            />
-            <Body size="sm">{item}</Body>
-          </li>
-        ))}
-      </ul>
-    </DocsCard>
-  )
+  return <RuleCard variant="subtle" size="sm" tone={tone} title={title} items={items} />
 }
 
 export function DocsInlineCode({ children }: { children: ReactNode }) {
-  return <code className="font-mono text-[13px]">{children}</code>
+  return <InlineCode>{children}</InlineCode>
 }
+
+export const StateCard = DocsStateCard
+export const StateGrid = DocsStateGrid
+export const StateGroup = DocsStateGroup
+export const StateStack = DocsStack

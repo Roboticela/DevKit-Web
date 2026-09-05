@@ -1,0 +1,5 @@
+# This project's tsc typecheck excludes the template projects.
+
+# Exclude the template projects from the default tsc scope so a repo-level
+# `npx tsc --noEmit` skips the incomplete `templates/` trees.
+templates/

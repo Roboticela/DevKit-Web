@@ -34,11 +34,12 @@ import {
   SIGN_IN_TOC,
   VERIFICATION_CODE_TOC,
 } from './pages-catalog'
+import { SECTIONS_ITEMS, SECTIONS_NAV } from './sections-catalog'
 
 export type DocsFrame = {
   activeId: string
   toc: DocsTocItem[]
-  activeTab: 'Docs' | 'Components' | 'Pages' | 'Guides'
+  activeTab: 'Docs' | 'Components' | 'Pages' | 'Sections' | 'Guides'
   sections: DocsNavSection[]
   contentWidth: 760 | 900
 }
@@ -112,6 +113,17 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
                                       : [{ id: 'overview', label: 'Overview' }],
       activeTab: 'Pages',
       sections: PAGES_NAV,
+      contentWidth: 900,
+    }
+  }
+
+  if (pathname === '/sections' || pathname.startsWith('/sections/')) {
+    const slug = pathname === '/sections' ? SECTIONS_ITEMS[0]!.id : pathname.slice('/sections/'.length)
+    return {
+      activeId: slug,
+      toc: [{ id: 'overview', label: 'Overview' }],
+      activeTab: 'Sections',
+      sections: SECTIONS_NAV,
       contentWidth: 900,
     }
   }

@@ -19,7 +19,7 @@ export function DocsShell({
 }: {
   activeId: string
   toc?: DocsTocItem[]
-  activeTab?: 'Docs' | 'Components' | 'Pages' | 'Guides'
+  activeTab?: 'Docs' | 'Components' | 'Pages' | 'Sections' | 'Guides'
   sections?: DocsNavSection[]
   contentWidth?: 760 | 900
   sidebarFooter?: ReactNode

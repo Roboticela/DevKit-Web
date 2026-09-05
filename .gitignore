@@ -49,3 +49,4 @@ refcode
 
 # Local test harness
 /.devkit-local/
+.freebuff

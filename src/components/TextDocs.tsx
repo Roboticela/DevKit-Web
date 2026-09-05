@@ -6,8 +6,10 @@ import { adjacentDocs, DOCS_ITEMS } from '@/lib/docs-catalog'
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
-import { DocsCard, DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsUsage } from './DocsCard'
-import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
+import { DocsCard, DocsRelated, StateStack, StateCard, StateGrid, DocsUsage } from './DocsCard'
+import { Card, CardGrid } from './Card'
+import { Alert } from './Alert'
+import { RuleCard } from './RuleCard'
 import { DocsPager } from './DocsPager'
 import { Dropdown } from './Dropdown'
 import { PropsTable, type PropRow } from './PropsTable'
@@ -127,29 +129,29 @@ export function TextStates() {
     <>
       <section id="states" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>Variants</DocsSectionTitle>
-        <DocsStack gap={4}>
+        <StateStack gap={4}>
           {VARIANTS.map((item) => (
             <DocsCard key={item.value} className="flex flex-col gap-2">
               <Caption className="font-medium">{item.label}</Caption>
               <Text variant={item.value}>{COPY[item.value]}</Text>
             </DocsCard>
           ))}
-        </DocsStack>
+        </StateStack>
       </section>
 
       <section id="tones" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>Tones</DocsSectionTitle>
-        <DocsStateGrid>
+        <StateGrid>
           {TONES.map((item) => (
-            <DocsStateCard
+            <StateCard
               key={item.value}
               label={item.label}
               surface={item.value === 'on-brand' ? 'brand' : 'secondary'}
             >
               <Body tone={item.value}>{item.label} content</Body>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
+        </StateGrid>
       </section>
 
       <section id="stack" className="mt-12 scroll-mt-20">
@@ -220,32 +222,28 @@ export function TextDocs() {
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
         <DocsUsage>
-          <DocsProse>
             <Body>
               Our text system provides everything you need to create clear, beautiful content. From large headlines that grab attention 
               to small captions for supporting details, each style is carefully crafted to work perfectly together and create a natural 
               reading experience.
             </Body>
-          </DocsProse>
-          <DocsPrinciples
-            items={[
-              { title: 'Smart sizing', body: 'Text automatically adjusts for different screen sizes, ensuring perfect readability on phones, tablets, and desktops.' },
-              { title: 'Stack once', body: 'Eyebrow, heading, subhead, body. That order is the kit’s default reading path.' },
-              { title: 'Meaningful colors', body: 'Different text colors help distinguish between primary content, supporting information, and interactive elements.' },
-            ]}
-          />
-          <DocsDoDont
-            doItems={[
+          <CardGrid columns={3} gap="sm">
+            <Card variant="subtle" size="sm" eyebrow="01" title="Smart sizing" description="Text automatically adjusts for different screen sizes, ensuring perfect readability on phones, tablets, and desktops." />
+            <Card variant="subtle" size="sm" eyebrow="02" title="Stack once" description="Eyebrow, heading, subhead, body. That order is the kit’s default reading path." />
+            <Card variant="subtle" size="sm" eyebrow="03" title="Meaningful colors" description="Different text colors help distinguish between primary content, supporting information, and interactive elements." />
+          </CardGrid>
+          <CardGrid columns={2} gap="sm">
+            <RuleCard size="sm" tone="success" title="Do" items={[
               'Use heading styles for titles and body text for paragraphs to create clear structure.',
               'Take advantage of automatic sizing that adapts to different devices.',
               'Reserve large display text for the most important headline on each page.',
-            ]}
-            dontItems={[
+            ]} />
+            <RuleCard size="sm" tone="danger" title="Don’t" items={[
               'Keep heading levels in logical order to help users and screen readers navigate.',
               'Stick to the provided text styles for consistent, professional typography.',
               'Make sure important instructions use prominent text, not small captions.',
-            ]}
-          />
+            ]} />
+          </CardGrid>
         </DocsUsage>
       </section>
 
@@ -295,18 +293,18 @@ export function TextDocs() {
 
       <section id="accessibility" className="mt-8 scroll-mt-20">
         <DocsSectionTitle>Accessibility</DocsSectionTitle>
-        <A11ySection
-          intro="Type has to work as a document, not only as a layout."
-          items={[
-            'Heading emits a real h1–h3. Display is an h1. Do not fake titles with bold Body.',
-            'Do not skip levels. An h1 is followed by h2, not h3.',
-            'When the visual size and the outline disagree, keep the correct tag and pass as.',
-            'Caption at 12px is supporting copy. Do not put the only instructions there.',
-            'Danger, success, and warning tones still need clear wording. Color is extra.',
-            'Link tone is for inline links that go somewhere — not for entire paragraphs.',
-            'Disabled tone is for inert UI, paired with a disabled control.',
-          ]}
-        />
+                <Alert title="Requirements">
+          <p className="m-0">{"Type has to work as a document, not only as a layout."}</p>
+          <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+            <li>{"Heading emits a real h1–h3. Display is an h1. Do not fake titles with bold Body."}</li>
+            <li>{"Do not skip levels. An h1 is followed by h2, not h3."}</li>
+            <li>{"When the visual size and the outline disagree, keep the correct tag and pass as."}</li>
+            <li>{"Caption at 12px is supporting copy. Do not put the only instructions there."}</li>
+            <li>{"Danger, success, and warning tones still need clear wording. Color is extra."}</li>
+            <li>{"Link tone is for inline links that go somewhere — not for entire paragraphs."}</li>
+            <li>{"Disabled tone is for inert UI, paired with a disabled control."}</li>
+          </ul>
+        </Alert>
       </section>
 
       <section className="mt-12">

@@ -8,7 +8,7 @@ import { Avatar } from './Avatar'
 import { Badge } from './Badge'
 import { Breadcrumbs } from './Breadcrumbs'
 import { Button } from './Button'
-import { DocsStateCard, DocsStateGrid, DocsStateGroup, DocsStack } from './DocsCard'
+import { StateCard, StateGrid, StateGroup, StateStack } from './DocsCard'
 import { IconButton } from './IconButton'
 import {
   PageHeader,
@@ -65,11 +65,11 @@ export function PageHeaderDemo() {
 
 export function PageHeaderStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={2}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={2}>
           {PAGE_HEADER_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={variant}
               label={PAGE_HEADER_VARIANT_LABEL[variant]}
               align="stretch"
@@ -82,15 +82,15 @@ export function PageHeaderStates() {
                 description="Everything currently in flight."
                 actions={<HeaderAction size="sm">New</HeaderAction>}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
           {PAGE_HEADER_SIZES.map((size) => (
-            <DocsStateCard
+            <StateCard
               key={size}
               label={PAGE_HEADER_SIZE_LABEL[size]}
               align="stretch"
@@ -104,15 +104,15 @@ export function PageHeaderStates() {
                 description="Four active products."
                 actions={<HeaderAction size={size === 'lg' ? 'md' : size}>New</HeaderAction>}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Layout">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Layout">
+        <StateGrid columns={2}>
           {PAGE_HEADER_LAYOUTS.map((layout) => (
-            <DocsStateCard
+            <StateCard
               key={layout}
               label={PAGE_HEADER_LAYOUT_LABEL[layout]}
               align="stretch"
@@ -132,15 +132,15 @@ export function PageHeaderStates() {
                   </>
                 }
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Align">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Align">
+        <StateGrid columns={2}>
           {PAGE_HEADER_ALIGNS.map((align) => (
-            <DocsStateCard
+            <StateCard
               key={align}
               label={PAGE_HEADER_ALIGN_LABEL[align]}
               align="stretch"
@@ -155,15 +155,15 @@ export function PageHeaderStates() {
                 description="A calm place to ship."
                 actions={<HeaderAction size={align === 'center' ? 'md' : 'sm'}>New</HeaderAction>}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="On dark">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="On dark">
+        <StateGrid columns={2}>
           {PAGE_HEADER_VARIANTS.map((variant) => (
-            <DocsStateCard
+            <StateCard
               key={`dark-${variant}`}
               label={PAGE_HEADER_VARIANT_LABEL[variant]}
               align="stretch"
@@ -177,27 +177,27 @@ export function PageHeaderStates() {
                 actions={<HeaderAction size="sm">New</HeaderAction>}
                 onDark
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="State">
-        <DocsStateGrid columns={2}>
-          <DocsStateCard label="Title only" align="stretch" wide className="bg-bg-primary">
+      <StateGroup title="State">
+        <StateGrid columns={2}>
+          <StateCard label="Title only" align="stretch" wide className="bg-bg-primary">
             <PageHeader title="Projects" />
-          </DocsStateCard>
-          <DocsStateCard label="With description" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With description" align="stretch" wide className="bg-bg-primary">
             <PageHeader title="Projects" description="Everything currently in flight." />
-          </DocsStateCard>
-          <DocsStateCard label="With eyebrow" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With eyebrow" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               eyebrow="Workspace"
               title="Projects"
               description="Everything currently in flight."
             />
-          </DocsStateCard>
-          <DocsStateCard label="With actions" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With actions" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               title="Projects"
               description="Four active products."
@@ -210,16 +210,16 @@ export function PageHeaderStates() {
                 </>
               }
             />
-          </DocsStateCard>
-          <DocsStateCard label="With badge" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With badge" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               title="Projects"
               description="Four active products."
               meta={<Badge tone="verified">Live</Badge>}
               actions={<HeaderAction size="sm">New</HeaderAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="With avatar" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With avatar" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               leading={<Avatar name="Alex Rivera" size="lg" />}
               title="Alex Rivera"
@@ -230,24 +230,24 @@ export function PageHeaderStates() {
                 </HeaderAction>
               }
             />
-          </DocsStateCard>
-          <DocsStateCard label="Back" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Back" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               onBack={() => undefined}
               title="Details"
               description="Atlas Checkout and the people on it."
               actions={<HeaderAction size="sm">Share</HeaderAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="With breadcrumbs" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With breadcrumbs" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               breadcrumbs={<Breadcrumbs items={CRUMBS} />}
               title="Projects"
               description="Everything currently in flight."
               actions={<HeaderAction size="sm">New</HeaderAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="With tabs" align="stretch" wide size="lg" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="With tabs" align="stretch" wide size="lg" className="bg-bg-primary">
             <PageHeader
               title="Projects"
               description="Four active products."
@@ -265,8 +265,8 @@ export function PageHeaderStates() {
                 />
               }
             />
-          </DocsStateCard>
-          <DocsStateCard label="Icon actions" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Icon actions" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               title="Inbox"
               description="Mentions and reviews."
@@ -282,31 +282,31 @@ export function PageHeaderStates() {
                 </>
               }
             />
-          </DocsStateCard>
-          <DocsStateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Disabled" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               title="Projects"
               description="You need permission to create one."
               actions={<HeaderAction size="sm">New</HeaderAction>}
               disabled
             />
-          </DocsStateCard>
-          <DocsStateCard label="Long title" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Long title" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               title="Quarterly planning for Atlas Checkout and Northstar Auth"
               description="Everything currently in flight across the workspace."
               actions={<HeaderAction size="sm">New</HeaderAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Outline, actions" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Outline, actions" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               variant="outline"
               title="Projects"
               description="Everything currently in flight."
               actions={<HeaderAction size="sm">New</HeaderAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Pill, small" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               variant="pill"
               size="sm"
@@ -314,8 +314,8 @@ export function PageHeaderStates() {
               description="Mentions and reviews."
               actions={<HeaderAction size="sm">New</HeaderAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Ghost, large" align="stretch" wide size="lg" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Ghost, large" align="stretch" wide size="lg" className="bg-bg-primary">
             <PageHeader
               variant="ghost"
               size="lg"
@@ -324,8 +324,8 @@ export function PageHeaderStates() {
               description="A calm place to ship the next thing."
               actions={<HeaderAction>Get started</HeaderAction>}
             />
-          </DocsStateCard>
-          <DocsStateCard label="Fill, stacked" align="stretch" wide className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Fill, stacked" align="stretch" wide className="bg-bg-primary">
             <PageHeader
               variant="fill"
               layout="stack"
@@ -341,8 +341,8 @@ export function PageHeaderStates() {
                 </>
               }
             />
-          </DocsStateCard>
-          <DocsStateCard label="Back, breadcrumbs" align="stretch" wide size="lg" className="bg-bg-primary">
+          </StateCard>
+          <StateCard label="Back, breadcrumbs" align="stretch" wide size="lg" className="bg-bg-primary">
             <PageHeader
               breadcrumbs={<Breadcrumbs items={CRUMBS} />}
               onBack={() => undefined}
@@ -351,9 +351,9 @@ export function PageHeaderStates() {
               meta={<Badge>Live</Badge>}
               actions={<HeaderAction size="sm">Invite</HeaderAction>}
             />
-          </DocsStateCard>
-        </DocsStateGrid>
-      </DocsStateGroup>
-    </DocsStack>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }

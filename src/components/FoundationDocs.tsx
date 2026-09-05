@@ -9,13 +9,15 @@ import {
   DocsMeasureRow,
   DocsRadiusCard,
   DocsScaleRow,
-  DocsStack,
+  StateStack,
   DocsSwatchGrid,
   DocsTable,
   DocsTokenGroup,
   DocsUsage,
 } from './DocsCard'
-import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
+import { Card, CardGrid } from './Card'
+import { Alert } from './Alert'
+import { RuleCard } from './RuleCard'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsPager } from './DocsPager'
 import { Anchor } from './Anchor'
@@ -162,64 +164,49 @@ export function FoundationDocs({ slug }: { slug: string }) {
         description="A beautiful color palette that adapts perfectly to both light and dark themes, giving your interface a premium look."
         usage={
           <DocsUsage>
-            <DocsProse>
               <Body>
                 We use one primary color for all interactive elements like buttons and links, creating a consistent and familiar experience.
                 Teal is reserved for special success messages and verification badges. Status colors like red, orange, and green 
                 always appear alongside clear text to make sure everyone understands the message.
               </Body>
-            </DocsProse>
-            <DocsPrinciples
-              items={[
-                {
-                  title: 'Consistent experience',
-                  body: 'Every button, link, and interactive element uses the same primary color, making your interface feel unified and professional.',
-                },
-                {
-                  title: 'Smart color system',
-                  body: 'Our colors automatically adjust between light and dark themes, so your content always looks perfect no matter which mode users prefer.',
-                },
-                {
-                  title: 'Clear visual hierarchy',
-                  body: 'Different background layers help organize your content naturally, making it easy for users to focus on what matters most.',
-                },
-              ]}
-            />
-            <DocsDoDont
-              doItems={[
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Consistent experience" description="Every button, link, and interactive element uses the same primary color, making your interface feel unified and professional." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Smart color system" description="Our colors automatically adjust between light and dark themes, so your content always looks perfect no matter which mode users prefer." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Clear visual hierarchy" description="Different background layers help organize your content naturally, making it easy for users to focus on what matters most." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
                 'Use the primary color for your main action buttons and links.',
                 'Reserve red for delete actions and error messages only.',
                 'Make sure button text stands out clearly against its background.',
-              ]}
-              dontItems={[
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
                 'Avoid using teal for buttons or regular links.',
                 'Keep colors consistent across light and dark themes.',
                 'Make sure there is always enough contrast for easy reading.',
-              ]}
-            />
+              ]} />
+            </CardGrid>
           </DocsUsage>
         }
         tokens={
           <>
             <DocsSectionTitle>Tokens</DocsSectionTitle>
-            <DocsStack gap={10}>
+            <StateStack gap={10}>
               {COLOR_GROUPS.map((group) => (
                 <DocsTokenGroup key={group.label} title={group.label} note={group.note}>
                   <DocsSwatchGrid tokens={group.tokens} />
                 </DocsTokenGroup>
               ))}
-            </DocsStack>
+            </StateStack>
           </>
         }
         extra={
           <section id="contrast" className="mt-12 scroll-mt-20">
             <DocsSectionTitle>Contrast</DocsSectionTitle>
-            <DocsProse className="mb-6">
-              <Body>
+            <Body className="mb-6">
                 These color combinations are carefully chosen to ensure excellent readability in both light and dark themes. 
                 Switch between themes to see how they automatically adapt while maintaining perfect contrast and clarity.
               </Body>
-            </DocsProse>
             <DocsCardGrid columns={2}>
               {CONTRAST.map((item) => (
                 <DocsContrastCard key={item.label} fg={item.fg} bg={item.bg} label={item.label} />
@@ -228,16 +215,16 @@ export function FoundationDocs({ slug }: { slug: string }) {
           </section>
         }
         a11y={
-          <A11ySection
-            intro="We design with everyone in mind. Colors work together with clear words and visual cues to create an accessible experience."
-            items={[
-              'All text is easy to read with excellent contrast in both light and dark themes.',
-              'Focused elements have a clear visual indicator, making keyboard navigation effortless.',
-              'Disabled elements are visually distinct and clearly cannot be interacted with.',
-              'Important messages always include both color and text to ensure everyone understands.',
-              'Required fields, selections, and toggles are clearly marked with more than just color.',
-            ]}
-          />
+                    <Alert title="Requirements">
+            <p className="m-0">{"We design with everyone in mind. Colors work together with clear words and visual cues to create an accessible experience."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"All text is easy to read with excellent contrast in both light and dark themes."}</li>
+              <li>{"Focused elements have a clear visual indicator, making keyboard navigation effortless."}</li>
+              <li>{"Disabled elements are visually distinct and clearly cannot be interacted with."}</li>
+              <li>{"Important messages always include both color and text to ensure everyone understands."}</li>
+              <li>{"Required fields, selections, and toggles are clearly marked with more than just color."}</li>
+            </ul>
+          </Alert>
         }
       />
     )
@@ -251,40 +238,27 @@ export function FoundationDocs({ slug }: { slug: string }) {
         description="Beautiful, readable text styles that create a clear visual hierarchy and make your content easy to scan."
         usage={
           <DocsUsage>
-            <DocsProse>
               <Body>
                 Text styles are organized in a natural hierarchy from large headlines to body text and captions. This helps users
                 quickly understand your content and navigate through it with ease. Each style is optimized for its specific purpose.
               </Body>
-            </DocsProse>
-            <DocsPrinciples
-              items={[
-                {
-                  title: 'Clear purpose',
-                  body: 'Each text style has a specific purpose, from grabbing attention with headlines to providing details with body text.',
-                },
-                {
-                  title: 'Natural flow',
-                  body: 'Headlines introduce ideas, subheadings provide context, and body text explains the details in a smooth, logical order.',
-                },
-                {
-                  title: 'Native feel',
-                  body: 'We use your system fonts, so everything feels familiar and loads instantly without any extra downloads.',
-                },
-              ]}
-            />
-            <DocsDoDont
-              doItems={[
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Clear purpose" description="Each text style has a specific purpose, from grabbing attention with headlines to providing details with body text." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Natural flow" description="Headlines introduce ideas, subheadings provide context, and body text explains the details in a smooth, logical order." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Native feel" description="We use your system fonts, so everything feels familiar and loads instantly without any extra downloads." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
                 'Start with clear headlines, followed by supportive subheadings and detailed body text.',
                 'Use small text for secondary information like timestamps and metadata.',
                 'Label your form fields clearly so everyone knows what to enter.',
-              ]}
-              dontItems={[
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
                 'Avoid skipping heading levels, as this can confuse both users and screen readers.',
                 'Stick to the provided text styles for a consistent look throughout.',
                 'Use large display text sparingly to maintain its impact.',
-              ]}
-            />
+              ]} />
+            </CardGrid>
             <Anchor href="/components/text" variant="standalone" size="md">
               Open Text
             </Anchor>
@@ -318,17 +292,17 @@ export function FoundationDocs({ slug }: { slug: string }) {
           </section>
         }
         a11y={
-          <A11ySection
-            intro="Our typography is designed to work perfectly for everyone, including people using screen readers and other assistive technologies."
-            items={[
-              'All headings are properly structured so screen readers can navigate your content easily.',
-              'Heading levels follow a logical order, making it simple for everyone to understand the content structure.',
-              'Visual appearance and document structure work together to create a seamless experience.',
-              'Small text is reserved for secondary information, never for essential instructions.',
-              'Important messages are clear even without color, ensuring everyone gets the information.',
-              'Text width is optimized for comfortable reading, reducing eye strain and improving comprehension.',
-            ]}
-          />
+                    <Alert title="Requirements">
+            <p className="m-0">{"Our typography is designed to work perfectly for everyone, including people using screen readers and other assistive technologies."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"All headings are properly structured so screen readers can navigate your content easily."}</li>
+              <li>{"Heading levels follow a logical order, making it simple for everyone to understand the content structure."}</li>
+              <li>{"Visual appearance and document structure work together to create a seamless experience."}</li>
+              <li>{"Small text is reserved for secondary information, never for essential instructions."}</li>
+              <li>{"Important messages are clear even without color, ensuring everyone gets the information."}</li>
+              <li>{"Text width is optimized for comfortable reading, reducing eye strain and improving comprehension."}</li>
+            </ul>
+          </Alert>
         }
       />
     )
@@ -342,53 +316,49 @@ export function FoundationDocs({ slug }: { slug: string }) {
         description="Consistent spacing that creates a clean, organized layout and helps users focus on your content."
         usage={
           <DocsUsage>
-            <DocsProse>
               <Body>
                 Thoughtful spacing makes your interface breathe and helps users understand which elements belong together.
                 Related items are close, while distinct sections have more space between them, creating a natural visual flow.
               </Body>
-            </DocsProse>
-            <DocsPrinciples
-              items={[
-                { title: 'Consistent rhythm', body: 'A carefully crafted spacing scale creates visual harmony throughout your interface.' },
-                { title: 'Clear organization', body: 'Spacing helps users quickly distinguish between individual items, groups, and major sections.' },
-                { title: 'Touch friendly', body: 'All buttons and interactive elements are sized for easy tapping on any device.' },
-              ]}
-            />
-            <DocsDoDont
-              doItems={[
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Consistent rhythm" description="A carefully crafted spacing scale creates visual harmony throughout your interface." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Clear organization" description="Spacing helps users quickly distinguish between individual items, groups, and major sections." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Touch friendly" description="All buttons and interactive elements are sized for easy tapping on any device." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
                 'Use comfortable spacing between icons and their labels for easy scanning.',
                 'Adjust spacing appropriately for different screen sizes.',
                 'Match spacing to text sizes for a balanced, professional look.',
-              ]}
-              dontItems={[
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
                 'Stick to the spacing scale for consistent visual rhythm.',
                 'Use spacing itself to create depth instead of adding shadows.',
                 'Keep touch targets large enough for comfortable interaction.',
-              ]}
-            />
+              ]} />
+            </CardGrid>
           </DocsUsage>
         }
         tokens={
           <>
             <DocsSectionTitle>Tokens</DocsSectionTitle>
-            <DocsStack gap={3}>
+            <StateStack gap={3}>
               {SPACE.map((item) => (
                 <DocsMeasureRow key={item.value} value={item.value} width={item.value} caption={item.use} />
               ))}
-            </DocsStack>
+            </StateStack>
           </>
         }
         a11y={
-          <A11ySection
-            intro="Spacing creates breathing room and helps organize content, while maintaining accessibility for everyone."
-            items={[
-              'All interactive elements are sized for comfortable touch and click interaction.',
-              'Labels and controls are properly associated for screen reader users.',
-              'Animations respect user preferences for reduced motion.',
-              'Content has comfortable margins on all screen sizes, ensuring nothing feels cramped.',
-            ]}
-          />
+                    <Alert title="Requirements">
+            <p className="m-0">{"Spacing creates breathing room and helps organize content, while maintaining accessibility for everyone."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"All interactive elements are sized for comfortable touch and click interaction."}</li>
+              <li>{"Labels and controls are properly associated for screen reader users."}</li>
+              <li>{"Animations respect user preferences for reduced motion."}</li>
+              <li>{"Content has comfortable margins on all screen sizes, ensuring nothing feels cramped."}</li>
+            </ul>
+          </Alert>
         }
       />
     )
@@ -402,31 +372,27 @@ export function FoundationDocs({ slug }: { slug: string }) {
         description="Smooth, modern rounded corners that give your interface a polished, friendly appearance."
         usage={
           <DocsUsage>
-            <DocsProse>
               <Body>
                 Rounded corners help users understand what they are looking at. Buttons have pill shapes, input fields have subtle rounding, 
                 and cards have smooth, welcoming corners. This creates a visual language that makes your interface intuitive and approachable.
               </Body>
-            </DocsProse>
-            <DocsPrinciples
-              items={[
-                { title: 'Purposeful rounding', body: 'Each level of rounding has a specific purpose, from subtle inputs to friendly buttons.' },
-                { title: 'Visual harmony', body: 'Elements inside containers use appropriate rounding to create a polished, cohesive look.' },
-                { title: 'Clean design', body: 'Depth comes from colors and spacing rather than shadows, keeping the interface modern and flat.' },
-              ]}
-            />
-            <DocsDoDont
-              doItems={[
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Purposeful rounding" description="Each level of rounding has a specific purpose, from subtle inputs to friendly buttons." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Visual harmony" description="Elements inside containers use appropriate rounding to create a polished, cohesive look." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Clean design" description="Depth comes from colors and spacing rather than shadows, keeping the interface modern and flat." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
                 'Buttons and switches have fully rounded pill shapes for a friendly feel.',
                 'Input fields have subtle rounding that feels comfortable and approachable.',
                 'Large surfaces like cards and modals have generous rounding for a premium look.',
-              ]}
-              dontItems={[
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
                 'Keep rounding consistent within button groups for a unified appearance.',
                 'Stick to the standard rounding values for visual consistency.',
                 'Use complete rounding on all corners unless elements are deliberately connected.',
-              ]}
-            />
+              ]} />
+            </CardGrid>
           </DocsUsage>
         }
         tokens={
@@ -440,13 +406,13 @@ export function FoundationDocs({ slug }: { slug: string }) {
           </>
         }
         a11y={
-          <A11ySection
-            items={[
-              'Rounded corners are visual styling. All interactive elements maintain comfortable touch and click areas.',
-              'Focus indicators follow the same rounding as their elements for a polished appearance.',
-              'Borders maintain consistent contrast at corners for optimal visibility.',
-            ]}
-          />
+                    <Alert title="Requirements">
+            <ul className="m-0 list-disc space-y-1.5 pl-4">
+              <li>{"Rounded corners are visual styling. All interactive elements maintain comfortable touch and click areas."}</li>
+              <li>{"Focus indicators follow the same rounding as their elements for a polished appearance."}</li>
+              <li>{"Borders maintain consistent contrast at corners for optimal visibility."}</li>
+            </ul>
+          </Alert>
         }
       />
     )
@@ -460,35 +426,31 @@ export function FoundationDocs({ slug }: { slug: string }) {
         description="Responsive layouts that look beautiful on every device, from phones to large desktop screens."
         usage={
           <DocsUsage>
-            <DocsProse>
               <Body>
                 Our layouts are mobile first, meaning they look great on phones and automatically enhance for larger screens.
                 Content stays comfortable and readable at every size, with generous margins and intelligent spacing that adapts to your device.
               </Body>
-            </DocsProse>
-            <DocsPrinciples
-              items={[
-                { title: 'Start small', body: 'We design for mobile phones first, then enhance the experience for tablets and desktops.' },
-                { title: 'Comfortable reading', body: 'Text width is optimized for easy reading, preventing lines from becoming too long.' },
-                { title: 'Flexible grids', body: 'Content arranges itself intelligently, flowing naturally from one column on phones to multiple columns on larger screens.' },
-              ]}
-            />
-            <DocsDoDont
-              doItems={[
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Start small" description="We design for mobile phones first, then enhance the experience for tablets and desktops." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Comfortable reading" description="Text width is optimized for easy reading, preventing lines from becoming too long." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Flexible grids" description="Content arranges itself intelligently, flowing naturally from one column on phones to multiple columns on larger screens." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
                 'Navigation adapts beautifully from mobile menus to full navigation bars.',
                 'Important actions stay visible and accessible without scrolling.',
                 'Forms adjust intelligently, with full width fields on phones and side by side layouts on larger screens.',
-              ]}
-              dontItems={[
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
                 'Avoid hiding important actions in hover menus on touch devices.',
                 'Keep text comfortable to read by preventing lines from getting too wide.',
                 'Make sure navigation works well on all screen sizes, not just desktops.',
-              ]}
-            />
+              ]} />
+            </CardGrid>
           </DocsUsage>
         }
         tokens={
-          <DocsStack gap={10}>
+          <StateStack gap={10}>
             <div>
               <DocsSectionTitle>Breakpoints</DocsSectionTitle>
               <DocsTable
@@ -499,7 +461,7 @@ export function FoundationDocs({ slug }: { slug: string }) {
               />
             </div>
             <DocsTokenGroup title="Content width">
-              <DocsStack gap={3}>
+              <StateStack gap={3}>
                 {WIDTHS.map((item) => (
                   <DocsScaleRow
                     key={item.value}
@@ -509,21 +471,21 @@ export function FoundationDocs({ slug }: { slug: string }) {
                     caption={item.use}
                   />
                 ))}
-              </DocsStack>
+              </StateStack>
             </DocsTokenGroup>
-          </DocsStack>
+          </StateStack>
         }
         a11y={
-          <A11ySection
-            intro="Our layouts work beautifully for everyone, on every device, including people using assistive technologies."
-            items={[
-              'Everything works perfectly even on small screens and with browser zoom, ensuring no one is left out.',
-              'Page structure is properly marked up so screen readers can navigate easily.',
-              'Keyboard navigation flows naturally and intuitively through the content.',
-              'Fixed headers and navigation never block important content when keyboards appear.',
-              'Content reflows naturally instead of forcing horizontal scrolling.',
-            ]}
-          />
+                    <Alert title="Requirements">
+            <p className="m-0">{"Our layouts work beautifully for everyone, on every device, including people using assistive technologies."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"Everything works perfectly even on small screens and with browser zoom, ensuring no one is left out."}</li>
+              <li>{"Page structure is properly marked up so screen readers can navigate easily."}</li>
+              <li>{"Keyboard navigation flows naturally and intuitively through the content."}</li>
+              <li>{"Fixed headers and navigation never block important content when keyboards appear."}</li>
+              <li>{"Content reflows naturally instead of forcing horizontal scrolling."}</li>
+            </ul>
+          </Alert>
         }
       />
     )

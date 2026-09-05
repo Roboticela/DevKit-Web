@@ -15,7 +15,9 @@ import { CodeBlock } from './CodeBlock'
 import { CountryFlag } from './CountryFlag'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsInlineCode, DocsUsage } from './DocsCard'
-import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
+import { Card, CardGrid } from './Card'
+import { Alert } from './Alert'
+import { RuleCard } from './RuleCard'
 import { DocsPager } from './DocsPager'
 import { EmptyState } from './EmptyState'
 import { Modal } from './Modal'
@@ -144,32 +146,28 @@ export function FlagsDocs() {
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
         <DocsUsage>
-          <DocsProse>
             <Body>
               Pass an ISO 3166-1 alpha-2 code. Pair the flag with the country name in selects and lists. Pass{' '}
               <DocsInlineCode>alt</DocsInlineCode> with the country name only when the flag is not next to
               that text.
             </Body>
-          </DocsProse>
-          <DocsPrinciples
-            items={[
-              { title: 'With a name', body: 'In Country Select the name is visible. The flag can stay decorative.' },
-              { title: 'Alone', body: 'If the flag is the only indicator, alt must be the country name.' },
-              { title: 'Not a language', body: 'A flag is a country. Do not use it as the only label for a locale.' },
-            ]}
-          />
-          <DocsDoDont
-            doItems={[
+          <CardGrid columns={3} gap="sm">
+            <Card variant="subtle" size="sm" eyebrow="01" title="With a name" description="In Country Select the name is visible. The flag can stay decorative." />
+            <Card variant="subtle" size="sm" eyebrow="02" title="Alone" description="If the flag is the only indicator, alt must be the country name." />
+            <Card variant="subtle" size="sm" eyebrow="03" title="Not a language" description="A flag is a country. Do not use it as the only label for a locale." />
+          </CardGrid>
+          <CardGrid columns={2} gap="sm">
+            <RuleCard size="sm" tone="success" title="Do" items={[
               'Use Country Select when the user is choosing a country.',
               'Keep a consistent size in a list — 18 or 24 in rows, 32 in previews.',
               'Leave alt empty when the country name is already in the same control.',
-            ]}
-            dontItems={[
+            ]} />
+            <RuleCard size="sm" tone="danger" title="Don’t" items={[
               'Do not use a flag to mean a language (UK flag for English, and so on).',
               'Do not stretch the 4:3 ratio.',
               'Do not rely on the flag as the only selected state in a menu.',
-            ]}
-          />
+            ]} />
+          </CardGrid>
           <CodeBlock
             className="overflow-hidden rounded-xl"
             code={selected ? usageSnippet(selected.iso) : usageSnippet('US')}
@@ -249,15 +247,15 @@ export function FlagsDocs() {
 
       <section id="accessibility" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>Accessibility</DocsSectionTitle>
-        <A11ySection
-          intro="A flag image without a name is silent. A flag with a duplicate name is noisy. Pick one."
-          items={[
-            'When the country name is visible beside the flag, pass alt="" so the image is skipped.',
-            'When the flag stands alone, alt is the country name — not the ISO code.',
-            'Do not use a flag as the only way to tell languages apart.',
-            'Search field is a labeled input. Keep the placeholder as a hint, not the only name.',
-          ]}
-        />
+                <Alert title="Requirements">
+          <p className="m-0">{"A flag image without a name is silent. A flag with a duplicate name is noisy. Pick one."}</p>
+          <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+            <li>{"When the country name is visible beside the flag, pass alt=\"\" so the image is skipped."}</li>
+            <li>{"When the flag stands alone, alt is the country name — not the ISO code."}</li>
+            <li>{"Do not use a flag as the only way to tell languages apart."}</li>
+            <li>{"Search field is a labeled input. Keep the placeholder as a hint, not the only name."}</li>
+          </ul>
+        </Alert>
       </section>
 
       <DocsPager className="mt-12" {...adjacentDocs(DOCS_ITEMS, 'country-flag')} />

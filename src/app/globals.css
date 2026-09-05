@@ -427,6 +427,32 @@ button:hover .dk-brand-logo {
   background-size: 16px 16px;
 }
 
+.section-scene {
+  --scene-bleed: min(48vh, 420px);
+  isolation: auto;
+  overflow: visible;
+}
+
+.section-scene .docs-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-apple);
+}
+
+.section-scene.is-in .docs-scene {
+  opacity: 1;
+}
+
+.section-scene .docs-scene-block {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
 .docs-code-mask {
   mask-image: linear-gradient(to bottom, #000 45%, transparent);
 }

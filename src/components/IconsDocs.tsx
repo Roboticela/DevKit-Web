@@ -17,7 +17,9 @@ import { Button } from './Button'
 import { CodeBlock } from './CodeBlock'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
 import { DocsInlineCode, DocsUsage } from './DocsCard'
-import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
+import { Card, CardGrid } from './Card'
+import { Alert } from './Alert'
+import { RuleCard } from './RuleCard'
 import { DocsPager } from './DocsPager'
 import { EmptyState } from './EmptyState'
 import { Modal } from './Modal'
@@ -126,32 +128,28 @@ export function IconsDocs() {
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
         <DocsUsage>
-          <DocsProse>
             <Body>
               Import from <DocsInlineCode>@/icons</DocsInlineCode>. Every icon is named{' '}
               <DocsInlineCode>Dk…</DocsInlineCode>. Size 18 sits in buttons and fields; 24 in empty
               states. Decorative icons next to visible text should be hidden from assistive tech.
             </Body>
-          </DocsProse>
-          <DocsPrinciples
-            items={[
-              { title: 'Meaning first', body: 'Search tags, not just filenames. Pick the glyph that matches the action.' },
-              { title: 'Stroke icons', body: 'Stroke widths are baked into each path. Pass size and className as needed.' },
-              { title: 'Named when alone', body: 'An icon without a visible label needs an accessible name on the control around it.' },
-            ]}
-          />
-          <DocsDoDont
-            doItems={[
+          <CardGrid columns={3} gap="sm">
+            <Card variant="subtle" size="sm" eyebrow="01" title="Meaning first" description="Search tags, not just filenames. Pick the glyph that matches the action." />
+            <Card variant="subtle" size="sm" eyebrow="02" title="Stroke icons" description="Stroke widths are baked into each path. Pass size and className as needed." />
+            <Card variant="subtle" size="sm" eyebrow="03" title="Named when alone" description="An icon without a visible label needs an accessible name on the control around it." />
+          </CardGrid>
+          <CardGrid columns={2} gap="sm">
+            <RuleCard size="sm" tone="success" title="Do" items={[
               'Wrap a lone glyph in Icon Button and pass label.',
               'Keep icons currentColor so they follow text and theme.',
               'Use the same size in a row of actions.',
-            ]}
-            dontItems={[
+            ]} />
+            <RuleCard size="sm" tone="danger" title="Don’t" items={[
               'Do not mix unrelated glyph styles in one toolbar.',
               'Do not use an icon as the only error signal.',
               'Do not scale below 16px for a primary action.',
-            ]}
-          />
+            ]} />
+          </CardGrid>
           <CodeBlock
             className="overflow-hidden rounded-xl"
             code={
@@ -240,16 +238,16 @@ export function IconsDocs() {
 
       <section id="accessibility" className="mt-12 scroll-mt-20">
         <DocsSectionTitle>Accessibility</DocsSectionTitle>
-        <A11ySection
-          intro="An icon is a picture. The control around it has to speak."
-          items={[
-            'If the icon is decorative beside a visible label, pass aria-hidden on the glyph.',
-            'If the icon is the only content, Icon Button (or a named link) supplies the accessible name.',
-            'Do not encode state only in a glyph swap — keep a text name that matches the action.',
-            'Keep contrast: icons inherit currentColor from text-primary or text-on-brand.',
-            'Motion in loaders is CSS. Respect prefers-reduced-motion; the kit already does on spinners.',
-          ]}
-        />
+                <Alert title="Requirements">
+          <p className="m-0">{"An icon is a picture. The control around it has to speak."}</p>
+          <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+            <li>{"If the icon is decorative beside a visible label, pass aria-hidden on the glyph."}</li>
+            <li>{"If the icon is the only content, Icon Button (or a named link) supplies the accessible name."}</li>
+            <li>{"Do not encode state only in a glyph swap — keep a text name that matches the action."}</li>
+            <li>{"Keep contrast: icons inherit currentColor from text-primary or text-on-brand."}</li>
+            <li>{"Motion in loaders is CSS. Respect prefers-reduced-motion; the kit already does on spinners."}</li>
+          </ul>
+        </Alert>
       </section>
 
       <DocsPager className="mt-12" {...adjacentDocs(DOCS_ITEMS, 'icons')} />

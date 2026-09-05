@@ -3,40 +3,9 @@
 import {
   DkClipboardCopyDuplicate
 } from '@/icons'
+import { highlightCode } from '@/lib/highlight-code'
 import { cn } from '@/lib/cn'
 import { IconButton } from './IconButton'
-
-function highlightLine(line: string) {
-  const tokens = line.split(
-    /(\/\/.*|'[^']*'|"[^"]*"|`[^`]*`|\b(?:import|from|export|const|return|function|true|false|undefined)\b)/g,
-  )
-
-  return tokens.map((token, index) => {
-    if (!token) return null
-    if (token.startsWith('//')) {
-      return (
-        <span key={index} className="text-text-tertiary">
-          {token}
-        </span>
-      )
-    }
-    if (/^['"`]/.test(token)) {
-      return (
-        <span key={index} className="text-accent-teal">
-          {token}
-        </span>
-      )
-    }
-    if (/^(import|from|export|const|return|function|true|false|undefined)$/.test(token)) {
-      return (
-        <span key={index} className="text-brand-primary">
-          {token}
-        </span>
-      )
-    }
-    return <span key={index}>{token}</span>
-  })
-}
 
 export function CodeBlock({
   code,
@@ -72,7 +41,7 @@ export function CodeBlock({
                 {index + 1}
               </span>
               <span className="min-w-0 flex-1 whitespace-pre-wrap [overflow-wrap:anywhere]">
-                {highlightLine(line)}
+                {highlightCode(line, 'on-dark')}
                 {line === '' ? '\n' : null}
               </span>
             </span>

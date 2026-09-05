@@ -21,8 +21,12 @@ import {
 import { CodePanel } from './CodeBlock'
 import { DocsDemoPanel } from './DocsDemoPanel'
 import { DocsHeader, DocsSectionTitle } from './DocsCopy'
-import { DocsRelated, DocsStack, DocsStateCard, DocsStateGrid, DocsStateGroup, DocsUsage } from './DocsCard'
-import { A11ySection, DocsDoDont, DocsPrinciples, DocsProse } from './DocsGuide'
+import { DocsRelated, StateStack, StateCard, StateGrid, StateGroup, DocsUsage } from './DocsCard'
+import { Card, CardGrid } from './Card'
+import { Alert } from './Alert'
+import { DataTable } from './DataTable'
+import { Kbd } from './Kbd'
+import { RuleCard } from './RuleCard'
 import { DocsPager } from './DocsPager'
 import { Dropdown } from './Dropdown'
 import { PropsTable, type PropRow } from './PropsTable'
@@ -31,6 +35,21 @@ import { PREVIEW_INSET } from './PreviewMode'
 import { SegmentedControl } from './SegmentedControl'
 import { Switch } from './Switch'
 import { Body, Caption } from './Text'
+
+const SHORTCUT_COLUMNS = [
+  {
+    key: 'keys',
+    header: 'Key',
+    render: (row: { id: string; keys: string[]; action: string }) => (
+      <span className="inline-flex flex-wrap items-center gap-1">
+        {row.keys.map((key) => (
+          <Kbd key={key}>{key}</Kbd>
+        ))}
+      </span>
+    ),
+  },
+  { key: 'action', header: 'Action' },
+]
 
 type DemoState = 'default' | 'hover' | 'focus' | 'active' | 'visited' | 'disabled'
 
@@ -196,31 +215,31 @@ function DemoAnchor({
 
 export function AnchorStates() {
   return (
-    <DocsStack gap={10}>
-      <DocsStateGroup title="Appearance">
-        <DocsStateGrid columns={3}>
+    <StateStack gap={10}>
+      <StateGroup title="Appearance">
+        <StateGrid columns={3}>
           {ANCHOR_VARIANTS.map((item) => (
-            <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
+            <StateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
               <DemoAnchor variant={item} size="md" state="default" tone="brand" external={false} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Size">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="Size">
+        <StateGrid columns={3}>
           {SIZES.map((item) => (
-            <DocsStateCard key={item} label={item === 'sm' ? 'Small' : item === 'md' ? 'Medium' : 'Large'}>
+            <StateCard key={item} label={item === 'sm' ? 'Small' : item === 'md' ? 'Medium' : 'Large'}>
               <DemoAnchor variant="inline" size={item} state="default" tone="brand" external={false} />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Tone">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Tone">
+        <StateGrid columns={2}>
           {ANCHOR_TONES.map((item) => (
-            <DocsStateCard key={item} label={ANCHOR_TONE_LABEL[item]}>
+            <StateCard key={item} label={ANCHOR_TONE_LABEL[item]}>
               <DemoAnchor
                 variant="inline"
                 size="md"
@@ -228,15 +247,15 @@ export function AnchorStates() {
                 tone={item}
                 external={false}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="Arrow">
-        <DocsStateGrid columns={2}>
+      <StateGroup title="Arrow">
+        <StateGrid columns={2}>
           {ANCHOR_ARROWS.map((item) => (
-            <DocsStateCard key={item} label={ANCHOR_ARROW_LABEL[item]}>
+            <StateCard key={item} label={ANCHOR_ARROW_LABEL[item]}>
               <DemoAnchor
                 variant="arrow"
                 size="md"
@@ -245,16 +264,16 @@ export function AnchorStates() {
                 arrow={item}
                 external={false}
               />
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
       {ANCHOR_VARIANTS.map((item) => (
-        <DocsStateGroup key={item} title={ANCHOR_VARIANT_LABEL[item]}>
-          <DocsStateGrid columns={item === 'arrow' ? 3 : 6}>
+        <StateGroup key={item} title={ANCHOR_VARIANT_LABEL[item]}>
+          <StateGrid columns={item === 'arrow' ? 3 : 6}>
             {STATES.map((entry) => (
-              <DocsStateCard key={entry.value} label={entry.label} inert>
+              <StateCard key={entry.value} label={entry.label} inert>
                 <DemoAnchor
                   variant={item}
                   size="md"
@@ -262,26 +281,26 @@ export function AnchorStates() {
                   tone="brand"
                   external={false}
                 />
-              </DocsStateCard>
+              </StateCard>
             ))}
-          </DocsStateGrid>
-        </DocsStateGroup>
+          </StateGrid>
+        </StateGroup>
       ))}
 
-      <DocsStateGroup title="External">
-        <DocsStateGrid columns={3}>
+      <StateGroup title="External">
+        <StateGrid columns={3}>
           {ANCHOR_VARIANTS.map((item) => (
-            <DocsStateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
+            <StateCard key={item} label={ANCHOR_VARIANT_LABEL[item]}>
               <Anchor href={brand.supportUrl} variant={item} size="md" external>
                 {item === 'standalone' || item === 'arrow' ? 'Visit the site' : brand.supportLabel}
               </Anchor>
-            </DocsStateCard>
+            </StateCard>
           ))}
-        </DocsStateGrid>
-      </DocsStateGroup>
+        </StateGrid>
+      </StateGroup>
 
-      <DocsStateGroup title="In copy">
-        <DocsStateCard label="Inline in a paragraph" align="stretch" wide>
+      <StateGroup title="In copy">
+        <StateCard label="Inline in a paragraph" align="stretch" wide>
           <Body>
             By continuing, you agree to the{' '}
             <Anchor href="#usage">Terms of Use</Anchor> and{' '}
@@ -291,15 +310,15 @@ export function AnchorStates() {
             . Support is on{' '}
             <Anchor href={brand.supportUrl}>{brand.supportLabel}</Anchor>.
           </Body>
-        </DocsStateCard>
-      </DocsStateGroup>
-    </DocsStack>
+        </StateCard>
+      </StateGroup>
+    </StateStack>
   )
 }
 
 export function AnchorPreview() {
   return (
-    <DocsStack gap={10}>
+    <StateStack gap={10}>
       <div
         className={cn(
           'flex min-h-[min(52dvh,480px)] items-center justify-center',
@@ -316,7 +335,7 @@ export function AnchorPreview() {
         </div>
         <AnchorStates />
       </div>
-    </DocsStack>
+    </StateStack>
   )
 }
 
@@ -357,42 +376,29 @@ export function AnchorDocs() {
       <section id="usage" className="mt-10 scroll-mt-20">
         <DocsSectionTitle>Usage</DocsSectionTitle>
         <DocsUsage>
-          <DocsProse>
             <Body>
               Links help users navigate to new pages and content. They come in different styles for different purposes. Use inline 
               links within sentences, standalone links after headings, or circular arrow buttons for navigation. External links 
               automatically show an icon to let users know they will leave your site.
             </Body>
-          </DocsProse>
-          <DocsPrinciples
-            items={[
-              {
-                title: 'Navigate, don’t act',
-                body: 'A link goes somewhere. A button does something. Do not style a link as a filled pill.',
-              },
-              {
-                title: 'Name the destination',
-                body: 'The label is the place or the promise. “Privacy Policy”, “Learn more”, not “Click here”.',
-              },
-              {
-                title: 'Honest navigation',
-                body: 'External links show a small icon, giving users a heads up that clicking will take them to a different website.',
-              },
-            ]}
-          />
-          <DocsDoDont
-            doItems={[
+          <CardGrid columns={3} gap="sm">
+            <Card variant="subtle" size="sm" eyebrow="01" title="Navigate, don’t act" description="A link goes somewhere. A button does something. Do not style a link as a filled pill." />
+            <Card variant="subtle" size="sm" eyebrow="02" title="Name the destination" description="The label is the place or the promise. “Privacy Policy”, “Learn more”, not “Click here”." />
+            <Card variant="subtle" size="sm" eyebrow="03" title="Honest navigation" description="External links show a small icon, giving users a heads up that clicking will take them to a different website." />
+          </CardGrid>
+          <CardGrid columns={2} gap="sm">
+            <RuleCard size="sm" tone="success" title="Do" items={[
               'Use inline links within paragraphs and text to maintain a natural reading flow.',
               'Place standalone links after headings when you want to guide users to additional content.',
               'Use arrow buttons for navigation like viewing all items or moving between pages.',
               'Mark external links clearly so users know when they are leaving your site.',
-            ]}
-            dontItems={[
+            ]} />
+            <RuleCard size="sm" tone="danger" title="Don’t" items={[
               'Avoid using links for actions like saving or deleting. Those should be buttons.',
               'Always be transparent when a link goes to an external website.',
               'Keep links concise. Link just the relevant words, not entire paragraphs.',
-            ]}
-          />
+            ]} />
+          </CardGrid>
         </DocsUsage>
       </section>
 
@@ -495,21 +501,31 @@ export function AnchorDocs() {
 
       <section id="accessibility" className="mt-8 scroll-mt-20">
         <DocsSectionTitle>Accessibility</DocsSectionTitle>
-        <A11ySection
-          intro="A link is a native control. The accessible name is the visible text, plus a note when the destination opens in a new window."
-          items={[
-            'Renders a real anchor. Role is implied. Do not recreate this with a clickable span.',
-            'Tab to focus. Enter to follow. Focus is a 2px brand outline. Inline also shows the underline.',
-            'Disabled is not in the tab order. It is announced as a disabled link.',
-            'target="_blank" and external={true} append a visually hidden “opens in a new window”.',
-            'The launch icon and the circular chevron are decorative. The label still names the destination if they are missing.',
-            'Do not rely on color alone. Hover fills the arrow circle, or reveals the underline on inline links.',
-          ]}
-          keys={[
-            { keys: ['Tab'], action: 'Focus the link' },
-            { keys: ['Enter'], action: 'Follow the link' },
-          ]}
-        />
+                <div className="flex flex-col gap-4">
+          <Alert title="Requirements">
+            <p className="m-0">{"A link is a native control. The accessible name is the visible text, plus a note when the destination opens in a new window."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"Renders a real anchor. Role is implied. Do not recreate this with a clickable span."}</li>
+              <li>{"Tab to focus. Enter to follow. Focus is a 2px brand outline. Inline also shows the underline."}</li>
+              <li>{"Disabled is not in the tab order. It is announced as a disabled link."}</li>
+              <li>{"target=\"_blank\" and external={true} append a visually hidden “opens in a new window”."}</li>
+              <li>{"The launch icon and the circular chevron are decorative. The label still names the destination if they are missing."}</li>
+              <li>{"Do not rely on color alone. Hover fills the arrow circle, or reveals the underline on inline links."}</li>
+            </ul>
+          </Alert>
+          <DataTable
+            size="sm"
+            variant="subtle"
+            minWidth="320px"
+            aria-label="Keyboard shortcuts"
+            data={[
+              { id: '0', keys: ["Tab"], action: "Focus the link" },
+              { id: '1', keys: ["Enter"], action: "Follow the link" },
+            ]}
+            rowKey={(row) => row.id}
+            columns={SHORTCUT_COLUMNS}
+          />
+        </div>
       </section>
 
       <section className="mt-12">
