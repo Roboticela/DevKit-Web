@@ -1,0 +1,31 @@
+{
+  "id": "footer-section",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "FooterSection",
+  "displayName": "Roboticela Footer Section",
+  "description": "The site footer: locale, newsletter, link columns, social marks, and legal copy.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [
+    "brand-logo"
+  ],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "sources": [
+    "src/components/FooterSection.tsx"
+  ],
+  "route": "footer",
+  "peerDependencies": {
+    "@roboticela/devkit": ">=4.5.0",
+    "lucide-react": ">=0.400.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  }
+}

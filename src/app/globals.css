@@ -218,6 +218,12 @@ html[data-theme="dark"] {
   --animate-modal-overlay-in: modal-overlay-in 300ms var(--ease-apple) both;
   --animate-modal-panel-in: modal-panel-in 300ms var(--ease-apple) both;
   --animate-modal-sheet-in: modal-sheet-in 360ms var(--ease-apple) both;
+  --animate-reel-card-in: reel-card-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-reel-fx-main: reel-fx-main 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-reel-fx-ring: reel-fx-ring 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-reel-fx-spark: reel-fx-spark 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-reel-rail-pop: reel-rail-pop 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-nav-enter: nav-enter 400ms var(--ease-apple) both;
 }
 
 @keyframes btn-spin {
@@ -413,6 +419,93 @@ html[data-theme="dark"] {
   }
 }
 
+@keyframes reel-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(38px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes reel-fx-main {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.08) rotate(-18deg);
+  }
+  14% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.28) rotate(0deg);
+  }
+  28% {
+    transform: translate(-50%, -50%) scale(0.88) rotate(6deg);
+  }
+  42% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(-3deg);
+  }
+  58% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(1.45) rotate(0deg);
+  }
+}
+
+@keyframes reel-fx-ring {
+  0% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4.8);
+  }
+}
+
+@keyframes reel-fx-spark {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(0.55) rotate(var(--rot));
+  }
+}
+
+@keyframes reel-rail-pop {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.22);
+  }
+  55% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes nav-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .dk-brand-logo {
   transition: opacity 300ms var(--ease-apple);
 }
@@ -462,6 +555,12 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100%;
+}
+
+html.reel-viewer-open,
+html.reel-viewer-open body {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -578,7 +677,13 @@ body {
   .animate-docs-nav-search-in,
   .animate-modal-overlay-in,
   .animate-modal-panel-in,
-  .animate-modal-sheet-in {
+  .animate-modal-sheet-in,
+  .animate-reel-card-in,
+  .animate-reel-fx-main,
+  .animate-reel-fx-ring,
+  .animate-reel-fx-spark,
+  .animate-reel-rail-pop,
+  .animate-nav-enter {
     animation: none;
   }
 }

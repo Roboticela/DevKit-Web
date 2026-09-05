@@ -1,0 +1,29 @@
+{
+  "id": "roboticela-hero-section",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "RoboticelaHeroSection",
+  "displayName": "Roboticela Hero Section",
+  "description": "Marketing hero with a headline, a call to action, and a supporting visual. The opening block of a landing page.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "sources": [
+    "src/components/RoboticelaHeroSection.tsx"
+  ],
+  "route": "hero",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  }
+}

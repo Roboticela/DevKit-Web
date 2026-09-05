@@ -1,0 +1,121 @@
+{
+  "name": "product-marquee-section",
+  "version": "1.0.0",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "ProductMarqueeSection",
+  "route": "products",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [],
+  "peerDependencies": {
+    "lucide-react": ">=0.400.0",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "@roboticela/devkit": ">=4.5.0"
+  },
+  "requires": {
+    "peerDependencies": {
+      "lucide-react": ">=0.400.0",
+      "react": ">=18",
+      "react-dom": ">=18",
+      "@roboticela/devkit": ">=4.5.0"
+    },
+    "dependencies": {
+      "frontend": []
+    },
+    "roboticela": [],
+    "bundled": [
+      {
+        "id": "home-shell",
+        "file": "HomeShell.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "home-text-link",
+        "file": "HomeTextLink.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "product-marquee",
+        "file": "ProductMarquee.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "reveal-section",
+        "file": "RevealSection.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "cn",
+        "file": "cn.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "landing",
+        "file": "landing.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "merge-content",
+        "file": "merge-content.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "styles",
+        "file": "styles.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "use-prefers-reduced-motion",
+        "file": "usePrefersReducedMotion.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "cn",
+        "file": "cn.ts",
+        "role": "utility"
+      },
+      {
+        "id": "link",
+        "file": "link.tsx",
+        "role": "shim"
+      }
+    ],
+    "internal": [],
+    "icons": {
+      "fromDevkit": [],
+      "bundled": []
+    },
+    "packageImports": {
+      "lucide-react": [
+        "ArrowRight"
+      ],
+      "react": [
+        "ComponentProps",
+        "ReactNode",
+        "createContext",
+        "useContext",
+        "useEffect",
+        "useRef",
+        "useState"
+      ]
+    }
+  },
+  "sources": [
+    "src/ProductMarqueeSection.tsx",
+    "src/landing.ts",
+    "src/merge-content.ts",
+    "src/HomeShell.tsx",
+    "src/HomeTextLink.tsx",
+    "src/ProductMarquee.tsx",
+    "src/RevealSection.tsx",
+    "src/cn.ts",
+    "src/styles.ts",
+    "src/usePrefersReducedMotion.ts",
+    "src/link.tsx"
+  ]
+}

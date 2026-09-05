@@ -1,0 +1,81 @@
+{
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  },
+  "dependencies": {
+    "frontend": []
+  },
+  "roboticela": [],
+  "bundled": [
+    {
+      "id": "building-toward",
+      "file": "BuildingToward.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "home-shell",
+      "file": "HomeShell.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "cn",
+      "file": "cn.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "css-token-color",
+      "file": "css-token-color.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "landing",
+      "file": "landing.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "styles",
+      "file": "styles.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "use-prefers-reduced-motion",
+      "file": "usePrefersReducedMotion.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "webgl",
+      "file": "webgl.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "cn",
+      "file": "cn.ts",
+      "role": "utility"
+    }
+  ],
+  "internal": [],
+  "icons": {
+    "fromDevkit": [],
+    "bundled": []
+  },
+  "packageImports": {
+    "react": [
+      "ReactNode",
+      "createContext",
+      "useContext",
+      "useEffect",
+      "useRef",
+      "useState"
+    ],
+    "three": [
+      "Line2",
+      "LineGeometry",
+      "LineMaterial",
+      "RoomEnvironment",
+      "RoundedBoxGeometry"
+    ]
+  }
+}

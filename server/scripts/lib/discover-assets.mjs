@@ -21,6 +21,29 @@ import {
 } from "node:fs";
 import { dirname, join } from "node:path";
 
+/** Landing internals bundled into *Section packages — not catalog products. */
+const LANDING_HELPERS = new Set([
+  "AuroraParticles",
+  "BuildingToward",
+  "CategoryIcon",
+  "ContactBlob",
+  "HeroCells",
+  "HomeShell",
+  "HomeTextLink",
+  "IdeaCell",
+  "LandingCountrySelect",
+  "LandingLanguageSelect",
+  "ProductMarquee",
+  "ReelStrip",
+  "RevealSection",
+  "ServiceCarousel",
+  "ServiceRibbon",
+  "SiteFooter",
+  "SiteNav",
+  "TrustField",
+  "landing-sections",
+]);
+
 /** Filename patterns that are docs/preview tooling — not catalog assets. */
 function shouldSkipFile(base) {
   if (/^index$/i.test(base)) return true;
@@ -33,6 +56,7 @@ function shouldSkipFile(base) {
   if (/Scaffold$/i.test(base)) return true;
   if (/^KitDoc/i.test(base)) return true;
   if (/^kit-/i.test(base)) return true;
+  if (LANDING_HELPERS.has(base)) return true;
   return false;
 }
 
@@ -169,9 +193,12 @@ function ensureAssetRecord(repoRoot, meta, write) {
     templates: existing?.templates ?? meta.templates,
     dependencies: existing?.dependencies ?? meta.dependencies ?? [],
     tags: existing?.tags ?? meta.tags ?? [],
+    ...(existing?.route || meta.route
+      ? { route: existing?.route ?? meta.route }
+      : {}),
   };
 
-  if (write) {
+  if (write && (existing || meta.type === "section")) {
     mkdirSync(assetDir, { recursive: true });
     writeJson(assetPath, merged);
   }

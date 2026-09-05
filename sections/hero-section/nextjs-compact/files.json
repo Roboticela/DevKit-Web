@@ -1,4 +1,0 @@
-{
-  "package.json": "{\n  \"name\": \"@roboticela/premium-hero-section\",\n  \"version\": \"1.0.1\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"main\": \"./index.js\",\n  \"exports\": {\n    \".\": \"./index.js\"\n  },\n  \"peerDependencies\": {\n    \"react\": \">=18\",\n    \"@roboticela/devkit\": \">=4.5.0\"\n  }\n}",
-  "index.js": "'use client';\nimport { createElement as h } from 'react';\nexport default function HeroSection() {\n  return h('section', { className: 'py-24 px-6 text-center' },\n    h('h2', { className: 'text-4xl font-semibold' }, 'Hero Section'),\n    h('p', { className: 'mt-4 text-text-secondary' }, 'Premium marketing section from DevKit server.')\n  );\n}\n"
-}

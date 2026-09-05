@@ -1,0 +1,9 @@
+{
+  "name": "roboticela-hero-section",
+  "version": "1.0.1",
+  "type": "section",
+  "framework": "nextjs-compact",
+  "delivery": "server-package",
+  "route": "hero",
+  "devkitVersion": ">=4.5.0"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "trust-section",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "TrustSection",
+  "displayName": "Roboticela Trust Section",
+  "description": "The why-trust-us block: honest copy about who the company is and how it works, on a quiet gray surface.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "sources": [
+    "src/components/TrustSection.tsx"
+  ],
+  "route": "trust",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "peerDependencies": {
+    "lucide-react": ">=0.400.0",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  },
+  "dependencies": {
+    "frontend": []
+  },
+  "roboticela": [],
+  "bundled": [
+    {
+      "id": "category-icon",
+      "file": "CategoryIcon.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "home-shell",
+      "file": "HomeShell.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "home-text-link",
+      "file": "HomeTextLink.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "reveal-section",
+      "file": "RevealSection.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "service-carousel",
+      "file": "ServiceCarousel.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "service-ribbon",
+      "file": "ServiceRibbon.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "cn",
+      "file": "cn.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "css-token-color",
+      "file": "css-token-color.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "landing",
+      "file": "landing.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "landing-catalog",
+      "file": "landing-catalog.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "merge-content",
+      "file": "merge-content.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "styles",
+      "file": "styles.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "use-prefers-reduced-motion",
+      "file": "usePrefersReducedMotion.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "webgl",
+      "file": "webgl.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "cn",
+      "file": "cn.ts",
+      "role": "utility"
+    },
+    {
+      "id": "link",
+      "file": "link.tsx",
+      "role": "shim"
+    }
+  ],
+  "internal": [],
+  "icons": {
+    "fromDevkit": [],
+    "bundled": []
+  },
+  "packageImports": {
+    "lucide-react": [
+      "ArrowRight",
+      "Cable",
+      "CircleHelp",
+      "Clapperboard",
+      "Cloud",
+      "Fingerprint",
+      "Headphones",
+      "KeyRound",
+      "Layers",
+      "LucideIcon",
+      "PenTool",
+      "Play",
+      "RefreshCw",
+      "Shield",
+      "Smartphone",
+      "UserRound"
+    ],
+    "react": [
+      "ComponentProps",
+      "PointerEvent",
+      "ReactNode",
+      "createContext",
+      "useCallback",
+      "useContext",
+      "useEffect",
+      "useMemo",
+      "useRef",
+      "useState"
+    ],
+    "three": [
+      "mergeGeometries"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 {
-  "version": "1.0.10",
-  "updatedAt": "2026-09-03",
+  "version": "1.0.11",
+  "updatedAt": "2026-09-05",
   "assets": [
     {
       "id": "alert",
@@ -3905,6 +3905,111 @@
       ]
     },
     {
+      "id": "contact-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Contact Section",
+      "description": "The closing invitation: Get In Touch copy and a contact link for buying, using, or backing the product.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "ContactSection",
+      "route": "contact",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "68e39102a35fb829b23a28c550da74ae7b22d2bcc0fbcd03f2a8ca3ba25c5735"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18",
+        "three": ">=0.160.0",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "contact-blob",
+            "file": "ContactBlob.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reveal-section",
+            "file": "RevealSection.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "webgl",
+            "file": "webgl.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          },
+          {
+            "id": "link",
+            "file": "link.tsx",
+            "role": "shim"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/ContactSection.tsx"
+      ]
+    },
+    {
       "id": "country-flag",
       "type": "component",
       "tier": "free",
@@ -5887,6 +5992,143 @@
       ]
     },
     {
+      "id": "footer-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Footer Section",
+      "description": "The site footer: locale, newsletter, link columns, social marks, and legal copy.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [
+        "brand-logo"
+      ],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "FooterSection",
+      "route": "footer",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "9a720d324973efe4a72dedbf606528f035da1df5ab7f034c30225c2ec7d8214c"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "@roboticela/devkit": ">=4.5.0",
+        "lucide-react": ">=0.400.0",
+        "react": ">=18",
+        "react-dom": ">=18"
+      },
+      "requires": {
+        "roboticela": [
+          {
+            "id": "brand-logo",
+            "type": "component",
+            "package": "@roboticela/devkit",
+            "delivery": "module",
+            "exportNames": [
+              "BrandLogo"
+            ]
+          }
+        ],
+        "bundled": [
+          {
+            "id": "country-flag",
+            "file": "CountryFlag.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing-country-select",
+            "file": "LandingCountrySelect.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing-language-select",
+            "file": "LandingLanguageSelect.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "site-footer",
+            "file": "SiteFooter.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "countries",
+            "file": "countries.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing-select",
+            "file": "landing-select.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "languages",
+            "file": "languages.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          },
+          {
+            "id": "link",
+            "file": "link.tsx",
+            "role": "shim"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/FooterSection.tsx"
+      ]
+    },
+    {
       "id": "forgot-password-page",
       "type": "page",
       "tier": "premium",
@@ -6299,70 +6541,6 @@
       ]
     },
     {
-      "id": "hero-section",
-      "type": "section",
-      "tier": "premium",
-      "displayName": "Hero Section",
-      "description": "Marketing hero section with headline, CTA, and visual.",
-      "category": "marketing",
-      "templates": [
-        "nextjs-compact",
-        "vite-express-tauri"
-      ],
-      "latestVersion": "1.0.7",
-      "dependencies": [
-        "button"
-      ],
-      "tags": [
-        "marketing",
-        "landing"
-      ],
-      "delivery": "server-package",
-      "versions": {
-        "latest": "1.0.7",
-        "history": [
-          {
-            "version": "1.0.7",
-            "releasedAt": "2026-09-03",
-            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
-          },
-          {
-            "version": "1.0.6",
-            "releasedAt": "2026-09-03",
-            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
-          },
-          {
-            "version": "1.0.5",
-            "releasedAt": "2026-09-03",
-            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
-          },
-          {
-            "version": "1.0.4",
-            "releasedAt": "2026-09-02",
-            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
-          },
-          {
-            "version": "1.0.3",
-            "releasedAt": "2026-09-02",
-            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
-          },
-          {
-            "version": "1.0.2",
-            "releasedAt": "2026-09-02",
-            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
-          },
-          {
-            "version": "1.0.1",
-            "releasedAt": "2026-09-02"
-          },
-          {
-            "version": "1.0.0",
-            "releasedAt": "2026-09-02"
-          }
-        ]
-      }
-    },
-    {
       "id": "icon-button",
       "type": "component",
       "tier": "free",
@@ -6566,6 +6744,111 @@
       },
       "sources": [
         "src/components/IconTab.tsx"
+      ]
+    },
+    {
+      "id": "idea-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Idea Section",
+      "description": "The story block that names the product, states the idea, and explains it in plain words on a dark surface.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "IdeaSection",
+      "route": "idea",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "8f1d7bc29ad296bad6db58bfe888c2c15bf2c3ae39e112b255940031288efddd"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18",
+        "three": ">=0.160.0",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "idea-cell",
+            "file": "IdeaCell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reveal-section",
+            "file": "RevealSection.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "frame-clock",
+            "file": "frame-clock.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "webgl",
+            "file": "webgl.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/IdeaSection.tsx"
       ]
     },
     {
@@ -7599,6 +7882,139 @@
       },
       "sources": [
         "src/components/NavSearch.tsx"
+      ]
+    },
+    {
+      "id": "navbar-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Navbar Section",
+      "description": "The sticky global bar: brand, catalog flyouts, search, bag, account links, and appearance.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [
+        "brand-logo",
+        "theme-toggle"
+      ],
+      "tags": [
+        "marketing",
+        "landing",
+        "nav"
+      ],
+      "delivery": "server-package",
+      "exportName": "NavbarSection",
+      "route": "navbar",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "44efad0a26d7e59c780b75008b1c470ff9fbfbc7015ad60b80595d304cc91cda"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "@roboticela/devkit": ">=4.5.0",
+        "lucide-react": ">=0.400.0",
+        "react": ">=18",
+        "react-dom": ">=18"
+      },
+      "requires": {
+        "roboticela": [
+          {
+            "id": "brand-logo",
+            "type": "component",
+            "package": "@roboticela/devkit",
+            "delivery": "module",
+            "exportNames": [
+              "BrandLogo"
+            ]
+          },
+          {
+            "id": "theme-toggle",
+            "type": "component",
+            "package": "@roboticela/devkit",
+            "delivery": "module",
+            "exportNames": [
+              "ThemeToggle"
+            ]
+          }
+        ],
+        "bundled": [
+          {
+            "id": "category-icon",
+            "file": "CategoryIcon.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "site-nav",
+            "file": "SiteNav.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing-catalog",
+            "file": "landing-catalog.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          },
+          {
+            "id": "link",
+            "file": "link.tsx",
+            "role": "shim"
+          },
+          {
+            "id": "navigation",
+            "file": "navigation.ts",
+            "role": "shim"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/NavbarSection.tsx"
       ]
     },
     {
@@ -9031,6 +9447,111 @@
       ]
     },
     {
+      "id": "product-marquee-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Product Marquee Section",
+      "description": "A scrolling row of product cards under the hero, with a quiet storefront feel.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "ProductMarqueeSection",
+      "route": "products",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "11b114b072dac4971cce75169c7d2ca0ab019c7702c3e6504f999ecd73d9ede1"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "lucide-react": ">=0.400.0",
+        "react": ">=18",
+        "react-dom": ">=18",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-text-link",
+            "file": "HomeTextLink.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "product-marquee",
+            "file": "ProductMarquee.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reveal-section",
+            "file": "RevealSection.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          },
+          {
+            "id": "link",
+            "file": "link.tsx",
+            "role": "shim"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/ProductMarqueeSection.tsx"
+      ]
+    },
+    {
       "id": "profile-button",
       "type": "component",
       "tier": "free",
@@ -9833,6 +10354,122 @@
       ]
     },
     {
+      "id": "reels-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Reels Section",
+      "description": "A wall of short build-in-progress clips under an animated backdrop. Use it to show work before it ships.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "ReelsSection",
+      "route": "reels",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "4c226c05d8e547adf163709cb12af6ace6481b74c3bbbad8d15e164316ee61fe"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "lucide-react": ">=0.400.0",
+        "react": ">=18",
+        "react-dom": ">=18",
+        "three": ">=0.160.0",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "aurora-particles",
+            "file": "AuroraParticles.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-text-link",
+            "file": "HomeTextLink.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reel-strip",
+            "file": "ReelStrip.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reveal-section",
+            "file": "RevealSection.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "webgl",
+            "file": "webgl.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          },
+          {
+            "id": "link",
+            "file": "link.tsx",
+            "role": "shim"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/ReelsSection.tsx"
+      ]
+    },
+    {
       "id": "related-card",
       "type": "component",
       "tier": "free",
@@ -10115,6 +10752,101 @@
       ]
     },
     {
+      "id": "roadmap-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Roadmap Section",
+      "description": "The building-toward block that names what comes next and connects the current product to the future.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "RoadmapSection",
+      "route": "roadmap",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "ec056654db140b847eecb89e14781b7a335c9c4af3e84c94a6cc03e33aaeca9d"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18",
+        "three": ">=0.160.0",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "building-toward",
+            "file": "BuildingToward.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "css-token-color",
+            "file": "css-token-color.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "webgl",
+            "file": "webgl.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/RoadmapSection.tsx"
+      ]
+    },
+    {
       "id": "roboticela-button",
       "type": "component",
       "tier": "free",
@@ -10225,6 +10957,159 @@
       },
       "sources": [
         "src/components/RoboticelaButton.tsx"
+      ]
+    },
+    {
+      "id": "roboticela-hero-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Hero Section",
+      "description": "Marketing hero with a headline, a call to action, and a supporting visual. The opening block of a landing page.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.8",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "RoboticelaHeroSection",
+      "route": "hero",
+      "versions": {
+        "latest": "1.0.8",
+        "history": [
+          {
+            "version": "1.0.8",
+            "releasedAt": "2026-09-05",
+            "contentSha": "dcd6a4db40c2085715c7ab945e584a41ab99b4fbb68a6d1af0b35e2deb2e3ed0"
+          },
+          {
+            "version": "1.0.7",
+            "releasedAt": "2026-09-03",
+            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
+          },
+          {
+            "version": "1.0.6",
+            "releasedAt": "2026-09-03",
+            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
+          },
+          {
+            "version": "1.0.5",
+            "releasedAt": "2026-09-03",
+            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
+          },
+          {
+            "version": "1.0.4",
+            "releasedAt": "2026-09-02",
+            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
+          },
+          {
+            "version": "1.0.3",
+            "releasedAt": "2026-09-02",
+            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
+          },
+          {
+            "version": "1.0.2",
+            "releasedAt": "2026-09-02",
+            "contentSha": "49fe04f5561ee161806788ab8f151bc11ed881a2c7c7dd169a4f1ae7133f1543"
+          },
+          {
+            "version": "1.0.1",
+            "releasedAt": "2026-09-02"
+          },
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-02"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18",
+        "three": ">=0.160.0",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "hero-cells",
+            "file": "HeroCells.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reveal-section",
+            "file": "RevealSection.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "css-token-color",
+            "file": "css-token-color.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "frame-clock",
+            "file": "frame-clock.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "webgl",
+            "file": "webgl.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          },
+          {
+            "id": "link",
+            "file": "link.tsx",
+            "role": "shim"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/RoboticelaHeroSection.tsx"
       ]
     },
     {
@@ -10742,6 +11627,137 @@
       },
       "sources": [
         "src/components/SelectTrigger.tsx"
+      ]
+    },
+    {
+      "id": "services-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Services Section",
+      "description": "A services showcase: a ribbon scene over a carousel of the offerings, with a heading and a view-all link.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "ServicesSection",
+      "route": "services",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "45fea094c4cff0f6d956c3bd3986a700afd45e78e87cc6d321f19cf34aefad68"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "lucide-react": ">=0.400.0",
+        "react": ">=18",
+        "react-dom": ">=18",
+        "three": ">=0.160.0",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "category-icon",
+            "file": "CategoryIcon.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "home-text-link",
+            "file": "HomeTextLink.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reveal-section",
+            "file": "RevealSection.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "service-carousel",
+            "file": "ServiceCarousel.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "service-ribbon",
+            "file": "ServiceRibbon.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "css-token-color",
+            "file": "css-token-color.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing-catalog",
+            "file": "landing-catalog.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "webgl",
+            "file": "webgl.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          },
+          {
+            "id": "link",
+            "file": "link.tsx",
+            "role": "shim"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/ServicesSection.tsx"
       ]
     },
     {
@@ -13108,6 +14124,111 @@
       },
       "sources": [
         "src/components/TotpManualKey.tsx"
+      ]
+    },
+    {
+      "id": "trust-section",
+      "type": "section",
+      "tier": "premium",
+      "displayName": "Roboticela Trust Section",
+      "description": "The why-trust-us block: honest copy about who the company is and how it works, on a quiet gray surface.",
+      "category": "marketing",
+      "templates": [
+        "nextjs-compact",
+        "vite-express-tauri"
+      ],
+      "latestVersion": "1.0.0",
+      "dependencies": [],
+      "tags": [
+        "marketing",
+        "landing"
+      ],
+      "delivery": "server-package",
+      "exportName": "TrustSection",
+      "route": "trust",
+      "versions": {
+        "latest": "1.0.0",
+        "history": [
+          {
+            "version": "1.0.0",
+            "releasedAt": "2026-09-05",
+            "contentSha": "9ccd57d347e4f2482c455ae1dafddb49e9fd1a93022abea5a6fce8abec058076"
+          }
+        ]
+      },
+      "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18",
+        "three": ">=0.160.0",
+        "@roboticela/devkit": ">=4.5.0"
+      },
+      "requires": {
+        "roboticela": [],
+        "bundled": [
+          {
+            "id": "home-shell",
+            "file": "HomeShell.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "reveal-section",
+            "file": "RevealSection.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "trust-field",
+            "file": "TrustField.tsx",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "frame-clock",
+            "file": "frame-clock.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "landing",
+            "file": "landing.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "merge-content",
+            "file": "merge-content.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "styles",
+            "file": "styles.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "use-prefers-reduced-motion",
+            "file": "usePrefersReducedMotion.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "webgl",
+            "file": "webgl.ts",
+            "role": "local-helper"
+          },
+          {
+            "id": "cn",
+            "file": "cn.ts",
+            "role": "utility"
+          }
+        ],
+        "internal": [],
+        "icons": {
+          "fromDevkit": [],
+          "bundled": []
+        }
+      },
+      "sources": [
+        "src/components/TrustSection.tsx"
       ]
     },
     {

@@ -1,0 +1,29 @@
+{
+  "id": "idea-section",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "IdeaSection",
+  "displayName": "Roboticela Idea Section",
+  "description": "The story block that names the product, states the idea, and explains it in plain words on a dark surface.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "sources": [
+    "src/components/IdeaSection.tsx"
+  ],
+  "route": "idea",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  }
+}

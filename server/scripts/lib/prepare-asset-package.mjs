@@ -46,6 +46,8 @@ function defaultNpmRange(pkg) {
   if (pkg === "react" || pkg === "react-dom") return REACT_RANGE;
   if (pkg === DEVKIT) return DEVKIT_RANGE;
   if (pkg === "next") return ">=14";
+  if (pkg === "three") return ">=0.160.0";
+  if (pkg === "lucide-react") return ">=0.400.0";
   return "*";
 }
 
@@ -64,6 +66,52 @@ export default function Link({
       {children}
     </a>
   )
+}
+`;
+
+const NAVIGATION_SHIM = `'use client'
+
+import { useCallback, useMemo, useSyncExternalStore } from 'react'
+
+function subscribe(onStoreChange: () => void) {
+  if (typeof window === 'undefined') return () => {}
+  window.addEventListener('popstate', onStoreChange)
+  return () => window.removeEventListener('popstate', onStoreChange)
+}
+
+function getPathname() {
+  return typeof window === 'undefined' ? '/' : window.location.pathname
+}
+
+function getSearch() {
+  return typeof window === 'undefined' ? '' : window.location.search
+}
+
+/** Template-agnostic navigation (replaces next/navigation in published packages). */
+export function usePathname() {
+  return useSyncExternalStore(subscribe, getPathname, () => '/')
+}
+
+export function useSearchParams() {
+  const search = useSyncExternalStore(subscribe, getSearch, () => '')
+  return useMemo(() => new URLSearchParams(search), [search])
+}
+
+export function useRouter() {
+  const push = useCallback((href: string) => {
+    window.location.assign(href)
+  }, [])
+  const replace = useCallback((href: string) => {
+    window.location.replace(href)
+  }, [])
+  const back = useCallback(() => {
+    window.history.back()
+  }, [])
+  return { push, replace, back, prefetch() {} }
+}
+
+export function notFound() {
+  throw new Error('Not found')
 }
 `;
 
@@ -241,6 +289,7 @@ export function prepareAssetPackage(repoRoot, entryRelPath, opts = {}) {
   /** @type {Set<string>} */
   const neededLocalIcons = new Set();
   let needsLinkShim = false;
+  let needsNavShim = false;
   let needsCn = false;
   let needsStyles = false;
   /** @type {Set<string>} catalog dependency ids (kebab) */
@@ -302,13 +351,14 @@ export function prepareAssetPackage(repoRoot, entryRelPath, opts = {}) {
       let extra = null;
       const names = namedImports(clause).map((n) => n.imported);
 
-      // next/link → local shim
+      // next/link + next/navigation → local shims (template-agnostic)
       if (from === "next/link" || from === "next/navigation") {
         if (from === "next/link") {
           needsLinkShim = true;
           nextFrom = "./link";
         } else {
-          drop = true;
+          needsNavShim = true;
+          nextFrom = "./navigation";
         }
       } else if (from === "react" || from.startsWith("react/")) {
         noteNpm(from === "react" ? "react" : from);
@@ -393,15 +443,7 @@ export function prepareAssetPackage(repoRoot, entryRelPath, opts = {}) {
             const id = toKebab(base);
             catalogDeps.add(id);
             noteRoboticela(id, names.length ? names : [base], "module");
-          } else if (
-            resolved.includes(`${join("src", "lib")}`) ||
-            resolved.includes("src/lib") ||
-            /[\\/]lib[\\/]/.test(resolved)
-          ) {
-            nextFrom = "./" + basename(resolved).replace(/\.(tsx|ts)$/, "");
-            bundledHelpers.add(base);
-            if (!seen.has(resolved)) queue.add(resolved);
-          } else if (resolved.includes("components") || /[\\/]components[\\/]/.test(resolved)) {
+          } else {
             nextFrom = "./" + basename(resolved).replace(/\.(tsx|ts)$/, "");
             bundledHelpers.add(base);
             if (!seen.has(resolved)) queue.add(resolved);
@@ -509,6 +551,9 @@ export function prepareAssetPackage(repoRoot, entryRelPath, opts = {}) {
   if (needsLinkShim) {
     files["link.tsx"] = LINK_SHIM;
   }
+  if (needsNavShim) {
+    files["navigation.ts"] = NAVIGATION_SHIM;
+  }
 
   // Ensure entry has a default export for premium loader (add if missing)
   const entryBase = basename(entryAbs);
@@ -536,6 +581,7 @@ export function prepareAssetPackage(repoRoot, entryRelPath, opts = {}) {
       neededLocalIcons,
       files: Object.keys(files),
       needsLinkShim,
+      needsNavShim,
       needsCn,
       needsStyles,
     }),
@@ -550,10 +596,8 @@ export function buildRequirements(ctx) {
     [...ctx.npmPeers.entries()].sort((a, b) => a[0].localeCompare(b[0]))
   );
 
-  // Always declare the host UI package when any roboticela/module piece is used
-  if (ctx.roboticelaDeps.size || ctx.neededFreeIcons.size || peerDependencies[DEVKIT]) {
-    peerDependencies[DEVKIT] = peerDependencies[DEVKIT] ?? DEVKIT_RANGE;
-  }
+  // Host UI package is always required (tokens, ThemeProvider, free primitives)
+  peerDependencies[DEVKIT] = peerDependencies[DEVKIT] ?? DEVKIT_RANGE;
 
   const roboticela = [...ctx.roboticelaDeps.values()]
     .map((r) => ({
@@ -599,6 +643,9 @@ export function buildRequirements(ctx) {
         : []),
       ...(ctx.needsLinkShim
         ? [{ id: "link", file: "link.tsx", role: "shim" }]
+        : []),
+      ...(ctx.needsNavShim
+        ? [{ id: "navigation", file: "navigation.ts", role: "shim" }]
         : []),
     ],
     /** Helpers that ship inside the host npm package (free module components) */
@@ -711,6 +758,17 @@ export async function writePreparedPackage(destRoot, prepared, meta) {
       target: ["es2020"],
       external: [...new Set(external)],
       logLevel: "silent",
+      plugins: [
+        {
+          name: "external-bare-imports",
+          setup(build) {
+            build.onResolve({ filter: /^[^./]/ }, (args) => ({
+              path: args.path,
+              external: true,
+            }));
+          },
+        },
+      ],
     });
     const js = result.outputFiles?.[0]?.text;
     if (js) {

@@ -1,0 +1,30 @@
+{
+  "id": "services-section",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "ServicesSection",
+  "displayName": "Roboticela Services Section",
+  "description": "A services showcase: a ribbon scene over a carousel of the offerings, with a heading and a view-all link.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "sources": [
+    "src/components/ServicesSection.tsx"
+  ],
+  "route": "services",
+  "peerDependencies": {
+    "lucide-react": ">=0.400.0",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  }
+}

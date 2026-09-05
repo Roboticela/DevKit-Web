@@ -34,7 +34,7 @@ import {
   SIGN_IN_TOC,
   VERIFICATION_CODE_TOC,
 } from './pages-catalog'
-import { SECTIONS_ITEMS, SECTIONS_NAV } from './sections-catalog'
+import { SECTIONS_ITEMS, SECTIONS_NAV, SECTION_DOC_TOC } from './sections-catalog'
 
 export type DocsFrame = {
   activeId: string
@@ -121,7 +121,7 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
     const slug = pathname === '/sections' ? SECTIONS_ITEMS[0]!.id : pathname.slice('/sections/'.length)
     return {
       activeId: slug,
-      toc: [{ id: 'overview', label: 'Overview' }],
+      toc: SECTION_DOC_TOC,
       activeTab: 'Sections',
       sections: SECTIONS_NAV,
       contentWidth: 900,

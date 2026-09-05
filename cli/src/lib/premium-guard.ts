@@ -5,9 +5,18 @@ import { cliBinName } from "./cli-meta.js";
 export const PREMIUM_ASSET_IDS = new Set([
   "dashboard-page",
   "settings-page",
-  "hero-section",
   "auth-scaffold",
   "sign-in-page",
+  "navbar-section",
+  "roboticela-hero-section",
+  "product-marquee-section",
+  "services-section",
+  "idea-section",
+  "reels-section",
+  "trust-section",
+  "roadmap-section",
+  "contact-section",
+  "footer-section",
 ]);
 
 export function isPremiumAssetId(name: string): boolean {

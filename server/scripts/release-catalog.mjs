@@ -320,6 +320,7 @@ function catalogEntryFromMeta(meta) {
     delivery: meta.delivery,
     ...(meta.exportName ? { exportName: meta.exportName } : {}),
     ...(meta.package ? { package: meta.package } : {}),
+    ...(meta.route ? { route: meta.route } : {}),
     versions: meta.versions,
   };
 }
@@ -589,6 +590,7 @@ async function publishPayload(asset, assetDir, version, contentSha) {
           tier: asset.tier,
           delivery: "server-package",
           exportName: asset.exportName ?? toExportName(asset.id),
+          ...(asset.route ? { route: asset.route } : {}),
           templates: asset.templates ?? ["nextjs-compact", "vite-express-tauri"],
           dependencies: deps,
         },
@@ -742,6 +744,7 @@ async function main() {
           tier: meta.tier ?? asset.tier,
           templates: meta.templates ?? asset.templates,
           dependencies: meta.dependencies ?? asset.dependencies,
+          route: meta.route ?? asset.route,
         },
         assetDir,
         version,
@@ -785,6 +788,7 @@ async function main() {
     if (meta.exportName) asset.exportName = meta.exportName;
     if (meta.package) asset.package = meta.package;
     if (meta.sources) asset.sources = meta.sources;
+    if (meta.route) asset.route = meta.route;
 
     // Keep root asset.json dependencies in sync
     try {

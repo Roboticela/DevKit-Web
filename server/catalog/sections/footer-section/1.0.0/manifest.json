@@ -1,0 +1,171 @@
+{
+  "name": "footer-section",
+  "version": "1.0.0",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "FooterSection",
+  "route": "footer",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [
+    "brand-logo"
+  ],
+  "peerDependencies": {
+    "@roboticela/devkit": ">=4.5.0",
+    "lucide-react": ">=0.400.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "requires": {
+    "peerDependencies": {
+      "@roboticela/devkit": ">=4.5.0",
+      "lucide-react": ">=0.400.0",
+      "react": ">=18",
+      "react-dom": ">=18"
+    },
+    "dependencies": {
+      "frontend": [
+        "brand-logo"
+      ]
+    },
+    "roboticela": [
+      {
+        "id": "brand-logo",
+        "type": "component",
+        "package": "@roboticela/devkit",
+        "delivery": "module",
+        "exportNames": [
+          "BrandLogo"
+        ]
+      }
+    ],
+    "bundled": [
+      {
+        "id": "country-flag",
+        "file": "CountryFlag.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "home-shell",
+        "file": "HomeShell.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "landing-country-select",
+        "file": "LandingCountrySelect.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "landing-language-select",
+        "file": "LandingLanguageSelect.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "site-footer",
+        "file": "SiteFooter.tsx",
+        "role": "local-helper"
+      },
+      {
+        "id": "cn",
+        "file": "cn.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "countries",
+        "file": "countries.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "landing",
+        "file": "landing.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "landing-select",
+        "file": "landing-select.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "languages",
+        "file": "languages.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "merge-content",
+        "file": "merge-content.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "styles",
+        "file": "styles.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "use-prefers-reduced-motion",
+        "file": "usePrefersReducedMotion.ts",
+        "role": "local-helper"
+      },
+      {
+        "id": "cn",
+        "file": "cn.ts",
+        "role": "utility"
+      },
+      {
+        "id": "link",
+        "file": "link.tsx",
+        "role": "shim"
+      }
+    ],
+    "internal": [],
+    "icons": {
+      "fromDevkit": [],
+      "bundled": []
+    },
+    "packageImports": {
+      "@roboticela/devkit": [
+        "BrandLogo",
+        "brand"
+      ],
+      "lucide-react": [
+        "Check",
+        "ChevronDown",
+        "Globe",
+        "Languages",
+        "Search"
+      ],
+      "react": [
+        "CSSProperties",
+        "FormEvent",
+        "ReactNode",
+        "createContext",
+        "useContext",
+        "useEffect",
+        "useId",
+        "useLayoutEffect",
+        "useMemo",
+        "useRef",
+        "useState"
+      ]
+    }
+  },
+  "sources": [
+    "src/FooterSection.tsx",
+    "src/HomeShell.tsx",
+    "src/SiteFooter.tsx",
+    "src/landing.ts",
+    "src/usePrefersReducedMotion.ts",
+    "src/LandingCountrySelect.tsx",
+    "src/LandingLanguageSelect.tsx",
+    "src/merge-content.ts",
+    "src/cn.ts",
+    "src/styles.ts",
+    "src/CountryFlag.tsx",
+    "src/countries.ts",
+    "src/landing-select.ts",
+    "src/languages.ts",
+    "src/link.tsx"
+  ]
+}

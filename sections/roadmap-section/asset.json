@@ -1,0 +1,29 @@
+{
+  "id": "roadmap-section",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "RoadmapSection",
+  "displayName": "Roboticela Roadmap Section",
+  "description": "The building-toward block that names what comes next and connects the current product to the future.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "sources": [
+    "src/components/RoadmapSection.tsx"
+  ],
+  "route": "roadmap",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  }
+}

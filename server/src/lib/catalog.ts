@@ -38,6 +38,7 @@ export interface CatalogAssetMeta {
   delivery?: "module" | "server-package";
   exportName?: string;
   package?: string;
+  route?: string;
   peerDependencies?: Record<string, string>;
   requires?: {
     roboticela?: Array<Record<string, unknown>>;
@@ -343,5 +344,6 @@ export function serializeCatalogAsset(a: CatalogAssetMeta) {
     delivery: a.delivery ?? (a.tier === "free" ? "module" : "server-package"),
     exportName: a.exportName,
     package: a.package,
+    route: a.route,
   };
 }

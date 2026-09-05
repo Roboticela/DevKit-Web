@@ -173,7 +173,11 @@ function ModeButton({
           aria-hidden="true"
         />
       ) : null}
-      {showLabel ? <Caption as="span">{label}</Caption> : null}
+      {showLabel ? (
+        <Caption as="span" tone={active ? 'primary' : 'tertiary'} className={stacked ? undefined : 'leading-none'}>
+          {label}
+        </Caption>
+      ) : null}
     </button>
   )
 }

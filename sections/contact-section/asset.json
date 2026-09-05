@@ -1,0 +1,29 @@
+{
+  "id": "contact-section",
+  "type": "section",
+  "tier": "premium",
+  "delivery": "server-package",
+  "exportName": "ContactSection",
+  "displayName": "Roboticela Contact Section",
+  "description": "The closing invitation: Get In Touch copy and a contact link for buying, using, or backing the product.",
+  "category": "marketing",
+  "templates": [
+    "nextjs-compact",
+    "vite-express-tauri"
+  ],
+  "dependencies": [],
+  "tags": [
+    "marketing",
+    "landing"
+  ],
+  "sources": [
+    "src/components/ContactSection.tsx"
+  ],
+  "route": "contact",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0",
+    "@roboticela/devkit": ">=4.5.0"
+  }
+}

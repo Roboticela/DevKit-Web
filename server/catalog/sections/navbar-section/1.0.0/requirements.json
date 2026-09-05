@@ -1,0 +1,141 @@
+{
+  "peerDependencies": {
+    "@roboticela/devkit": ">=4.5.0",
+    "lucide-react": ">=0.400.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "frontend": [
+      "brand-logo",
+      "theme-toggle"
+    ]
+  },
+  "roboticela": [
+    {
+      "id": "brand-logo",
+      "type": "component",
+      "package": "@roboticela/devkit",
+      "delivery": "module",
+      "exportNames": [
+        "BrandLogo"
+      ]
+    },
+    {
+      "id": "theme-toggle",
+      "type": "component",
+      "package": "@roboticela/devkit",
+      "delivery": "module",
+      "exportNames": [
+        "ThemeToggle"
+      ]
+    }
+  ],
+  "bundled": [
+    {
+      "id": "category-icon",
+      "file": "CategoryIcon.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "home-shell",
+      "file": "HomeShell.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "site-nav",
+      "file": "SiteNav.tsx",
+      "role": "local-helper"
+    },
+    {
+      "id": "cn",
+      "file": "cn.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "landing",
+      "file": "landing.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "landing-catalog",
+      "file": "landing-catalog.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "merge-content",
+      "file": "merge-content.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "styles",
+      "file": "styles.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "use-prefers-reduced-motion",
+      "file": "usePrefersReducedMotion.ts",
+      "role": "local-helper"
+    },
+    {
+      "id": "cn",
+      "file": "cn.ts",
+      "role": "utility"
+    },
+    {
+      "id": "link",
+      "file": "link.tsx",
+      "role": "shim"
+    },
+    {
+      "id": "navigation",
+      "file": "navigation.ts",
+      "role": "shim"
+    }
+  ],
+  "internal": [],
+  "icons": {
+    "fromDevkit": [],
+    "bundled": []
+  },
+  "packageImports": {
+    "@roboticela/devkit": [
+      "BrandLogo",
+      "ThemeToggle",
+      "brand"
+    ],
+    "lucide-react": [
+      "Cable",
+      "ChevronDown",
+      "CircleHelp",
+      "Clapperboard",
+      "Cloud",
+      "Fingerprint",
+      "Headphones",
+      "KeyRound",
+      "Layers",
+      "LucideIcon",
+      "Menu",
+      "PenTool",
+      "Play",
+      "RefreshCw",
+      "Search",
+      "Shield",
+      "ShoppingBag",
+      "Smartphone",
+      "UserRound",
+      "X"
+    ],
+    "react": [
+      "FormEvent",
+      "MouseEvent",
+      "ReactNode",
+      "createContext",
+      "useContext",
+      "useEffect",
+      "useId",
+      "useRef",
+      "useState"
+    ]
+  }
+}
