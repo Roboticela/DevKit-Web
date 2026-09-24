@@ -58,6 +58,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('radius', 'Radius', 'Foundations', 'Corner rounding for fields, cards, panels, and pills. Match the radius to what the object is.'),
       c('layout', 'Layout', 'Foundations', 'Breakpoints, content widths, and page padding. Start from the small screen and add columns as the viewport grows.'),
       c('icons', 'Icons', 'Foundations', 'A local icon library you can search by name or meaning. Use these glyphs in buttons, fields, and empty states.'),
+      c('cursors', 'Cursors', 'Foundations', 'RoboticelaOS and system cursor packs in SVG and .rcur binary formats, featuring an interactive testing playground, hotspot calibration, and runtime loaders.'),
       c('brand-logo', 'Brand Logo', 'Foundations', 'The company mark, the product wordmark, and the lockup that pairs them.'),
       c('theme-toggle', 'Theme Toggle', 'Foundations', 'A labeled switch that sets light or dark for the whole page. Compact and switch only layouts are included.'),
       c('theme-icon-toggle', 'Theme Icon Toggle', 'Foundations', 'A compact control that sets light or dark with sun and moon icons. Variants show one icon or both at once.'),
@@ -387,6 +388,22 @@ export const ICONS_TOC: DocsTocItem[] = [
   { id: 'usage', label: 'Usage' },
   { id: 'library', label: 'Library' },
   { id: 'accessibility', label: 'Accessibility' },
+]
+
+export const CURSORS_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'packs', label: 'Cursor Packs' },
+  { id: 'formats', label: 'Formats (SVG & .rcur)' },
+  { id: 'states-table', label: 'State ID Registry' },
+]
+
+export const CURSOR_PACK_TOC: DocsTocItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'playground', label: 'Testing Playground' },
+  { id: 'library', label: 'Cursor Library' },
+  { id: 'import-code', label: 'Import & Usage' },
+  { id: 'robocursor-format', label: 'RoboCursor (.rcur) Spec' },
+  { id: 'states-table', label: 'State ID Enum' },
 ]
 
 export const FLAGS_TOC: DocsTocItem[] = [

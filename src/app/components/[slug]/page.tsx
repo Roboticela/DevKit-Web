@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import { AnchorDocs } from '@/components/AnchorDocs'
 import { ButtonDocs } from '@/components/ButtonDocs'
+import { CursorsDocs } from '@/components/CursorsDocs'
 import { DocsPrimitivesDocs } from '@/components/DocsPrimitivesDocs'
 import { FlagsDocs } from '@/components/FlagsDocs'
 import { FoundationDocs } from '@/components/FoundationDocs'
@@ -54,6 +55,7 @@ export default async function ComponentDocPage({
   if (raw === 'anchor') return <AnchorDocs />
   if (raw === 'text') return <TextDocs />
   if (raw === 'icons') return <IconsDocs />
+  if (raw === 'cursors') return <CursorsDocs />
   if (raw === 'country-flag') return <FlagsDocs />
   if (FOUNDATION_IDS.has(raw)) return <FoundationDocs slug={raw} />
   if (DOCS_PRIMITIVE_IDS.has(raw)) return <DocsPrimitivesDocs slug={raw} />

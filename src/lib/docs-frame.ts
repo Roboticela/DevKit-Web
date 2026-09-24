@@ -8,6 +8,8 @@ import {
   GUIDE_SLUGS,
   GUIDE_TOC,
   ICONS_TOC,
+  CURSORS_TOC,
+  CURSOR_PACK_TOC,
   FLAGS_TOC,
   KIT_TOC,
   TEXT_TOC,
@@ -57,6 +59,9 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
     else if (slug === 'icons') {
       toc = ICONS_TOC
       contentWidth = 900
+    } else if (slug === 'cursors' || slug.startsWith('cursors/')) {
+      toc = slug.startsWith('cursors/') ? CURSOR_PACK_TOC : CURSORS_TOC
+      contentWidth = 900
     } else if (slug === 'country-flag') {
       toc = FLAGS_TOC
       contentWidth = 900
@@ -65,7 +70,7 @@ export function resolveDocsFrame(pathname: string): DocsFrame | null {
     else if (FOUNDATION_IDS.has(slug)) toc = FOUNDATION_TOC
 
     return {
-      activeId: slug,
+      activeId: slug.startsWith('cursors/') ? 'cursors' : slug,
       toc,
       activeTab: 'Components',
       sections: DOCS_NAV,
