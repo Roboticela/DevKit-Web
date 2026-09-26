@@ -4284,3 +4284,83 @@ export const dockTooltipGuide = {
   ),
 }
 
+export const glassSurfaceGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Glass Surface is the base translucent panel every chrome surface inherits — one recipe of blur, tint,
+          hairline border, shadow, and an inner top-edge rim highlight, all from Layer 0 glass tokens. Pick one of
+          the four weight classes — menu bar, panel, modal, tooltip — and put your content inside. Nothing builds
+          its own blur and tint combination.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="One recipe, four weights" description="Only tint, blur, shadow, and radius change between classes. The structure — border, rim light — is identical." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Token only" description="Every value resolves to a Layer 0 glass token. Theme switching and future retints happen in one place." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="The rim sells it" description="The 1px inner top highlight is what makes the edge read as glass catching light, not a flat overlay." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Wrap your Spotlight, Control Center, or context menu in panel weight. Sheets and dialogs use modal.',
+          'Use tooltip weight for small transient labels only.',
+          'Pass rim={false} only when the surface sits flush against another glass edge.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not compose a custom blur and tint. If none of the four weights fit, the surface should be solid.',
+          'Do not nest glass on glass — the inner surface loses its backdrop and turns muddy.',
+          'Do not use menu bar weight for anything but the top bar. It has no radius and the lightest shadow.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Glass Surface is presentational. It adds no semantics of its own."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Give the content inside its own role and name — dialog, menu, or tooltip as appropriate."}</li>
+        <li>{"Text on glass meets contrast requirements through the token tint on any backdrop."}</li>
+        <li>{"Under reduced transparency the surface may render solid; content must not depend on seeing through it."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const trafficLightsGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Traffic Lights are the close, minimize, and maximize cluster in a window’s title bar — red, yellow,
+          green, in that order, always together. Their glyphs appear only when the group is hovered, and the
+          whole set mutes to gray when its window is in the background. The three macOS colors are the one
+          deliberate exception to token-only values.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Always three" description="Close, minimize, maximize — one language for window control. Never mixed with a second control scheme." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Quiet until hovered" description="Dots are pure color at rest. The ×, −, and zoom glyphs fade in only when the group is hovered." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Focus is visible" description="An unfocused window shows gray dots from the border token, so the active window is obvious at a glance." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Place the cluster at the leading edge of the title bar, vertically centered.',
+          'Wire each dot to its action — close, minimize, maximize — with an accessible label.',
+          'Set focused from the window manager so background windows mute.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not show glyphs permanently. They answer hover on the group, nothing else.',
+          'Do not reorder or recolor the dots. Red, yellow, green is a learned convention.',
+          'Do not mix this with a second window-control pattern in the same product.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Each dot is a real button with an accessible name — the color alone never carries the meaning."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Close, Minimize, and Maximize are announced by name; the glyphs are aria-hidden."}</li>
+        <li>{"The 12px dots sit in a larger title-bar hit area; keyboard users get the same actions from the window menu."}</li>
+        <li>{"The gray unfocused state is decorative — the same state is conveyed by the window’s visual dimming."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+

@@ -2,6 +2,7 @@
 
 import { useId, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { squirclePath } from './Squircle'
 import { useDockLaunchBounce } from './DockLaunchBounce'
 import { DockRunningIndicator } from './DockRunningIndicator'
 
@@ -76,27 +77,6 @@ export function DockIcon({
       </span>
     </span>
   )
-}
-
-/**
- * Apple's continuity-corner squircle — a true superellipse, never a CSS
- * border-radius: |x/a|^n + |y/b|^n = 1 with Apple's exponent n = 5.
- * The curve stays flatter along the edges and tightens smoothly into the
- * corner with no visible seam.
- */
-function squirclePath(size = 1024, n = 5, steps = 200): string {
-  const a = size / 2
-  const power = 2 / n
-  const points: string[] = []
-  for (let i = 0; i <= steps; i++) {
-    const t = (i / steps) * Math.PI * 2
-    const cos = Math.cos(t)
-    const sin = Math.sin(t)
-    const x = a + a * Math.sign(cos) * Math.abs(cos) ** power
-    const y = a + a * Math.sign(sin) * Math.abs(sin) ** power
-    points.push(`${i === 0 ? 'M' : 'L'}${x.toFixed(2)} ${y.toFixed(2)}`)
-  }
-  return `${points.join(' ')} Z`
 }
 
 /** The squircle's top edge only, as an open arc — for the rim highlight. */

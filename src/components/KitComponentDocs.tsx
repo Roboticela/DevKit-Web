@@ -142,6 +142,9 @@ import { DockAppIcon, DockIcon } from './DockIcon'
 import { DockDivider } from './DockDivider'
 import { DockMinimizedWindow, DOCK_GENIE_DURATION, DOCK_GENIE_STAGGER } from './DockMinimizedWindow'
 import { DockTrash } from './DockTrash'
+import { Squircle } from './Squircle'
+import { GlassSurface, GLASS_WEIGHTS, GLASS_WEIGHT_LABEL } from './GlassSurface'
+import { TrafficLights } from './TrafficLights'
 import { DockMagnifier, DOCK_MAGNIFICATION_DEFAULTS, DOCK_MAGNIFICATION_LEVELS, DOCK_MAGNIFICATION_LEVEL_LABEL, DOCK_MAGNIFICATION_LEVEL_MAX, type DockMagnificationLevel } from './DockMagnification'
 import { Dropdown, SELECT_SIZES, SELECT_VARIANTS, type DropdownOption, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
 import {
@@ -285,6 +288,8 @@ import {
   dockMinimizedWindowGuide,
   dockTrashGuide,
   dockTooltipGuide,
+  glassSurfaceGuide,
+  trafficLightsGuide,
   subheadGuide,
   switchGuide,
   tableGuide,
@@ -973,6 +978,54 @@ function DockMagnificationDemo() {
         Move the pointer across the icons — size follows a Gaussian-like falloff from {DOCK_MAGNIFICATION_DEFAULTS.baseSize}
         px rest over a {DOCK_MAGNIFICATION_DEFAULTS.influenceRadius}px radius. Icons rise above the shell; the shell only grows wider.
       </span>
+    </div>
+  )
+}
+
+function GlassSurfaceDemo() {
+  return (
+    <div className="relative flex w-full justify-center overflow-hidden rounded-[16px]">
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: 'url(/wallpapers/dock-wallpaper.svg)' }}
+      />
+      <div className="relative grid w-full max-w-[620px] gap-4 p-6 min-[560px]:grid-cols-2">
+        {GLASS_WEIGHTS.map((weight) => (
+          <div key={weight} className="flex flex-col gap-2">
+            <span className="text-[12px] font-medium text-white/80">{GLASS_WEIGHT_LABEL[weight]} weight</span>
+            <GlassSurface weight={weight} className="flex h-[88px] items-center justify-center">
+              <span className="text-[13px] text-text-primary">{GLASS_WEIGHT_LABEL[weight]}</span>
+            </GlassSurface>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function TrafficLightsDemo() {
+  const [focused, setFocused] = useState(true)
+  return (
+    <div className="flex w-full flex-col items-center gap-6">
+      <div className="w-full max-w-[420px] overflow-hidden rounded-[12px] border border-border-default">
+        <div className="flex h-10 items-center bg-bg-secondary px-4">
+          <TrafficLights focused={focused} />
+        </div>
+        <div className="flex h-[120px] items-center justify-center bg-bg-primary">
+          <span className="text-[13px] text-text-tertiary">Window content — hover the dots above</span>
+        </div>
+      </div>
+      <SegmentedControl
+        aria-label="Window focus"
+        size="sm"
+        value={focused ? 'focused' : 'unfocused'}
+        onChange={(value) => setFocused(value === 'focused')}
+        options={[
+          { value: 'focused', label: 'Focused' },
+          { value: 'unfocused', label: 'Unfocused' },
+        ]}
+      />
     </div>
   )
 }
@@ -17608,6 +17661,84 @@ const { ref, launch } = useDockLaunchBounce(onSettle)
       p('style', 'CSSProperties', 'undefined', 'Position — the engine sets left/bottom from the icon’s live frame.'),
       p('className', 'string', 'undefined', 'Extra classes on the tooltip.'),
       p('DOCK_TOOLTIP_DELAY', 'number', '400', 'Hover delay in ms before the tooltip appears.'),
+    ],
+  },
+  'glass-surface': {
+    title: 'Glass Surface',
+    description:
+      'The one blur, tint, border, and shadow recipe every chrome surface inherits — four weight classes from the Layer 0 glass tokens, with the inner top-edge rim highlight built in.',
+    ...glassSurfaceGuide,
+    Demo: GlassSurfaceDemo,
+    wide: true,
+    code: `<GlassSurface weight="panel">
+  <SpotlightContent />
+</GlassSurface>
+
+<GlassSurface weight="modal">
+  <DialogContent />
+</GlassSurface>
+
+<GlassSurface weight="tooltip">Finder</GlassSurface>
+<GlassSurface weight="menubar" rim={false}>
+  <MenuBarContent />
+</GlassSurface>
+`,
+    statesContent: (
+      <StateStack gap={10}>
+        <StateGroup title="Squircle Mask — one definition, many consumers">
+          <StateGrid columns={4}>
+            {[24, 40, 56, 88].map((size) => (
+              <StateCard key={size} label={`${size}px`} className="bg-bg-primary">
+                <Squircle size={size} className="bg-gradient-to-br from-[#7cc4ff] to-[#1f7bff]" />
+              </StateCard>
+            ))}
+          </StateGrid>
+        </StateGroup>
+      </StateStack>
+    ),
+    props: [
+      p("weight", "'menubar' | 'panel' | 'modal' | 'tooltip'", "'panel'", 'The weight class. Swaps tint, blur, shadow, and radius tokens; structure stays identical.'),
+      p('rim', 'boolean', 'true', 'The inner top-edge rim highlight. Turn off only when flush against another glass edge.'),
+      p('children', 'ReactNode', '—', 'The surface content. Glass Surface adds no semantics of its own.'),
+      p('className', 'string', 'undefined', 'Extra classes on the surface.'),
+    ],
+  },
+  'traffic-lights': {
+    title: 'Traffic Lights',
+    description:
+      'The three-dot close, minimize, and maximize cluster in a window’s title bar. Glyphs appear on group hover; all dots mute to gray when the window is unfocused.',
+    ...trafficLightsGuide,
+    Demo: TrafficLightsDemo,
+    code: `<TrafficLights
+  focused={window.isFocused}
+  onClose={() => windowManager.close(id)}
+  onMinimize={() => windowManager.minimize(id)}
+  onMaximize={() => windowManager.maximize(id)}
+/>
+
+// Background window — dots mute to the border token
+<TrafficLights focused={false} />
+`,
+    statesContent: (
+      <StateStack gap={10}>
+        <StateGroup title="Focus">
+          <StateGrid columns={2}>
+            <StateCard label="Focused — red, yellow, green" className="bg-bg-primary">
+              <TrafficLights focused />
+            </StateCard>
+            <StateCard label="Unfocused — muted gray" className="bg-bg-primary">
+              <TrafficLights focused={false} />
+            </StateCard>
+          </StateGrid>
+        </StateGroup>
+      </StateStack>
+    ),
+    props: [
+      p('focused', 'boolean', 'true', 'False mutes all three dots to the border token and disables them.'),
+      p('onClose', '() => void', 'undefined', 'Close the window.'),
+      p('onMinimize', '() => void', 'undefined', 'Minimize the window into the Dock.'),
+      p('onMaximize', '() => void', 'undefined', 'Zoom the window.'),
+      p('className', 'string', 'undefined', 'Extra classes on the cluster.'),
     ],
   },
   'stat-card': {

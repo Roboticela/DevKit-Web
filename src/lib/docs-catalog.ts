@@ -141,6 +141,8 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('command-palette', 'Command Palette', 'Overlay', 'Type to find and run a command without leaving the page. Use it for in-app search, a marketing header, or a system jump with a keyboard shortcut.'),
       c('confirm-dialog', 'Confirm Dialog', 'Overlay', 'Ask once before a change that is hard to undo. Use it for delete, publish, leave without saving, or archive.'),
       c('avatar-editor', 'Avatar Editor', 'Overlay', 'A full screen crop sheet for a profile photo. The person moves, zooms, and rotates, then saves a circular jpeg.'),
+      c('glass-surface', 'Glass Surface', 'Overlay', 'The one blur, tint, border, and shadow recipe every chrome surface inherits. Four weight classes: menu bar, panel, modal, tooltip.'),
+      c('traffic-lights', 'Traffic Lights', 'Overlay', 'The three-dot close, minimize, and maximize cluster in a window’s title bar. Glyphs show on hover; all dots mute when the window is unfocused.'),
     ],
   },
   {

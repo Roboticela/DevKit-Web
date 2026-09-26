@@ -249,6 +249,12 @@ export type { DockTrashProps } from './DockTrash'
 export { DockTooltip } from './DockTooltip'
 export type { DockTooltipProps } from './DockTooltip'
 export { DOCK_TOOLTIP_DELAY } from './DockMagnification'
+export { Squircle, SQUIRCLE_N, squirclePath } from './Squircle'
+export type { SquircleProps } from './Squircle'
+export { GlassSurface, GLASS_WEIGHTS, GLASS_WEIGHT_LABEL } from './GlassSurface'
+export type { GlassSurfaceProps, GlassWeight } from './GlassSurface'
+export { TrafficLights } from './TrafficLights'
+export type { TrafficLightAction, TrafficLightsProps } from './TrafficLights'
 export {
   EmptyState,
   EMPTY_STATE_ALIGNS,
