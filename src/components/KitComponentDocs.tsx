@@ -145,6 +145,10 @@ import { DockTrash } from './DockTrash'
 import { Squircle } from './Squircle'
 import { GlassSurface, GLASS_WEIGHTS, GLASS_WEIGHT_LABEL } from './GlassSurface'
 import { TrafficLights } from './TrafficLights'
+import { NotificationBanner } from './NotificationBanner'
+import { SwatchPicker } from './SwatchPicker'
+import { FileTile } from './FileTile'
+import { ThumbnailTile } from './ThumbnailTile'
 import { DockMagnifier, DOCK_MAGNIFICATION_DEFAULTS, DOCK_MAGNIFICATION_LEVELS, DOCK_MAGNIFICATION_LEVEL_LABEL, DOCK_MAGNIFICATION_LEVEL_MAX, type DockMagnificationLevel } from './DockMagnification'
 import { Dropdown, SELECT_SIZES, SELECT_VARIANTS, type DropdownOption, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
 import {
@@ -290,6 +294,10 @@ import {
   dockTooltipGuide,
   glassSurfaceGuide,
   trafficLightsGuide,
+  notificationBannerGuide,
+  swatchPickerGuide,
+  fileTileGuide,
+  thumbnailTileGuide,
   subheadGuide,
   switchGuide,
   tableGuide,
@@ -978,6 +986,103 @@ function DockMagnificationDemo() {
         Move the pointer across the icons — size follows a Gaussian-like falloff from {DOCK_MAGNIFICATION_DEFAULTS.baseSize}
         px rest over a {DOCK_MAGNIFICATION_DEFAULTS.influenceRadius}px radius. Icons rise above the shell; the shell only grows wider.
       </span>
+    </div>
+  )
+}
+
+function NotificationBannerDemo() {
+  const [key, setKey] = useState(0)
+  return (
+    <div className="flex flex-col items-center gap-6">
+      <div className="relative flex h-[190px] w-full max-w-[460px] justify-end overflow-hidden rounded-[16px] border border-border-default bg-bg-secondary p-3">
+        <NotificationBanner
+          key={key}
+          app="Messages"
+          title="Amara Osei"
+          body="The new Dock build is gorgeous — the magnification settle feels exactly right. Ship it."
+          timestamp="now"
+          icon={
+            <DockAppIcon from="#7bf282" to="#0ec632" size={32}>
+              <MessagesGlyph size={18} />
+            </DockAppIcon>
+          }
+          onDismiss={() => setKey((value) => value + 1)}
+        />
+      </div>
+      <span className="text-[13px] text-text-secondary">
+        Springs in from the right, dismisses itself after 5s — hover to hold it. Dismiss replays the entrance.
+      </span>
+    </div>
+  )
+}
+
+function SwatchPickerDemo() {
+  const [color, setColor] = useState('#3B9EFF')
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <SwatchPicker
+        label="Accent color"
+        colors={['#3B9EFF', '#2DD4C4', '#30D158', '#FF9F0A', '#FF453A', '#FD7E93', '#8E8E93']}
+        value={color}
+        onChange={setColor}
+      />
+      <span className="font-mono text-[12px] text-text-secondary">{color}</span>
+    </div>
+  )
+}
+
+function FileTileDemo() {
+  const [selected, setSelected] = useState<string | null>('Design')
+  const [renaming, setRenaming] = useState(false)
+  const [name, setName] = useState('Design')
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex items-start gap-2 rounded-[12px] border border-border-default bg-bg-secondary p-4">
+        <FileTile
+          label="Projects"
+          selected={selected === 'Projects'}
+          onClick={() => setSelected('Projects')}
+          icon={<DkFileFolderDirectory size={48} strokeWidth={1.2} absoluteStrokeWidth className="text-[#5ac8fa]" aria-hidden />}
+        />
+        <FileTile
+          label={name}
+          selected={selected === 'Design'}
+          renaming={renaming}
+          onRename={(next) => {
+            setName(next)
+            setRenaming(false)
+          }}
+          onClick={() => setSelected('Design')}
+          icon={<DkFileFolderDirectory size={48} strokeWidth={1.2} absoluteStrokeWidth className="text-[#5ac8fa]" aria-hidden />}
+        />
+        <FileTile
+          label="a-very-long-file-name-that-keeps-going.pdf"
+          selected={selected === 'file'}
+          onClick={() => setSelected('file')}
+          icon={<DkDocumentPageFold size={48} strokeWidth={1.2} absoluteStrokeWidth className="text-text-tertiary" aria-hidden />}
+        />
+      </div>
+      <Button size="sm" variant="outline" onClick={() => setRenaming(true)} disabled={renaming}>
+        Rename “Design”
+      </Button>
+    </div>
+  )
+}
+
+function ThumbnailTileDemo() {
+  return (
+    <div className="grid w-full max-w-[460px] grid-cols-3 gap-3">
+      <ThumbnailTile
+        src="/snapshots/window-browser.svg"
+        alt="Browser window preview"
+        badge={<Badge tone="brand" size="sm">PNG</Badge>}
+      />
+      <ThumbnailTile
+        src="/snapshots/window-notes.svg"
+        alt="Notes window preview"
+        badge={<Badge tone="neutral" size="sm">0:42</Badge>}
+      />
+      <ThumbnailTile loading badge={<Badge tone="neutral" size="sm">RAW</Badge>} />
     </div>
   )
 }
@@ -17739,6 +17844,101 @@ const { ref, launch } = useDockLaunchBounce(onSettle)
       p('onMinimize', '() => void', 'undefined', 'Minimize the window into the Dock.'),
       p('onMaximize', '() => void', 'undefined', 'Zoom the window.'),
       p('className', 'string', 'undefined', 'Extra classes on the cluster.'),
+    ],
+  },
+  'notification-banner': {
+    title: 'Notification Banner',
+    description:
+      'A transient message from an app — icon, title, body, timestamp, and dismiss on panel glass. Springs in, auto-dismisses after 5s, and pauses while hovered.',
+    ...notificationBannerGuide,
+    Demo: NotificationBannerDemo,
+    code: `<NotificationBanner
+  app="Messages"
+  title="Amara Osei"
+  body="The new Dock build is gorgeous — ship it."
+  timestamp="now"
+  icon={<DockAppIcon from="#7bf282" to="#0ec632" size={32}><MessagesGlyph /></DockAppIcon>}
+  onDismiss={() => dismiss(id)}
+/>
+`,
+    props: [
+      p('app', 'string', '—', 'App name, small and uppercase.'),
+      p('title', 'string', '—', 'One bold line.'),
+      p('body', 'string', 'undefined', 'Clamped to two lines.'),
+      p('timestamp', 'string', 'undefined', 'Quiet time label, top right.'),
+      p('icon', 'ReactNode', 'undefined', '32px app icon — squircle artwork preferred.'),
+      p('onDismiss', '() => void', 'undefined', 'Adds the hover dismiss button and the 5s auto-dismiss timer (paused on hover).'),
+    ],
+  },
+  'swatch-picker': {
+    title: 'Swatch Picker',
+    description:
+      'A row of round color swatches for choosing one color — selection is a double ring, hover only scales. For accent pickers and product color selectors.',
+    ...swatchPickerGuide,
+    Demo: SwatchPickerDemo,
+    code: `<SwatchPicker
+  label="Accent color"
+  colors={['#3B9EFF', '#2DD4C4', '#30D158', '#FF9F0A', '#FF453A']}
+  value={accent}
+  onChange={setAccent}
+/>
+`,
+    props: [
+      p('colors', 'string[]', '—', 'CSS colors for the row. Six to ten is comfortable.'),
+      p('value', 'string', 'undefined', 'The selected color — exactly one at a time.'),
+      p('onChange', '(color: string) => void', 'undefined', 'Fires with the chosen color.'),
+      p('label', 'string', 'undefined', 'Accessible name for the radiogroup.'),
+    ],
+  },
+  'file-tile': {
+    title: 'File Tile',
+    description:
+      'The icon-plus-label unit of a file manager’s icon grid. Selection highlights only the label pill; renaming swaps in an auto-focused inline field.',
+    ...fileTileGuide,
+    Demo: FileTileDemo,
+    code: `<FileTile
+  label="Projects"
+  selected={selected === 'Projects'}
+  onClick={() => select('Projects')}
+  icon={<FolderGlyph />}
+/>
+
+<FileTile
+  label={name}
+  renaming={renaming}
+  onRename={(next) => { setName(next); setRenaming(false) }}
+  icon={<FolderGlyph />}
+/>
+`,
+    props: [
+      p('label', 'string', '—', 'File or folder name. Clamps at two lines.'),
+      p('icon', 'ReactNode', 'undefined', '48px folder/file glyph or thumbnail.'),
+      p('selected', 'boolean', 'false', 'Highlights the label pill only — never the icon.'),
+      p('renaming', 'boolean', 'false', 'Swaps the label for a pre-selected inline field. Enter or blur commits, Escape cancels.'),
+      p('onRename', '(next: string) => void', 'undefined', 'Fires with the committed name.'),
+      p('onClick', '() => void', 'undefined', 'Select the tile.'),
+    ],
+  },
+  'thumbnail-tile': {
+    title: 'Thumbnail Tile',
+    description:
+      'An image, video, or doc preview tile with a Skeleton loading state and an overlay Badge slot — for media grids and preview panes.',
+    ...thumbnailTileGuide,
+    Demo: ThumbnailTileDemo,
+    code: `<ThumbnailTile
+  src="/previews/hero.png"
+  alt="Hero render, dusk lighting"
+  badge={<Badge tone="brand" size="sm">PNG</Badge>}
+/>
+
+<ThumbnailTile loading />
+`,
+    props: [
+      p('src', 'string', 'undefined', 'Preview image. While it loads, a Skeleton fills the tile and the image fades in over it.'),
+      p('alt', 'string', "''", 'What the image shows.'),
+      p('badge', 'ReactNode', 'undefined', 'Overlay metadata, bottom right — a Badge atom.'),
+      p('loading', 'boolean', 'false', 'Force the skeleton state.'),
+      p('onClick', '() => void', 'undefined', 'Makes the tile an operable button.'),
     ],
   },
   'stat-card': {

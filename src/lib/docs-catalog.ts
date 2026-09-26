@@ -117,6 +117,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('otp-boxes', 'OTP Boxes', 'Forms', 'Enter a verification code one digit at a time. Paste fills the row. Use this after sign in or to confirm a device.'),
       c('recovery-input', 'Recovery Input', 'Forms', 'Enter a backup code or account recovery key. Letters and numbers group themselves as the person types.'),
       c('field-label', 'Field Label', 'Forms', 'Name a field and place help or an error under it. A placeholder is not a substitute for this name.'),
+      c('swatch-picker', 'Swatch Picker', 'Forms', 'Pick a color from a row of round swatches. The selected one gets a double ring; hover only scales.'),
     ],
   },
   {
@@ -131,6 +132,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('loading-screen', 'Loading Screen', 'Feedback', 'Cover the view while boot or sign in finishes. Use Loader instead when only a control or a line of copy is waiting.'),
       c('loader', 'Loader', 'Feedback', 'A spinning ring for a short wait next to a label, in a toolbar, or on a card. Use Loading Screen when the whole view is not ready.'),
       c('score-ring', 'Score Ring', 'Feedback', 'A circular score or completion mark, like Screen Time. Use it for a profile score, a quota, or a setup checklist.'),
+      c('notification-banner', 'Notification Banner', 'Feedback', 'A transient message from an app: icon, title, body, timestamp, and dismiss on glass. Slides in with the reserved spring ease and dismisses itself after five seconds.'),
     ],
   },
   {
@@ -204,6 +206,8 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('related', 'Related', 'Data Display', 'A three column grid of sibling links. Use it at the end of a page for nearby components.'),
       c('rule-card', 'Rule Card', 'Data Display', 'A do or don’t list with a success or danger tone. Use it inside Usage, or on its own.'),
       c('inline-code', 'Inline Code', 'Data Display', 'A highlighted token, prop, or import path inside a sentence.'),
+      c('file-tile', 'File Tile', 'Data Display', 'An icon plus label unit for a file manager’s icon grid. Selection highlights only the label pill; renaming swaps in an inline field.'),
+      c('thumbnail-tile', 'Thumbnail Tile', 'Data Display', 'An image, video, or doc preview with a skeleton loading state and an overlay badge slot.'),
     ],
   },
   {

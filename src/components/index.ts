@@ -255,6 +255,14 @@ export { GlassSurface, GLASS_WEIGHTS, GLASS_WEIGHT_LABEL } from './GlassSurface'
 export type { GlassSurfaceProps, GlassWeight } from './GlassSurface'
 export { TrafficLights } from './TrafficLights'
 export type { TrafficLightAction, TrafficLightsProps } from './TrafficLights'
+export { NotificationBanner, NOTIFICATION_AUTO_DISMISS } from './NotificationBanner'
+export type { NotificationBannerProps } from './NotificationBanner'
+export { SwatchPicker } from './SwatchPicker'
+export type { SwatchPickerProps } from './SwatchPicker'
+export { FileTile } from './FileTile'
+export type { FileTileProps } from './FileTile'
+export { ThumbnailTile } from './ThumbnailTile'
+export type { ThumbnailTileProps } from './ThumbnailTile'
 export {
   EmptyState,
   EMPTY_STATE_ALIGNS,

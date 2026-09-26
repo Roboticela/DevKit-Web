@@ -4364,3 +4364,160 @@ export const trafficLightsGuide = {
   ),
 }
 
+export const notificationBannerGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Notification Banner is a transient message from an app — icon, title, body, timestamp, and a dismiss
+          button on a panel-weight Glass Surface. It slides in from the edge with the reserved spring ease,
+          dismisses itself after five seconds, and pauses that timer while hovered so the person can finish
+          reading.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Glanceable" description="App name, one title line, two body lines at most. Anything longer belongs in the app." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Spring is reserved" description="The entrance is one of the two system-wide spring moments — Dock magnification is the other. Do not reuse it elsewhere." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Hover to hold" description="The 5s auto-dismiss pauses under the pointer, and the dismiss button only appears on hover." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Keep the body to two lines. Clamp, never scroll, a banner.',
+          'Always pass the app icon and name so the source is clear at a glance.',
+          'Let the timer dismiss passively. Dismiss manually only for messages that must not linger.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not stack more than a few banners at once — queue them in the notification center.',
+          'Do not put primary actions in a banner. It informs; the app acts.',
+          'Do not use the spring ease for its exit. Dismissal is a quiet fade.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A banner announces itself politely and never traps the person."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Banners are announced via a status live region, not by moving focus."}</li>
+        <li>{"The dismiss button has an accessible name and works from the keyboard."}</li>
+        <li>{"Auto-dismiss never removes information permanently — dismissed banners live in the notification center."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const swatchPickerGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Swatch Picker is a row of round color swatches for choosing one color — accent pickers in Settings,
+          product color selectors. Selection is a double ring: an inner border plus an offset brand ring, so it
+          can never be confused with the hover scale.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="One selected" description="It behaves like a radio group — exactly one swatch is current at any time." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Ring, not check" description="The double ring reads on any color, light or dark, where a checkmark glyph would vanish." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Hover is just a hint" description="A slight scale-up, no ring. The ring is earned by selection only." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Keep swatches to one row that wraps. Six to ten colors is comfortable.',
+          'Name the group — Accent color, Case color — so the choice has context.',
+          'Pass real values out. The swatch color is a token or hex your theme can apply.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not multi-select. If several can apply, that is a different control.',
+          'Do not put text inside swatches. The color is the content.',
+          'Do not shrink swatches below 32px — the ring needs room to breathe.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Swatch Picker is a radio group of named colors."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The row is a radiogroup; each swatch is a radio with aria-checked and a color name as its label."}</li>
+        <li>{"Selection is never color-only — the double ring is a shape cue, and the checked state is announced."}</li>
+        <li>{"Arrow keys move between swatches like any radio group."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+export const fileTileGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          File Tile is the icon-plus-label unit of a file manager’s icon grid. Hover washes the tile; selection
+          highlights only the label as a brand pill — the icon itself stays clean. Renaming swaps the label for
+          an inline field that opens focused with the name pre-selected.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Label carries selection" description="A brand pill behind the name only — never a tinted icon, matching Finder’s discipline." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Two lines, then out" description="Names clamp at two lines with an ellipsis. Long names are a tooltip, not a taller tile." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Rename in place" description="The field appears exactly where the label was, pre-selected, Enter commits, Escape cancels." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Keep tiles one width in the grid — 88px — so rows align.',
+          'Use the folder or file glyph at 48px, or a real thumbnail when one exists.',
+          'Commit rename on blur as well as Enter, so clicking away never loses a name.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not tint the icon on selection. The pill behind the label is the whole signal.',
+          'Do not let labels wrap past two lines or push tiles out of grid alignment.',
+          'Do not open rename on single click. It answers an explicit rename action.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A File Tile is a toggleable button named by its file name."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The tile exposes aria-pressed for selection; the glyph is aria-hidden."}</li>
+        <li>{"The rename field is labeled, opens focused and selected, and Escape always restores the old name."}</li>
+        <li>{"Selection and renaming are fully keyboard operable."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const thumbnailTileGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Thumbnail Tile is the preview unit for media grids and preview panes — a square with a real image
+          inside, a Skeleton filling it until the image loads, and an overlay Badge slot for a file type or
+          duration. The image fades in over the skeleton so the grid never pops.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Square and cover" description="One aspect ratio everywhere. The image covers; nothing distorts." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Skeleton first" description="The tile holds its shape while loading, then crossfades to the real image." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Badge in the corner" description="File type, duration, or count — bottom right, composed from the Badge atom." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Give every image an alt that says what it shows.',
+          'Use the badge for metadata only — never actions.',
+          'Keep the grid uniform. One tile size per view.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not swap the skeleton for a spinner. The shape of the thing loading is the placeholder.',
+          'Do not stretch images to fit. Cover and crop, always.',
+          'Do not overlay more than one badge per tile.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A Thumbnail Tile is an image with a real text alternative; the skeleton and badge are decorative."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The image carries alt text; loading state is aria-hidden."}</li>
+        <li>{"When clickable, the tile is keyboard operable with a visible focus ring."}</li>
+        <li>{"Badge content is metadata and is repeated in the tile’s accessible name when it matters, such as video duration."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+
