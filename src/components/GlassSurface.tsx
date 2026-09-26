@@ -44,6 +44,7 @@ export type GlassSurfaceProps = {
   children?: ReactNode
   className?: string
   style?: CSSProperties
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
 }
 
 /**
