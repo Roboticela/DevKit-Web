@@ -491,5 +491,299 @@ export function FoundationDocs({ slug }: { slug: string }) {
     )
   }
 
+  if (slug === 'shadows') {
+    return (
+      <FoundationFrame
+        slug={slug}
+        title="Shadows"
+        description="A small elevation scale that adapts to light and dark, plus the two OS-specific shadows for the Dock and its icon tiles."
+        usage={
+          <DocsUsage>
+              <Body>
+                Shadows give the interface its sense of height. Most surfaces use one of four steps — small,
+                medium, large, and modal — and each step has a light and dark variant so elevation reads the
+                same on any theme. Two special shadows live outside the generic scale: the Dock’s diffuse float
+                and the slight lift under each Dock icon tile.
+              </Body>
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Elevation is meaning" description="Higher shadow, higher layer. A card never outshadows the modal above it." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Soft, never hard" description="Every shadow is diffuse with no hard edge. The Dock shadow especially should read as floating, not stuck." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Theme matched" description="Light and dark each carry their own values. Read the token and the right one applies itself." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
+                'Use the token for the layer you are on — sm for controls, md for cards, lg for panels, modal for dialogs.',
+                'Use --shadow-dock only for the Dock shell and --shadow-icon only for Dock tiles and minimized windows.',
+                'Let the theme switch do the work. Component code never branches on light or dark.',
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
+                'Do not write a one-off box-shadow. If a value is missing, add it to the scale first, then use it.',
+                'Do not stack shadows to fake more elevation. Move up a step instead.',
+                'Do not use dark-theme shadow strength on a light surface — it reads as dirt, not depth.',
+              ]} />
+            </CardGrid>
+          </DocsUsage>
+        }
+        tokens={
+          <StateStack gap={10}>
+            <div>
+              <DocsSectionTitle>Scale</DocsSectionTitle>
+              <DocsTable
+                columns={['Token', 'Light', 'Dark', 'Use']}
+                minWidth="640px"
+                monoColumns={[0, 1, 2]}
+                rows={[
+                  ['--shadow-sm', '0 1px 3px / 8%', '0 1px 3px / 30%', 'Controls and small chips.'],
+                  ['--shadow-md', '0 4px 24px / 8%', '0 4px 24px / 40%', 'Cards, tooltips, dropdowns.'],
+                  ['--shadow-lg', '0 12px 32px / 12%', '0 12px 40px / 50%', 'Panels and floating windows.'],
+                  ['--shadow-modal', '0 20px 60px / 20%', '0 20px 60px / 60%', 'Dialogs and sheets above everything.'],
+                  ['--shadow-dock', '0 8px 32px / 15%', '0 8px 32px / 25%', 'The Dock shell — diffuse, no hard edge.'],
+                  ['--shadow-icon', '0 2px 6px / 15%', '0 2px 6px / 30%', 'Under each Dock icon tile.'],
+                ]}
+              />
+            </div>
+          </StateStack>
+        }
+        a11y={
+                    <Alert title="Requirements">
+            <p className="m-0">{"Shadows are decorative depth. They never carry meaning on their own."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"Layer and focus are conveyed by order and markup, not by shadow alone."}</li>
+              <li>{"Elevation changes never replace visible focus indicators."}</li>
+              <li>{"Shadows do not affect contrast requirements for text on any surface."}</li>
+            </ul>
+          </Alert>
+        }
+      />
+    )
+  }
+
+  if (slug === 'glass') {
+    return (
+      <FoundationFrame
+        slug={slug}
+        title="Glass"
+        description="The five blur and tint weight classes for every translucent surface in the OS, in light and dark."
+        usage={
+          <DocsUsage>
+              <Body>
+                Every glass surface in the system is one of five weight classes — tooltip, panel, menu bar,
+                dock, or modal. Each pairs a backdrop blur with a tint, a hairline border, and an inner top
+                highlight, and each has light and dark values. The blur always samples the real content behind
+                the surface, never a static image.
+              </Body>
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Five classes, that’s all" description="New surfaces pick the closest existing class. A sixth recipe is never invented ad hoc." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Real backdrop" description="Backdrop filter blurs live content — wallpaper, windows — not a baked image." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Tint over blur" description="The tint sits under the blur. Together they keep text legible on any background." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
+                'Reference the blur and tint tokens as a pair for the surface you are building.',
+                'Keep the hairline border and top rim highlight — they are what sell the glass edge.',
+                'Use tooltip glass for small transient labels, panel for menus, modal for sheets.',
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
+                'Do not fake the blur with a pre-blurred background image.',
+                'Do not mix a blur from one class with a tint from another.',
+                'Do not put long-form reading on glass — use a solid surface.',
+              ]} />
+            </CardGrid>
+          </DocsUsage>
+        }
+        tokens={
+          <StateStack gap={10}>
+            <div>
+              <DocsSectionTitle>Weight classes</DocsSectionTitle>
+              <DocsTable
+                columns={['Class', 'Blur', 'Dark tint', 'Light tint']}
+                minWidth="640px"
+                monoColumns={[0, 1]}
+                rows={[
+                  ['tooltip', 'blur(12px)', 'rgba(28,28,30,0.9)', 'rgba(255,255,255,0.9)'],
+                  ['panel', 'blur(20px) saturate(180%)', 'rgba(28,28,30,0.85)', 'rgba(255,255,255,0.85)'],
+                  ['menubar', 'blur(24px) saturate(180%)', 'rgba(28,28,30,0.72)', 'rgba(255,255,255,0.72)'],
+                  ['dock', 'blur(30px) saturate(180%)', 'rgba(28,28,30,0.55)', 'rgba(255,255,255,0.55)'],
+                  ['modal', 'blur(30px)', 'rgba(20,20,22,0.85)', 'rgba(245,245,247,0.85)'],
+                ]}
+              />
+            </div>
+            <div>
+              <DocsSectionTitle>Edge</DocsSectionTitle>
+              <DocsTable
+                columns={['Token', 'Dark', 'Light', 'Use']}
+                minWidth="560px"
+                monoColumns={[0, 1, 2]}
+                rows={[
+                  ['--glass-border', 'white / 10%', 'black / 8%', 'The hairline glass edge.'],
+                  ['--glass-border-subtle', 'white / 8%', 'black / 6%', 'Quieter edge, such as the Dock in dark.'],
+                  ['--glass-highlight', 'white / 15%', 'white / 40%', 'Inner top-edge rim light.'],
+                ]}
+              />
+            </div>
+          </StateStack>
+        }
+        a11y={
+                    <Alert title="Requirements">
+            <p className="m-0">{"Glass must never compromise readability."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"Text on a glass surface meets the same contrast requirements as on a solid surface — the tint guarantees it on any backdrop."}</li>
+              <li>{"Backdrop blur is decorative. Content stays understandable when blur is unavailable."}</li>
+              <li>{"Reduced transparency settings may replace glass with a solid surface; components must not depend on seeing through it."}</li>
+            </ul>
+          </Alert>
+        }
+      />
+    )
+  }
+
+  if (slug === 'motion') {
+    return (
+      <FoundationFrame
+        slug={slug}
+        title="Motion"
+        description="Two easing curves and one duration scale for every transition in the system."
+        usage={
+          <DocsUsage>
+              <Body>
+                Motion is restrained on purpose. Almost everything uses the standard ease. The spring curve is
+                reserved for the few interactions defined system-wide as alive moments — the Dock magnification
+                settle and notification banner entrances — so it keeps feeling special instead of becoming
+                generic bounciness.
+              </Body>
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="Two curves" description="Standard for everything. Spring only where the system defines an alive moment." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="One duration ladder" description="100 to 600ms in seven steps. Hover is fast, entrances are moderate, page-scale moves are slow." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Out faster than in" description="Dismissing should feel prompt. Exits pick a step quicker than their entrance." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
+                'Pick the nearest duration token — 150ms for hovers, 200–300ms for state changes, 400ms or more for large moves.',
+                'Keep spring for the Dock magnification settle and notification banners, exactly as specified.',
+                'Honor prefers-reduced-motion by removing non-essential animation.',
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
+                'Do not apply the spring curve to ordinary transitions. Overuse is what makes an OS feel gimmicky.',
+                'Do not invent durations outside the scale.',
+                'Do not animate layout properties per frame when a transform will do.',
+              ]} />
+            </CardGrid>
+          </DocsUsage>
+        }
+        tokens={
+          <StateStack gap={10}>
+            <div>
+              <DocsSectionTitle>Easing</DocsSectionTitle>
+              <DocsTable
+                columns={['Token', 'Curve', 'Reserved for']}
+                minWidth="560px"
+                monoColumns={[0, 1]}
+                rows={[
+                  ['--ease-standard', 'cubic-bezier(0.28,0.11,0.32,1)', 'Every transition by default.'],
+                  ['--ease-spring', 'cubic-bezier(0.34,1.56,0.64,1)', 'Dock magnification settle, notification banner entrance.'],
+                ]}
+              />
+            </div>
+            <DocsTokenGroup title="Duration">
+              <StateStack gap={3}>
+                {[
+                  ['--duration-instant', 100, 'Micro feedback, tooltip exit'],
+                  ['--duration-fast', 150, 'Hovers, fades, shell resizes'],
+                  ['--duration-base', 200, 'State crossfades, compress bounce'],
+                  ['--duration-moderate', 250, 'Menus and popovers'],
+                  ['--duration-slow', 300, 'Panels, drop flights'],
+                  ['--duration-slower', 400, 'Genie restore, large moves'],
+                  ['--duration-slowest', 600, 'Page-scale transitions'],
+                ].map(([token, ms, use]) => (
+                  <DocsScaleRow key={token as string} value={ms as number} bar={ms as number} max={600} caption={`${token} — ${use}`} />
+                ))}
+              </StateStack>
+            </DocsTokenGroup>
+          </StateStack>
+        }
+        a11y={
+                    <Alert title="Requirements">
+            <p className="m-0">{"Motion is an enhancement, never a requirement."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"All non-essential animation is removed under prefers-reduced-motion; state still changes instantly and correctly."}</li>
+              <li>{"No animation flashes or strobes. Nothing animates faster than three flashes per second."}</li>
+              <li>{"Actions never wait for an animation to become effective — motion is feedback, not a gate."}</li>
+            </ul>
+          </Alert>
+        }
+      />
+    )
+  }
+
+  if (slug === 'z-index') {
+    return (
+      <FoundationFrame
+        slug={slug}
+        title="Z-Index"
+        description="The OS layering scale from the desktop to the tooltip, with window order computed at runtime."
+        usage={
+          <DocsUsage>
+              <Body>
+                Layering is fixed and total: desktop at the bottom, then windows, the Dock, the menu bar,
+                notifications, Spotlight and modals, context menus, and tooltips on top. Windows are the only
+                moving part — a focused window computes its z-index at runtime from a base plus its focus
+                order, always capped below the Dock.
+              </Body>
+            <CardGrid columns={3} gap="sm">
+              <Card variant="subtle" size="sm" eyebrow="01" title="A fixed ladder" description="Every surface knows its rung. Nothing ad hoc, nothing z-index: 9999." />
+              <Card variant="subtle" size="sm" eyebrow="02" title="Windows move, nothing else" description="Focus reorder is base plus order index, capped at --z-window-max, always below the Dock." />
+              <Card variant="subtle" size="sm" eyebrow="03" title="Transient floats highest" description="Context menus and tooltips outrank everything because they answer the current action." />
+            </CardGrid>
+            <CardGrid columns={2} gap="sm">
+              <RuleCard size="sm" tone="success" title="Do" items={[
+                'Use the token for your surface class. If the class is missing, add it here first.',
+                'Compute window z as --z-window-base plus the focus order, and clamp at --z-window-max.',
+                'Keep modals and Spotlight on the same rung — they never appear together.',
+              ]} />
+              <RuleCard size="sm" tone="danger" title="Don’t" items={[
+                'Do not let a window’s computed z-index exceed the Dock, menu bar, or notification layers.',
+                'Do not escalate with arbitrary values when two elements overlap — fix the class instead.',
+                'Do not put persistent chrome in the tooltip or context-menu ranges.',
+              ]} />
+            </CardGrid>
+          </DocsUsage>
+        }
+        tokens={
+          <StateStack gap={10}>
+            <div>
+              <DocsSectionTitle>Scale</DocsSectionTitle>
+              <DocsTable
+                columns={['Token', 'Value', 'Layer']}
+                minWidth="480px"
+                monoColumns={[0, 1]}
+                rows={[
+                  ['--z-desktop', '0', 'Wallpaper and desktop icons.'],
+                  ['--z-window-base', '10', 'First window; each focus increments.'],
+                  ['--z-window-max', '500', 'Hard cap for any window.'],
+                  ['--z-dock', '600', 'The Dock shell and everything in it.'],
+                  ['--z-menubar', '700', 'The top menu bar.'],
+                  ['--z-notifications', '800', 'Banners and alerts.'],
+                  ['--z-spotlight / --z-modal', '900', 'Spotlight and modal sheets.'],
+                  ['--z-context-menu', '950', 'Right-click and dropdown menus.'],
+                  ['--z-tooltip', '1000', 'Tooltips, above everything.'],
+                ]}
+              />
+            </div>
+          </StateStack>
+        }
+        a11y={
+                    <Alert title="Requirements">
+            <p className="m-0">{"Visual stacking must match the reading and focus order."}</p>
+            <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+              <li>{"A higher layer never hides focusable content from keyboard users — focus moves to the top layer."}</li>
+              <li>{"Modals trap focus while open; nothing beneath them is reachable until they close."}</li>
+              <li>{"Layer changes are announced by structure and focus movement, not by position alone."}</li>
+            </ul>
+          </Alert>
+        }
+      />
+    )
+  }
+
   return null
 }

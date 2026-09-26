@@ -3916,4 +3916,608 @@ export const iconTabGuide = {
   ),
 }
 
+export const dockGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Dock is the floating glass bar of app icons at the bottom of the screen. The shell is a translucent
+          container whose blur samples the real content behind it — wallpaper and windows, not a static image.
+          It is 70px at rest and grows to fit magnified icons on hover. Each icon tile is 56×56 at rest with an 8px
+          gap, lifted slightly off the glass, and the whole tile is the click target. Artwork is pre-masked to the
+          squircle — the tile adds no rounding of its own.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Float, don't flush" description="The bar sits 8px above the screen's bottom edge, centered. The soft shadow is what makes it read as floating above the desktop." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Real glass" description="A base tint under backdrop-filter blur(24px) saturate(180%). A 1px hairline border and a top rim highlight catch the light." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Grows gently" description="Width and height animate 150ms ease-out when icons are added, removed, or magnified. Never a hard snap." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Use the dark tone on dark wallpaper and the light tone on bright wallpaper so the glass stays legible.',
+          'Keep the dock for the handful of apps that are always one press away. Everything else lives in the launcher.',
+          'Let the shell size itself from the icons. Padding is fixed at 8px on every side.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not fake the blur with a static blurred image. The backdrop must sample live content behind the bar.',
+          'Do not pin the dock flush to the bottom edge. The 8px gap and the shadow are what make it float.',
+          'Do not hard-code the width. An empty or one-icon dock still renders, sized to its content.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Dock is a navigation landmark named Dock. Each icon is a button with an accessible name."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The shell renders a nav with an aria-label, default Dock. Pass label to rename it."}</li>
+        <li>{"Every DockIcon is a button with aria-label and a matching tooltip. The glyph alone is never the name."}</li>
+        <li>{"The running-app dot is decorative and hidden from assistive tech."}</li>
+        <li>{"Resize and magnification motion is removed under prefers-reduced-motion."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+export const dockIconGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Dock Icon is a single app tile inside the Dock. It is 56×56 at rest, lifted slightly off the glass by a
+          soft shadow, and the whole tile is the click target. The artwork arrives pre-masked to Apple’s
+          continuity-corner squircle — the tile never rounds it again. At idle it is fully static; hover physics
+          come from the Dock, not the icon.
+          come from the Dock, not the icon.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Trust the mask" description="The asset is already a squircle. Adding a radius on the tile would double-clip the corners." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="The tile is the button" description="The full 56×56 is clickable. No dead padding inside the visual bounds." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Static at rest" description="Idle icons do not move. Magnification, bounce, and tooltip motion are layered on by the Dock." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Use DockAppIcon for the artwork so the squircle mask and gradient face stay consistent.',
+          'Keep the glyph at roughly half the tile size, optically centered.',
+          'Mark running apps with active — the small dot beneath the tile.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not put a rounded rectangle behind the artwork. The tile has no chrome of its own.',
+          'Do not animate the idle icon. No pulse, no float, no shimmer.',
+          'Do not shrink the click target. The shadow is the only thing outside the 56×56.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A Dock Icon is a button with an accessible name. The artwork is decorative."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The button carries aria-label and a matching tooltip from label. The glyph alone is never the name."}</li>
+        <li>{"DockAppIcon is aria-hidden. Its gradient face and glyph are purely visual."}</li>
+        <li>{"The running-app dot is decorative and hidden from assistive tech."}</li>
+        <li>{"The click target is the full 56×56 tile, exceeding the 44px minimum."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+
+
+export const dockMagnificationGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Magnification Engine is the Dock’s signature interaction — icons grow as the pointer approaches, on a
+          Gaussian-like falloff so the ripple feels organic rather than mechanical. Wrap the Dock Icons of a Dock
+          Shell in DockMagnifier. It scales icons with transform from the bottom edge so they rise above the shell,
+          animates the shell wider to make room, shifts neighbors outward, and settles everything back on mouse
+          leave. Pick a level — low, medium, or high — to set the peak size.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Falloff, not a spike" description="Size follows a powered curve with a 140px reach — a gentle ripple across neighbors, never a single jumping icon." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Wider, never taller" description="Icons scale with GPU-accelerated transform and rise above the shell. The shell only animates its width as icons magnify — its height stays fixed." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Settle, don’t snap" description="On mouse leave, icons return over 200ms with a slight overshoot curve — the same settle the real Dock has." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Wrap every icon in the row so they share one magnification field. Sizes are computed per child, in order.',
+          'Set the strength with level — low (72px), medium (96px), high (128px) — and only reach for maxSize when you need a custom peak.',
+          'Keep the 140px influence radius. It is tuned so roughly three icons ride the wave at once.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not grow the shell’s height. Magnified icons rise above the bar — the bar itself only gets wider.',
+          'Do not animate icon width or height per frame. Reflow at pointer speed stutters; transform does not.',
+          'Do not run the math on raw mousemove. The engine already throttles through requestAnimationFrame.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Magnification is a visual enhancement layered on top of fully operable buttons."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Every icon remains a button with an accessible name at any scale."}</li>
+        <li>{"Click targets grow with magnification — a magnified icon is easier to hit, never harder."}</li>
+        <li>{"All magnification and settle motion is removed under prefers-reduced-motion."}</li>
+        <li>{"The engine is pointer-only. Keyboard users tab through the same icons at rest size."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const dockIndicatorGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Running Indicator is the small dot beneath a Dock Icon showing the app has an open window. Brand blue,
+          not macOS white. It hangs 4px under the icon’s live bottom edge, tracking position every frame as the
+          Magnification Engine moves and scales the icon, while holding its own size constant. More than one
+          window shows a slightly larger dot — never a stack of dots.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="One dot, two sizes" description="4px for one window, 5px for more. Count lives in the size, not in extra dots." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Tracks the icon" description="The dot counter-scales against the engine, so it stays 4px below the icon’s bottom edge at any magnification." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Fade, don’t pop" description="Launch and quit transition opacity over 150ms. The dot never appears or vanishes instantly." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Set active on the Dock Icon and let it render the indicator for you. Reach for the bare component only in custom tiles.',
+          'Pass windows when the count is known — the 5px dot is the only signal that more than one window is open.',
+          'Toggle visible instead of unmounting, so launches and quits fade rather than pop.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not stack one dot per window. Two or more windows is one 5px dot.',
+          'Do not position the dot against the shell. It belongs to the icon and follows it through magnification.',
+          'Do not use the brand dot for notifications. It only means “has an open window”.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"The Running Indicator is decorative state. It is hidden from assistive tech."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The dot is aria-hidden. Running state belongs in the icon’s accessible name or description when it matters."}</li>
+        <li>{"Brand blue on glass is a supplementary cue — never the only way running state is conveyed."}</li>
+        <li>{"The 150ms fade respects prefers-reduced-motion through the kit’s global motion guard."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const dockLaunchBounceGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Launch Bounce is the feedback a Dock Icon plays when clicked to launch — a single 500ms leap that rises
+          from the Dock surface and settles back onto it. It plays on the icon itself with the Web Animations API,
+          anchored bottom-center like magnification, so the two transforms compose. When the icon lands, the
+          Running Indicator fades in with the final settle frame.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="One leap, once" description="A click in mid-bounce is ignored. The current animation always finishes — never stacked, never restarted." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Leap from the surface" description="Transform origin is bottom-center, the same anchor as magnification. The icon jumps up from the bar, not from its middle." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Land, then dot" description="onLaunch fires with the final settle frame. Set active there and the Running Indicator fades in as the icon lands." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Use DockIcon with onLaunch. The bounce, the guard, and the settle timing are built in.',
+          'Set active inside onLaunch, not onClick — the dot belongs to the landing, not the press.',
+          'Use useDockLaunchBounce directly only for custom tiles that are not DockIcon.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not restart the bounce on every click. Rapid re-clicking lets the current leap finish.',
+          'Do not bounce from the center. A middle-anchored bounce reads as floating, not leaping.',
+          'Do not bounce on focus or hover. The leap means launch — it only answers a click.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Launch Bounce is decorative motion on top of a normal button activation."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The click still fires onClick immediately — the bounce is feedback, never a gate on the action."}</li>
+        <li>{"Under prefers-reduced-motion the bounce is skipped and onLaunch fires at once, so the indicator still appears."}</li>
+        <li>{"Keyboard activation with Enter or Space plays the same single bounce as a pointer click."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const dockDividerGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Dock Divider is the thin vertical line separating pinned apps from the minimized-windows and Trash
+          section of the Dock. At 1px wide and 60% of the shell’s resting height, with 12px of air on each side,
+          it reads as a semantic break — not just spacing. It is not an icon: the Magnification Engine skips it,
+          so it holds its size no matter where the cursor is.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="A break, not a gap" description="12px on each side, against the 8px between icons. The extra room is the meaning." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Quiet line" description="1px at 20% white on light glass, 12% on dark, 60% of the shell height. Present, never loud." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Outside the physics" description="The divider never magnifies, shifts, or bounces. Only icons answer the cursor." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Place it between the pinned apps and the transient section — minimized windows first, then Trash last.',
+          'Match tone to the surrounding Dock shell so the line sits at the right strength on the glass.',
+          'One divider is usually enough. Two at most: before minimized windows and before Trash.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not use the divider to group pinned apps. It marks the end of pinned, not sections within it.',
+          'Do not make it a button. It is a separator — no click, no hover, no tooltip.',
+          'Do not stretch it to the shell’s full height. 60% keeps it visually inside the row of icons.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Dock Divider is a semantic separator between two groups of launchers."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Renders with role=\"separator\" and a vertical orientation."}</li>
+        <li>{"It is not focusable and not in the keyboard cycle — keyboard users move straight from the last pinned app to the transient section."}</li>
+        <li>{"The break is also conveyed by order and grouping, never by the line alone."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const dockMinimizedWindowGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Minimized Window Tile is the live thumbnail in the Dock’s right section for a minimized window — an
+          actual snapshot of the window’s last frame, never a generic icon. At 48×40 with a 6px radius it reads
+          as a different object type than the 56px squircle app icons. Click it and the tile pours back out into
+          its window with the genie effect; minimizing warps the window down into the tile the same way, reversed.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="A snapshot, not an icon" description="The face is the window’s real last frame, captured at minimize time. You recognize the window by its content." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="A different shape on purpose" description="48×40, 6px radius, hairline border. Non-square and smaller than app icons so the two never compete." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="The pour" description="Restore stretches vertically first, then horizontally 80ms behind — the offset timing is what makes it liquid, not robotic." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Capture the snapshot at minimize time — a canvas or image grab of the live frame, not a placeholder.',
+          'Keep tiles right of the Dock Divider, before the Trash. One tile per minimized window.',
+          'Play the full genie on restore, then swap the tile for the real window in onRestore.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not show a generic window glyph. The whole point is recognizing your window by its content.',
+          'Do not animate scaleX and scaleY together. Same-duration axes read as a plain zoom, not a genie.',
+          'Do not magnify the tile like an app icon in custom layouts — it is a window, not a launcher.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A Minimized Window Tile is a button that restores its window. The snapshot is decorative."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The accessible name is Restore plus the window title. The snapshot image is aria-hidden."}</li>
+        <li>{"The genie effect is skipped under prefers-reduced-motion; the restore still happens."}</li>
+        <li>{"The tile never traps focus — activating it returns focus to the restored window."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const dockTrashGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Trash Well is the Trash/Recently-Deleted icon anchored as the final item in the Dock’s right section,
+          after the Dock Divider and any minimized windows. Empty is an outline wastebasket; items show crumpled
+          paper inside, crossfading over 200ms. It magnifies like any icon, and it is a drop target: a dragged
+          file over it raises a red glow, and a drop flies into its center before the well compress-bounces.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="State in the artwork" description="Empty vs. has-items is shown by the basket itself — outline or paper-filled — never by a badge or label." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="A confident target" description="Drag-over scales the well to 1.15× with a #FF453A glow ring. There is no doubt where the drop lands." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Receipt has weight" description="The dropped item shrinks into the center over 300ms, then the well compress-bounces 1 → 0.9 → 1. You feel the catch." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Anchor it last in the right section — pinned apps, divider, minimized windows, then Trash.',
+          'Set hasItems from onDropItem so the paper crossfade plays on the first drop and clears on empty.',
+          'Let it magnify with everything else. It is a normal icon to the Magnification Engine.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not stack a count badge on the Trash. The artwork already says empty or not.',
+          'Do not skip the drag-over glow. Without it the drop target is a guess.',
+          'Do not put anything after the Trash. It is always the final item.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"The Trash Well is a button named Trash. Its content state is conveyed in text, not artwork alone."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The accessible name is Trash. When it has items, append the state, such as Trash, 3 items."}</li>
+        <li>{"The wastebasket artwork and the drop ghost are aria-hidden."}</li>
+        <li>{"Drag and drop is one input path — also offer a keyboard-operable Move to Trash action elsewhere."}</li>
+        <li>{"Drop, bounce, and crossfade motion is removed under prefers-reduced-motion."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const dockTooltipGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Icon Tooltip is the name label that appears above a Dock Icon on hover. It waits 400ms so fast sweeps
+          across the Dock don’t flicker, floats 12px above the icon’s live top edge, and follows the icon as
+          magnification moves and grows it. Only one is ever visible — a new hover cancels the old timer and
+          starts fresh. The Magnification Engine renders and times it; you just give each icon a label.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Patient, not instant" description="A 400ms hover delay filters out flybys. The tooltip answers intent, not proximity." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Tracks the icon" description="Position is computed from the icon’s current magnified size and offset every frame, 12px above its live top edge." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Quick to leave" description="In with a fade and 4px rise over 150ms. Out with a 100ms fade — faster out than in, always." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Give every Dock Icon a short label — one or two words, the app’s name. The engine does the rest.',
+          'Keep the dark glass style: 90% near-black over a 12px blur, hairline border, 13px medium white text.',
+          'Let the delay stand. Lowering it brings back sweep flicker; raising it feels broken.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not show two tooltips at once. A new hover cancels the old timer before starting its own.',
+          'Do not position the tooltip against the shell. It belongs to the icon and follows it through magnification.',
+          'Do not put actions or rich content in it. It is a name, nothing more.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"The Icon Tooltip restates the icon’s accessible name. It is never the only carrier of the name."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Every icon already has an aria-label; the tooltip duplicates it visually with role=\"tooltip\"."}</li>
+        <li>{"It is pointer-only and pointer-events-none — never in the tab order, never blocking clicks."}</li>
+        <li>{"No native title attributes on Dock icons, so browser and kit tooltips never stack."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const glassSurfaceGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Glass Surface is the base translucent panel every chrome surface inherits — one recipe of blur, tint,
+          hairline border, shadow, and an inner top-edge rim highlight, all from Layer 0 glass tokens. Pick one of
+          the four weight classes — menu bar, panel, modal, tooltip — and put your content inside. Nothing builds
+          its own blur and tint combination.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="One recipe, four weights" description="Only tint, blur, shadow, and radius change between classes. The structure — border, rim light — is identical." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Token only" description="Every value resolves to a Layer 0 glass token. Theme switching and future retints happen in one place." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="The rim sells it" description="The 1px inner top highlight is what makes the edge read as glass catching light, not a flat overlay." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Wrap your Spotlight, Control Center, or context menu in panel weight. Sheets and dialogs use modal.',
+          'Use tooltip weight for small transient labels only.',
+          'Pass rim={false} only when the surface sits flush against another glass edge.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not compose a custom blur and tint. If none of the four weights fit, the surface should be solid.',
+          'Do not nest glass on glass — the inner surface loses its backdrop and turns muddy.',
+          'Do not use menu bar weight for anything but the top bar. It has no radius and the lightest shadow.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Glass Surface is presentational. It adds no semantics of its own."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Give the content inside its own role and name — dialog, menu, or tooltip as appropriate."}</li>
+        <li>{"Text on glass meets contrast requirements through the token tint on any backdrop."}</li>
+        <li>{"Under reduced transparency the surface may render solid; content must not depend on seeing through it."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const trafficLightsGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Traffic Lights are the close, minimize, and maximize cluster in a window’s title bar — red, yellow,
+          green, in that order, always together. Their glyphs appear only when the group is hovered, and the
+          whole set mutes to gray when its window is in the background. The three macOS colors are the one
+          deliberate exception to token-only values.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Always three" description="Close, minimize, maximize — one language for window control. Never mixed with a second control scheme." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Quiet until hovered" description="Dots are pure color at rest. The ×, −, and zoom glyphs fade in only when the group is hovered." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Focus is visible" description="An unfocused window shows gray dots from the border token, so the active window is obvious at a glance." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Place the cluster at the leading edge of the title bar, vertically centered.',
+          'Wire each dot to its action — close, minimize, maximize — with an accessible label.',
+          'Set focused from the window manager so background windows mute.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not show glyphs permanently. They answer hover on the group, nothing else.',
+          'Do not reorder or recolor the dots. Red, yellow, green is a learned convention.',
+          'Do not mix this with a second window-control pattern in the same product.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Each dot is a real button with an accessible name — the color alone never carries the meaning."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Close, Minimize, and Maximize are announced by name; the glyphs are aria-hidden."}</li>
+        <li>{"The 12px dots sit in a larger title-bar hit area; keyboard users get the same actions from the window menu."}</li>
+        <li>{"The gray unfocused state is decorative — the same state is conveyed by the window’s visual dimming."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const notificationBannerGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Notification Banner is a transient message from an app — icon, title, body, timestamp, and a dismiss
+          button on a panel-weight Glass Surface. It slides in from the edge with the reserved spring ease,
+          dismisses itself after five seconds, and pauses that timer while hovered so the person can finish
+          reading.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Glanceable" description="App name, one title line, two body lines at most. Anything longer belongs in the app." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Spring is reserved" description="The entrance is one of the two system-wide spring moments — Dock magnification is the other. Do not reuse it elsewhere." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Hover to hold" description="The 5s auto-dismiss pauses under the pointer, and the dismiss button only appears on hover." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Keep the body to two lines. Clamp, never scroll, a banner.',
+          'Always pass the app icon and name so the source is clear at a glance.',
+          'Let the timer dismiss passively. Dismiss manually only for messages that must not linger.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not stack more than a few banners at once — queue them in the notification center.',
+          'Do not put primary actions in a banner. It informs; the app acts.',
+          'Do not use the spring ease for its exit. Dismissal is a quiet fade.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A banner announces itself politely and never traps the person."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"Banners are announced via a status live region, not by moving focus."}</li>
+        <li>{"The dismiss button has an accessible name and works from the keyboard."}</li>
+        <li>{"Auto-dismiss never removes information permanently — dismissed banners live in the notification center."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const swatchPickerGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Swatch Picker is a row of round color swatches for choosing one color — accent pickers in Settings,
+          product color selectors. Selection is a double ring: an inner border plus an offset brand ring, so it
+          can never be confused with the hover scale.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="One selected" description="It behaves like a radio group — exactly one swatch is current at any time." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Ring, not check" description="The double ring reads on any color, light or dark, where a checkmark glyph would vanish." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Hover is just a hint" description="A slight scale-up, no ring. The ring is earned by selection only." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Keep swatches to one row that wraps. Six to ten colors is comfortable.',
+          'Name the group — Accent color, Case color — so the choice has context.',
+          'Pass real values out. The swatch color is a token or hex your theme can apply.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not multi-select. If several can apply, that is a different control.',
+          'Do not put text inside swatches. The color is the content.',
+          'Do not shrink swatches below 32px — the ring needs room to breathe.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"Swatch Picker is a radio group of named colors."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The row is a radiogroup; each swatch is a radio with aria-checked and a color name as its label."}</li>
+        <li>{"Selection is never color-only — the double ring is a shape cue, and the checked state is announced."}</li>
+        <li>{"Arrow keys move between swatches like any radio group."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+export const fileTileGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          File Tile is the icon-plus-label unit of a file manager’s icon grid. Hover washes the tile; selection
+          highlights only the label as a brand pill — the icon itself stays clean. Renaming swaps the label for
+          an inline field that opens focused with the name pre-selected.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Label carries selection" description="A brand pill behind the name only — never a tinted icon, matching Finder’s discipline." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Two lines, then out" description="Names clamp at two lines with an ellipsis. Long names are a tooltip, not a taller tile." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Rename in place" description="The field appears exactly where the label was, pre-selected, Enter commits, Escape cancels." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Keep tiles one width in the grid — 88px — so rows align.',
+          'Use the folder or file glyph at 48px, or a real thumbnail when one exists.',
+          'Commit rename on blur as well as Enter, so clicking away never loses a name.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not tint the icon on selection. The pill behind the label is the whole signal.',
+          'Do not let labels wrap past two lines or push tiles out of grid alignment.',
+          'Do not open rename on single click. It answers an explicit rename action.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A File Tile is a toggleable button named by its file name."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The tile exposes aria-pressed for selection; the glyph is aria-hidden."}</li>
+        <li>{"The rename field is labeled, opens focused and selected, and Escape always restores the old name."}</li>
+        <li>{"Selection and renaming are fully keyboard operable."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
+export const thumbnailTileGuide = {
+  usage: (
+    <DocsUsage>
+        <Body>
+          Thumbnail Tile is the preview unit for media grids and preview panes — a square with a real image
+          inside, a Skeleton filling it until the image loads, and an overlay Badge slot for a file type or
+          duration. The image fades in over the skeleton so the grid never pops.
+        </Body>
+      <CardGrid columns={3} gap="sm">
+        <Card variant="subtle" size="sm" eyebrow="01" title="Square and cover" description="One aspect ratio everywhere. The image covers; nothing distorts." />
+        <Card variant="subtle" size="sm" eyebrow="02" title="Skeleton first" description="The tile holds its shape while loading, then crossfades to the real image." />
+        <Card variant="subtle" size="sm" eyebrow="03" title="Badge in the corner" description="File type, duration, or count — bottom right, composed from the Badge atom." />
+      </CardGrid>
+      <CardGrid columns={2} gap="sm">
+        <RuleCard size="sm" tone="success" title="Do" items={[
+          'Give every image an alt that says what it shows.',
+          'Use the badge for metadata only — never actions.',
+          'Keep the grid uniform. One tile size per view.',
+        ]} />
+        <RuleCard size="sm" tone="danger" title="Don’t" items={[
+          'Do not swap the skeleton for a spinner. The shape of the thing loading is the placeholder.',
+          'Do not stretch images to fit. Cover and crop, always.',
+          'Do not overlay more than one badge per tile.',
+        ]} />
+      </CardGrid>
+    </DocsUsage>
+  ),
+  accessibility: (
+        <Alert title="Requirements">
+      <p className="m-0">{"A Thumbnail Tile is an image with a real text alternative; the skeleton and badge are decorative."}</p>
+      <ul className="m-0 mt-3 list-disc space-y-1.5 pl-4">
+        <li>{"The image carries alt text; loading state is aria-hidden."}</li>
+        <li>{"When clickable, the tile is keyboard operable with a visible focus ring."}</li>
+        <li>{"Badge content is metadata and is repeated in the tile’s accessible name when it matters, such as video duration."}</li>
+      </ul>
+    </Alert>
+  ),
+}
+
 

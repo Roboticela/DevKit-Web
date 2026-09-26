@@ -9,6 +9,7 @@ export type DocsSearchGroup =
   | 'Feedback'
   | 'Overlay'
   | 'Navigation'
+  | 'Dock'
   | 'Data Display'
   | 'Marketing'
   | 'Auth'
@@ -57,6 +58,10 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('spacing', 'Spacing', 'Foundations', 'The only spacing steps the kit uses. Pick the nearest value on this scale instead of inventing a new gap.'),
       c('radius', 'Radius', 'Foundations', 'Corner rounding for fields, cards, panels, and pills. Match the radius to what the object is.'),
       c('layout', 'Layout', 'Foundations', 'Breakpoints, content widths, and page padding. Start from the small screen and add columns as the viewport grows.'),
+      c('shadows', 'Shadows', 'Foundations', 'The elevation scale in light and dark, plus the Dock and icon-tile shadows. Use the token, never a one-off box-shadow.'),
+      c('glass', 'Glass', 'Foundations', 'The five blur and tint weight classes for every translucent surface. Pick the closest class instead of inventing a recipe.'),
+      c('motion', 'Motion', 'Foundations', 'The two easing curves and the duration scale. Spring is reserved for defined alive moments; everything else uses standard.'),
+      c('z-index', 'Z-Index', 'Foundations', 'The OS layering scale from desktop to tooltip. Window order is computed at runtime and capped below the Dock.'),
       c('icons', 'Icons', 'Foundations', 'A local icon library you can search by name or meaning. Use these glyphs in buttons, fields, and empty states.'),
       c('cursors', 'Cursors', 'Foundations', 'RoboticelaOS and system cursor packs in SVG and .rcur binary formats, featuring an interactive testing playground, hotspot calibration, and runtime loaders.'),
       c('brand-logo', 'Brand Logo', 'Foundations', 'The company mark, the product wordmark, and the lockup that pairs them.'),
@@ -112,6 +117,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('otp-boxes', 'OTP Boxes', 'Forms', 'Enter a verification code one digit at a time. Paste fills the row. Use this after sign in or to confirm a device.'),
       c('recovery-input', 'Recovery Input', 'Forms', 'Enter a backup code or account recovery key. Letters and numbers group themselves as the person types.'),
       c('field-label', 'Field Label', 'Forms', 'Name a field and place help or an error under it. A placeholder is not a substitute for this name.'),
+      c('swatch-picker', 'Swatch Picker', 'Forms', 'Pick a color from a row of round swatches. The selected one gets a double ring; hover only scales.'),
     ],
   },
   {
@@ -126,6 +132,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('loading-screen', 'Loading Screen', 'Feedback', 'Cover the view while boot or sign in finishes. Use Loader instead when only a control or a line of copy is waiting.'),
       c('loader', 'Loader', 'Feedback', 'A spinning ring for a short wait next to a label, in a toolbar, or on a card. Use Loading Screen when the whole view is not ready.'),
       c('score-ring', 'Score Ring', 'Feedback', 'A circular score or completion mark, like Screen Time. Use it for a profile score, a quota, or a setup checklist.'),
+      c('notification-banner', 'Notification Banner', 'Feedback', 'A transient message from an app: icon, title, body, timestamp, and dismiss on glass. Slides in with the reserved spring ease and dismisses itself after five seconds.'),
     ],
   },
   {
@@ -136,6 +143,8 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('command-palette', 'Command Palette', 'Overlay', 'Type to find and run a command without leaving the page. Use it for in-app search, a marketing header, or a system jump with a keyboard shortcut.'),
       c('confirm-dialog', 'Confirm Dialog', 'Overlay', 'Ask once before a change that is hard to undo. Use it for delete, publish, leave without saving, or archive.'),
       c('avatar-editor', 'Avatar Editor', 'Overlay', 'A full screen crop sheet for a profile photo. The person moves, zooms, and rotates, then saves a circular jpeg.'),
+      c('glass-surface', 'Glass Surface', 'Overlay', 'The one blur, tint, border, and shadow recipe every chrome surface inherits. Four weight classes: menu bar, panel, modal, tooltip.'),
+      c('traffic-lights', 'Traffic Lights', 'Overlay', 'The three-dot close, minimize, and maximize cluster in a window’s title bar. Glyphs show on hover; all dots mute when the window is unfocused.'),
     ],
   },
   {
@@ -150,6 +159,21 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('sheet-nav', 'Sheet Nav', 'Navigation', 'The header of a sheet with Cancel and Done. Use it at the top of a modal sheet so the person can dismiss or save.'),
       c('nav-search', 'Nav Search', 'Navigation', 'A compact search field for a top bar. Use it as the trigger for Command Palette, with a shortcut hint such as ⌘K.'),
       c('profile-button', 'Profile Button', 'Navigation', 'The account control in a header. Press it to open the account menu. Use a face in a toolbar, or add the name and email on a settings row.'),
+    ],
+  },
+  {
+    id: 'dock',
+    label: 'Dock',
+    items: [
+      c('dock', 'Dock Shell', 'Dock', 'The floating glass bar of app icons at the bottom of the screen. Use it for the apps that are always one press away.'),
+      c('dock-icon', 'Dock Icon', 'Dock', 'A single app icon tile inside the Dock. The whole 56×56 tile is the click target. Artwork is pre-masked to the squircle.'),
+      c('dock-magnification', 'Magnification Engine', 'Dock', 'The cursor-proximity physics that grow Dock icons as the pointer approaches. Every other Dock component sizes from this.'),
+      c('dock-indicator', 'Running Indicator', 'Dock', 'The small brand-blue dot beneath a Dock Icon showing the app has an open window. A slightly larger dot means more than one window.'),
+      c('dock-launch-bounce', 'Launch Bounce', 'Dock', 'The bounce a Dock Icon plays when clicked to launch. One leap per click, then the Running Indicator fades in as it lands.'),
+      c('dock-divider', 'Dock Divider', 'Dock', 'The thin vertical line separating pinned apps from minimized windows and the Trash. It never magnifies.'),
+      c('dock-minimized-window', 'Minimized Window Tile', 'Dock', 'A live snapshot of a minimized window in the Dock’s right section. Click to pour it back out with the genie effect.'),
+      c('dock-trash', 'Trash Well', 'Dock', 'The Trash icon at the far right of the Dock. Outline when empty, crumpled paper when it has items, and a red glow when a file is dragged over it.'),
+      c('dock-tooltip', 'Icon Tooltip', 'Dock', 'The name label above a Dock Icon on hover. Appears after a short delay, tracks the icon’s live magnified position, one at a time.'),
     ],
   },
   {
@@ -182,6 +206,8 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('related', 'Related', 'Data Display', 'A three column grid of sibling links. Use it at the end of a page for nearby components.'),
       c('rule-card', 'Rule Card', 'Data Display', 'A do or don’t list with a success or danger tone. Use it inside Usage, or on its own.'),
       c('inline-code', 'Inline Code', 'Data Display', 'A highlighted token, prop, or import path inside a sentence.'),
+      c('file-tile', 'File Tile', 'Data Display', 'An icon plus label unit for a file manager’s icon grid. Selection highlights only the label pill; renaming swaps in an inline field.'),
+      c('thumbnail-tile', 'Thumbnail Tile', 'Data Display', 'An image, video, or doc preview with a skeleton loading state and an overlay badge slot.'),
     ],
   },
   {
@@ -206,7 +232,7 @@ export const DOCS_NAV: DocsNavSection[] = [
 
 export const DOCS_ITEMS: DocsNavItem[] = DOCS_NAV.flatMap((section) => section.items)
 
-export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'radius', 'layout', 'icons'])
+export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'radius', 'layout', 'icons', 'shadows', 'glass', 'motion', 'z-index'])
 
 export const PREVIEW_EXCLUDED_IDS = new Set([...FOUNDATION_IDS, 'country-flag'])
 
@@ -279,6 +305,7 @@ export const SEARCH_GROUP_ORDER: DocsSearchGroup[] = [
   'Forms',
   'Feedback',
   'Navigation',
+  'Dock',
   'Foundations',
   'Typography',
   'Overlay',
