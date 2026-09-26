@@ -12,7 +12,6 @@ import { Card, CardGrid } from './Card'
 import { RuleCard } from './RuleCard'
 import { DocsPager } from './DocsPager'
 import { Body, Caption } from './Text'
-import { DkChevronCaretRight } from '@/icons'
 
 export function CursorsDocs() {
   return (
@@ -85,67 +84,35 @@ export function CursorsDocs() {
           Click any pack card to enter its interactive playground and access its full cursor directory, hotspot blueprints, and code exports.
         </Body>
 
-        <CardGrid columns={3} gap="sm">
-          {AVAILABLE_CURSOR_PACKS.map((pack) => {
-            const isOfficial = pack.id === 'roboticela-os'
-
-            return (
-              <Card
-                key={pack.id}
-                variant="subtle"
-                size="sm"
-                href={isOfficial ? `/components/cursors/${pack.id}` : undefined}
-                className={isOfficial ? 'group transition-all hover:-translate-y-0.5 hover:border-brand-primary/50 cursor-pointer' : 'opacity-75'}
-                eyebrow={pack.badge}
-                title={pack.name}
-                description={
-                  isOfficial
-                    ? `${pack.totalCursors} vector cursors calibrated with pixel-exact hotspots, dual-theme adaptation, and animated wait spinners.`
-                    : `${pack.totalCursors} specialized cursors. Currently in laboratory testing for upcoming DevKit releases.`
-                }
-                footer={
-                  <div className="flex w-full items-center justify-between gap-2 pt-2 border-t border-border-default/60">
-                    <span className="text-[11px] font-mono text-text-tertiary">
-                      v{pack.version} • {pack.totalCursors} Cursors
-                    </span>
-
-                    {isOfficial ? (
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-primary group-hover:translate-x-0.5 transition-transform">
-                        <span>Open Studio</span>
-                        <DkChevronCaretRight size={14} />
-                      </span>
-                    ) : (
-                      <span className="text-xs text-text-tertiary italic">
-                        Preview Only
-                      </span>
-                    )}
+        <div className="grid grid-cols-1 gap-4 max-w-3xl">
+          {AVAILABLE_CURSOR_PACKS.map((pack) => (
+            <Card
+              key={pack.id}
+              variant="subtle"
+              size="md"
+              href={`/components/cursors/${pack.id}`}
+              className="cursor-pointer transition-colors hover:border-border-strong"
+              title={pack.name}
+              description={
+                pack.description ??
+                `${pack.totalCursors} vector cursors calibrated with pixel-exact hotspots, dual-theme adaptation, and animated wait spinners.`
+              }
+            >
+              {/* Visual Preview Grid of all cursors */}
+              <div className="mt-4 grid grid-cols-6 sm:grid-cols-9 gap-2 rounded-xl bg-bg-secondary p-3 transition-colors">
+                {ROBOCURSORS_LIST.map((cursor) => (
+                  <div
+                    key={cursor.id}
+                    className="flex aspect-square items-center justify-center rounded-lg bg-bg-primary shadow-xs"
+                    title={`${cursor.title} (${cursor.stateName})`}
+                  >
+                    <CursorPreview cursorOrId={cursor} className="size-6" />
                   </div>
-                }
-              >
-                {/* Visual Preview Row */}
-                {isOfficial ? (
-                  <div className="my-3 flex items-center justify-between gap-1.5 rounded-xl bg-bg-secondary p-3 group-hover:bg-bg-tertiary transition-colors">
-                    {['RoboDefault', 'RoboPointer', 'RoboCrosshair', 'RoboMove', 'RoboEdit', 'RoboWait'].map(
-                      (cid) => (
-                        <div
-                          key={cid}
-                          className="grid size-9 place-items-center rounded-lg bg-bg-primary shadow-xs"
-                          title={cid}
-                        >
-                          <CursorPreview cursorOrId={cid} className="size-6" />
-                        </div>
-                      )
-                    )}
-                  </div>
-                ) : (
-                  <div className="my-3 flex items-center justify-center h-[60px] rounded-xl bg-bg-secondary p-3 text-xs text-text-tertiary italic">
-                    Assets compiling in DevKit Lab...
-                  </div>
-                )}
-              </Card>
-            )
-          })}
-        </CardGrid>
+                ))}
+              </div>
+            </Card>
+          ))}
+        </div>
       </section>
 
       {/* SUPPORTED FORMATS */}

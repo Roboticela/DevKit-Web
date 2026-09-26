@@ -12,6 +12,7 @@ import {
   getReactSnippet,
   getRcurLoaderSnippet,
 } from '@/lib/robocursors-data'
+import { useTheme } from '@/lib/theme'
 import { CursorPreview } from './CursorPreview'
 import { Badge } from './Badge'
 import { Button } from './Button'
@@ -43,6 +44,7 @@ const CATEGORIES: { id: CursorCategory; label: string }[] = [
 ]
 
 export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
+  const { theme } = useTheme()
   const pack = AVAILABLE_CURSOR_PACKS.find((p) => p.id === packId) ?? AVAILABLE_CURSOR_PACKS[0]
 
   // Filter & Search
@@ -201,7 +203,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
   // Studio container cursor style
   const studioStyle = activeStudioCursor
     ? {
-        cursor: getCursorCssValue(activeStudioCursor),
+        cursor: getCursorCssValue(activeStudioCursor, 'auto', theme),
       }
     : undefined
 
@@ -350,7 +352,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   {/* Button testing RoboPointer */}
                   <div
                     style={{
-                      cursor: getCursorCssValue('RoboPointer', 'pointer'),
+                      cursor: getCursorCssValue('RoboPointer', 'pointer', theme),
                     }}
                     className="inline-block"
                   >
@@ -362,7 +364,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   {/* Secondary button */}
                   <div
                     style={{
-                      cursor: getCursorCssValue('RoboPointer', 'pointer'),
+                      cursor: getCursorCssValue('RoboPointer', 'pointer', theme),
                     }}
                     className="inline-block"
                   >
@@ -375,7 +377,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   <a
                     href="#import-code"
                     style={{
-                      cursor: getCursorCssValue('RoboLink', 'pointer'),
+                      cursor: getCursorCssValue('RoboLink', 'pointer', theme),
                     }}
                     className="inline-flex items-center gap-1 text-sm font-medium text-brand-primary underline hover:text-brand-primary/80 transition-colors"
                   >
@@ -386,7 +388,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   {/* Help Bubble testing RoboHelp */}
                   <div
                     style={{
-                      cursor: getCursorCssValue('RoboPointer', 'help'),
+                      cursor: getCursorCssValue('RoboHelp', 'help', theme),
                     }}
                     className="inline-flex size-8 items-center justify-center rounded-full bg-bg-tertiary text-text-secondary hover:bg-bg-hover hover:text-text-primary transition-colors"
                     title="RoboHelp context: Hover to reveal calibrated tooltip hotspot"
@@ -433,7 +435,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                     isDraggingSplit.current = true
                   }}
                   style={{
-                    cursor: getCursorCssValue('RoboResizeSplitEW', 'col-resize'),
+                    cursor: getCursorCssValue('RoboResizeCol', 'col-resize', theme),
                   }}
                   className="group relative flex w-3 shrink-0 items-center justify-center bg-border-default/80 hover:bg-brand-primary transition-colors active:bg-brand-primary"
                   title="Drag horizontally to resize"
@@ -491,7 +493,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   onMouseUp={stopDrawing}
                   onMouseLeave={stopDrawing}
                   style={{
-                    cursor: getCursorCssValue('RoboEdit', 'crosshair'),
+                    cursor: getCursorCssValue('RoboEdit', 'crosshair', theme),
                   }}
                   className="block h-[140px] w-full"
                 />
@@ -516,7 +518,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
               <div
                 onMouseMove={handleReticleMouseMove}
                 style={{
-                  cursor: getCursorCssValue('RoboCrosshair', 'crosshair'),
+                  cursor: getCursorCssValue('RoboCrosshair', 'crosshair', theme),
                 }}
                 className="relative flex h-[140px] w-full items-center justify-center overflow-hidden rounded-xl border border-dashed border-border-strong bg-bg-secondary/40"
               >
@@ -562,14 +564,14 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   <Label className="text-xs">Horizontal Buffer</Label>
                   <div
                     style={{
-                      cursor: getCursorCssValue('RoboTextHorizontal', 'text'),
+                      cursor: getCursorCssValue('RoboTextHorizontal', 'text', theme),
                     }}
                   >
                     <input
                       type="text"
                       defaultValue="Edit text here..."
                       style={{
-                        cursor: getCursorCssValue('RoboTextHorizontal', 'text'),
+                        cursor: getCursorCssValue('RoboTextHorizontal', 'text', theme),
                       }}
                       className="w-full rounded-xl border border-border-default bg-bg-secondary px-3 py-2 text-sm text-text-primary focus:border-brand-primary focus:outline-none"
                     />
@@ -582,7 +584,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   <Label className="text-xs">Vertical Asian Typography</Label>
                   <div
                     style={{
-                      cursor: getCursorCssValue('RoboTextVertical', 'vertical-text'),
+                      cursor: getCursorCssValue('RoboTextVertical', 'vertical-text', theme),
                     }}
                     className="flex h-[42px] items-center rounded-xl border border-border-default bg-bg-secondary px-3 py-1 font-serif text-sm tracking-widest text-text-secondary"
                   >
@@ -608,7 +610,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
               <div
                 style={{
                   cursor: isAsyncRunning
-                    ? getCursorCssValue('RoboWorking', 'wait')
+                    ? getCursorCssValue('RoboWorking', 'wait', theme)
                     : undefined,
                 }}
                 className={`relative flex flex-col justify-between rounded-xl border p-4 transition-all ${isAsyncRunning ? 'border-brand-primary bg-brand-primary/5' : 'border-border-default bg-bg-secondary/40'}`}
@@ -624,8 +626,8 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                     disabled={isAsyncRunning}
                     style={{
                       cursor: isAsyncRunning
-                        ? getCursorCssValue('RoboWait', 'wait')
-                        : getCursorCssValue('RoboPointer', 'pointer'),
+                        ? getCursorCssValue('RoboWait', 'wait', theme)
+                        : getCursorCssValue('RoboPointer', 'pointer', theme),
                     }}
                   >
                     {isAsyncRunning ? 'Simulating...' : 'Trigger Async Build'}
@@ -720,7 +722,7 @@ export function CursorPackPlaygroundDocs({ packId }: { packId: string }) {
                   {/* Centered Preview Area */}
                   <div
                     style={{
-                      cursor: getCursorCssValue(cursor),
+                      cursor: getCursorCssValue(cursor, 'auto', theme),
                     }}
                     className="my-3 grid h-24 place-items-center rounded-xl border border-border-default/60 bg-bg-secondary/60 p-3 group-hover:bg-bg-tertiary transition-colors"
                     title={`Hover to preview ${cursor.title}`}
