@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ComponentProps, type ComponentType, type ReactNode } from 'react'
+import { useRef, useState, type ComponentProps, type ComponentType, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import {
   DkClipboardCopyDuplicate,
@@ -137,6 +137,12 @@ import {
   DIVIDER_TONE_LABEL,
   DIVIDER_VARIANT_LABEL,
 } from './Divider'
+import { Dock, DOCK_TONES, DOCK_TONE_LABEL, type DockTone } from './Dock'
+import { DockAppIcon, DockIcon } from './DockIcon'
+import { DockDivider } from './DockDivider'
+import { DockMinimizedWindow, DOCK_GENIE_DURATION, DOCK_GENIE_STAGGER } from './DockMinimizedWindow'
+import { DockTrash } from './DockTrash'
+import { DockMagnifier, DOCK_MAGNIFICATION_DEFAULTS, DOCK_MAGNIFICATION_LEVELS, DOCK_MAGNIFICATION_LEVEL_LABEL, DOCK_MAGNIFICATION_LEVEL_MAX, type DockMagnificationLevel } from './DockMagnification'
 import { Dropdown, SELECT_SIZES, SELECT_VARIANTS, type DropdownOption, type SelectTriggerSize, type SelectTriggerVariant } from './Dropdown'
 import {
   EmptyPopup,
@@ -270,6 +276,15 @@ import {
   sliderGuide,
   stateSelectGuide,
   statCardGuide,
+  dockGuide,
+  dockIconGuide,
+  dockMagnificationGuide,
+  dockIndicatorGuide,
+  dockLaunchBounceGuide,
+  dockDividerGuide,
+  dockMinimizedWindowGuide,
+  dockTrashGuide,
+  dockTooltipGuide,
   subheadGuide,
   switchGuide,
   tableGuide,
@@ -805,6 +820,514 @@ function BrandLogoDemo() {
         <BrandLogo variant="icon" size={32} />
       </div>
     </div>
+  )
+}
+
+type DockGlyphProps = { size?: number }
+
+/** Bespoke glyphs drawn to the first-party bar — 1.8px strokes, round caps, optically centered. */
+function FinderGlyph({ size = 30 }: DockGlyphProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" aria-hidden>
+      <path d="M8.2 8.4v2.6" />
+      <path d="M15.8 8.4v2.6" />
+      <path d="M7.4 15.2c1.7 1.5 3.2 2.1 4.6 2.1s2.9-.6 4.6-2.1" />
+    </svg>
+  )
+}
+
+function SafariGlyph({ size = 30 }: DockGlyphProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="8.4" stroke="#3c3c43" strokeWidth={1.7} />
+      <path d="M15.6 8.4l-2.1 4.9-4.9 2.1 2.1-4.9z" fill="#ff3b30" stroke="#ff3b30" strokeWidth={0.6} strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function MailGlyph({ size = 30 }: DockGlyphProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="3.4" y="5.6" width="17.2" height="12.8" rx="2.4" />
+      <path d="M4.2 7.6l7.8 5.4 7.8-5.4" />
+    </svg>
+  )
+}
+
+function MessagesGlyph({ size = 30 }: DockGlyphProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinejoin="round" aria-hidden>
+      <path d="M12 4.6c-4.7 0-8.1 2.9-8.1 6.6 0 2.2 1.3 4.2 3.4 5.4-.2 1.1-.9 2.2-1.9 2.9 1.7-.1 3.2-.7 4.3-1.4.7.1 1.5.2 2.3.2 4.7 0 8.1-2.9 8.1-6.6S16.7 4.6 12 4.6z" />
+    </svg>
+  )
+}
+
+function MusicGlyph({ size = 30 }: DockGlyphProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M9.8 17.4V6.4a1 1 0 01.8-1l8.4-1.7a1 1 0 011.2 1v11.1h-1.9V6.2l-6.6 1.3v9.9z" />
+      <ellipse cx="7.6" cy="17.6" rx="2.8" ry="2.2" />
+      <ellipse cx="16.5" cy="16" rx="2.8" ry="2.2" />
+    </svg>
+  )
+}
+
+function SettingsGlyph({ size = 30 }: DockGlyphProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden>
+      <circle cx="12" cy="12" r="3.1" />
+      <path d="M12 4v2.9M12 17.1V20M4 12h2.9M17.1 12H20M6.3 6.3l2 2M15.7 15.7l2 2M17.7 6.3l-2 2M8.3 15.7l-2 2" />
+    </svg>
+  )
+}
+
+function TrashGlyph({ size = 30 }: DockGlyphProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M5.4 7h13.2" />
+      <path d="M9.7 7V5.6a1.4 1.4 0 011.4-1.4h1.8a1.4 1.4 0 011.4 1.4V7" />
+      <path d="M7.2 7l.7 11.1a2 2 0 002 1.9h4.2a2 2 0 002-1.9L16.8 7" />
+      <path d="M10.2 10.6v5.8M13.8 10.6v5.8" />
+    </svg>
+  )
+}
+
+/* Face gradients — one color family each, top-left lighter to bottom-right darker */
+const DOCK_DEMO_ICONS: Array<{
+  label: string
+  from: string
+  to: string
+  glyph: ComponentType<DockGlyphProps>
+  active: boolean
+  windows?: number
+}> = [
+  { label: 'Finder', from: '#7cc4ff', to: '#1f7bff', glyph: FinderGlyph, active: true },
+  { label: 'Safari', from: '#fbfbfd', to: '#d9d9e0', glyph: SafariGlyph, active: false },
+  { label: 'Mail', from: '#6fb2ff', to: '#0a5cff', glyph: MailGlyph, active: true, windows: 2 },
+  { label: 'Messages', from: '#7bf282', to: '#0ec632', glyph: MessagesGlyph, active: false },
+  { label: 'Music', from: '#fd7e93', to: '#e8213f', glyph: MusicGlyph, active: false },
+  { label: 'Settings', from: '#c9c9ce', to: '#7e7e83', glyph: SettingsGlyph, active: false },
+  { label: 'Trash', from: '#e9e9ee', to: '#9a9aa0', glyph: TrashGlyph, active: false },
+]
+
+function DockScene({ tone, level }: { tone: DockTone; level?: DockMagnificationLevel }) {
+  const [running, setRunning] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(DOCK_DEMO_ICONS.map((icon) => [icon.label, icon.active])),
+  )
+  const [trashFilled, setTrashFilled] = useState(false)
+  return (
+    <div className="relative flex h-[280px] w-full max-w-[560px] items-end justify-center overflow-hidden rounded-[16px]">
+      {/* Real content behind the glass — the blur samples this wallpaper */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: 'url(/wallpapers/dock-wallpaper.svg)' }}
+      />
+      <Dock tone={tone} position="relative" className="mb-2">
+        <DockMagnifier level={level}>
+          {DOCK_DEMO_ICONS.filter((icon) => icon.label !== 'Trash').map(({ label, from, to, glyph: Glyph, windows }) => (
+            <DockIcon
+              key={label}
+              label={label}
+              active={running[label]}
+              windows={windows}
+              onLaunch={() => setRunning((current) => ({ ...current, [label]: true }))}
+            >
+              <DockAppIcon from={from} to={to}>
+                <Glyph />
+              </DockAppIcon>
+            </DockIcon>
+          ))}
+          <DockDivider key="divider" tone={tone} />
+          <DockTrash key="trash" hasItems={trashFilled} onDropItem={() => setTrashFilled(true)} />
+        </DockMagnifier>
+      </Dock>
+    </div>
+  )
+}
+
+function DockDemo() {
+  return (
+    <div className="flex w-full flex-col items-center gap-6">
+      <DockScene tone="dark" />
+    </div>
+  )
+}
+
+function DockMagnificationDemo() {
+  const [level, setLevel] = useState<DockMagnificationLevel>('medium')
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <DockScene tone="dark" level={level} />
+      <SegmentedControl
+        aria-label="Magnification level"
+        size="sm"
+        value={level}
+        onChange={setLevel}
+        options={DOCK_MAGNIFICATION_LEVELS.map((option) => ({
+          value: option,
+          label: `${DOCK_MAGNIFICATION_LEVEL_LABEL[option]} · ${DOCK_MAGNIFICATION_LEVEL_MAX[option]}px`,
+        }))}
+      />
+      <span className="text-[13px] text-text-secondary">
+        Move the pointer across the icons — size follows a Gaussian-like falloff from {DOCK_MAGNIFICATION_DEFAULTS.baseSize}
+        px rest over a {DOCK_MAGNIFICATION_DEFAULTS.influenceRadius}px radius. Icons rise above the shell; the shell only grows wider.
+      </span>
+    </div>
+  )
+}
+
+function DockTooltipDemo() {
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <DockScene tone="dark" />
+      <span className="text-[13px] text-text-secondary">
+        Rest the pointer on an icon — after 400ms its name fades up 12px above the live magnified top edge. Sweep
+        fast across the Dock and nothing appears. Only one tooltip at a time.
+      </span>
+    </div>
+  )
+}
+
+function DockTrashDemo() {
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-2">
+        <span
+          draggable
+          className="cursor-grab rounded-[8px] border border-border-default bg-bg-elevated px-4 py-2 text-[13px] text-text-primary shadow-[0_2px_8px_rgba(0,0,0,0.15)] active:cursor-grabbing"
+        >
+          📄 release-notes.pdf — drag me
+        </span>
+      </div>
+      <DockScene tone="dark" />
+      <span className="text-[13px] text-text-secondary">
+        Drag the file over the Trash — it lights red at 1.15×. Drop it — the file shrinks into the center, the well
+        compress-bounces, and crumpled paper fades in. The Trash magnifies like any other icon.
+      </span>
+    </div>
+  )
+}
+
+function DockTrashStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Content">
+        <StateGrid columns={2}>
+          <StateCard label="Empty — outline wastebasket" className="bg-black">
+            <div className="rounded-[12px] bg-black p-4">
+              <DockTrash hasItems={false} />
+            </div>
+          </StateCard>
+          <StateCard label="Has items — crumpled paper inside" className="bg-black">
+            <div className="rounded-[12px] bg-black p-4">
+              <DockTrash hasItems />
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
+  )
+}
+
+function DockMinimizedWindowDemo() {
+  const [minimized, setMinimized] = useState(false)
+  const xAxisRef = useRef<HTMLSpanElement>(null)
+  const yAxisRef = useRef<HTMLSpanElement>(null)
+
+  // Minimize-in — the reverse genie: the window warps DOWN into the tile,
+  // same offset timing (scaleY completes 80ms before scaleX).
+  const minimize = () => {
+    const xAxis = xAxisRef.current
+    const yAxis = yAxisRef.current
+    if (!xAxis || !yAxis || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setMinimized(true)
+      return
+    }
+    const squishY = yAxis.animate(
+      [
+        { transform: 'scaleY(1)', opacity: 1 },
+        { transform: 'scaleY(0.22)', opacity: 1, offset: 0.75 },
+        { transform: 'scaleY(0.12)', opacity: 0, offset: 1 },
+      ],
+      { duration: DOCK_GENIE_DURATION - DOCK_GENIE_STAGGER, easing: 'ease-in', fill: 'forwards' },
+    )
+    const squishX = xAxis.animate(
+      [{ transform: 'scaleX(1)' }, { transform: 'scaleX(0.18)' }],
+      { duration: DOCK_GENIE_DURATION, easing: 'ease-in', fill: 'forwards' },
+    )
+    squishX.onfinish = () => {
+      squishY.cancel()
+      squishX.cancel()
+      setMinimized(true)
+    }
+  }
+
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <div className="relative flex h-[280px] w-full max-w-[560px] items-end justify-center overflow-hidden rounded-[16px]">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/wallpapers/dock-wallpaper.svg)' }}
+        />
+        {!minimized ? (
+          <span ref={xAxisRef} className="absolute bottom-[92px] block" style={{ transformOrigin: 'bottom center' }}>
+            <span ref={yAxisRef} className="block" style={{ transformOrigin: 'bottom center' }}>
+              <span className="block w-[240px] overflow-hidden rounded-[10px] border border-white/25 shadow-[0_16px_40px_rgba(0,0,0,0.4)]">
+                <span
+                  aria-hidden
+                  className="block h-[150px] w-full bg-cover bg-center"
+                  style={{ backgroundImage: 'url(/snapshots/window-browser.svg)' }}
+                />
+                <button
+                  type="button"
+                  onClick={minimize}
+                  className="flex w-full items-center justify-center bg-black/60 py-1.5 text-[12px] text-white/90 backdrop-blur-sm"
+                >
+                  Minimize into Dock
+                </button>
+              </span>
+            </span>
+          </span>
+        ) : null}
+        <Dock tone="dark" position="relative" className="mb-2">
+          <DockMagnifier>
+            {DOCK_DEMO_ICONS.slice(0, 3).map(({ label, from, to, glyph: Glyph }) => (
+              <DockIcon key={label} label={label} active>
+                <DockAppIcon from={from} to={to}>
+                  <Glyph />
+                </DockAppIcon>
+              </DockIcon>
+            ))}
+            <DockDivider key="divider" tone="dark" />
+            {minimized ? (
+              <DockMinimizedWindow
+                key="browser-window"
+                label="Roboticela — Browser"
+                snapshot="/snapshots/window-browser.svg"
+                onRestore={() => setMinimized(false)}
+              />
+            ) : null}
+            <DockMinimizedWindow
+              key="notes-window"
+              label="Release notes — Notes"
+              snapshot="/snapshots/window-notes.svg"
+            />
+            {DOCK_DEMO_ICONS.filter((icon) => icon.label === 'Trash').map(({ label, from, to, glyph: Glyph }) => (
+              <DockIcon key={label} label={label}>
+                <DockAppIcon from={from} to={to}>
+                  <Glyph />
+                </DockAppIcon>
+              </DockIcon>
+            ))}
+          </DockMagnifier>
+        </Dock>
+      </div>
+      <span className="text-[13px] text-text-secondary">
+        Minimize the window — it warps down into a live tile. Click the tile — it pours back out, scaleY leading
+        scaleX by {DOCK_GENIE_STAGGER}ms over {DOCK_GENIE_DURATION}ms.
+      </span>
+    </div>
+  )
+}
+
+function DockDividerDemo() {
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <DockScene tone="dark" />
+      <span className="text-[13px] text-text-secondary">
+        The line before the Trash marks the end of pinned apps. Sweep the pointer across — every icon answers, the
+        divider never moves.
+      </span>
+    </div>
+  )
+}
+
+function DockLaunchBounceDemo() {
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <DockScene tone="dark" />
+      <span className="text-[13px] text-text-secondary">
+        Click an icon with no dot — it leaps once from the surface, and the Running Indicator fades in as it lands.
+        Re-click mid-bounce: the leap always finishes, never restarts.
+      </span>
+    </div>
+  )
+}
+
+function DockIndicatorDemo() {
+  const [running, setRunning] = useState(true)
+  return (
+    <div className="flex w-full flex-col items-center gap-8">
+      <div className="flex flex-wrap items-start justify-center gap-8">
+        <div className="flex flex-col items-center gap-4">
+          <DockIcon label="Finder" active={false}>
+            <DockAppIcon from="#7cc4ff" to="#1f7bff">
+              <FinderGlyph />
+            </DockAppIcon>
+          </DockIcon>
+          <span className="text-[12px] text-text-secondary">Not running</span>
+        </div>
+        <div className="flex flex-col items-center gap-4">
+          <DockIcon label="Mail" active windows={1}>
+            <DockAppIcon from="#6fb2ff" to="#0a5cff">
+              <MailGlyph />
+            </DockAppIcon>
+          </DockIcon>
+          <span className="text-[12px] text-text-secondary">One window · 4px</span>
+        </div>
+        <div className="flex flex-col items-center gap-4">
+          <DockIcon label="Messages" active windows={3}>
+            <DockAppIcon from="#7bf282" to="#0ec632">
+              <MessagesGlyph />
+            </DockAppIcon>
+          </DockIcon>
+          <span className="text-[12px] text-text-secondary">3 windows · 5px</span>
+        </div>
+        <div className="flex flex-col items-center gap-4">
+          <DockIcon label="Music" active={running} onLaunch={() => setRunning((value) => !value)}>
+            <DockAppIcon from="#fd7e93" to="#e8213f">
+              <MusicGlyph />
+            </DockAppIcon>
+          </DockIcon>
+          <span className="text-[12px] text-text-secondary">{running ? 'Click to quit' : 'Click to launch'} — fades</span>
+        </div>
+      </div>
+      <div className="flex w-full justify-center">
+        <DockScene tone="dark" />
+      </div>
+      <span className="text-[13px] text-text-secondary">
+        Hover the dock — the dot tracks the magnified icon every frame while holding its 4px size.
+      </span>
+    </div>
+  )
+}
+
+function DockIconDemo() {
+  return (
+    <div className="flex flex-wrap items-end justify-center gap-6">
+      {DOCK_DEMO_ICONS.map(({ label, from, to, glyph: Glyph, active, windows }) => (
+        <div key={label} className="flex flex-col items-center gap-3">
+          <DockIcon label={label} active={active} windows={windows}>
+            <DockAppIcon from={from} to={to}>
+              <Glyph />
+            </DockAppIcon>
+          </DockIcon>
+          <span className="text-[12px] text-text-secondary">{label}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function DockIconStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Rest">
+        <StateGrid columns={2}>
+          <StateCard label="Idle — 56×56, fully static" className="bg-bg-primary">
+            <DockIcon label="Finder">
+              <DockAppIcon from="#7cc4ff" to="#1f7bff">
+                <FinderGlyph />
+              </DockAppIcon>
+            </DockIcon>
+          </StateCard>
+          <StateCard label="Active — running-app dot" className="bg-bg-primary">
+            <div className="pb-2">
+              <DockIcon label="Mail" active>
+                <DockAppIcon from="#6fb2ff" to="#0a5cff">
+                  <MailGlyph />
+                </DockAppIcon>
+              </DockIcon>
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Size">
+        <StateGrid columns={2}>
+          <StateCard label="Rest — 56px" className="bg-bg-primary">
+            <DockIcon label="Music">
+              <DockAppIcon from="#fd7e93" to="#e8213f">
+                <MusicGlyph />
+              </DockAppIcon>
+            </DockIcon>
+          </StateCard>
+          <StateCard label="Magnified — 72px (driven by the Dock)" className="bg-bg-primary">
+            <DockIcon label="Music" size={72}>
+              <DockAppIcon from="#fd7e93" to="#e8213f" size={72}>
+                <MusicGlyph size={38} />
+              </DockAppIcon>
+            </DockIcon>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
+  )
+}
+
+function DockStates() {
+  return (
+    <StateStack gap={10}>
+      <StateGroup title="Tone">
+        <StateGrid columns={1}>
+          {DOCK_TONES.map((tone) => (
+            <StateCard key={tone} label={DOCK_TONE_LABEL[tone]} align="stretch" wide className="bg-bg-primary">
+              <div className="flex w-full justify-center">
+                <DockScene tone={tone} />
+              </div>
+            </StateCard>
+          ))}
+        </StateGrid>
+      </StateGroup>
+
+      <StateGroup title="Sizing">
+        <StateGrid columns={1}>
+          <StateCard label="Single icon — shell fits content" align="stretch" wide className="bg-bg-primary">
+            <div className="flex w-full justify-center">
+              <div className="relative flex h-[140px] w-full max-w-[560px] items-end justify-center overflow-hidden rounded-[16px]">
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: 'url(/wallpapers/dock-wallpaper.svg)' }}
+                />
+                <Dock tone="dark" position="relative" className="mb-2">
+                  <DockIcon label="Finder" active>
+                    <DockAppIcon from="#7cc4ff" to="#1f7bff">
+                      <FinderGlyph />
+                    </DockAppIcon>
+                  </DockIcon>
+                </Dock>
+              </div>
+            </div>
+          </StateCard>
+          <StateCard label="Magnified icon (72px) — shell grows vertically" align="stretch" wide className="bg-bg-primary">
+            <div className="flex w-full justify-center">
+              <div className="relative flex h-[280px] w-full max-w-[560px] items-end justify-center overflow-hidden rounded-[16px]">
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: 'url(/wallpapers/dock-wallpaper.svg)' }}
+                />
+                <Dock tone="dark" position="relative" className="mb-2">
+                  {DOCK_DEMO_ICONS.slice(0, 4).map(({ label, from, to, glyph: Glyph }, index) => {
+                    const size = index === 1 ? 72 : 56
+                    return (
+                      <DockIcon key={label} label={label} size={size}>
+                        <DockAppIcon from={from} to={to} size={size}>
+                          <Glyph size={index === 1 ? 38 : 30} />
+                        </DockAppIcon>
+                      </DockIcon>
+                    )
+                  })}
+                </Dock>
+              </div>
+            </div>
+          </StateCard>
+        </StateGrid>
+      </StateGroup>
+    </StateStack>
   )
 }
 
@@ -16752,6 +17275,339 @@ const DOCS: Record<string, DocDef> = {
       p("align", "'stretch' | 'start'", "'stretch'", 'Stretch is equal height. Start lets each card hug its copy.'),
       p("widths", "'equal' | 'fit' | 'mixed'", "'equal'", 'Equal shares the row. Fit hugs copy. Mixed keeps the first card compact.'),
       p("gap", "'sm' | 'md' | 'lg'", "'md'", 'Space between cards. Small is 12px. Medium is 16px. Large is 24px.'),
+    ],
+  },
+  dock: {
+    title: 'Dock',
+    description:
+      'The floating glass bar of app icons at the bottom of the screen. 70px at rest, grows to fit magnified icons, and blurs the real content behind it.',
+    ...dockGuide,
+    Demo: DockDemo,
+    wide: true,
+    code: `<Dock tone="dark">
+  <DockIcon label="Finder" active>
+    <DockAppIcon from="#7cc4ff" to="#1f7bff">
+      <FinderGlyph />
+    </DockAppIcon>
+  </DockIcon>
+  <DockIcon label="Mail" active>
+    <DockAppIcon from="#6fb2ff" to="#0a5cff">
+      <MailGlyph />
+    </DockAppIcon>
+  </DockIcon>
+  <DockIcon label="Settings">
+    <DockAppIcon from="#c9c9ce" to="#7e7e83">
+      <SettingsGlyph />
+    </DockAppIcon>
+  </DockIcon>
+</Dock>
+
+<Dock tone="light" position="relative">
+  <DockIcon label="Search">
+    <DockAppIcon from="#fbfbfd" to="#d9d9e0">
+      <SearchGlyph />
+    </DockAppIcon>
+  </DockIcon>
+</Dock>
+`,
+    statesContent: <DockStates />,
+    props: [
+      p('children', 'ReactNode', '—', 'The icons in the bar. Prefer DockIcon wrapped around DockAppIcon artwork.'),
+      p("tone", "'light' | 'dark'", "'dark'", 'Glass tint. Light is a 12% white base. Dark is a 25% black base. Both sit under blur(24px) saturate(180%).'),
+      p("position", "'fixed' | 'relative'", "'fixed'", 'Fixed floats 8px above the bottom edge, centered. Relative stays in flow for previews.'),
+      p('label', 'string', "'Dock'", 'Accessible name for the navigation landmark.'),
+      p('className', 'string', 'undefined', 'Extra classes on the glass shell.'),
+    ],
+  },
+  'dock-icon': {
+    title: 'Dock Icon',
+    description:
+      'A single app icon tile inside the Dock — 56×56 at rest, fully clickable, with artwork pre-masked to the squircle. Static at idle; the Dock drives all motion.',
+    ...dockIconGuide,
+    Demo: DockIconDemo,
+    code: `<DockIcon label="Finder" active>
+  <DockAppIcon from="#7cc4ff" to="#1f7bff">
+    <FinderGlyph />
+  </DockAppIcon>
+</DockIcon>
+
+<DockIcon label="Settings" onClick={openSettings}>
+  <DockAppIcon from="#c9c9ce" to="#7e7e83">
+    <SettingsGlyph />
+  </DockAppIcon>
+</DockIcon>
+
+<DockIcon label="Maps" size={72}>
+  <DockAppIcon from="#fd7e93" to="#e8213f" size={72}>
+    <MapsGlyph />
+  </DockAppIcon>
+</DockIcon>
+`,
+    statesContent: <DockIconStates />,
+    props: [
+      p('children', 'ReactNode', '—', 'The icon artwork, pre-masked to the squircle. Prefer DockAppIcon.'),
+      p('label', 'string', '—', 'Accessible name and tooltip. The glyph alone is never the name.'),
+      p('size', 'number', '56', 'Rest size in px. The full tile is the click target. Magnification scales from here.'),
+      p('active', 'boolean', 'false', 'Shows the Running Indicator beneath the icon. Fades over 150ms.'),
+      p('windows', 'number', '1', 'Open window count. More than one renders a 5px dot instead of 4px.'),
+      p('onClick', '() => void', 'undefined', 'Launches or focuses the app.'),
+      p('DockAppIcon.from / to', 'string', '—', 'Gradient of the squircle face. The artwork is pre-masked, so the tile applies no rounding.'),
+      p('DockAppIcon.size', 'number', '56', 'Rendered size in px. Match the surrounding DockIcon size.'),
+    ],
+  },
+  'dock-magnification': {
+    title: 'Magnification Engine',
+    description:
+      'The cursor-proximity physics that grow Dock icons as the pointer approaches — a Gaussian-like ripple, GPU-accelerated scale from the bottom edge, and a soft settle on mouse leave.',
+    ...dockMagnificationGuide,
+    Demo: DockMagnificationDemo,
+    wide: true,
+    code: `<Dock tone="dark">
+  <DockMagnifier level="medium">
+    <DockIcon label="Finder" active>
+      <DockAppIcon from="#7cc4ff" to="#1f7bff">
+        <FinderGlyph />
+      </DockAppIcon>
+    </DockIcon>
+    <DockIcon label="Mail" active>
+      <DockAppIcon from="#6fb2ff" to="#0a5cff">
+        <MailGlyph />
+      </DockAppIcon>
+    </DockIcon>
+    <DockIcon label="Settings">
+      <DockAppIcon from="#c9c9ce" to="#7e7e83">
+        <SettingsGlyph />
+      </DockAppIcon>
+    </DockIcon>
+  </DockMagnifier>
+</Dock>
+
+// Levels: low → 72px, medium → 96px, high → 128px
+// Custom peak: <DockMagnifier maxSize={110}>
+
+// The math, per icon:
+getMagnification(cursorX, iconCenterX)
+// distance > 140px  → 56
+// otherwise         → 56 + (peak − 56) · (1 − distance/140)^1.8
+`,
+    props: [
+      p('children', 'ReactNode', '—', 'The DockIcon tiles. Sizes are computed per child, in order.'),
+      p("level", "'low' | 'medium' | 'high'", "'medium'", 'Magnification strength. Low peaks at 72px, medium at 96px, high at 128px.'),
+      p('baseSize', 'number', '56', 'Resting icon size in px. Icons return here on mouse leave.'),
+      p('maxSize', 'number', 'level peak', 'Custom peak size in px. Overrides the level when set.'),
+      p('influenceRadius', 'number', '140', 'Horizontal reach of the magnification field in px. Beyond it icons rest.'),
+      p('className', 'string', 'undefined', 'Extra classes on the engine row.'),
+      p('getMagnification', '(cursorX, iconCenterX, base?, max?, radius?) => number', '—', 'The pure falloff math, exported for custom layouts.'),
+    ],
+  },
+  'dock-indicator': {
+    title: 'Running Indicator',
+    description:
+      'The small brand-blue dot beneath a Dock Icon showing the app has an open window. It tracks the icon through magnification while holding its own size, and fades on launch and quit.',
+    ...dockIndicatorGuide,
+    Demo: DockIndicatorDemo,
+    wide: true,
+    code: `<DockIcon label="Mail" active>
+  <DockAppIcon from="#6fb2ff" to="#0a5cff">
+    <MailGlyph />
+  </DockAppIcon>
+</DockIcon>
+
+// More than one window — one slightly larger dot, never a stack
+<DockIcon label="Messages" active windows={3}>
+  <DockAppIcon from="#7bf282" to="#0ec632">
+    <MessagesGlyph />
+  </DockAppIcon>
+</DockIcon>
+
+// Bare component, for custom tiles — toggle visible, never unmount
+<DockRunningIndicator visible={running} windows={2} />
+`,
+    props: [
+      p('visible', 'boolean', 'true', 'Whether the app has an open window. Fades in/out over 150ms.'),
+      p('windows', 'number', '1', 'Open window count. More than one renders a 5px dot instead of 4px.'),
+      p('className', 'string', 'undefined', 'Extra classes on the dot.'),
+      p('DockIcon.active', 'boolean', 'false', 'Renders the indicator beneath the icon — the usual way to use it.'),
+      p('DockIcon.windows', 'number', '1', 'Forwarded to the indicator for the 5px multi-window dot.'),
+    ],
+  },
+  'dock-launch-bounce': {
+    title: 'Launch Bounce',
+    description:
+      'The bounce a Dock Icon plays when clicked to launch — one 500ms leap from the Dock surface, then the Running Indicator fades in as the icon lands.',
+    ...dockLaunchBounceGuide,
+    Demo: DockLaunchBounceDemo,
+    wide: true,
+    code: `// Built into DockIcon — bounce on click, dot on landing
+<DockIcon
+  label="Music"
+  active={running}
+  onLaunch={() => setRunning(true)}
+>
+  <DockAppIcon from="#fd7e93" to="#e8213f">
+    <MusicGlyph />
+  </DockAppIcon>
+</DockIcon>
+
+// The keyframes, played once per launch (~500ms):
+const bounceKeyframes = [
+  { transform: 'scale(1) translateY(0)', offset: 0 },
+  { transform: 'scale(1.15) translateY(-18px)', offset: 0.25 },
+  { transform: 'scale(0.95) translateY(0)', offset: 0.5 },
+  { transform: 'scale(1.08) translateY(-8px)', offset: 0.7 },
+  { transform: 'scale(1) translateY(0)', offset: 1 },
+]
+element.animate(bounceKeyframes, { duration: 500, easing: 'ease-out' })
+
+// Custom tiles: the hook directly
+const { ref, launch } = useDockLaunchBounce(onSettle)
+`,
+    props: [
+      p('DockIcon.bounce', 'boolean', 'true', 'Play the Launch Bounce on click. One bounce per launch — re-clicks during it are ignored.'),
+      p('DockIcon.onLaunch', '() => void', 'undefined', 'Fires with the bounce’s final settle frame. Set active here so the Running Indicator fades in as the icon lands.'),
+      p('useDockLaunchBounce', '(onSettle?) => { ref, launch }', '—', 'The hook behind it. ref goes on the element to animate; launch() plays once, guarded against stacking.'),
+      p('DOCK_LAUNCH_BOUNCE_KEYFRAMES', 'Keyframe[]', '—', 'The exported keyframe sequence, 500ms ease-out, bottom-center origin.'),
+    ],
+  },
+  'dock-divider': {
+    title: 'Dock Divider',
+    description:
+      'The thin vertical line separating pinned apps from the minimized-windows and Trash section. 12px of air each side, 60% of the shell height, and never part of magnification.',
+    ...dockDividerGuide,
+    Demo: DockDividerDemo,
+    wide: true,
+    code: `<Dock tone="dark">
+  <DockMagnifier>
+    <DockIcon label="Finder" active>
+      <DockAppIcon from="#7cc4ff" to="#1f7bff">
+        <FinderGlyph />
+      </DockAppIcon>
+    </DockIcon>
+    {/* …more pinned apps */}
+
+    <DockDivider tone="dark" />
+
+    <DockIcon label="Trash">
+      <DockAppIcon from="#e9e9ee" to="#9a9aa0">
+        <TrashGlyph />
+      </DockAppIcon>
+    </DockIcon>
+  </DockMagnifier>
+</Dock>
+`,
+    props: [
+      p("tone", "'light' | 'dark'", "'dark'", 'Glass tone of the surrounding Dock. Light is a 20% white line, dark is 12%.'),
+      p('className', 'string', 'undefined', 'Extra classes on the line.'),
+    ],
+  },
+  'dock-minimized-window': {
+    title: 'Minimized Window Tile',
+    description:
+      'A live snapshot of a minimized window in the Dock’s right section. 48×40 with a 6px radius — a window, not an app — restored with the genie effect on click.',
+    ...dockMinimizedWindowGuide,
+    Demo: DockMinimizedWindowDemo,
+    wide: true,
+    code: `<Dock tone="dark">
+  <DockMagnifier>
+    {/* …pinned apps */}
+    <DockDivider tone="dark" />
+
+    <DockMinimizedWindow
+      label="Roboticela — Browser"
+      snapshot={window.captureFrame()}  // live last frame, not an icon
+      onRestore={() => restoreWindow(id)}
+    />
+
+    <DockIcon label="Trash">
+      <DockAppIcon from="#e9e9ee" to="#9a9aa0">
+        <TrashGlyph />
+      </DockAppIcon>
+    </DockIcon>
+  </DockMagnifier>
+</Dock>
+
+// The genie, on nested elements so each axis has its own clock:
+//   inner: scaleY 1 → 3.6, 320ms ease-out  (leads — pours up first)
+//   outer: scaleX 1 → 2.4, 400ms ease-out  (follows 80ms behind)
+// Minimize-in is the same warp reversed, down into the tile.
+`,
+    props: [
+      p('label', 'string', '—', 'Window title. The accessible name is Restore plus this label; also the tooltip.'),
+      p('snapshot', 'string', '—', 'Live-captured image of the window’s last frame at minimize time. Never a generic icon.'),
+      p('onRestore', '() => void', 'undefined', 'Fires when the genie restore completes — swap the tile for the real window.'),
+      p('className', 'string', 'undefined', 'Extra classes on the tile button.'),
+      p('DOCK_GENIE_DURATION', 'number', '400', 'Total genie time in ms, ease-out.'),
+      p('DOCK_GENIE_STAGGER', 'number', '80', 'How many ms scaleY completes before scaleX — the liquid offset.'),
+    ],
+  },
+  'dock-trash': {
+    title: 'Trash Well',
+    description:
+      'The Trash/Recently-Deleted icon at the far right of the Dock. Outline when empty, crumpled paper when it has items, a red glow under a dragged file, and a compress-bounce on receipt.',
+    ...dockTrashGuide,
+    Demo: DockTrashDemo,
+    wide: true,
+    code: `<Dock tone="dark">
+  <DockMagnifier>
+    {/* …pinned apps */}
+    <DockDivider tone="dark" />
+    {/* …minimized windows */}
+
+    <DockTrash
+      hasItems={trashHasItems}
+      onDropItem={() => setTrashHasItems(true)}
+    />
+  </DockMagnifier>
+</Dock>
+
+// Built in:
+// · empty ⇄ has-items artwork crossfades over 200ms
+// · drag-over: scale 1.15 + box-shadow 0 0 0 3px rgba(255,69,58,0.4)
+// · drop: item scales to 0 into the center, 300ms ease-in
+// · receipt: compress-bounce scale 1 → 0.9 → 1, 200ms
+`,
+    statesContent: <DockTrashStates />,
+    props: [
+      p('hasItems', 'boolean', 'false', 'Swaps the wastebasket artwork — outline vs. crumpled paper — with a 200ms crossfade.'),
+      p('size', 'number', '56', 'Rest size in px, like a normal Dock Icon. Participates in magnification.'),
+      p('onDropItem', '() => void', 'undefined', 'Fires when an item is dropped in — set hasItems from here.'),
+      p('className', 'string', 'undefined', 'Extra classes on the well button.'),
+    ],
+  },
+  'dock-tooltip': {
+    title: 'Icon Tooltip',
+    description:
+      'The name label above a Dock Icon on hover — a 400ms delay against sweep flicker, positioned 12px above the icon’s live magnified top edge, one at a time.',
+    ...dockTooltipGuide,
+    Demo: DockTooltipDemo,
+    wide: true,
+    code: `// Automatic — every DockIcon inside a DockMagnifier gets one from its label
+<Dock tone="dark">
+  <DockMagnifier>
+    <DockIcon label="Finder" active>
+      <DockAppIcon from="#7cc4ff" to="#1f7bff">
+        <FinderGlyph />
+      </DockAppIcon>
+    </DockIcon>
+  </DockMagnifier>
+</Dock>
+
+// Behavior, built in:
+// · appears after a 400ms hover delay — no flicker on fast sweeps
+// · 12px above the icon's CURRENT magnified top edge, tracked per frame
+// · entrance: fade + 4px upward slide, 150ms ease-out
+// · exit: fade only, 100ms — faster out than in
+// · one at a time: a new hover cancels the old timer
+
+// Presentational, for custom layouts:
+<DockTooltip shown={hovered}>Finder</DockTooltip>
+`,
+    props: [
+      p('children', 'ReactNode', '—', 'The icon’s name — taken from DockIcon.label inside a DockMagnifier.'),
+      p('shown', 'boolean', 'true', 'Drives the entrance (fade + 4px rise, 150ms) and exit (fade only, 100ms).'),
+      p('style', 'CSSProperties', 'undefined', 'Position — the engine sets left/bottom from the icon’s live frame.'),
+      p('className', 'string', 'undefined', 'Extra classes on the tooltip.'),
+      p('DOCK_TOOLTIP_DELAY', 'number', '400', 'Hover delay in ms before the tooltip appears.'),
     ],
   },
   'stat-card': {

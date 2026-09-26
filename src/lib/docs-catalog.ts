@@ -9,6 +9,7 @@ export type DocsSearchGroup =
   | 'Feedback'
   | 'Overlay'
   | 'Navigation'
+  | 'Dock'
   | 'Data Display'
   | 'Marketing'
   | 'Auth'
@@ -57,6 +58,10 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('spacing', 'Spacing', 'Foundations', 'The only spacing steps the kit uses. Pick the nearest value on this scale instead of inventing a new gap.'),
       c('radius', 'Radius', 'Foundations', 'Corner rounding for fields, cards, panels, and pills. Match the radius to what the object is.'),
       c('layout', 'Layout', 'Foundations', 'Breakpoints, content widths, and page padding. Start from the small screen and add columns as the viewport grows.'),
+      c('shadows', 'Shadows', 'Foundations', 'The elevation scale in light and dark, plus the Dock and icon-tile shadows. Use the token, never a one-off box-shadow.'),
+      c('glass', 'Glass', 'Foundations', 'The five blur and tint weight classes for every translucent surface. Pick the closest class instead of inventing a recipe.'),
+      c('motion', 'Motion', 'Foundations', 'The two easing curves and the duration scale. Spring is reserved for defined alive moments; everything else uses standard.'),
+      c('z-index', 'Z-Index', 'Foundations', 'The OS layering scale from desktop to tooltip. Window order is computed at runtime and capped below the Dock.'),
       c('icons', 'Icons', 'Foundations', 'A local icon library you can search by name or meaning. Use these glyphs in buttons, fields, and empty states.'),
       c('cursors', 'Cursors', 'Foundations', 'RoboticelaOS and system cursor packs in SVG and .rcur binary formats, featuring an interactive testing playground, hotspot calibration, and runtime loaders.'),
       c('brand-logo', 'Brand Logo', 'Foundations', 'The company mark, the product wordmark, and the lockup that pairs them.'),
@@ -153,6 +158,21 @@ export const DOCS_NAV: DocsNavSection[] = [
     ],
   },
   {
+    id: 'dock',
+    label: 'Dock',
+    items: [
+      c('dock', 'Dock Shell', 'Dock', 'The floating glass bar of app icons at the bottom of the screen. Use it for the apps that are always one press away.'),
+      c('dock-icon', 'Dock Icon', 'Dock', 'A single app icon tile inside the Dock. The whole 56×56 tile is the click target. Artwork is pre-masked to the squircle.'),
+      c('dock-magnification', 'Magnification Engine', 'Dock', 'The cursor-proximity physics that grow Dock icons as the pointer approaches. Every other Dock component sizes from this.'),
+      c('dock-indicator', 'Running Indicator', 'Dock', 'The small brand-blue dot beneath a Dock Icon showing the app has an open window. A slightly larger dot means more than one window.'),
+      c('dock-launch-bounce', 'Launch Bounce', 'Dock', 'The bounce a Dock Icon plays when clicked to launch. One leap per click, then the Running Indicator fades in as it lands.'),
+      c('dock-divider', 'Dock Divider', 'Dock', 'The thin vertical line separating pinned apps from minimized windows and the Trash. It never magnifies.'),
+      c('dock-minimized-window', 'Minimized Window Tile', 'Dock', 'A live snapshot of a minimized window in the Dock’s right section. Click to pour it back out with the genie effect.'),
+      c('dock-trash', 'Trash Well', 'Dock', 'The Trash icon at the far right of the Dock. Outline when empty, crumpled paper when it has items, and a red glow when a file is dragged over it.'),
+      c('dock-tooltip', 'Icon Tooltip', 'Dock', 'The name label above a Dock Icon on hover. Appears after a short delay, tracks the icon’s live magnified position, one at a time.'),
+    ],
+  },
+  {
     id: 'data-display',
     label: 'Data Display',
     items: [
@@ -206,7 +226,7 @@ export const DOCS_NAV: DocsNavSection[] = [
 
 export const DOCS_ITEMS: DocsNavItem[] = DOCS_NAV.flatMap((section) => section.items)
 
-export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'radius', 'layout', 'icons'])
+export const FOUNDATION_IDS = new Set(['colors', 'typography', 'spacing', 'radius', 'layout', 'icons', 'shadows', 'glass', 'motion', 'z-index'])
 
 export const PREVIEW_EXCLUDED_IDS = new Set([...FOUNDATION_IDS, 'country-flag'])
 
@@ -279,6 +299,7 @@ export const SEARCH_GROUP_ORDER: DocsSearchGroup[] = [
   'Forms',
   'Feedback',
   'Navigation',
+  'Dock',
   'Foundations',
   'Typography',
   'Overlay',
