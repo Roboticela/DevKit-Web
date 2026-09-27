@@ -62,7 +62,7 @@ export function LoginScreen({
               focused && selected === user.id && 'ring-2 ring-brand-primary ring-offset-2',
             )}
           >
-            <Avatar src={user.avatar} size="xl" />
+            <Avatar src={user.avatar || undefined} name={user.name} size="xl" />
             <span className="text-[15px] font-medium text-text-primary">{user.name}</span>
             {user.email ? <span className="text-[12px] text-text-tertiary">{user.email}</span> : null}
           </button>

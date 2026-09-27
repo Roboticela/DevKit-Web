@@ -61,11 +61,6 @@ export function AlertDialog({
     return () => window.clearTimeout(timerRef.current)
   }, [])
 
-  const backdrop = () => {
-    timerRef.current = window.setTimeout(onClose, 0)
-  }
-  useEffect(backdrop, [onClose])
-
   return (
     <div
       className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center bg-black/40"

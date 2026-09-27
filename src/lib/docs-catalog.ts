@@ -10,6 +10,7 @@ export type DocsSearchGroup =
   | 'Overlay'
   | 'Navigation'
   | 'Dock'
+  | 'Desktop'
   | 'Data Display'
   | 'Marketing'
   | 'Auth'
@@ -68,6 +69,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('theme-toggle', 'Theme Toggle', 'Foundations', 'A labeled switch that sets light or dark for the whole page. Compact and switch only layouts are included.'),
       c('theme-icon-toggle', 'Theme Icon Toggle', 'Foundations', 'A compact control that sets light or dark with sun and moon icons. Variants show one icon or both at once.'),
       c('country-flag', 'Country Flag', 'Foundations', 'A flag image for every ISO country code. Search by name, code, or dialing code.'),
+      c('squircle', 'Squircle', 'Foundations', 'The n=5 superellipse mask used for Dock icons, app tiles, and rounded faces. One definition — never re-derive per component.'),
     ],
   },
   {
@@ -142,6 +144,8 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('modal', 'Modal', 'Overlay', 'A panel above the page that takes focus until the person finishes. Use a dialog for a form, an alert for a short decision, a sheet from the bottom, or an action list for choices such as Share or Delete.'),
       c('command-palette', 'Command Palette', 'Overlay', 'Type to find and run a command without leaving the page. Use it for in-app search, a marketing header, or a system jump with a keyboard shortcut.'),
       c('confirm-dialog', 'Confirm Dialog', 'Overlay', 'Ask once before a change that is hard to undo. Use it for delete, publish, leave without saving, or archive.'),
+      c('alert-dialog', 'Alert Dialog', 'Overlay', 'A centered blocking message on modal glass: icon, title, body, and optional actions. Use it when the person must decide before continuing.'),
+      c('spotlight-search', 'Spotlight Search', 'Overlay', 'System-wide search on modal glass: type to filter results, Esc or a selection closes. Distinct from the in-app Command Palette.'),
       c('avatar-editor', 'Avatar Editor', 'Overlay', 'A full screen crop sheet for a profile photo. The person moves, zooms, and rotates, then saves a circular jpeg.'),
       c('glass-surface', 'Glass Surface', 'Overlay', 'The one blur, tint, border, and shadow recipe every chrome surface inherits. Four weight classes: menu bar, panel, modal, tooltip.'),
       c('traffic-lights', 'Traffic Lights', 'Overlay', 'The three-dot close, minimize, and maximize cluster in a window’s title bar. Glyphs show on hover; all dots mute when the window is unfocused.'),
@@ -174,6 +178,33 @@ export const DOCS_NAV: DocsNavSection[] = [
       c('dock-minimized-window', 'Minimized Window Tile', 'Dock', 'A live snapshot of a minimized window in the Dock’s right section. Click to pour it back out with the genie effect.'),
       c('dock-trash', 'Trash Well', 'Dock', 'The Trash icon at the far right of the Dock. Outline when empty, crumpled paper when it has items, and a red glow when a file is dragged over it.'),
       c('dock-tooltip', 'Icon Tooltip', 'Dock', 'The name label above a Dock Icon on hover. Appears after a short delay, tracks the icon’s live magnified position, one at a time.'),
+    ],
+  },
+  {
+    id: 'desktop',
+    label: 'Desktop',
+    items: [
+      c('menu-bar', 'Menu Bar', 'Desktop', 'The 28px system bar across the top: app name, menus, status icons, and a live clock on menu-bar glass.'),
+      c('window', 'Window', 'Desktop', 'An opaque elevated frame with Traffic Lights, a centered title, and a scrolling body. Chrome only — content stays opaque.'),
+      c('window-body', 'Window Body', 'Desktop', 'The opaque body container under a window title bar, with scroll viewport and resize-handle hit zones.'),
+      c('window-manager', 'Window Manager', 'Desktop', 'Edge and corner resize handles composited into a window frame. Hit zones stay large; the cursor swaps to the correct axis.'),
+      c('spaces', 'Spaces', 'Desktop', 'Virtual desktops: a full-width stack of spaces with swipe, keyboard, and persistent indicator dots.'),
+      c('mission-control', 'Mission Control', 'Desktop', 'Full-screen overview of every open window. Select a thumbnail to focus; Esc dismisses.'),
+      c('lock-screen', 'Lock Screen', 'Desktop', 'Blurred wallpaper, large clock, date, unlock gesture, and notification previews while locked.'),
+      c('login-screen', 'Login Screen', 'Desktop', 'User picker and glass password field for signing into the desktop session.'),
+      c('notification-center', 'Notification Center', 'Desktop', 'The side panel of grouped notifications. Distinct from the corner Notification Banner.'),
+      c('wallpaper', 'Wallpaper', 'Desktop', 'Static, slideshow, dynamic, video, and ambient wallpapers that share one playing interface for Spaces.'),
+      c('widgets', 'Widgets', 'Desktop', 'Self-contained desktop cards — weather, calendar, clock, notes, photos — in small, medium, and large sizes.'),
+      c('drag-and-drop', 'Drag and Drop', 'Desktop', 'Global drag ghost, valid and invalid drop zones, and a settle animation when an item lands.'),
+    ],
+  },
+  {
+    id: 'app-shell',
+    label: 'App Shell',
+    items: [
+      c('sidebar-nav', 'Sidebar Nav', 'App Shell', 'Primary navigation for an app shell. Full height with the brand at the top. Collapse it to a rail.'),
+      c('dashboard-nav', 'Dashboard Nav', 'App Shell', 'Top bar for a signed-in workspace: section title, optional search, and account.'),
+      c('dashboard-shell', 'Dashboard Shell', 'App Shell', 'Full-height sidebar with the brand, a top bar, and the main canvas.'),
     ],
   },
   {
@@ -306,6 +337,7 @@ export const SEARCH_GROUP_ORDER: DocsSearchGroup[] = [
   'Feedback',
   'Navigation',
   'Dock',
+  'Desktop',
   'Foundations',
   'Typography',
   'Overlay',

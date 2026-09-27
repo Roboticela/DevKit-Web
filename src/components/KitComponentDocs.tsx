@@ -146,6 +146,19 @@ import { Squircle } from './Squircle'
 import { GlassSurface, GLASS_WEIGHTS, GLASS_WEIGHT_LABEL } from './GlassSurface'
 import { TrafficLights } from './TrafficLights'
 import { NotificationBanner } from './NotificationBanner'
+import { AlertDialog } from './AlertDialog'
+import { SpotlightSearch } from './SpotlightSearch'
+import { MenuBar } from './MenuBar'
+import { Window } from './Window'
+import { WindowBodyContainer } from './WindowBodyContainer'
+import { WindowResizeHandles, CornerResizers } from './WindowManager'
+import { MissionControl } from './MissionControl'
+import { LockScreen } from './LockScreen'
+import { LoginScreen } from './LoginScreen'
+import { NotificationCenter } from './NotificationCenter'
+import { Wallpaper } from './Backgrounds'
+import { Widgets } from './Widgets'
+import { DragAndDrop, DropTarget } from './DragAndDrop'
 import { SwatchPicker } from './SwatchPicker'
 import { FileTile } from './FileTile'
 import { ThumbnailTile } from './ThumbnailTile'
@@ -8162,6 +8175,262 @@ function ShellDemo() {
         <p className="m-0 p-6 text-sm text-text-secondary">Main canvas</p>
       </DashboardShell>
     </PreviewFrame>
+  )
+}
+
+function SquircleDemo() {
+  return (
+    <div className="flex flex-wrap items-end justify-center gap-6">
+      {[40, 56, 88].map((size) => (
+        <Squircle key={size} size={size} className="bg-gradient-to-br from-[#7cc4ff] to-[#1f7bff]" />
+      ))}
+    </div>
+  )
+}
+
+function AlertDialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex w-full flex-col items-center gap-3">
+      <Button fullWidth={false} variant="action" onClick={() => setOpen(true)}>
+        Show alert
+      </Button>
+      {open ? (
+        <AlertDialog
+          title="Replace existing file?"
+          body="A file with this name is already on the desktop."
+          variant="warning"
+          onClose={() => setOpen(false)}
+          actions={[
+            { label: 'Cancel', variant: 'secondary' },
+            { label: 'Replace', destructive: true },
+          ]}
+        />
+      ) : null}
+    </div>
+  )
+}
+
+function SpotlightSearchDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="relative flex h-[280px] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-[18px] bg-bg-secondary">
+      <Button fullWidth={false} variant="action" onClick={() => setOpen(true)}>
+        Open Spotlight
+      </Button>
+      <SpotlightSearch
+        open={open}
+        onClose={() => setOpen(false)}
+        results={[
+          { id: '1', title: 'Finder', subtitle: 'Application' },
+          { id: '2', title: 'Messages', subtitle: 'Application' },
+          { id: '3', title: 'System Settings', subtitle: 'Application' },
+        ]}
+      />
+    </div>
+  )
+}
+
+function MenuBarDemo() {
+  return (
+    <div className="w-full overflow-hidden rounded-[12px]">
+      <MenuBar
+        appName="Finder"
+        menus={[{ label: 'File' }, { label: 'Edit' }, { label: 'View' }, { label: 'Go' }]}
+        status={<span className="text-text-secondary">100%</span>}
+      />
+    </div>
+  )
+}
+
+function WindowDemo() {
+  return (
+    <div className="relative h-[280px] w-full overflow-hidden rounded-[18px] bg-bg-secondary">
+      <Window title="Notes" width={360} height={220} className="left-1/2 top-6 -translate-x-1/2">
+        <p className="m-0 p-4 text-[14px] text-text-secondary">Window body scrolls inside the frame.</p>
+      </Window>
+    </div>
+  )
+}
+
+function WindowBodyDemo() {
+  return (
+    <div className="relative h-[240px] w-full overflow-hidden rounded-[18px] bg-bg-secondary">
+      <WindowBodyContainer
+        windowId="demo"
+        title="Preview"
+        width={320}
+        height={180}
+        className="left-1/2 top-6 -translate-x-1/2"
+      >
+        <p className="m-0 p-4 text-[14px] text-text-secondary">Opaque body with resize hit zones.</p>
+      </WindowBodyContainer>
+    </div>
+  )
+}
+
+function WindowManagerDemo() {
+  return (
+    <div className="relative h-[200px] w-full overflow-hidden rounded-[18px] border border-border-subtle bg-bg-elevated">
+      <WindowResizeHandles dimension="width" onResizeStart={() => undefined} />
+      <CornerResizers onResizeStart={() => undefined} />
+      <p className="absolute inset-0 flex items-center justify-center text-[13px] text-text-tertiary">
+        Hover edges and corners
+      </p>
+    </div>
+  )
+}
+
+function SpacesDemo() {
+  const [active, setActive] = useState(0)
+  const labels = ['Desktop 1', 'Desktop 2', 'Desktop 3']
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <div className="flex h-[160px] w-full items-center justify-center rounded-[18px] bg-bg-secondary text-[14px] text-text-secondary">
+        {labels[active]}
+      </div>
+      <div className="flex items-center gap-2">
+        {labels.map((label, index) => (
+          <button
+            key={label}
+            type="button"
+            aria-label={label}
+            aria-current={index === active ? 'true' : undefined}
+            onClick={() => setActive(index)}
+            className={
+              index === active
+                ? 'h-2.5 w-6 rounded-full bg-brand-primary'
+                : 'size-2.5 rounded-full bg-border-strong'
+            }
+          />
+        ))}
+      </div>
+      <Caption>Indicator preview — mount Spaces for full swipe and keyboard.</Caption>
+    </div>
+  )
+}
+
+function MissionControlDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="relative flex h-[240px] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-[18px] bg-bg-secondary">
+      <Button fullWidth={false} variant="action" onClick={() => setOpen(true)}>
+        Open Mission Control
+      </Button>
+      {open ? (
+        <MissionControl
+          windows={[
+            { id: 'a', title: 'Notes', bounds: { x: 40, y: 40, width: 320, height: 200 }, zIndex: 1 },
+            { id: 'b', title: 'Mail', bounds: { x: 120, y: 80, width: 400, height: 280 }, zIndex: 2 },
+          ]}
+          onSelect={() => setOpen(false)}
+          onDismiss={() => setOpen(false)}
+          className="absolute inset-0"
+        />
+      ) : null}
+    </div>
+  )
+}
+
+function LockScreenDemo() {
+  return (
+    <div className="relative h-[280px] w-full overflow-hidden rounded-[18px]">
+      <LockScreen
+        backdropSrc="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect fill='%231C1C1E' width='8' height='8'/%3E%3C/svg%3E"
+        notifications={[
+          { id: '1', app: 'Messages', title: 'Alex', body: 'Ship the Dock build.', timestamp: 'now' },
+        ]}
+        onUnlock={() => undefined}
+        className="absolute inset-0"
+      />
+    </div>
+  )
+}
+
+function LoginScreenDemo() {
+  return (
+    <LoginScreen
+      users={[
+        { id: '1', name: 'Alex Rivera', avatar: '' },
+        { id: '2', name: 'Sam Chen', avatar: '' },
+      ]}
+      defaultUser="1"
+      onUserSelect={() => undefined}
+      onPasswordSubmit={() => undefined}
+    />
+  )
+}
+
+function NotificationCenterDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex w-full flex-col items-center gap-3">
+      <Button fullWidth={false} variant="action" onClick={() => setOpen(true)}>
+        Open Notification Center
+      </Button>
+      {open ? (
+        <NotificationCenter
+          open={open}
+          onClose={() => setOpen(false)}
+          notifications={[
+            { id: '1', app: 'Messages', title: 'Alex', body: 'The Dock build looks ready.', timestamp: 'now' },
+            { id: '2', app: 'Calendar', title: 'Standup', body: 'In 10 minutes', timestamp: '9:00' },
+          ]}
+        />
+      ) : null}
+    </div>
+  )
+}
+
+function WallpaperDemo() {
+  return (
+    <div className="relative h-[200px] w-full overflow-hidden rounded-[18px]">
+      <Wallpaper
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%230E7AFF'/%3E%3Cstop offset='1' stop-color='%2314B8A6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='40' height='40'/%3E%3C/svg%3E"
+        fit="fill"
+        className="relative"
+      />
+    </div>
+  )
+}
+
+function WidgetsDemo() {
+  return (
+    <div className="w-full overflow-x-auto">
+      <Widgets />
+    </div>
+  )
+}
+
+function DragAndDropDemo() {
+  const [log, setLog] = useState('Drop targets accept file items from the provider.')
+  return (
+    <DragAndDrop
+      items={[
+        { id: 'file-1', type: 'file' },
+        { id: 'file-2', type: 'file' },
+      ]}
+      onDrop={(itemId, targetId) => setLog(`Dropped ${itemId} on ${targetId}`)}
+      className="flex w-full flex-col gap-4"
+    >
+      <div className="flex gap-3">
+        <DropTarget
+          id="desktop"
+          accepted={['file']}
+          className="min-h-[88px] flex-1 rounded-[12px] border border-dashed border-border-default p-4 text-[13px] text-text-tertiary"
+        >
+          Desktop
+        </DropTarget>
+        <DropTarget
+          id="trash"
+          accepted={['file']}
+          className="min-h-[88px] flex-1 rounded-[12px] border border-dashed border-border-danger p-4 text-[13px] text-text-tertiary"
+        >
+          Trash
+        </DropTarget>
+      </div>
+      <Caption>{log}</Caption>
+    </DragAndDrop>
   )
 }
 
@@ -19042,6 +19311,288 @@ const { ref, launch } = useDockLaunchBounce(onSettle)
       p('collapsible', 'boolean', 'true', 'Shows the control that collapses the sidebar.'),
       p('brandHref', 'string', 'undefined', 'Brand link in the sidebar header.'),
       p('children', 'ReactNode', '—', 'Main canvas.'),
+    ],
+  },
+  squircle: {
+    title: 'Squircle',
+    description:
+      'The n=5 superellipse mask used for Dock icons, app tiles, and rounded faces. One definition — never re-derive per component.',
+    Demo: SquircleDemo,
+    code: `<Squircle size={56} className="bg-gradient-to-br from-[#7cc4ff] to-[#1f7bff]" />\n`,
+    props: [
+      p('size', 'number', '56', 'Rendered size in pixels.'),
+      p('children', 'ReactNode', 'undefined', 'Content clipped to the squircle.'),
+      p('className', 'string', 'undefined', 'Extra classes on the mask.'),
+      p('style', 'CSSProperties', 'undefined', 'Inline styles merged after size.'),
+    ],
+  },
+  'alert-dialog': {
+    title: 'Alert Dialog',
+    description:
+      'A centered blocking message on modal glass: icon, title, body, and optional actions. Use it when the person must decide before continuing.',
+    Demo: AlertDialogDemo,
+    code: `<AlertDialog
+  title="Replace existing file?"
+  body="A file with this name is already on the desktop."
+  variant="warning"
+  onClose={close}
+  actions={[
+    { label: 'Cancel', variant: 'secondary' },
+    { label: 'Replace', destructive: true },
+  ]}
+/>
+`,
+    props: [
+      p('title', 'string', '—', 'Primary line.'),
+      p('body', 'string', 'undefined', 'Supporting copy under the title.'),
+      p("variant", "'info' | 'danger' | 'success' | 'warning'", "'info'", 'Icon and tone.'),
+      p('icon', 'ReactNode', 'undefined', 'Replaces the default variant icon.'),
+      p('onClose', '() => void', '—', 'Backdrop, dismiss, and action presses.'),
+      p('actions', '{ label, variant?, destructive? }[]', 'undefined', 'Two buttons side by side. Omit for a single OK.'),
+    ],
+  },
+  'spotlight-search': {
+    title: 'Spotlight Search',
+    description:
+      'System-wide search on modal glass: type to filter results, Esc or a selection closes. Distinct from the in-app Command Palette.',
+    Demo: SpotlightSearchDemo,
+    wide: true,
+    code: `<SpotlightSearch
+  open={open}
+  onClose={close}
+  results={[
+    { id: '1', title: 'Finder', subtitle: 'Application' },
+    { id: '2', title: 'Messages', subtitle: 'Application' },
+  ]}
+/>
+`,
+    props: [
+      p('open', 'boolean', 'true', 'When false, renders nothing.'),
+      p('results', 'SpotlightResult[]', '[]', 'Rows filtered by the query.'),
+      p('placeholder', 'string', "'Spotlight Search'", 'Field hint and accessible name.'),
+      p('onClose', '() => void', 'undefined', 'Backdrop click, Esc, or a result press.'),
+    ],
+  },
+  'menu-bar': {
+    title: 'Menu Bar',
+    description:
+      'The 28px system bar across the top: app name, menus, status icons, and a live clock on menu-bar glass.',
+    Demo: MenuBarDemo,
+    wide: true,
+    code: `<MenuBar
+  appName="Finder"
+  menus={[{ label: 'File' }, { label: 'Edit' }, { label: 'View' }]}
+  status={<BatteryIcon />}
+/>
+`,
+    props: [
+      p('appName', 'string', "'Finder'", 'Leading bold app name.'),
+      p('menus', 'MenuBarMenu[]', '[]', 'Menu labels across the bar.'),
+      p('status', 'ReactNode', 'undefined', 'Trailing status icons before the clock.'),
+    ],
+  },
+  window: {
+    title: 'Window',
+    description:
+      'An opaque elevated frame with Traffic Lights, a centered title, and a scrolling body. Chrome only — content stays opaque.',
+    Demo: WindowDemo,
+    wide: true,
+    code: `<Window title="Notes" width={480} height={300} focused onClose={close}>
+  <NotesContent />
+</Window>
+`,
+    props: [
+      p('title', 'string', '—', 'Centered title-bar label.'),
+      p('focused', 'boolean', 'true', 'False mutes chrome and softens the shadow.'),
+      p('width', 'number', '480', 'Frame width in pixels.'),
+      p('height', 'number', '300', 'Frame height in pixels.'),
+      p('onClose', '() => void', 'undefined', 'Close traffic light.'),
+      p('onMinimize', '() => void', 'undefined', 'Minimize traffic light.'),
+      p('onMaximize', '() => void', 'undefined', 'Maximize traffic light.'),
+      p('onDragStart', '(event) => void', 'undefined', 'Title-bar pointer down for the window manager.'),
+      p('children', 'ReactNode', 'undefined', 'Scrollable body.'),
+    ],
+  },
+  'window-body': {
+    title: 'Window Body',
+    description:
+      'The opaque body container under a window title bar, with scroll viewport and resize-handle hit zones.',
+    Demo: WindowBodyDemo,
+    wide: true,
+    code: `<WindowBodyContainer windowId="notes" title="Notes" width={480} height={300}>
+  <NotesContent />
+</WindowBodyContainer>
+`,
+    props: [
+      p('windowId', 'string', '—', 'Stable id for the window manager.'),
+      p('title', 'string', '—', 'Accessible name and title-bar label.'),
+      p('focused', 'boolean', 'true', 'False dims chrome.'),
+      p('width', 'number', '480', 'Frame width.'),
+      p('height', 'number', '300', 'Frame height.'),
+      p('onDragStart', '(event) => void', 'undefined', 'Title-bar drag.'),
+      p('onResizeStart', '(edge, event) => void', 'undefined', 'Resize handle press.'),
+      p('children', 'ReactNode', '—', 'Scrollable body.'),
+    ],
+  },
+  'window-manager': {
+    title: 'Window Manager',
+    description:
+      'Edge and corner resize handles composited into a window frame. Hit zones stay large; the cursor swaps to the correct axis.',
+    Demo: WindowManagerDemo,
+    wide: true,
+    code: `<WindowResizeHandles dimension="width" onResizeStart={startResize} />
+<CornerResizers onResizeStart={startResize} />
+`,
+    props: [
+      p('WindowResizeHandles.dimension', "'width' | 'height'", '—', 'Which pair of edges to expose.'),
+      p('WindowResizeHandles.onResizeStart', '(edge, event) => void', '—', 'Called when a handle is pressed.'),
+      p('CornerResizers.onResizeStart', '(edge, event) => void', '—', 'Called when a corner is pressed.'),
+    ],
+  },
+  spaces: {
+    title: 'Spaces',
+    description:
+      'Virtual desktops: a full-width stack of spaces with swipe, keyboard, and persistent indicator dots.',
+    Demo: SpacesDemo,
+    wide: true,
+    code: `<Spaces
+  spaces={spaces}
+  activeIndex={index}
+  onActivate={setIndex}
+>
+  {spaceContent}
+</Spaces>
+`,
+    props: [
+      p('spaces', 'Space[]', '—', 'Desktop definitions with id and label.'),
+      p('activeIndex', 'number', '—', 'Current space index.'),
+      p('onActivate', '(index: number) => void', '—', 'Called when the active space changes.'),
+      p('children', 'ReactNode', '—', 'Content for the active space.'),
+      p('dragEnabled', 'boolean', 'true', 'Horizontal trackpad swipe between spaces.'),
+    ],
+  },
+  'mission-control': {
+    title: 'Mission Control',
+    description:
+      'Full-screen overview of every open window. Select a thumbnail to focus; Esc dismisses.',
+    Demo: MissionControlDemo,
+    wide: true,
+    code: `<MissionControl
+  windows={snapshots}
+  onSelect={focusWindow}
+  onDismiss={close}
+/>
+`,
+    props: [
+      p('windows', 'WindowSnapshot[]', '—', 'Open windows with bounds and z-index.'),
+      p('onSelect', '(id: string) => void', '—', 'Focus the chosen window.'),
+      p('onDismiss', '() => void', '—', 'Esc or backdrop dismiss.'),
+    ],
+  },
+  'lock-screen': {
+    title: 'Lock Screen',
+    description:
+      'Blurred wallpaper, large clock, date, unlock gesture, and notification previews while locked.',
+    Demo: LockScreenDemo,
+    wide: true,
+    code: `<LockScreen
+  backdropSrc="/wallpapers/dawn.jpg"
+  notifications={previews}
+  onUnlock={unlock}
+/>
+`,
+    props: [
+      p('backdropSrc', 'string', '—', 'Wallpaper image behind the blur.'),
+      p('notifications', 'Notification[]', '[]', 'Preview banners while locked.'),
+      p('onUnlock', '() => void', '—', 'Unlock gesture completed.'),
+      p('date', 'Date', 'undefined', 'Stable clock time for tests.'),
+    ],
+  },
+  'login-screen': {
+    title: 'Login Screen',
+    description:
+      'User picker and glass password field for signing into the desktop session.',
+    Demo: LoginScreenDemo,
+    wide: true,
+    code: `<LoginScreen
+  users={accounts}
+  defaultUser={id}
+  onUserSelect={setUser}
+  onPasswordSubmit={signIn}
+/>
+`,
+    props: [
+      p('users', 'UserAccount[]', '—', 'Accounts with id, name, and avatar.'),
+      p('defaultUser', 'string', 'undefined', 'Initially selected account id.'),
+      p('onUserSelect', '(id: string) => void', '—', 'Account pressed.'),
+      p('onPasswordSubmit', '(id, password) => void', '—', 'Password submitted for the selected user.'),
+    ],
+  },
+  'notification-center': {
+    title: 'Notification Center',
+    description:
+      'The side panel of grouped notifications. Distinct from the corner Notification Banner.',
+    Demo: NotificationCenterDemo,
+    wide: true,
+    code: `<NotificationCenter
+  open={open}
+  onClose={close}
+  notifications={items}
+  onDismiss={remove}
+/>
+`,
+    props: [
+      p('open', 'boolean', '—', 'Whether the panel is visible.'),
+      p('notifications', 'Notification[]', '[]', 'Items to list.'),
+      p('onClose', '() => void', '—', 'Backdrop or close control.'),
+      p('onDismiss', '(id: string) => void', 'undefined', 'Dismiss one banner.'),
+      p('groupByApp', 'boolean', 'true', 'Group rows under app headers.'),
+    ],
+  },
+  wallpaper: {
+    title: 'Wallpaper',
+    description:
+      'Static, slideshow, dynamic, video, and ambient wallpapers that share one playing interface for Spaces.',
+    Demo: WallpaperDemo,
+    wide: true,
+    code: `<Wallpaper src="/wallpapers/dawn.jpg" fit="fill" />
+<SlideshowWallpaper sources={urls} interval={8000} />
+<AmbientWallpaper playing />
+`,
+    props: [
+      p('Wallpaper.src', 'string', '—', 'Image URL for a static wallpaper.'),
+      p("Wallpaper.fit", "'fill' | 'fit' | 'stretch' | 'center' | 'tile'", "'fill'", 'How the image fills the desktop.'),
+      p('playing', 'boolean', 'true', 'Pauses timers and video when false.'),
+    ],
+  },
+  widgets: {
+    title: 'Widgets',
+    description:
+      'Self-contained desktop cards — weather, calendar, clock, notes, photos — in small, medium, and large sizes.',
+    Demo: WidgetsDemo,
+    wide: true,
+    code: `<Widgets />\n`,
+    props: [
+      p('(none)', '—', '—', 'Renders the default widget set. Size changes stay local to each card.'),
+    ],
+  },
+  'drag-and-drop': {
+    title: 'Drag and Drop',
+    description:
+      'Global drag ghost, valid and invalid drop zones, and a settle animation when an item lands.',
+    Demo: DragAndDropDemo,
+    wide: true,
+    code: `<DragAndDrop items={items} onDrop={handleDrop}>
+  <DropTarget id="desktop" accepted={['file']}>Desktop</DropTarget>
+  <DropTarget id="trash" accepted={['file']}>Trash</DropTarget>
+</DragAndDrop>
+`,
+    props: [
+      p('items', 'DropItem[]', '—', 'Draggable ids and MIME-like types.'),
+      p('onDrop', '(itemId, targetId) => void', '—', 'Called when a valid drop lands.'),
+      p('disabled', 'boolean', 'false', 'Blocks drag interactions.'),
+      p('DropTarget.id', 'string', '—', 'Target id passed to onDrop.'),
+      p('DropTarget.accepted', 'string[]', '—', 'Item types this target accepts.'),
     ],
   },
 }
