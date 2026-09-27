@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
+import { useMemo } from "react";
 
 import { InteractiveDesktop, InteractiveWindow } from "@/components/interactive/Shell";
 import { useDesktopSession } from "@/session/useDesktopSession";
+import { BackgroundLayer } from "@/background/BackgroundLayer";
+import { VideoSource } from "@/background/adapters/VideoSource";
+import defaultBg from "@/assets/DefaultBackground.mp4";
+
 
 function LabChrome({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -184,3 +189,17 @@ export function MenuBarPage() {
     </LabChrome>
   );
 }
+
+
+export function BackgroundPage() {
+  // VideoSource — DefaultBackground.mp4, autoplay muted loop, fill/cover.
+  const source = useMemo(() => new VideoSource(defaultBg), []);
+
+  return (
+    <div className="relative h-screen w-screen overflow-hidden bg-black">
+      <BackgroundLayer source={source} fitMode="fill" visible lowPower={false} />
+    </div>
+  );
+}
+
+

@@ -1,7 +1,10 @@
 import type { DesktopController } from "@/session/useDesktopSession";
 import type { DesktopWindow } from "@/state/desktopState";
 import { ShellSurface } from "@/state/desktopState";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
+import { BackgroundLayer } from "@/background/BackgroundLayer";
+import { VideoSource } from "@/background/adapters/VideoSource";
+import defaultBg from "@/assets/DefaultBackground.mp4";
 
 function TrafficLights({
   window,
@@ -355,8 +358,11 @@ export function InteractiveMenu({ session }: { session: DesktopController }) {
 }
 
 export function InteractiveDesktop({ session }: { session: DesktopController }) {
+  const bgSource = useMemo(() => new VideoSource(defaultBg), []);
+
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-[#B8C4D4]">
+    <div className="relative h-screen w-screen overflow-hidden bg-black">
+      <BackgroundLayer source={bgSource} fitMode="fill" className="z-0" />
       <div className="pointer-events-none absolute inset-x-0 top-7 h-80 bg-gradient-to-b from-white/30 to-transparent" />
       <InteractiveMenuBar session={session} />
       <div className="absolute left-6 top-16 flex gap-6">

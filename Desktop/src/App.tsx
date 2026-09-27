@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { IndexPage } from "@/pages/IndexPage";
 import {
+  BackgroundPage,
   CombinedPage,
   ControlsPage,
   DesktopPage,
@@ -22,6 +23,7 @@ export function App() {
       <Route path="/menubar" element={<MenuBarPage />} />
       <Route path="/input-lab" element={<InputLabPage />} />
       <Route path="/combined" element={<CombinedPage />} />
+      <Route path="/background" element={<BackgroundPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

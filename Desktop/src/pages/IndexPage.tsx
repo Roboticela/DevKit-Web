@@ -36,6 +36,11 @@ const routes = [
     title: "Combined",
     body: "Everything together — the same desk the guest scene exports.",
   },
+  {
+    to: "/background",
+    title: "Background Engine",
+    body: "Universal media adapter — generative, video, GIF, SVG, static image. Fit modes, Low-Power, Space visibility.",
+  },
 ];
 
 export function IndexPage() {

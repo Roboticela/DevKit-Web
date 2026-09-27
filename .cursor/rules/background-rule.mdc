@@ -1,0 +1,248 @@
+---
+alwaysApply: true
+---
+## Fit Mode (applies uniformly across ALL media types above)
+
+```css
+.bg-container[data-fit="fill"]    { object-fit: cover;    background-size: cover; }
+.bg-container[data-fit="fit"]     { object-fit: contain;  background-size: contain; background-color: var(--bg-primary); }
+.bg-container[data-fit="stretch"] { object-fit: fill;     background-size: 100% 100%; }
+.bg-container[data-fit="center"]  { object-fit: none;     background-position: center; background-repeat: no-repeat; }
+.bg-container[data-fit="tile"]    { background-repeat: repeat; background-size: auto; }
+```
+For video/canvas-based sources, `object-fit`/`object-position` are 
+applied directly to the element; for CSS `background-image` sources, 
+the equivalent `background-size`/`background-position` pair is used — 
+the Fit Mode selector UI (see Background Shower prompt below) is 
+agnostic to which underlying property gets set.
+
+## Format Detection & Adapter Selection
+
+```js
+function selectAdapter(fileOrUrl) {
+  const ext = getExtension(fileOrUrl).toLowerCase();
+  if (['mp4','webm','mov'].includes(ext)) return new VideoSource(fileOrUrl);
+  if (ext === 'gif') return new AnimatedGifSource(fileOrUrl);
+  if (ext === 'svg') return isSvgAnimated(fileOrUrl) 
+    ? new AnimatedSvgSource(fileOrUrl) : new ImageSource(fileOrUrl);
+  if (['jpg','jpeg','png','webp','avif'].includes(ext)) return new ImageSource(fileOrUrl);
+  throw new Error(`Unsupported background format: ${ext}`);
+}
+```
+`isSvgAnimated()` checks the SVG's markup for `<animate>`, `<animateTransform>`, 
+or a `<style>` block containing `@keyframes`/`animation:` — a plain 
+static SVG icon should never be routed through the animated adapter's 
+extra overhead.
+
+## Performance & Battery Guardrails
+
+- Only ONE `BackgroundSource` is ever mounted per visible surface — 
+  switching wallpapers calls `unmount()` on the old source before 
+  `mount()` on the new one, never runs two simultaneously (even during 
+  a crossfade transition, both old and new sources render to two 
+  stacked layers but the OLD one calls `pause()` immediately once its 
+  fade-out completes, not left silently running underneath).
+- Low-Power Mode (wired from Settings #90) calls `.pause()` on any 
+  `isAnimated() === true` source system-wide and swaps to its 
+  `getPosterFrame()` result — this must work identically whether the 
+  source is a video, GIF, animated SVG, or live scene, which is exactly 
+  why the unified interface exists.
+- Any background not currently visible (e.g. a background sitting on a 
+  non-active Space) is paused, not unmounted — resuming a Space via 
+  Spaces (#52) navigation should feel instant, not require re-decoding 
+  media from scratch.
+
+---
+
+## System Prompt — Apple-Level Background Content
+
+```
+You are an expert visual artist creating background/wallpaper content 
+for Roboticela OS at Apple's own wallpaper-design quality bar (the 
+macOS/iOS default wallpapers — Big Sur's wave, Monterey's graphic 
+gradient, the dynamic light/dark landscape sets). Every background you 
+design or describe follows these rules.
+
+## Core Principles
+
+1. **Calm, not busy.** A wallpaper is a backdrop for icons, windows, 
+   and text — it must never compete with foreground content for 
+   attention. High-frequency detail, harsh contrast, or dense pattern 
+   fails this immediately.
+2. **Legible-through design.** Assume dark AND light Dock/Menu-Bar text 
+   will sit on top. Test any background against both: does white 
+   Menu-Bar text stay readable in the top-left 100px? Does a dark Dock 
+   icon still show clear contrast at the bottom-center? If either 
+   fails, the background needs a scrim or built-in gradient darkening 
+   in those zones (see "Safe Zones" below).
+3. **Single coherent light source.** Same rule as icon design — if a 
+   background depicts any dimensional form (an abstract wave, a 
+   landscape, a gradient sphere), light comes from one consistent 
+   direction. Never multiple conflicting light sources.
+4. **Restrained palette.** 2–4 dominant colors per background, even for 
+   photographic content — a busy multi-hue wallpaper reads as noisy at 
+   desktop scale, where it's viewed as peripheral backdrop, not focal 
+   art.
+5. **Depth without clutter.** Use soft gradients, subtle blur, gentle 
+   depth-of-field, or large simple geometric forms to suggest depth — 
+   never fine detail that only reads at 1:1 zoom (a wallpaper is almost 
+   always seen at a glance, partially obscured by windows).
+
+## Safe Zones (must remain low-contrast/low-detail)
+
+- **Top strip** (0–32px from top): sits directly behind the Menu Bar's 
+  translucent glass — keep this zone's luminance fairly consistent 
+  left-to-right (no hard light/dark transition crossing directly 
+  behind the status icons on the right side).
+- **Bottom strip** (0–96px from bottom): sits behind the Dock — same 
+  consistency requirement, since the Dock's own glass blur will pick up 
+  whatever's directly behind it.
+- **Center-safe area**: the middle ~60% of the screen is where windows 
+  typically sit — this area can carry the most visual interest since 
+  it's usually covered, while the extreme edges (visible even with 
+  windows open) should carry the calmest part of the composition.
+
+## Content Categories & Treatment
+
+- **Abstract/Gradient**: soft radial or angular gradients, 2–3 color 
+  stops max, optional very subtle noise/grain texture (2–4% opacity) 
+  to prevent color-banding on large flat gradients — this grain is 
+  functional, not decorative.
+- **Landscape/Photographic**: shot or rendered with shallow depth-of-
+  field OR naturally soft/hazy atmosphere (mist, golden-hour light, 
+  wide open sky) — avoid tack-sharp, high-detail landscape photography, 
+  which fights with foreground UI.
+- **Abstract Geometric/3D-render**: large, simple forms (spheres, 
+  waves, ribbons — matching the Three.js techniques used elsewhere in 
+  this system), soft material shading (matte, low specular highlight), 
+  generous negative space.
+- **Dynamic Time-of-Day Sets**: 4 variants (dawn/day/dusk/night) of the 
+  SAME base composition — same camera angle/layout, only the color 
+  temperature and light-source position shift, so switching between 
+  them (per Background #61) feels like one coherent scene changing over 
+  time, not four unrelated images.
+
+## Animated/Video-Specific Rules
+
+- Loop point must be invisible — first and last frame should be 
+  either identical or cross-dissolve-compatible; a visible "jump" at 
+  the loop seam is an immediate quality failure.
+- Motion must be slow and ambient (cloud drift, gentle water ripple, 
+  slow color shift) — never anything with sudden movement, flashing, 
+  or a moving focal subject (a bird flying across frame, a person 
+  walking) that would repeatedly draw the eye every loop cycle.
+- Video/animated wallpapers should still pass the "looks good as a 
+  single paused frame" test — since Low-Power Mode will freeze it to a 
+  poster frame, that frame alone must work as a static wallpaper too.
+
+## Verification Checklist
+
+- [ ] Legible with both light and dark Menu Bar/Dock text overlaid
+- [ ] Single consistent light source (if depicting dimensional form)
+- [ ] 2–4 dominant colors
+- [ ] No fine detail that only reads at 1:1 zoom
+- [ ] Top 32px and bottom 96px strips are low-contrast/consistent
+- [ ] (If animated) loop point is seamless
+- [ ] (If animated) motion is slow/ambient, no sudden focal movement
+- [ ] (If animated) the poster/paused frame alone still works as a 
+      static wallpaper
+```
+
+---
+
+## Prompt — Background Shower (Full-Screen Preview + Controls)
+
+```
+Design the "Background Shower" — a full-viewport preview surface for 
+Roboticela OS's Wallpaper & Screen Saver Settings page (#82), letting 
+the user see and configure a background exactly as it will render on 
+the real Desktop, with every fit mode and playback behavior live-
+adjustable before applying.
+
+## Layout
+
+Full-bleed within the Settings detail pane (not literally full 
+viewport — respects the Settings Shell's content area, but stretches 
+to fill 100% of that area's available space, min-height 480px), 16px 
+radius, `overflow: hidden`, 1px `--border-default`.
+
+- The background media itself renders via the Universal Background 
+  Engine (mounted directly into this preview container, same adapter 
+  code path the real Desktop uses — this is a live instance, not a 
+  static screenshot).
+- Overlay chrome (toolbar): floats at the bottom of the preview, 
+  `rgba(0,0,0,0.4)` scrim strip, `backdrop-filter: blur(16px)`, full 
+  width, 56px height, flex row, `--space-4` padding, items described 
+  below.
+
+## Fit Mode Selector
+
+Segmented Control (#27, icon-only variant), 5 options: Fill / Fit / 
+Stretch / Center / Tile — each icon a small pictogram illustrating the 
+mode (e.g. Fill = a frame with content bleeding past edges, Fit = 
+content fully inside with letterbox bars). Selecting instantly calls 
+`source.setFitMode(mode)` on the live-mounted background — no separate 
+"preview" vs. "apply" step, what you see IS what gets set.
+
+## Behavior Mode Row
+
+Segmented Control (#27, text+icon variant), 2 options:
+- **Single Image**: the currently selected background renders as one 
+  static (or looping, if animated) source — no rotation.
+- **Slideshow**: enables a secondary control row (slides down/fades in 
+  below, `var(--duration-base)`):
+  - Thumbnail strip of all images in the selected slideshow folder/set 
+    (reuses the horizontal scroll-snap filmstrip pattern from Gallery 
+    View #74), each Thumbnail Preview Tile (#47) with a small drag-
+    handle for manual reordering.
+  - Interval Stepper (#26) — "Change every: [5 min / 15 min / 1 hour / 
+    1 day]" as a Dropdown (#37) rather than freeform numeric entry.
+  - Shuffle Toggle Switch (#21).
+
+## Playback Control (only visible/enabled when the current source's 
+`isAnimated()` returns true — video, animated GIF, animated SVG, or 
+live scene)
+
+- Play/Pause icon-Button (#20, icon-only) — toggles `source.pause()`/ 
+  `source.resume()` on the live preview directly. Icon swaps between 
+  play-triangle and pause-bars glyphs based on current state (not two 
+  separate buttons).
+- Small scrubber (reuses Progress Bar #18's track styling but draggable 
+  like a Slider #25) for video sources specifically — shows playback 
+  position, draggable to seek. Hidden entirely for GIF/SVG/live-scene 
+  sources where "seeking" isn't a meaningful concept, only Play/Pause 
+  applies to those.
+- "Reduce Motion respects this setting" hint text (12px, `--text-
+  tertiary`) appears beneath the playback controls if the system's 
+  Reduce Motion accessibility setting (#92) is currently ON — 
+  clarifies to the user why the background might already be paused by 
+  default regardless of this control.
+
+## Apply / Cancel
+
+Bottom-right of the toolbar (separated by a flexible spacer from the 
+controls above): "Cancel" secondary Button (#20) reverts the preview 
+to whatever was actually active before this session opened (calls 
+`unmount()` on the preview instance, no changes persisted), "Set as 
+Wallpaper" primary Button commits the current preview configuration 
+(source + fit mode + behavior mode + slideshow config) as the real 
+Desktop background for the active Space, via the same `mount()` call 
+now targeting the actual Desktop Surface (#71) container instead of 
+this preview.
+
+## Guardrails
+
+- The preview MUST use the real Universal Background Engine adapters — 
+  never a simplified/faked preview renderer — so what the user 
+  configures here is guaranteed identical to the real result, with 
+  zero "it looked different once applied" surprises.
+- Fit Mode and Behavior Mode changes apply live/instantly to the 
+  preview; only the final source+config commit is gated behind the 
+  explicit "Set as Wallpaper" action — don't require a separate 
+  "Preview" button before showing changes.
+- `prefers-reduced-motion: reduce` → any animated source in the preview 
+  mounts already paused at its poster frame by default (matching how 
+  it would actually behave on the real Desktop under that setting), 
+  Play/Pause remains manually available so the user can still preview 
+  the motion deliberately if they choose to.
+```
